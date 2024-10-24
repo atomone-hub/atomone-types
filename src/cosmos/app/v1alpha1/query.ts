@@ -1,7 +1,6 @@
 /* eslint-disable */
 import { Config, ConfigAmino } from "./config";
 import { BinaryReader, BinaryWriter } from "../../../binary";
-import { GlobalDecoderRegistry } from "../../../registry";
 import { isSet } from "../../../helpers";
 import { TxRpc } from "../../../types";
 export const protobufPackage = "cosmos.app.v1alpha1";
@@ -40,13 +39,6 @@ function createBaseQueryConfigRequest(): QueryConfigRequest {
 }
 export const QueryConfigRequest = {
   typeUrl: "/cosmos.app.v1alpha1.QueryConfigRequest",
-  aminoType: "cosmos-sdk/QueryConfigRequest",
-  is(o: any): o is QueryConfigRequest {
-    return o && o.$typeUrl === QueryConfigRequest.typeUrl;
-  },
-  isAmino(o: any): o is QueryConfigRequestAmino {
-    return o && o.$typeUrl === QueryConfigRequest.typeUrl;
-  },
   encode(_: QueryConfigRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
@@ -106,8 +98,6 @@ export const QueryConfigRequest = {
     };
   },
 };
-GlobalDecoderRegistry.register(QueryConfigRequest.typeUrl, QueryConfigRequest);
-GlobalDecoderRegistry.registerAminoProtoMapping(QueryConfigRequest.aminoType, QueryConfigRequest.typeUrl);
 function createBaseQueryConfigResponse(): QueryConfigResponse {
   return {
     config: undefined,
@@ -115,13 +105,6 @@ function createBaseQueryConfigResponse(): QueryConfigResponse {
 }
 export const QueryConfigResponse = {
   typeUrl: "/cosmos.app.v1alpha1.QueryConfigResponse",
-  aminoType: "cosmos-sdk/QueryConfigResponse",
-  is(o: any): o is QueryConfigResponse {
-    return o && o.$typeUrl === QueryConfigResponse.typeUrl;
-  },
-  isAmino(o: any): o is QueryConfigResponseAmino {
-    return o && o.$typeUrl === QueryConfigResponse.typeUrl;
-  },
   encode(message: QueryConfigResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.config !== undefined) {
       Config.encode(message.config, writer.uint32(10).fork()).ldelim();
@@ -196,8 +179,6 @@ export const QueryConfigResponse = {
     };
   },
 };
-GlobalDecoderRegistry.register(QueryConfigResponse.typeUrl, QueryConfigResponse);
-GlobalDecoderRegistry.registerAminoProtoMapping(QueryConfigResponse.aminoType, QueryConfigResponse.typeUrl);
 /** Query is the app module query service. */
 export interface Query {
   /** Config returns the current app config. */

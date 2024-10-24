@@ -8,7 +8,6 @@ import {
 import { Any, AnyAmino } from "../../../google/protobuf/any";
 import { BinaryReader, BinaryWriter } from "../../../binary";
 import { isSet, bytesFromBase64, base64FromBytes } from "../../../helpers";
-import { GlobalDecoderRegistry } from "../../../registry";
 import { TxRpc } from "../../../types";
 export const protobufPackage = "cosmos.evidence.v1beta1";
 /** QueryEvidenceRequest is the request type for the Query/Evidence RPC method. */
@@ -127,23 +126,6 @@ function createBaseQueryEvidenceRequest(): QueryEvidenceRequest {
 }
 export const QueryEvidenceRequest = {
   typeUrl: "/cosmos.evidence.v1beta1.QueryEvidenceRequest",
-  aminoType: "cosmos-sdk/QueryEvidenceRequest",
-  is(o: any): o is QueryEvidenceRequest {
-    return (
-      o &&
-      (o.$typeUrl === QueryEvidenceRequest.typeUrl ||
-        ((o.evidenceHash instanceof Uint8Array || typeof o.evidenceHash === "string") &&
-          typeof o.hash === "string"))
-    );
-  },
-  isAmino(o: any): o is QueryEvidenceRequestAmino {
-    return (
-      o &&
-      (o.$typeUrl === QueryEvidenceRequest.typeUrl ||
-        ((o.evidence_hash instanceof Uint8Array || typeof o.evidence_hash === "string") &&
-          typeof o.hash === "string"))
-    );
-  },
   encode(message: QueryEvidenceRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.evidenceHash.length !== 0) {
       writer.uint32(10).bytes(message.evidenceHash);
@@ -232,8 +214,6 @@ export const QueryEvidenceRequest = {
     };
   },
 };
-GlobalDecoderRegistry.register(QueryEvidenceRequest.typeUrl, QueryEvidenceRequest);
-GlobalDecoderRegistry.registerAminoProtoMapping(QueryEvidenceRequest.aminoType, QueryEvidenceRequest.typeUrl);
 function createBaseQueryEvidenceResponse(): QueryEvidenceResponse {
   return {
     evidence: undefined,
@@ -241,13 +221,6 @@ function createBaseQueryEvidenceResponse(): QueryEvidenceResponse {
 }
 export const QueryEvidenceResponse = {
   typeUrl: "/cosmos.evidence.v1beta1.QueryEvidenceResponse",
-  aminoType: "cosmos-sdk/QueryEvidenceResponse",
-  is(o: any): o is QueryEvidenceResponse {
-    return o && o.$typeUrl === QueryEvidenceResponse.typeUrl;
-  },
-  isAmino(o: any): o is QueryEvidenceResponseAmino {
-    return o && o.$typeUrl === QueryEvidenceResponse.typeUrl;
-  },
   encode(message: QueryEvidenceResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.evidence !== undefined) {
       Any.encode(message.evidence, writer.uint32(10).fork()).ldelim();
@@ -323,11 +296,6 @@ export const QueryEvidenceResponse = {
     };
   },
 };
-GlobalDecoderRegistry.register(QueryEvidenceResponse.typeUrl, QueryEvidenceResponse);
-GlobalDecoderRegistry.registerAminoProtoMapping(
-  QueryEvidenceResponse.aminoType,
-  QueryEvidenceResponse.typeUrl,
-);
 function createBaseQueryAllEvidenceRequest(): QueryAllEvidenceRequest {
   return {
     pagination: undefined,
@@ -335,13 +303,6 @@ function createBaseQueryAllEvidenceRequest(): QueryAllEvidenceRequest {
 }
 export const QueryAllEvidenceRequest = {
   typeUrl: "/cosmos.evidence.v1beta1.QueryAllEvidenceRequest",
-  aminoType: "cosmos-sdk/QueryAllEvidenceRequest",
-  is(o: any): o is QueryAllEvidenceRequest {
-    return o && o.$typeUrl === QueryAllEvidenceRequest.typeUrl;
-  },
-  isAmino(o: any): o is QueryAllEvidenceRequestAmino {
-    return o && o.$typeUrl === QueryAllEvidenceRequest.typeUrl;
-  },
   encode(message: QueryAllEvidenceRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.pagination !== undefined) {
       PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
@@ -417,11 +378,6 @@ export const QueryAllEvidenceRequest = {
     };
   },
 };
-GlobalDecoderRegistry.register(QueryAllEvidenceRequest.typeUrl, QueryAllEvidenceRequest);
-GlobalDecoderRegistry.registerAminoProtoMapping(
-  QueryAllEvidenceRequest.aminoType,
-  QueryAllEvidenceRequest.typeUrl,
-);
 function createBaseQueryAllEvidenceResponse(): QueryAllEvidenceResponse {
   return {
     evidence: [],
@@ -430,21 +386,6 @@ function createBaseQueryAllEvidenceResponse(): QueryAllEvidenceResponse {
 }
 export const QueryAllEvidenceResponse = {
   typeUrl: "/cosmos.evidence.v1beta1.QueryAllEvidenceResponse",
-  aminoType: "cosmos-sdk/QueryAllEvidenceResponse",
-  is(o: any): o is QueryAllEvidenceResponse {
-    return (
-      o &&
-      (o.$typeUrl === QueryAllEvidenceResponse.typeUrl ||
-        (Array.isArray(o.evidence) && (!o.evidence.length || Any.is(o.evidence[0]))))
-    );
-  },
-  isAmino(o: any): o is QueryAllEvidenceResponseAmino {
-    return (
-      o &&
-      (o.$typeUrl === QueryAllEvidenceResponse.typeUrl ||
-        (Array.isArray(o.evidence) && (!o.evidence.length || Any.isAmino(o.evidence[0]))))
-    );
-  },
   encode(message: QueryAllEvidenceResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.evidence) {
       Any.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -539,11 +480,6 @@ export const QueryAllEvidenceResponse = {
     };
   },
 };
-GlobalDecoderRegistry.register(QueryAllEvidenceResponse.typeUrl, QueryAllEvidenceResponse);
-GlobalDecoderRegistry.registerAminoProtoMapping(
-  QueryAllEvidenceResponse.aminoType,
-  QueryAllEvidenceResponse.typeUrl,
-);
 /** Query defines the gRPC querier service. */
 export interface Query {
   /** Evidence queries evidence based on evidence hash. */

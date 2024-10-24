@@ -1,7 +1,6 @@
 /* eslint-disable */
 import { FileDescriptorProto, FileDescriptorProtoAmino } from "../../../google/protobuf/descriptor";
 import { BinaryReader, BinaryWriter } from "../../../binary";
-import { GlobalDecoderRegistry } from "../../../registry";
 import { TxRpc } from "../../../types";
 export const protobufPackage = "cosmos.reflection.v1";
 /** FileDescriptorsRequest is the Query/FileDescriptors request type. */
@@ -39,13 +38,6 @@ function createBaseFileDescriptorsRequest(): FileDescriptorsRequest {
 }
 export const FileDescriptorsRequest = {
   typeUrl: "/cosmos.reflection.v1.FileDescriptorsRequest",
-  aminoType: "cosmos-sdk/FileDescriptorsRequest",
-  is(o: any): o is FileDescriptorsRequest {
-    return o && o.$typeUrl === FileDescriptorsRequest.typeUrl;
-  },
-  isAmino(o: any): o is FileDescriptorsRequestAmino {
-    return o && o.$typeUrl === FileDescriptorsRequest.typeUrl;
-  },
   encode(_: FileDescriptorsRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
@@ -105,11 +97,6 @@ export const FileDescriptorsRequest = {
     };
   },
 };
-GlobalDecoderRegistry.register(FileDescriptorsRequest.typeUrl, FileDescriptorsRequest);
-GlobalDecoderRegistry.registerAminoProtoMapping(
-  FileDescriptorsRequest.aminoType,
-  FileDescriptorsRequest.typeUrl,
-);
 function createBaseFileDescriptorsResponse(): FileDescriptorsResponse {
   return {
     files: [],
@@ -117,21 +104,6 @@ function createBaseFileDescriptorsResponse(): FileDescriptorsResponse {
 }
 export const FileDescriptorsResponse = {
   typeUrl: "/cosmos.reflection.v1.FileDescriptorsResponse",
-  aminoType: "cosmos-sdk/FileDescriptorsResponse",
-  is(o: any): o is FileDescriptorsResponse {
-    return (
-      o &&
-      (o.$typeUrl === FileDescriptorsResponse.typeUrl ||
-        (Array.isArray(o.files) && (!o.files.length || FileDescriptorProto.is(o.files[0]))))
-    );
-  },
-  isAmino(o: any): o is FileDescriptorsResponseAmino {
-    return (
-      o &&
-      (o.$typeUrl === FileDescriptorsResponse.typeUrl ||
-        (Array.isArray(o.files) && (!o.files.length || FileDescriptorProto.isAmino(o.files[0]))))
-    );
-  },
   encode(message: FileDescriptorsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.files) {
       FileDescriptorProto.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -211,11 +183,6 @@ export const FileDescriptorsResponse = {
     };
   },
 };
-GlobalDecoderRegistry.register(FileDescriptorsResponse.typeUrl, FileDescriptorsResponse);
-GlobalDecoderRegistry.registerAminoProtoMapping(
-  FileDescriptorsResponse.aminoType,
-  FileDescriptorsResponse.typeUrl,
-);
 /** Package cosmos.reflection.v1 provides support for inspecting protobuf
  file descriptors. */
 export interface ReflectionService {

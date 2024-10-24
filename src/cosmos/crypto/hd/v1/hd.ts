@@ -1,7 +1,6 @@
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "../../../../binary";
 import { isSet } from "../../../../helpers";
-import { GlobalDecoderRegistry } from "../../../../registry";
 export const protobufPackage = "cosmos.crypto.hd.v1";
 /** BIP44Params is used as path field in ledger item in Record. */
 export interface BIP44Params {
@@ -54,29 +53,6 @@ function createBaseBIP44Params(): BIP44Params {
 }
 export const BIP44Params = {
   typeUrl: "/cosmos.crypto.hd.v1.BIP44Params",
-  aminoType: "crypto/keys/hd/BIP44Params",
-  is(o: any): o is BIP44Params {
-    return (
-      o &&
-      (o.$typeUrl === BIP44Params.typeUrl ||
-        (typeof o.purpose === "number" &&
-          typeof o.coinType === "number" &&
-          typeof o.account === "number" &&
-          typeof o.change === "boolean" &&
-          typeof o.addressIndex === "number"))
-    );
-  },
-  isAmino(o: any): o is BIP44ParamsAmino {
-    return (
-      o &&
-      (o.$typeUrl === BIP44Params.typeUrl ||
-        (typeof o.purpose === "number" &&
-          typeof o.coin_type === "number" &&
-          typeof o.account === "number" &&
-          typeof o.change === "boolean" &&
-          typeof o.address_index === "number"))
-    );
-  },
   encode(message: BIP44Params, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.purpose !== 0) {
       writer.uint32(8).uint32(message.purpose);
@@ -201,5 +177,3 @@ export const BIP44Params = {
     };
   },
 };
-GlobalDecoderRegistry.register(BIP44Params.typeUrl, BIP44Params);
-GlobalDecoderRegistry.registerAminoProtoMapping(BIP44Params.aminoType, BIP44Params.typeUrl);

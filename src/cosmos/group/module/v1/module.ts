@@ -2,7 +2,6 @@
 import { Duration, DurationAmino } from "../../../../google/protobuf/duration";
 import { BinaryReader, BinaryWriter } from "../../../../binary";
 import { isSet } from "../../../../helpers";
-import { GlobalDecoderRegistry } from "../../../../registry";
 export const protobufPackage = "cosmos.group.module.v1";
 /** Module is the config object of the group module. */
 export interface Module {
@@ -46,21 +45,6 @@ function createBaseModule(): Module {
 }
 export const Module = {
   typeUrl: "/cosmos.group.module.v1.Module",
-  aminoType: "cosmos-sdk/Module",
-  is(o: any): o is Module {
-    return (
-      o &&
-      (o.$typeUrl === Module.typeUrl ||
-        (Duration.is(o.maxExecutionPeriod) && typeof o.maxMetadataLen === "bigint"))
-    );
-  },
-  isAmino(o: any): o is ModuleAmino {
-    return (
-      o &&
-      (o.$typeUrl === Module.typeUrl ||
-        (Duration.isAmino(o.max_execution_period) && typeof o.max_metadata_len === "bigint"))
-    );
-  },
   encode(message: Module, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.maxExecutionPeriod !== undefined) {
       Duration.encode(message.maxExecutionPeriod, writer.uint32(10).fork()).ldelim();
@@ -157,5 +141,3 @@ export const Module = {
     };
   },
 };
-GlobalDecoderRegistry.register(Module.typeUrl, Module);
-GlobalDecoderRegistry.registerAminoProtoMapping(Module.aminoType, Module.typeUrl);

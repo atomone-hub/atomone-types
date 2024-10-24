@@ -1,7 +1,6 @@
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "../../../../binary";
 import { isSet } from "../../../../helpers";
-import { GlobalDecoderRegistry } from "../../../../registry";
 export const protobufPackage = "cosmos.capability.module.v1";
 /** Module is the config object of the capability module. */
 export interface Module {
@@ -34,13 +33,6 @@ function createBaseModule(): Module {
 }
 export const Module = {
   typeUrl: "/cosmos.capability.module.v1.Module",
-  aminoType: "cosmos-sdk/Module",
-  is(o: any): o is Module {
-    return o && (o.$typeUrl === Module.typeUrl || typeof o.sealKeeper === "boolean");
-  },
-  isAmino(o: any): o is ModuleAmino {
-    return o && (o.$typeUrl === Module.typeUrl || typeof o.seal_keeper === "boolean");
-  },
   encode(message: Module, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.sealKeeper === true) {
       writer.uint32(8).bool(message.sealKeeper);
@@ -113,5 +105,3 @@ export const Module = {
     };
   },
 };
-GlobalDecoderRegistry.register(Module.typeUrl, Module);
-GlobalDecoderRegistry.registerAminoProtoMapping(Module.aminoType, Module.typeUrl);

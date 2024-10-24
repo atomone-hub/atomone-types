@@ -16,7 +16,6 @@ import {
   base64FromBytes,
   fromTimestamp,
 } from "../../../../helpers";
-import { GlobalDecoderRegistry } from "../../../../registry";
 import { TxRpc } from "../../../../types";
 export const protobufPackage = "cosmos.orm.query.v1alpha1";
 /** GetRequest is the Query/Get request type. */
@@ -278,27 +277,6 @@ function createBaseGetRequest(): GetRequest {
 }
 export const GetRequest = {
   typeUrl: "/cosmos.orm.query.v1alpha1.GetRequest",
-  aminoType: "cosmos-sdk/GetRequest",
-  is(o: any): o is GetRequest {
-    return (
-      o &&
-      (o.$typeUrl === GetRequest.typeUrl ||
-        (typeof o.messageName === "string" &&
-          typeof o.index === "string" &&
-          Array.isArray(o.values) &&
-          (!o.values.length || IndexValue.is(o.values[0]))))
-    );
-  },
-  isAmino(o: any): o is GetRequestAmino {
-    return (
-      o &&
-      (o.$typeUrl === GetRequest.typeUrl ||
-        (typeof o.message_name === "string" &&
-          typeof o.index === "string" &&
-          Array.isArray(o.values) &&
-          (!o.values.length || IndexValue.isAmino(o.values[0]))))
-    );
-  },
   encode(message: GetRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.messageName !== "") {
       writer.uint32(10).string(message.messageName);
@@ -403,8 +381,6 @@ export const GetRequest = {
     };
   },
 };
-GlobalDecoderRegistry.register(GetRequest.typeUrl, GetRequest);
-GlobalDecoderRegistry.registerAminoProtoMapping(GetRequest.aminoType, GetRequest.typeUrl);
 function createBaseGetResponse(): GetResponse {
   return {
     result: undefined,
@@ -412,13 +388,6 @@ function createBaseGetResponse(): GetResponse {
 }
 export const GetResponse = {
   typeUrl: "/cosmos.orm.query.v1alpha1.GetResponse",
-  aminoType: "cosmos-sdk/GetResponse",
-  is(o: any): o is GetResponse {
-    return o && o.$typeUrl === GetResponse.typeUrl;
-  },
-  isAmino(o: any): o is GetResponseAmino {
-    return o && o.$typeUrl === GetResponse.typeUrl;
-  },
   encode(message: GetResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.result !== undefined) {
       Any.encode(message.result, writer.uint32(10).fork()).ldelim();
@@ -493,8 +462,6 @@ export const GetResponse = {
     };
   },
 };
-GlobalDecoderRegistry.register(GetResponse.typeUrl, GetResponse);
-GlobalDecoderRegistry.registerAminoProtoMapping(GetResponse.aminoType, GetResponse.typeUrl);
 function createBaseListRequest(): ListRequest {
   return {
     messageName: "",
@@ -506,21 +473,6 @@ function createBaseListRequest(): ListRequest {
 }
 export const ListRequest = {
   typeUrl: "/cosmos.orm.query.v1alpha1.ListRequest",
-  aminoType: "cosmos-sdk/ListRequest",
-  is(o: any): o is ListRequest {
-    return (
-      o &&
-      (o.$typeUrl === ListRequest.typeUrl ||
-        (typeof o.messageName === "string" && typeof o.index === "string"))
-    );
-  },
-  isAmino(o: any): o is ListRequestAmino {
-    return (
-      o &&
-      (o.$typeUrl === ListRequest.typeUrl ||
-        (typeof o.message_name === "string" && typeof o.index === "string"))
-    );
-  },
   encode(message: ListRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.messageName !== "") {
       writer.uint32(10).string(message.messageName);
@@ -654,8 +606,6 @@ export const ListRequest = {
     };
   },
 };
-GlobalDecoderRegistry.register(ListRequest.typeUrl, ListRequest);
-GlobalDecoderRegistry.registerAminoProtoMapping(ListRequest.aminoType, ListRequest.typeUrl);
 function createBaseListRequest_Prefix(): ListRequest_Prefix {
   return {
     values: [],
@@ -663,21 +613,6 @@ function createBaseListRequest_Prefix(): ListRequest_Prefix {
 }
 export const ListRequest_Prefix = {
   typeUrl: "/cosmos.orm.query.v1alpha1.Prefix",
-  aminoType: "cosmos-sdk/Prefix",
-  is(o: any): o is ListRequest_Prefix {
-    return (
-      o &&
-      (o.$typeUrl === ListRequest_Prefix.typeUrl ||
-        (Array.isArray(o.values) && (!o.values.length || IndexValue.is(o.values[0]))))
-    );
-  },
-  isAmino(o: any): o is ListRequest_PrefixAmino {
-    return (
-      o &&
-      (o.$typeUrl === ListRequest_Prefix.typeUrl ||
-        (Array.isArray(o.values) && (!o.values.length || IndexValue.isAmino(o.values[0]))))
-    );
-  },
   encode(message: ListRequest_Prefix, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.values) {
       IndexValue.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -756,8 +691,6 @@ export const ListRequest_Prefix = {
     };
   },
 };
-GlobalDecoderRegistry.register(ListRequest_Prefix.typeUrl, ListRequest_Prefix);
-GlobalDecoderRegistry.registerAminoProtoMapping(ListRequest_Prefix.aminoType, ListRequest_Prefix.typeUrl);
 function createBaseListRequest_Range(): ListRequest_Range {
   return {
     start: [],
@@ -766,27 +699,6 @@ function createBaseListRequest_Range(): ListRequest_Range {
 }
 export const ListRequest_Range = {
   typeUrl: "/cosmos.orm.query.v1alpha1.Range",
-  aminoType: "cosmos-sdk/Range",
-  is(o: any): o is ListRequest_Range {
-    return (
-      o &&
-      (o.$typeUrl === ListRequest_Range.typeUrl ||
-        (Array.isArray(o.start) &&
-          (!o.start.length || IndexValue.is(o.start[0])) &&
-          Array.isArray(o.end) &&
-          (!o.end.length || IndexValue.is(o.end[0]))))
-    );
-  },
-  isAmino(o: any): o is ListRequest_RangeAmino {
-    return (
-      o &&
-      (o.$typeUrl === ListRequest_Range.typeUrl ||
-        (Array.isArray(o.start) &&
-          (!o.start.length || IndexValue.isAmino(o.start[0])) &&
-          Array.isArray(o.end) &&
-          (!o.end.length || IndexValue.isAmino(o.end[0]))))
-    );
-  },
   encode(message: ListRequest_Range, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.start) {
       IndexValue.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -884,8 +796,6 @@ export const ListRequest_Range = {
     };
   },
 };
-GlobalDecoderRegistry.register(ListRequest_Range.typeUrl, ListRequest_Range);
-GlobalDecoderRegistry.registerAminoProtoMapping(ListRequest_Range.aminoType, ListRequest_Range.typeUrl);
 function createBaseListResponse(): ListResponse {
   return {
     results: [],
@@ -894,21 +804,6 @@ function createBaseListResponse(): ListResponse {
 }
 export const ListResponse = {
   typeUrl: "/cosmos.orm.query.v1alpha1.ListResponse",
-  aminoType: "cosmos-sdk/ListResponse",
-  is(o: any): o is ListResponse {
-    return (
-      o &&
-      (o.$typeUrl === ListResponse.typeUrl ||
-        (Array.isArray(o.results) && (!o.results.length || Any.is(o.results[0]))))
-    );
-  },
-  isAmino(o: any): o is ListResponseAmino {
-    return (
-      o &&
-      (o.$typeUrl === ListResponse.typeUrl ||
-        (Array.isArray(o.results) && (!o.results.length || Any.isAmino(o.results[0]))))
-    );
-  },
   encode(message: ListResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.results) {
       Any.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -1003,8 +898,6 @@ export const ListResponse = {
     };
   },
 };
-GlobalDecoderRegistry.register(ListResponse.typeUrl, ListResponse);
-GlobalDecoderRegistry.registerAminoProtoMapping(ListResponse.aminoType, ListResponse.typeUrl);
 function createBaseIndexValue(): IndexValue {
   return {
     uint: undefined,
@@ -1019,13 +912,6 @@ function createBaseIndexValue(): IndexValue {
 }
 export const IndexValue = {
   typeUrl: "/cosmos.orm.query.v1alpha1.IndexValue",
-  aminoType: "cosmos-sdk/IndexValue",
-  is(o: any): o is IndexValue {
-    return o && o.$typeUrl === IndexValue.typeUrl;
-  },
-  isAmino(o: any): o is IndexValueAmino {
-    return o && o.$typeUrl === IndexValue.typeUrl;
-  },
   encode(message: IndexValue, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.uint !== undefined) {
       writer.uint32(8).uint64(message.uint);
@@ -1203,8 +1089,6 @@ export const IndexValue = {
     };
   },
 };
-GlobalDecoderRegistry.register(IndexValue.typeUrl, IndexValue);
-GlobalDecoderRegistry.registerAminoProtoMapping(IndexValue.aminoType, IndexValue.typeUrl);
 /** Query is a generic gRPC service for querying ORM data. */
 export interface Query {
   /** Get queries an ORM table against an unique index. */

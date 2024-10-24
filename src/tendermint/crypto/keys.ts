@@ -1,7 +1,6 @@
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "../../binary";
 import { isSet, bytesFromBase64, base64FromBytes } from "../../helpers";
-import { GlobalDecoderRegistry } from "../../registry";
 export const protobufPackage = "tendermint.crypto";
 /** PublicKey defines the keys available for use with Validators */
 export interface PublicKey {
@@ -29,12 +28,6 @@ function createBasePublicKey(): PublicKey {
 }
 export const PublicKey = {
   typeUrl: "/tendermint.crypto.PublicKey",
-  is(o: any): o is PublicKey {
-    return o && o.$typeUrl === PublicKey.typeUrl;
-  },
-  isAmino(o: any): o is PublicKeyAmino {
-    return o && o.$typeUrl === PublicKey.typeUrl;
-  },
   encode(message: PublicKey, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.ed25519 !== undefined) {
       writer.uint32(10).bytes(message.ed25519);
@@ -116,4 +109,3 @@ export const PublicKey = {
     };
   },
 };
-GlobalDecoderRegistry.register(PublicKey.typeUrl, PublicKey);

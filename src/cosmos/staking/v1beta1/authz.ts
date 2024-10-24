@@ -1,8 +1,7 @@
 /* eslint-disable */
 import { Coin, CoinAmino } from "../../base/v1beta1/coin";
-import { isSet } from "../../../helpers";
 import { BinaryReader, BinaryWriter } from "../../../binary";
-import { GlobalDecoderRegistry } from "../../../registry";
+import { isSet } from "../../../helpers";
 export const protobufPackage = "cosmos.staking.v1beta1";
 /**
  * AuthorizationType defines the type of staking module authorization type
@@ -132,13 +131,6 @@ function createBaseStakeAuthorization(): StakeAuthorization {
 }
 export const StakeAuthorization = {
   typeUrl: "/cosmos.staking.v1beta1.StakeAuthorization",
-  aminoType: "cosmos-sdk/StakeAuthorization",
-  is(o: any): o is StakeAuthorization {
-    return o && (o.$typeUrl === StakeAuthorization.typeUrl || isSet(o.authorizationType));
-  },
-  isAmino(o: any): o is StakeAuthorizationAmino {
-    return o && (o.$typeUrl === StakeAuthorization.typeUrl || isSet(o.authorization_type));
-  },
   encode(message: StakeAuthorization, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.maxTokens !== undefined) {
       Coin.encode(message.maxTokens, writer.uint32(10).fork()).ldelim();
@@ -263,8 +255,6 @@ export const StakeAuthorization = {
     };
   },
 };
-GlobalDecoderRegistry.register(StakeAuthorization.typeUrl, StakeAuthorization);
-GlobalDecoderRegistry.registerAminoProtoMapping(StakeAuthorization.aminoType, StakeAuthorization.typeUrl);
 function createBaseStakeAuthorization_Validators(): StakeAuthorization_Validators {
   return {
     address: [],
@@ -272,21 +262,6 @@ function createBaseStakeAuthorization_Validators(): StakeAuthorization_Validator
 }
 export const StakeAuthorization_Validators = {
   typeUrl: "/cosmos.staking.v1beta1.Validators",
-  aminoType: "cosmos-sdk/Validators",
-  is(o: any): o is StakeAuthorization_Validators {
-    return (
-      o &&
-      (o.$typeUrl === StakeAuthorization_Validators.typeUrl ||
-        (Array.isArray(o.address) && (!o.address.length || typeof o.address[0] === "string")))
-    );
-  },
-  isAmino(o: any): o is StakeAuthorization_ValidatorsAmino {
-    return (
-      o &&
-      (o.$typeUrl === StakeAuthorization_Validators.typeUrl ||
-        (Array.isArray(o.address) && (!o.address.length || typeof o.address[0] === "string")))
-    );
-  },
   encode(message: StakeAuthorization_Validators, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.address) {
       writer.uint32(10).string(v!);
@@ -365,8 +340,3 @@ export const StakeAuthorization_Validators = {
     };
   },
 };
-GlobalDecoderRegistry.register(StakeAuthorization_Validators.typeUrl, StakeAuthorization_Validators);
-GlobalDecoderRegistry.registerAminoProtoMapping(
-  StakeAuthorization_Validators.aminoType,
-  StakeAuthorization_Validators.typeUrl,
-);

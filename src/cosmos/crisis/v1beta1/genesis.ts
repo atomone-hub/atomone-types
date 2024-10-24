@@ -2,7 +2,6 @@
 import { Coin, CoinAmino } from "../../base/v1beta1/coin";
 import { BinaryReader, BinaryWriter } from "../../../binary";
 import { isSet } from "../../../helpers";
-import { GlobalDecoderRegistry } from "../../../registry";
 export const protobufPackage = "cosmos.crisis.v1beta1";
 /** GenesisState defines the crisis module's genesis state. */
 export interface GenesisState {
@@ -35,13 +34,6 @@ function createBaseGenesisState(): GenesisState {
 }
 export const GenesisState = {
   typeUrl: "/cosmos.crisis.v1beta1.GenesisState",
-  aminoType: "cosmos-sdk/GenesisState",
-  is(o: any): o is GenesisState {
-    return o && (o.$typeUrl === GenesisState.typeUrl || Coin.is(o.constantFee));
-  },
-  isAmino(o: any): o is GenesisStateAmino {
-    return o && (o.$typeUrl === GenesisState.typeUrl || Coin.isAmino(o.constant_fee));
-  },
   encode(message: GenesisState, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.constantFee !== undefined) {
       Coin.encode(message.constantFee, writer.uint32(26).fork()).ldelim();
@@ -117,5 +109,3 @@ export const GenesisState = {
     };
   },
 };
-GlobalDecoderRegistry.register(GenesisState.typeUrl, GenesisState);
-GlobalDecoderRegistry.registerAminoProtoMapping(GenesisState.aminoType, GenesisState.typeUrl);

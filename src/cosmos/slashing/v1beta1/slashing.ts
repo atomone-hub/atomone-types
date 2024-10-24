@@ -3,7 +3,6 @@ import { Timestamp } from "../../../google/protobuf/timestamp";
 import { Duration, DurationAmino } from "../../../google/protobuf/duration";
 import { BinaryReader, BinaryWriter } from "../../../binary";
 import { isSet, fromJsonTimestamp, fromTimestamp, bytesFromBase64, base64FromBytes } from "../../../helpers";
-import { GlobalDecoderRegistry } from "../../../registry";
 export const protobufPackage = "cosmos.slashing.v1beta1";
 /**
  * ValidatorSigningInfo defines a validator's signing info for monitoring their
@@ -103,31 +102,6 @@ function createBaseValidatorSigningInfo(): ValidatorSigningInfo {
 }
 export const ValidatorSigningInfo = {
   typeUrl: "/cosmos.slashing.v1beta1.ValidatorSigningInfo",
-  aminoType: "cosmos-sdk/ValidatorSigningInfo",
-  is(o: any): o is ValidatorSigningInfo {
-    return (
-      o &&
-      (o.$typeUrl === ValidatorSigningInfo.typeUrl ||
-        (typeof o.address === "string" &&
-          typeof o.startHeight === "bigint" &&
-          typeof o.indexOffset === "bigint" &&
-          Timestamp.is(o.jailedUntil) &&
-          typeof o.tombstoned === "boolean" &&
-          typeof o.missedBlocksCounter === "bigint"))
-    );
-  },
-  isAmino(o: any): o is ValidatorSigningInfoAmino {
-    return (
-      o &&
-      (o.$typeUrl === ValidatorSigningInfo.typeUrl ||
-        (typeof o.address === "string" &&
-          typeof o.start_height === "bigint" &&
-          typeof o.index_offset === "bigint" &&
-          Timestamp.isAmino(o.jailed_until) &&
-          typeof o.tombstoned === "boolean" &&
-          typeof o.missed_blocks_counter === "bigint"))
-    );
-  },
   encode(message: ValidatorSigningInfo, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.address !== "") {
       writer.uint32(10).string(message.address);
@@ -277,8 +251,6 @@ export const ValidatorSigningInfo = {
     };
   },
 };
-GlobalDecoderRegistry.register(ValidatorSigningInfo.typeUrl, ValidatorSigningInfo);
-GlobalDecoderRegistry.registerAminoProtoMapping(ValidatorSigningInfo.aminoType, ValidatorSigningInfo.typeUrl);
 function createBaseParams(): Params {
   return {
     signedBlocksWindow: BigInt(0),
@@ -290,31 +262,6 @@ function createBaseParams(): Params {
 }
 export const Params = {
   typeUrl: "/cosmos.slashing.v1beta1.Params",
-  aminoType: "cosmos-sdk/x/slashing/Params",
-  is(o: any): o is Params {
-    return (
-      o &&
-      (o.$typeUrl === Params.typeUrl ||
-        (typeof o.signedBlocksWindow === "bigint" &&
-          (o.minSignedPerWindow instanceof Uint8Array || typeof o.minSignedPerWindow === "string") &&
-          Duration.is(o.downtimeJailDuration) &&
-          (o.slashFractionDoubleSign instanceof Uint8Array ||
-            typeof o.slashFractionDoubleSign === "string") &&
-          (o.slashFractionDowntime instanceof Uint8Array || typeof o.slashFractionDowntime === "string")))
-    );
-  },
-  isAmino(o: any): o is ParamsAmino {
-    return (
-      o &&
-      (o.$typeUrl === Params.typeUrl ||
-        (typeof o.signed_blocks_window === "bigint" &&
-          (o.min_signed_per_window instanceof Uint8Array || typeof o.min_signed_per_window === "string") &&
-          Duration.isAmino(o.downtime_jail_duration) &&
-          (o.slash_fraction_double_sign instanceof Uint8Array ||
-            typeof o.slash_fraction_double_sign === "string") &&
-          (o.slash_fraction_downtime instanceof Uint8Array || typeof o.slash_fraction_downtime === "string")))
-    );
-  },
   encode(message: Params, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.signedBlocksWindow !== BigInt(0)) {
       writer.uint32(8).int64(message.signedBlocksWindow);
@@ -466,5 +413,3 @@ export const Params = {
     };
   },
 };
-GlobalDecoderRegistry.register(Params.typeUrl, Params);
-GlobalDecoderRegistry.registerAminoProtoMapping(Params.aminoType, Params.typeUrl);

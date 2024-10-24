@@ -1,7 +1,6 @@
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "../../../binary";
 import { bytesFromBase64, base64FromBytes } from "../../../helpers";
-import { GlobalDecoderRegistry } from "../../../registry";
 export const protobufPackage = "cosmos.genutil.v1beta1";
 /** GenesisState defines the raw genesis transaction in JSON. */
 export interface GenesisState {
@@ -28,23 +27,6 @@ function createBaseGenesisState(): GenesisState {
 }
 export const GenesisState = {
   typeUrl: "/cosmos.genutil.v1beta1.GenesisState",
-  aminoType: "cosmos-sdk/GenesisState",
-  is(o: any): o is GenesisState {
-    return (
-      o &&
-      (o.$typeUrl === GenesisState.typeUrl ||
-        (Array.isArray(o.genTxs) &&
-          (!o.genTxs.length || o.genTxs[0] instanceof Uint8Array || typeof o.genTxs[0] === "string")))
-    );
-  },
-  isAmino(o: any): o is GenesisStateAmino {
-    return (
-      o &&
-      (o.$typeUrl === GenesisState.typeUrl ||
-        (Array.isArray(o.gen_txs) &&
-          (!o.gen_txs.length || o.gen_txs[0] instanceof Uint8Array || typeof o.gen_txs[0] === "string")))
-    );
-  },
   encode(message: GenesisState, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.genTxs) {
       writer.uint32(10).bytes(v!);
@@ -123,5 +105,3 @@ export const GenesisState = {
     };
   },
 };
-GlobalDecoderRegistry.register(GenesisState.typeUrl, GenesisState);
-GlobalDecoderRegistry.registerAminoProtoMapping(GenesisState.aminoType, GenesisState.typeUrl);

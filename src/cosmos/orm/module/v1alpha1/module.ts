@@ -1,6 +1,5 @@
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "../../../../binary";
-import { GlobalDecoderRegistry } from "../../../../registry";
 export const protobufPackage = "cosmos.orm.module.v1alpha1";
 /**
  * Module defines the ORM module which adds providers to the app container for
@@ -27,13 +26,6 @@ function createBaseModule(): Module {
 }
 export const Module = {
   typeUrl: "/cosmos.orm.module.v1alpha1.Module",
-  aminoType: "cosmos-sdk/Module",
-  is(o: any): o is Module {
-    return o && o.$typeUrl === Module.typeUrl;
-  },
-  isAmino(o: any): o is ModuleAmino {
-    return o && o.$typeUrl === Module.typeUrl;
-  },
   encode(_: Module, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
@@ -93,5 +85,3 @@ export const Module = {
     };
   },
 };
-GlobalDecoderRegistry.register(Module.typeUrl, Module);
-GlobalDecoderRegistry.registerAminoProtoMapping(Module.aminoType, Module.typeUrl);

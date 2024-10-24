@@ -2,7 +2,6 @@
 import { Coin, CoinAmino } from "../../base/v1beta1/coin";
 import { BinaryReader, BinaryWriter } from "../../../binary";
 import { isSet } from "../../../helpers";
-import { GlobalDecoderRegistry } from "../../../registry";
 export const protobufPackage = "cosmos.bank.v1beta1";
 /** Params defines the parameters for the bank module. */
 export interface Params {
@@ -268,25 +267,6 @@ function createBaseParams(): Params {
 }
 export const Params = {
   typeUrl: "/cosmos.bank.v1beta1.Params",
-  aminoType: "cosmos-sdk/x/bank/Params",
-  is(o: any): o is Params {
-    return (
-      o &&
-      (o.$typeUrl === Params.typeUrl ||
-        (Array.isArray(o.sendEnabled) &&
-          (!o.sendEnabled.length || SendEnabled.is(o.sendEnabled[0])) &&
-          typeof o.defaultSendEnabled === "boolean"))
-    );
-  },
-  isAmino(o: any): o is ParamsAmino {
-    return (
-      o &&
-      (o.$typeUrl === Params.typeUrl ||
-        (Array.isArray(o.send_enabled) &&
-          (!o.send_enabled.length || SendEnabled.isAmino(o.send_enabled[0])) &&
-          typeof o.default_send_enabled === "boolean"))
-    );
-  },
   encode(message: Params, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.sendEnabled) {
       SendEnabled.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -379,8 +359,6 @@ export const Params = {
     };
   },
 };
-GlobalDecoderRegistry.register(Params.typeUrl, Params);
-GlobalDecoderRegistry.registerAminoProtoMapping(Params.aminoType, Params.typeUrl);
 function createBaseSendEnabled(): SendEnabled {
   return {
     denom: "",
@@ -389,19 +367,6 @@ function createBaseSendEnabled(): SendEnabled {
 }
 export const SendEnabled = {
   typeUrl: "/cosmos.bank.v1beta1.SendEnabled",
-  aminoType: "cosmos-sdk/SendEnabled",
-  is(o: any): o is SendEnabled {
-    return (
-      o &&
-      (o.$typeUrl === SendEnabled.typeUrl || (typeof o.denom === "string" && typeof o.enabled === "boolean"))
-    );
-  },
-  isAmino(o: any): o is SendEnabledAmino {
-    return (
-      o &&
-      (o.$typeUrl === SendEnabled.typeUrl || (typeof o.denom === "string" && typeof o.enabled === "boolean"))
-    );
-  },
   encode(message: SendEnabled, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.denom !== "") {
       writer.uint32(10).string(message.denom);
@@ -487,8 +452,6 @@ export const SendEnabled = {
     };
   },
 };
-GlobalDecoderRegistry.register(SendEnabled.typeUrl, SendEnabled);
-GlobalDecoderRegistry.registerAminoProtoMapping(SendEnabled.aminoType, SendEnabled.typeUrl);
 function createBaseInput(): Input {
   return {
     address: "",
@@ -497,23 +460,6 @@ function createBaseInput(): Input {
 }
 export const Input = {
   typeUrl: "/cosmos.bank.v1beta1.Input",
-  aminoType: "cosmos-sdk/Input",
-  is(o: any): o is Input {
-    return (
-      o &&
-      (o.$typeUrl === Input.typeUrl ||
-        (typeof o.address === "string" && Array.isArray(o.coins) && (!o.coins.length || Coin.is(o.coins[0]))))
-    );
-  },
-  isAmino(o: any): o is InputAmino {
-    return (
-      o &&
-      (o.$typeUrl === Input.typeUrl ||
-        (typeof o.address === "string" &&
-          Array.isArray(o.coins) &&
-          (!o.coins.length || Coin.isAmino(o.coins[0]))))
-    );
-  },
   encode(message: Input, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.address !== "") {
       writer.uint32(10).string(message.address);
@@ -605,8 +551,6 @@ export const Input = {
     };
   },
 };
-GlobalDecoderRegistry.register(Input.typeUrl, Input);
-GlobalDecoderRegistry.registerAminoProtoMapping(Input.aminoType, Input.typeUrl);
 function createBaseOutput(): Output {
   return {
     address: "",
@@ -615,23 +559,6 @@ function createBaseOutput(): Output {
 }
 export const Output = {
   typeUrl: "/cosmos.bank.v1beta1.Output",
-  aminoType: "cosmos-sdk/Output",
-  is(o: any): o is Output {
-    return (
-      o &&
-      (o.$typeUrl === Output.typeUrl ||
-        (typeof o.address === "string" && Array.isArray(o.coins) && (!o.coins.length || Coin.is(o.coins[0]))))
-    );
-  },
-  isAmino(o: any): o is OutputAmino {
-    return (
-      o &&
-      (o.$typeUrl === Output.typeUrl ||
-        (typeof o.address === "string" &&
-          Array.isArray(o.coins) &&
-          (!o.coins.length || Coin.isAmino(o.coins[0]))))
-    );
-  },
   encode(message: Output, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.address !== "") {
       writer.uint32(10).string(message.address);
@@ -723,8 +650,6 @@ export const Output = {
     };
   },
 };
-GlobalDecoderRegistry.register(Output.typeUrl, Output);
-GlobalDecoderRegistry.registerAminoProtoMapping(Output.aminoType, Output.typeUrl);
 function createBaseSupply(): Supply {
   return {
     total: [],
@@ -732,20 +657,6 @@ function createBaseSupply(): Supply {
 }
 export const Supply = {
   typeUrl: "/cosmos.bank.v1beta1.Supply",
-  aminoType: "cosmos-sdk/Supply",
-  is(o: any): o is Supply {
-    return (
-      o &&
-      (o.$typeUrl === Supply.typeUrl || (Array.isArray(o.total) && (!o.total.length || Coin.is(o.total[0]))))
-    );
-  },
-  isAmino(o: any): o is SupplyAmino {
-    return (
-      o &&
-      (o.$typeUrl === Supply.typeUrl ||
-        (Array.isArray(o.total) && (!o.total.length || Coin.isAmino(o.total[0]))))
-    );
-  },
   encode(message: Supply, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.total) {
       Coin.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -824,8 +735,6 @@ export const Supply = {
     };
   },
 };
-GlobalDecoderRegistry.register(Supply.typeUrl, Supply);
-GlobalDecoderRegistry.registerAminoProtoMapping(Supply.aminoType, Supply.typeUrl);
 function createBaseDenomUnit(): DenomUnit {
   return {
     denom: "",
@@ -835,27 +744,6 @@ function createBaseDenomUnit(): DenomUnit {
 }
 export const DenomUnit = {
   typeUrl: "/cosmos.bank.v1beta1.DenomUnit",
-  aminoType: "cosmos-sdk/DenomUnit",
-  is(o: any): o is DenomUnit {
-    return (
-      o &&
-      (o.$typeUrl === DenomUnit.typeUrl ||
-        (typeof o.denom === "string" &&
-          typeof o.exponent === "number" &&
-          Array.isArray(o.aliases) &&
-          (!o.aliases.length || typeof o.aliases[0] === "string")))
-    );
-  },
-  isAmino(o: any): o is DenomUnitAmino {
-    return (
-      o &&
-      (o.$typeUrl === DenomUnit.typeUrl ||
-        (typeof o.denom === "string" &&
-          typeof o.exponent === "number" &&
-          Array.isArray(o.aliases) &&
-          (!o.aliases.length || typeof o.aliases[0] === "string")))
-    );
-  },
   encode(message: DenomUnit, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.denom !== "") {
       writer.uint32(10).string(message.denom);
@@ -960,8 +848,6 @@ export const DenomUnit = {
     };
   },
 };
-GlobalDecoderRegistry.register(DenomUnit.typeUrl, DenomUnit);
-GlobalDecoderRegistry.registerAminoProtoMapping(DenomUnit.aminoType, DenomUnit.typeUrl);
 function createBaseMetadata(): Metadata {
   return {
     description: "",
@@ -976,37 +862,6 @@ function createBaseMetadata(): Metadata {
 }
 export const Metadata = {
   typeUrl: "/cosmos.bank.v1beta1.Metadata",
-  aminoType: "cosmos-sdk/Metadata",
-  is(o: any): o is Metadata {
-    return (
-      o &&
-      (o.$typeUrl === Metadata.typeUrl ||
-        (typeof o.description === "string" &&
-          Array.isArray(o.denomUnits) &&
-          (!o.denomUnits.length || DenomUnit.is(o.denomUnits[0])) &&
-          typeof o.base === "string" &&
-          typeof o.display === "string" &&
-          typeof o.name === "string" &&
-          typeof o.symbol === "string" &&
-          typeof o.uri === "string" &&
-          typeof o.uriHash === "string"))
-    );
-  },
-  isAmino(o: any): o is MetadataAmino {
-    return (
-      o &&
-      (o.$typeUrl === Metadata.typeUrl ||
-        (typeof o.description === "string" &&
-          Array.isArray(o.denom_units) &&
-          (!o.denom_units.length || DenomUnit.isAmino(o.denom_units[0])) &&
-          typeof o.base === "string" &&
-          typeof o.display === "string" &&
-          typeof o.name === "string" &&
-          typeof o.symbol === "string" &&
-          typeof o.uri === "string" &&
-          typeof o.uri_hash === "string"))
-    );
-  },
   encode(message: Metadata, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.description !== "") {
       writer.uint32(10).string(message.description);
@@ -1177,5 +1032,3 @@ export const Metadata = {
     };
   },
 };
-GlobalDecoderRegistry.register(Metadata.typeUrl, Metadata);
-GlobalDecoderRegistry.registerAminoProtoMapping(Metadata.aminoType, Metadata.typeUrl);

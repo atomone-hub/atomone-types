@@ -1,6 +1,5 @@
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "../../../../binary";
-import { GlobalDecoderRegistry } from "../../../../registry";
 import { isSet } from "../../../../helpers";
 import { TxRpc } from "../../../../types";
 export const protobufPackage = "cosmos.base.node.v1beta1";
@@ -37,13 +36,6 @@ function createBaseConfigRequest(): ConfigRequest {
 }
 export const ConfigRequest = {
   typeUrl: "/cosmos.base.node.v1beta1.ConfigRequest",
-  aminoType: "cosmos-sdk/ConfigRequest",
-  is(o: any): o is ConfigRequest {
-    return o && o.$typeUrl === ConfigRequest.typeUrl;
-  },
-  isAmino(o: any): o is ConfigRequestAmino {
-    return o && o.$typeUrl === ConfigRequest.typeUrl;
-  },
   encode(_: ConfigRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
@@ -103,8 +95,6 @@ export const ConfigRequest = {
     };
   },
 };
-GlobalDecoderRegistry.register(ConfigRequest.typeUrl, ConfigRequest);
-GlobalDecoderRegistry.registerAminoProtoMapping(ConfigRequest.aminoType, ConfigRequest.typeUrl);
 function createBaseConfigResponse(): ConfigResponse {
   return {
     minimumGasPrice: "",
@@ -112,13 +102,6 @@ function createBaseConfigResponse(): ConfigResponse {
 }
 export const ConfigResponse = {
   typeUrl: "/cosmos.base.node.v1beta1.ConfigResponse",
-  aminoType: "cosmos-sdk/ConfigResponse",
-  is(o: any): o is ConfigResponse {
-    return o && (o.$typeUrl === ConfigResponse.typeUrl || typeof o.minimumGasPrice === "string");
-  },
-  isAmino(o: any): o is ConfigResponseAmino {
-    return o && (o.$typeUrl === ConfigResponse.typeUrl || typeof o.minimum_gas_price === "string");
-  },
   encode(message: ConfigResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.minimumGasPrice !== "") {
       writer.uint32(10).string(message.minimumGasPrice);
@@ -191,8 +174,6 @@ export const ConfigResponse = {
     };
   },
 };
-GlobalDecoderRegistry.register(ConfigResponse.typeUrl, ConfigResponse);
-GlobalDecoderRegistry.registerAminoProtoMapping(ConfigResponse.aminoType, ConfigResponse.typeUrl);
 /** Service defines the gRPC querier service for node related queries. */
 export interface Service {
   /** Config queries for the operator configuration. */

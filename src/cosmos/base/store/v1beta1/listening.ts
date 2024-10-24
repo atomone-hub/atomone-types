@@ -17,7 +17,6 @@ import {
 } from "../../../../tendermint/abci/types";
 import { BinaryReader, BinaryWriter } from "../../../../binary";
 import { isSet, bytesFromBase64, base64FromBytes } from "../../../../helpers";
-import { GlobalDecoderRegistry } from "../../../../registry";
 export const protobufPackage = "cosmos.base.store.v1beta1";
 /**
  * StoreKVPair is a KVStore KVPair used for listening to state changes (Sets and Deletes)
@@ -117,27 +116,6 @@ function createBaseStoreKVPair(): StoreKVPair {
 }
 export const StoreKVPair = {
   typeUrl: "/cosmos.base.store.v1beta1.StoreKVPair",
-  aminoType: "cosmos-sdk/StoreKVPair",
-  is(o: any): o is StoreKVPair {
-    return (
-      o &&
-      (o.$typeUrl === StoreKVPair.typeUrl ||
-        (typeof o.storeKey === "string" &&
-          typeof o.delete === "boolean" &&
-          (o.key instanceof Uint8Array || typeof o.key === "string") &&
-          (o.value instanceof Uint8Array || typeof o.value === "string")))
-    );
-  },
-  isAmino(o: any): o is StoreKVPairAmino {
-    return (
-      o &&
-      (o.$typeUrl === StoreKVPair.typeUrl ||
-        (typeof o.store_key === "string" &&
-          typeof o.delete === "boolean" &&
-          (o.key instanceof Uint8Array || typeof o.key === "string") &&
-          (o.value instanceof Uint8Array || typeof o.value === "string")))
-    );
-  },
   encode(message: StoreKVPair, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.storeKey !== "") {
       writer.uint32(10).string(message.storeKey);
@@ -251,8 +229,6 @@ export const StoreKVPair = {
     };
   },
 };
-GlobalDecoderRegistry.register(StoreKVPair.typeUrl, StoreKVPair);
-GlobalDecoderRegistry.registerAminoProtoMapping(StoreKVPair.aminoType, StoreKVPair.typeUrl);
 function createBaseBlockMetadata(): BlockMetadata {
   return {
     requestBeginBlock: undefined,
@@ -265,23 +241,6 @@ function createBaseBlockMetadata(): BlockMetadata {
 }
 export const BlockMetadata = {
   typeUrl: "/cosmos.base.store.v1beta1.BlockMetadata",
-  aminoType: "cosmos-sdk/BlockMetadata",
-  is(o: any): o is BlockMetadata {
-    return (
-      o &&
-      (o.$typeUrl === BlockMetadata.typeUrl ||
-        (Array.isArray(o.deliverTxs) &&
-          (!o.deliverTxs.length || BlockMetadata_DeliverTx.is(o.deliverTxs[0]))))
-    );
-  },
-  isAmino(o: any): o is BlockMetadataAmino {
-    return (
-      o &&
-      (o.$typeUrl === BlockMetadata.typeUrl ||
-        (Array.isArray(o.deliver_txs) &&
-          (!o.deliver_txs.length || BlockMetadata_DeliverTx.isAmino(o.deliver_txs[0]))))
-    );
-  },
   encode(message: BlockMetadata, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.requestBeginBlock !== undefined) {
       RequestBeginBlock.encode(message.requestBeginBlock, writer.uint32(10).fork()).ldelim();
@@ -462,8 +421,6 @@ export const BlockMetadata = {
     };
   },
 };
-GlobalDecoderRegistry.register(BlockMetadata.typeUrl, BlockMetadata);
-GlobalDecoderRegistry.registerAminoProtoMapping(BlockMetadata.aminoType, BlockMetadata.typeUrl);
 function createBaseBlockMetadata_DeliverTx(): BlockMetadata_DeliverTx {
   return {
     request: undefined,
@@ -472,13 +429,6 @@ function createBaseBlockMetadata_DeliverTx(): BlockMetadata_DeliverTx {
 }
 export const BlockMetadata_DeliverTx = {
   typeUrl: "/cosmos.base.store.v1beta1.DeliverTx",
-  aminoType: "cosmos-sdk/DeliverTx",
-  is(o: any): o is BlockMetadata_DeliverTx {
-    return o && o.$typeUrl === BlockMetadata_DeliverTx.typeUrl;
-  },
-  isAmino(o: any): o is BlockMetadata_DeliverTxAmino {
-    return o && o.$typeUrl === BlockMetadata_DeliverTx.typeUrl;
-  },
   encode(message: BlockMetadata_DeliverTx, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.request !== undefined) {
       RequestDeliverTx.encode(message.request, writer.uint32(10).fork()).ldelim();
@@ -570,8 +520,3 @@ export const BlockMetadata_DeliverTx = {
     };
   },
 };
-GlobalDecoderRegistry.register(BlockMetadata_DeliverTx.typeUrl, BlockMetadata_DeliverTx);
-GlobalDecoderRegistry.registerAminoProtoMapping(
-  BlockMetadata_DeliverTx.aminoType,
-  BlockMetadata_DeliverTx.typeUrl,
-);

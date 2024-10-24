@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { Any, AnyProtoMsg, AnyAmino } from "../../../google/protobuf/any";
+import { Any, AnyAmino } from "../../../google/protobuf/any";
 import { Coin, CoinAmino } from "../../../cosmos/base/v1beta1/coin";
 import {
   VoteOption,
@@ -10,10 +10,8 @@ import {
   voteOptionFromJSON,
   voteOptionToJSON,
 } from "./gov";
-import { TextProposal, TextProposalProtoMsg } from "../v1beta1/gov";
 import { BinaryReader, BinaryWriter } from "../../../binary";
 import { isSet } from "../../../helpers";
-import { GlobalDecoderRegistry } from "../../../registry";
 import { TxRpc } from "../../../types";
 export const protobufPackage = "atomone.gov.v1";
 /**
@@ -106,7 +104,7 @@ export interface MsgSubmitProposalResponseAminoMsg {
  */
 export interface MsgExecLegacyContent {
   /** content is the proposal's content. */
-  content?: TextProposal | Any | undefined;
+  content?: Any | undefined;
   /** authority must be the gov module address. */
   authority: string;
 }
@@ -114,9 +112,6 @@ export interface MsgExecLegacyContentProtoMsg {
   typeUrl: "/atomone.gov.v1.MsgExecLegacyContent";
   value: Uint8Array;
 }
-export type MsgExecLegacyContentEncoded = Omit<MsgExecLegacyContent, "content"> & {
-  /** content is the proposal's content. */ content?: TextProposalProtoMsg | AnyProtoMsg | undefined;
-};
 /**
  * MsgExecLegacyContent is used to wrap the legacy content field into a message.
  * This ensures backwards compatibility with v1beta1.MsgSubmitProposal.
@@ -431,35 +426,6 @@ function createBaseMsgSubmitProposal(): MsgSubmitProposal {
 }
 export const MsgSubmitProposal = {
   typeUrl: "/atomone.gov.v1.MsgSubmitProposal",
-  aminoType: "atomone/v1/MsgSubmitProposal",
-  is(o: any): o is MsgSubmitProposal {
-    return (
-      o &&
-      (o.$typeUrl === MsgSubmitProposal.typeUrl ||
-        (Array.isArray(o.messages) &&
-          (!o.messages.length || Any.is(o.messages[0])) &&
-          Array.isArray(o.initialDeposit) &&
-          (!o.initialDeposit.length || Coin.is(o.initialDeposit[0])) &&
-          typeof o.proposer === "string" &&
-          typeof o.metadata === "string" &&
-          typeof o.title === "string" &&
-          typeof o.summary === "string"))
-    );
-  },
-  isAmino(o: any): o is MsgSubmitProposalAmino {
-    return (
-      o &&
-      (o.$typeUrl === MsgSubmitProposal.typeUrl ||
-        (Array.isArray(o.messages) &&
-          (!o.messages.length || Any.isAmino(o.messages[0])) &&
-          Array.isArray(o.initial_deposit) &&
-          (!o.initial_deposit.length || Coin.isAmino(o.initial_deposit[0])) &&
-          typeof o.proposer === "string" &&
-          typeof o.metadata === "string" &&
-          typeof o.title === "string" &&
-          typeof o.summary === "string"))
-    );
-  },
   encode(message: MsgSubmitProposal, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.messages) {
       Any.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -610,8 +576,6 @@ export const MsgSubmitProposal = {
     };
   },
 };
-GlobalDecoderRegistry.register(MsgSubmitProposal.typeUrl, MsgSubmitProposal);
-GlobalDecoderRegistry.registerAminoProtoMapping(MsgSubmitProposal.aminoType, MsgSubmitProposal.typeUrl);
 function createBaseMsgSubmitProposalResponse(): MsgSubmitProposalResponse {
   return {
     proposalId: BigInt(0),
@@ -619,12 +583,6 @@ function createBaseMsgSubmitProposalResponse(): MsgSubmitProposalResponse {
 }
 export const MsgSubmitProposalResponse = {
   typeUrl: "/atomone.gov.v1.MsgSubmitProposalResponse",
-  is(o: any): o is MsgSubmitProposalResponse {
-    return o && (o.$typeUrl === MsgSubmitProposalResponse.typeUrl || typeof o.proposalId === "bigint");
-  },
-  isAmino(o: any): o is MsgSubmitProposalResponseAmino {
-    return o && (o.$typeUrl === MsgSubmitProposalResponse.typeUrl || typeof o.proposal_id === "bigint");
-  },
   encode(message: MsgSubmitProposalResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.proposalId !== BigInt(0)) {
       writer.uint32(8).uint64(message.proposalId);
@@ -693,7 +651,6 @@ export const MsgSubmitProposalResponse = {
     };
   },
 };
-GlobalDecoderRegistry.register(MsgSubmitProposalResponse.typeUrl, MsgSubmitProposalResponse);
 function createBaseMsgExecLegacyContent(): MsgExecLegacyContent {
   return {
     content: undefined,
@@ -702,16 +659,9 @@ function createBaseMsgExecLegacyContent(): MsgExecLegacyContent {
 }
 export const MsgExecLegacyContent = {
   typeUrl: "/atomone.gov.v1.MsgExecLegacyContent",
-  aminoType: "atomone/v1/MsgExecLegacyContent",
-  is(o: any): o is MsgExecLegacyContent {
-    return o && (o.$typeUrl === MsgExecLegacyContent.typeUrl || typeof o.authority === "string");
-  },
-  isAmino(o: any): o is MsgExecLegacyContentAmino {
-    return o && (o.$typeUrl === MsgExecLegacyContent.typeUrl || typeof o.authority === "string");
-  },
   encode(message: MsgExecLegacyContent, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.content !== undefined) {
-      Any.encode(GlobalDecoderRegistry.wrapAny(message.content), writer.uint32(10).fork()).ldelim();
+      Any.encode(message.content, writer.uint32(10).fork()).ldelim();
     }
     if (message.authority !== "") {
       writer.uint32(18).string(message.authority);
@@ -726,7 +676,7 @@ export const MsgExecLegacyContent = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.content = GlobalDecoderRegistry.unwrapAny(reader);
+          message.content = Any.decode(reader, reader.uint32());
           break;
         case 2:
           message.authority = reader.string();
@@ -740,21 +690,21 @@ export const MsgExecLegacyContent = {
   },
   fromJSON(object: any): MsgExecLegacyContent {
     const obj = createBaseMsgExecLegacyContent();
-    if (isSet(object.content)) obj.content = GlobalDecoderRegistry.fromJSON(object.content);
+    if (isSet(object.content)) obj.content = Any.fromJSON(object.content);
     if (isSet(object.authority)) obj.authority = String(object.authority);
     return obj;
   },
   toJSON(message: MsgExecLegacyContent): unknown {
     const obj: any = {};
     message.content !== undefined &&
-      (obj.content = message.content ? GlobalDecoderRegistry.toJSON(message.content) : undefined);
+      (obj.content = message.content ? Any.toJSON(message.content) : undefined);
     message.authority !== undefined && (obj.authority = message.authority);
     return obj;
   },
   fromPartial(object: Partial<MsgExecLegacyContent>): MsgExecLegacyContent {
     const message = createBaseMsgExecLegacyContent();
     if (object.content !== undefined && object.content !== null) {
-      message.content = GlobalDecoderRegistry.fromPartial(object.content);
+      message.content = Any.fromPartial(object.content);
     }
     message.authority = object.authority ?? "";
     return message;
@@ -762,7 +712,7 @@ export const MsgExecLegacyContent = {
   fromAmino(object: MsgExecLegacyContentAmino): MsgExecLegacyContent {
     const message = createBaseMsgExecLegacyContent();
     if (object.content !== undefined && object.content !== null) {
-      message.content = GlobalDecoderRegistry.fromAminoMsg(object.content);
+      message.content = Any.fromAmino(object.content);
     }
     if (object.authority !== undefined && object.authority !== null) {
       message.authority = object.authority;
@@ -771,7 +721,7 @@ export const MsgExecLegacyContent = {
   },
   toAmino(message: MsgExecLegacyContent): MsgExecLegacyContentAmino {
     const obj: any = {};
-    obj.content = message.content ? GlobalDecoderRegistry.toAminoMsg(message.content) : undefined;
+    obj.content = message.content ? Any.toAmino(message.content) : undefined;
     obj.authority = message.authority;
     return obj;
   },
@@ -797,19 +747,11 @@ export const MsgExecLegacyContent = {
     };
   },
 };
-GlobalDecoderRegistry.register(MsgExecLegacyContent.typeUrl, MsgExecLegacyContent);
-GlobalDecoderRegistry.registerAminoProtoMapping(MsgExecLegacyContent.aminoType, MsgExecLegacyContent.typeUrl);
 function createBaseMsgExecLegacyContentResponse(): MsgExecLegacyContentResponse {
   return {};
 }
 export const MsgExecLegacyContentResponse = {
   typeUrl: "/atomone.gov.v1.MsgExecLegacyContentResponse",
-  is(o: any): o is MsgExecLegacyContentResponse {
-    return o && o.$typeUrl === MsgExecLegacyContentResponse.typeUrl;
-  },
-  isAmino(o: any): o is MsgExecLegacyContentResponseAmino {
-    return o && o.$typeUrl === MsgExecLegacyContentResponse.typeUrl;
-  },
   encode(_: MsgExecLegacyContentResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
@@ -863,7 +805,6 @@ export const MsgExecLegacyContentResponse = {
     };
   },
 };
-GlobalDecoderRegistry.register(MsgExecLegacyContentResponse.typeUrl, MsgExecLegacyContentResponse);
 function createBaseMsgVote(): MsgVote {
   return {
     proposalId: BigInt(0),
@@ -874,27 +815,6 @@ function createBaseMsgVote(): MsgVote {
 }
 export const MsgVote = {
   typeUrl: "/atomone.gov.v1.MsgVote",
-  aminoType: "atomone/v1/MsgVote",
-  is(o: any): o is MsgVote {
-    return (
-      o &&
-      (o.$typeUrl === MsgVote.typeUrl ||
-        (typeof o.proposalId === "bigint" &&
-          typeof o.voter === "string" &&
-          isSet(o.option) &&
-          typeof o.metadata === "string"))
-    );
-  },
-  isAmino(o: any): o is MsgVoteAmino {
-    return (
-      o &&
-      (o.$typeUrl === MsgVote.typeUrl ||
-        (typeof o.proposal_id === "bigint" &&
-          typeof o.voter === "string" &&
-          isSet(o.option) &&
-          typeof o.metadata === "string"))
-    );
-  },
   encode(message: MsgVote, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.proposalId !== BigInt(0)) {
       writer.uint32(8).uint64(message.proposalId);
@@ -1008,19 +928,11 @@ export const MsgVote = {
     };
   },
 };
-GlobalDecoderRegistry.register(MsgVote.typeUrl, MsgVote);
-GlobalDecoderRegistry.registerAminoProtoMapping(MsgVote.aminoType, MsgVote.typeUrl);
 function createBaseMsgVoteResponse(): MsgVoteResponse {
   return {};
 }
 export const MsgVoteResponse = {
   typeUrl: "/atomone.gov.v1.MsgVoteResponse",
-  is(o: any): o is MsgVoteResponse {
-    return o && o.$typeUrl === MsgVoteResponse.typeUrl;
-  },
-  isAmino(o: any): o is MsgVoteResponseAmino {
-    return o && o.$typeUrl === MsgVoteResponse.typeUrl;
-  },
   encode(_: MsgVoteResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
@@ -1074,7 +986,6 @@ export const MsgVoteResponse = {
     };
   },
 };
-GlobalDecoderRegistry.register(MsgVoteResponse.typeUrl, MsgVoteResponse);
 function createBaseMsgVoteWeighted(): MsgVoteWeighted {
   return {
     proposalId: BigInt(0),
@@ -1085,29 +996,6 @@ function createBaseMsgVoteWeighted(): MsgVoteWeighted {
 }
 export const MsgVoteWeighted = {
   typeUrl: "/atomone.gov.v1.MsgVoteWeighted",
-  aminoType: "atomone/v1/MsgVoteWeighted",
-  is(o: any): o is MsgVoteWeighted {
-    return (
-      o &&
-      (o.$typeUrl === MsgVoteWeighted.typeUrl ||
-        (typeof o.proposalId === "bigint" &&
-          typeof o.voter === "string" &&
-          Array.isArray(o.options) &&
-          (!o.options.length || WeightedVoteOption.is(o.options[0])) &&
-          typeof o.metadata === "string"))
-    );
-  },
-  isAmino(o: any): o is MsgVoteWeightedAmino {
-    return (
-      o &&
-      (o.$typeUrl === MsgVoteWeighted.typeUrl ||
-        (typeof o.proposal_id === "bigint" &&
-          typeof o.voter === "string" &&
-          Array.isArray(o.options) &&
-          (!o.options.length || WeightedVoteOption.isAmino(o.options[0])) &&
-          typeof o.metadata === "string"))
-    );
-  },
   encode(message: MsgVoteWeighted, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.proposalId !== BigInt(0)) {
       writer.uint32(8).uint64(message.proposalId);
@@ -1228,19 +1116,11 @@ export const MsgVoteWeighted = {
     };
   },
 };
-GlobalDecoderRegistry.register(MsgVoteWeighted.typeUrl, MsgVoteWeighted);
-GlobalDecoderRegistry.registerAminoProtoMapping(MsgVoteWeighted.aminoType, MsgVoteWeighted.typeUrl);
 function createBaseMsgVoteWeightedResponse(): MsgVoteWeightedResponse {
   return {};
 }
 export const MsgVoteWeightedResponse = {
   typeUrl: "/atomone.gov.v1.MsgVoteWeightedResponse",
-  is(o: any): o is MsgVoteWeightedResponse {
-    return o && o.$typeUrl === MsgVoteWeightedResponse.typeUrl;
-  },
-  isAmino(o: any): o is MsgVoteWeightedResponseAmino {
-    return o && o.$typeUrl === MsgVoteWeightedResponse.typeUrl;
-  },
   encode(_: MsgVoteWeightedResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
@@ -1294,7 +1174,6 @@ export const MsgVoteWeightedResponse = {
     };
   },
 };
-GlobalDecoderRegistry.register(MsgVoteWeightedResponse.typeUrl, MsgVoteWeightedResponse);
 function createBaseMsgDeposit(): MsgDeposit {
   return {
     proposalId: BigInt(0),
@@ -1304,27 +1183,6 @@ function createBaseMsgDeposit(): MsgDeposit {
 }
 export const MsgDeposit = {
   typeUrl: "/atomone.gov.v1.MsgDeposit",
-  aminoType: "atomone/v1/MsgDeposit",
-  is(o: any): o is MsgDeposit {
-    return (
-      o &&
-      (o.$typeUrl === MsgDeposit.typeUrl ||
-        (typeof o.proposalId === "bigint" &&
-          typeof o.depositor === "string" &&
-          Array.isArray(o.amount) &&
-          (!o.amount.length || Coin.is(o.amount[0]))))
-    );
-  },
-  isAmino(o: any): o is MsgDepositAmino {
-    return (
-      o &&
-      (o.$typeUrl === MsgDeposit.typeUrl ||
-        (typeof o.proposal_id === "bigint" &&
-          typeof o.depositor === "string" &&
-          Array.isArray(o.amount) &&
-          (!o.amount.length || Coin.isAmino(o.amount[0]))))
-    );
-  },
   encode(message: MsgDeposit, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.proposalId !== BigInt(0)) {
       writer.uint32(8).uint64(message.proposalId);
@@ -1431,19 +1289,11 @@ export const MsgDeposit = {
     };
   },
 };
-GlobalDecoderRegistry.register(MsgDeposit.typeUrl, MsgDeposit);
-GlobalDecoderRegistry.registerAminoProtoMapping(MsgDeposit.aminoType, MsgDeposit.typeUrl);
 function createBaseMsgDepositResponse(): MsgDepositResponse {
   return {};
 }
 export const MsgDepositResponse = {
   typeUrl: "/atomone.gov.v1.MsgDepositResponse",
-  is(o: any): o is MsgDepositResponse {
-    return o && o.$typeUrl === MsgDepositResponse.typeUrl;
-  },
-  isAmino(o: any): o is MsgDepositResponseAmino {
-    return o && o.$typeUrl === MsgDepositResponse.typeUrl;
-  },
   encode(_: MsgDepositResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
@@ -1497,7 +1347,6 @@ export const MsgDepositResponse = {
     };
   },
 };
-GlobalDecoderRegistry.register(MsgDepositResponse.typeUrl, MsgDepositResponse);
 function createBaseMsgUpdateParams(): MsgUpdateParams {
   return {
     authority: "",
@@ -1506,20 +1355,6 @@ function createBaseMsgUpdateParams(): MsgUpdateParams {
 }
 export const MsgUpdateParams = {
   typeUrl: "/atomone.gov.v1.MsgUpdateParams",
-  aminoType: "atomone/x/gov/v1/MsgUpdateParams",
-  is(o: any): o is MsgUpdateParams {
-    return (
-      o &&
-      (o.$typeUrl === MsgUpdateParams.typeUrl || (typeof o.authority === "string" && Params.is(o.params)))
-    );
-  },
-  isAmino(o: any): o is MsgUpdateParamsAmino {
-    return (
-      o &&
-      (o.$typeUrl === MsgUpdateParams.typeUrl ||
-        (typeof o.authority === "string" && Params.isAmino(o.params)))
-    );
-  },
   encode(message: MsgUpdateParams, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.authority !== "") {
       writer.uint32(10).string(message.authority);
@@ -1607,19 +1442,11 @@ export const MsgUpdateParams = {
     };
   },
 };
-GlobalDecoderRegistry.register(MsgUpdateParams.typeUrl, MsgUpdateParams);
-GlobalDecoderRegistry.registerAminoProtoMapping(MsgUpdateParams.aminoType, MsgUpdateParams.typeUrl);
 function createBaseMsgUpdateParamsResponse(): MsgUpdateParamsResponse {
   return {};
 }
 export const MsgUpdateParamsResponse = {
   typeUrl: "/atomone.gov.v1.MsgUpdateParamsResponse",
-  is(o: any): o is MsgUpdateParamsResponse {
-    return o && o.$typeUrl === MsgUpdateParamsResponse.typeUrl;
-  },
-  isAmino(o: any): o is MsgUpdateParamsResponseAmino {
-    return o && o.$typeUrl === MsgUpdateParamsResponse.typeUrl;
-  },
   encode(_: MsgUpdateParamsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
@@ -1673,7 +1500,6 @@ export const MsgUpdateParamsResponse = {
     };
   },
 };
-GlobalDecoderRegistry.register(MsgUpdateParamsResponse.typeUrl, MsgUpdateParamsResponse);
 function createBaseMsgProposeLaw(): MsgProposeLaw {
   return {
     authority: "",
@@ -1681,13 +1507,6 @@ function createBaseMsgProposeLaw(): MsgProposeLaw {
 }
 export const MsgProposeLaw = {
   typeUrl: "/atomone.gov.v1.MsgProposeLaw",
-  aminoType: "atomone/x/gov/v1/MsgProposeLaw",
-  is(o: any): o is MsgProposeLaw {
-    return o && (o.$typeUrl === MsgProposeLaw.typeUrl || typeof o.authority === "string");
-  },
-  isAmino(o: any): o is MsgProposeLawAmino {
-    return o && (o.$typeUrl === MsgProposeLaw.typeUrl || typeof o.authority === "string");
-  },
   encode(message: MsgProposeLaw, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.authority !== "") {
       writer.uint32(10).string(message.authority);
@@ -1760,19 +1579,11 @@ export const MsgProposeLaw = {
     };
   },
 };
-GlobalDecoderRegistry.register(MsgProposeLaw.typeUrl, MsgProposeLaw);
-GlobalDecoderRegistry.registerAminoProtoMapping(MsgProposeLaw.aminoType, MsgProposeLaw.typeUrl);
 function createBaseMsgProposeLawResponse(): MsgProposeLawResponse {
   return {};
 }
 export const MsgProposeLawResponse = {
   typeUrl: "/atomone.gov.v1.MsgProposeLawResponse",
-  is(o: any): o is MsgProposeLawResponse {
-    return o && o.$typeUrl === MsgProposeLawResponse.typeUrl;
-  },
-  isAmino(o: any): o is MsgProposeLawResponseAmino {
-    return o && o.$typeUrl === MsgProposeLawResponse.typeUrl;
-  },
   encode(_: MsgProposeLawResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
@@ -1826,7 +1637,6 @@ export const MsgProposeLawResponse = {
     };
   },
 };
-GlobalDecoderRegistry.register(MsgProposeLawResponse.typeUrl, MsgProposeLawResponse);
 function createBaseMsgProposeConstitutionAmendment(): MsgProposeConstitutionAmendment {
   return {
     authority: "",
@@ -1835,21 +1645,6 @@ function createBaseMsgProposeConstitutionAmendment(): MsgProposeConstitutionAmen
 }
 export const MsgProposeConstitutionAmendment = {
   typeUrl: "/atomone.gov.v1.MsgProposeConstitutionAmendment",
-  aminoType: "atomone/x/gov/v1/MsgProposeAmendment",
-  is(o: any): o is MsgProposeConstitutionAmendment {
-    return (
-      o &&
-      (o.$typeUrl === MsgProposeConstitutionAmendment.typeUrl ||
-        (typeof o.authority === "string" && typeof o.amendment === "string"))
-    );
-  },
-  isAmino(o: any): o is MsgProposeConstitutionAmendmentAmino {
-    return (
-      o &&
-      (o.$typeUrl === MsgProposeConstitutionAmendment.typeUrl ||
-        (typeof o.authority === "string" && typeof o.amendment === "string"))
-    );
-  },
   encode(
     message: MsgProposeConstitutionAmendment,
     writer: BinaryWriter = BinaryWriter.create(),
@@ -1938,22 +1733,11 @@ export const MsgProposeConstitutionAmendment = {
     };
   },
 };
-GlobalDecoderRegistry.register(MsgProposeConstitutionAmendment.typeUrl, MsgProposeConstitutionAmendment);
-GlobalDecoderRegistry.registerAminoProtoMapping(
-  MsgProposeConstitutionAmendment.aminoType,
-  MsgProposeConstitutionAmendment.typeUrl,
-);
 function createBaseMsgProposeConstitutionAmendmentResponse(): MsgProposeConstitutionAmendmentResponse {
   return {};
 }
 export const MsgProposeConstitutionAmendmentResponse = {
   typeUrl: "/atomone.gov.v1.MsgProposeConstitutionAmendmentResponse",
-  is(o: any): o is MsgProposeConstitutionAmendmentResponse {
-    return o && o.$typeUrl === MsgProposeConstitutionAmendmentResponse.typeUrl;
-  },
-  isAmino(o: any): o is MsgProposeConstitutionAmendmentResponseAmino {
-    return o && o.$typeUrl === MsgProposeConstitutionAmendmentResponse.typeUrl;
-  },
   encode(
     _: MsgProposeConstitutionAmendmentResponse,
     writer: BinaryWriter = BinaryWriter.create(),
@@ -2016,10 +1800,6 @@ export const MsgProposeConstitutionAmendmentResponse = {
     };
   },
 };
-GlobalDecoderRegistry.register(
-  MsgProposeConstitutionAmendmentResponse.typeUrl,
-  MsgProposeConstitutionAmendmentResponse,
-);
 /** Msg defines the gov Msg service. */
 export interface Msg {
   /** SubmitProposal defines a method to create new proposal given the messages. */

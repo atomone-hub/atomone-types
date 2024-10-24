@@ -13,7 +13,6 @@ import {
 } from "./types";
 import { BinaryReader, BinaryWriter } from "../../../binary";
 import { isSet } from "../../../helpers";
-import { GlobalDecoderRegistry } from "../../../registry";
 export const protobufPackage = "cosmos.group.v1";
 /** GenesisState defines the group module's genesis state. */
 export interface GenesisState {
@@ -93,45 +92,6 @@ function createBaseGenesisState(): GenesisState {
 }
 export const GenesisState = {
   typeUrl: "/cosmos.group.v1.GenesisState",
-  aminoType: "cosmos-sdk/GenesisState",
-  is(o: any): o is GenesisState {
-    return (
-      o &&
-      (o.$typeUrl === GenesisState.typeUrl ||
-        (typeof o.groupSeq === "bigint" &&
-          Array.isArray(o.groups) &&
-          (!o.groups.length || GroupInfo.is(o.groups[0])) &&
-          Array.isArray(o.groupMembers) &&
-          (!o.groupMembers.length || GroupMember.is(o.groupMembers[0])) &&
-          typeof o.groupPolicySeq === "bigint" &&
-          Array.isArray(o.groupPolicies) &&
-          (!o.groupPolicies.length || GroupPolicyInfo.is(o.groupPolicies[0])) &&
-          typeof o.proposalSeq === "bigint" &&
-          Array.isArray(o.proposals) &&
-          (!o.proposals.length || Proposal.is(o.proposals[0])) &&
-          Array.isArray(o.votes) &&
-          (!o.votes.length || Vote.is(o.votes[0]))))
-    );
-  },
-  isAmino(o: any): o is GenesisStateAmino {
-    return (
-      o &&
-      (o.$typeUrl === GenesisState.typeUrl ||
-        (typeof o.group_seq === "bigint" &&
-          Array.isArray(o.groups) &&
-          (!o.groups.length || GroupInfo.isAmino(o.groups[0])) &&
-          Array.isArray(o.group_members) &&
-          (!o.group_members.length || GroupMember.isAmino(o.group_members[0])) &&
-          typeof o.group_policy_seq === "bigint" &&
-          Array.isArray(o.group_policies) &&
-          (!o.group_policies.length || GroupPolicyInfo.isAmino(o.group_policies[0])) &&
-          typeof o.proposal_seq === "bigint" &&
-          Array.isArray(o.proposals) &&
-          (!o.proposals.length || Proposal.isAmino(o.proposals[0])) &&
-          Array.isArray(o.votes) &&
-          (!o.votes.length || Vote.isAmino(o.votes[0]))))
-    );
-  },
   encode(message: GenesisState, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.groupSeq !== BigInt(0)) {
       writer.uint32(8).uint64(message.groupSeq);
@@ -335,5 +295,3 @@ export const GenesisState = {
     };
   },
 };
-GlobalDecoderRegistry.register(GenesisState.typeUrl, GenesisState);
-GlobalDecoderRegistry.registerAminoProtoMapping(GenesisState.aminoType, GenesisState.typeUrl);

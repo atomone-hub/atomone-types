@@ -13,9 +13,6 @@ FILES=(
   index.d.ts
   index.js
   index.js.map
-  registry.d.ts
-  registry.js
-  registry.js.map
   types.js
   types.d.ts
   types.js.map

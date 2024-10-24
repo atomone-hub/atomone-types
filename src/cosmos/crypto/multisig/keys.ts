@@ -2,7 +2,6 @@
 import { Any, AnyAmino } from "../../../google/protobuf/any";
 import { BinaryReader, BinaryWriter } from "../../../binary";
 import { isSet } from "../../../helpers";
-import { GlobalDecoderRegistry } from "../../../registry";
 export const protobufPackage = "cosmos.crypto.multisig";
 /**
  * LegacyAminoPubKey specifies a public key type
@@ -38,25 +37,6 @@ function createBaseLegacyAminoPubKey(): LegacyAminoPubKey {
 }
 export const LegacyAminoPubKey = {
   typeUrl: "/cosmos.crypto.multisig.LegacyAminoPubKey",
-  aminoType: "tendermint/PubKeyMultisigThreshold",
-  is(o: any): o is LegacyAminoPubKey {
-    return (
-      o &&
-      (o.$typeUrl === LegacyAminoPubKey.typeUrl ||
-        (typeof o.threshold === "number" &&
-          Array.isArray(o.publicKeys) &&
-          (!o.publicKeys.length || Any.is(o.publicKeys[0]))))
-    );
-  },
-  isAmino(o: any): o is LegacyAminoPubKeyAmino {
-    return (
-      o &&
-      (o.$typeUrl === LegacyAminoPubKey.typeUrl ||
-        (typeof o.threshold === "number" &&
-          Array.isArray(o.public_keys) &&
-          (!o.public_keys.length || Any.isAmino(o.public_keys[0]))))
-    );
-  },
   encode(message: LegacyAminoPubKey, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.threshold !== 0) {
       writer.uint32(8).uint32(message.threshold);
@@ -149,5 +129,3 @@ export const LegacyAminoPubKey = {
     };
   },
 };
-GlobalDecoderRegistry.register(LegacyAminoPubKey.typeUrl, LegacyAminoPubKey);
-GlobalDecoderRegistry.registerAminoProtoMapping(LegacyAminoPubKey.aminoType, LegacyAminoPubKey.typeUrl);
