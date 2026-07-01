@@ -2,7 +2,7 @@
 set -o errexit -o nounset -o pipefail
 command -v shellcheck >/dev/null && shellcheck "$0"
 
-DIRS=(cosmos cosmos_proto gogoproto google atomone tendermint)
+DIRS=(cosmos cosmos_proto gogoproto google atomone tendermint ibc)
 FILES=(
   binary.d.ts
   binary.js

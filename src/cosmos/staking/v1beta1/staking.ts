@@ -148,11 +148,11 @@ export interface CommissionRatesProtoMsg {
  */
 export interface CommissionRatesAmino {
   /** rate is the commission rate charged to delegators, as a fraction. */
-  rate?: string;
+  rate: string;
   /** max_rate defines the maximum commission rate which validator can ever charge, as a fraction. */
-  max_rate?: string;
+  max_rate: string;
   /** max_change_rate defines the maximum daily increase of the validator commission, as a fraction. */
-  max_change_rate?: string;
+  max_change_rate: string;
 }
 export interface CommissionRatesAminoMsg {
   type: "cosmos-sdk/CommissionRates";
@@ -416,9 +416,9 @@ export interface DVVTripletsAminoMsg {
  * validator.
  */
 export interface Delegation {
-  /** delegator_address is the bech32-encoded address of the delegator. */
+  /** delegator_address is the encoded address of the delegator. */
   delegatorAddress: string;
-  /** validator_address is the bech32-encoded address of the validator. */
+  /** validator_address is the encoded address of the validator. */
   validatorAddress: string;
   /** shares define the delegation shares received. */
   shares: string;
@@ -433,9 +433,9 @@ export interface DelegationProtoMsg {
  * validator.
  */
 export interface DelegationAmino {
-  /** delegator_address is the bech32-encoded address of the delegator. */
+  /** delegator_address is the encoded address of the delegator. */
   delegator_address?: string;
-  /** validator_address is the bech32-encoded address of the validator. */
+  /** validator_address is the encoded address of the validator. */
   validator_address?: string;
   /** shares define the delegation shares received. */
   shares?: string;
@@ -449,9 +449,9 @@ export interface DelegationAminoMsg {
  * for a single validator in an time-ordered list.
  */
 export interface UnbondingDelegation {
-  /** delegator_address is the bech32-encoded address of the delegator. */
+  /** delegator_address is the encoded address of the delegator. */
   delegatorAddress: string;
-  /** validator_address is the bech32-encoded address of the validator. */
+  /** validator_address is the encoded address of the validator. */
   validatorAddress: string;
   /** entries are the unbonding delegation entries. */
   entries: UnbondingDelegationEntry[];
@@ -465,9 +465,9 @@ export interface UnbondingDelegationProtoMsg {
  * for a single validator in an time-ordered list.
  */
 export interface UnbondingDelegationAmino {
-  /** delegator_address is the bech32-encoded address of the delegator. */
+  /** delegator_address is the encoded address of the delegator. */
   delegator_address?: string;
-  /** validator_address is the bech32-encoded address of the validator. */
+  /** validator_address is the encoded address of the validator. */
   validator_address?: string;
   /** entries are the unbonding delegation entries. */
   entries: UnbondingDelegationEntryAmino[];
@@ -600,8 +600,15 @@ export interface Params {
   historicalEntries: number;
   /** bond_denom defines the bondable coin denomination. */
   bondDenom: string;
-  /** min_commission_rate is the chain-wide minimum commission rate that a validator can charge their delegators */
+  /** min_commission_rate represents the minimum commission rate that a validator can charge their delegators */
   minCommissionRate: string;
+  /** max_commission_rate represents the maximum commission rate that a validator can charge their delegators */
+  maxCommissionRate: string;
+  /**
+   * key_rotation_fee is fee to be spent when rotating validator's key
+   * (either consensus pubkey or operator key)
+   */
+  keyRotationFee: Coin | undefined;
 }
 export interface ParamsProtoMsg {
   typeUrl: "/cosmos.staking.v1beta1.Params";
@@ -619,8 +626,15 @@ export interface ParamsAmino {
   historical_entries?: number;
   /** bond_denom defines the bondable coin denomination. */
   bond_denom?: string;
-  /** min_commission_rate is the chain-wide minimum commission rate that a validator can charge their delegators */
-  min_commission_rate?: string;
+  /** min_commission_rate represents the minimum commission rate that a validator can charge their delegators */
+  min_commission_rate: string;
+  /** max_commission_rate represents the maximum commission rate that a validator can charge their delegators */
+  max_commission_rate: string;
+  /**
+   * key_rotation_fee is fee to be spent when rotating validator's key
+   * (either consensus pubkey or operator key)
+   */
+  key_rotation_fee?: CoinAmino | undefined;
 }
 export interface ParamsAminoMsg {
   type: "cosmos-sdk/x/staking/Params";
@@ -747,6 +761,62 @@ export interface ValidatorUpdatesAmino {
 export interface ValidatorUpdatesAminoMsg {
   type: "cosmos-sdk/ValidatorUpdates";
   value: ValidatorUpdatesAmino;
+}
+/** ConsPubKeyRotationHistory contains a validator's consensus public key rotation history. */
+export interface ConsPubKeyRotationHistory {
+  /** operator_address defines the address of the validator's operator; bech encoded in JSON. */
+  operatorAddress: string;
+  /** old_cons_pubkey is the old consensus public key of the validator, as a Protobuf Any. */
+  oldConsPubkey?: Any | undefined;
+  /** new_cons_pubkey is the new consensus public key of the validator, as a Protobuf Any. */
+  newConsPubkey?: Any | undefined;
+  /** height defines the block height at which the rotation event occured. */
+  height: bigint;
+  /** fee holds the amount of fee deduced for the rotation. */
+  fee: Coin | undefined;
+}
+export interface ConsPubKeyRotationHistoryProtoMsg {
+  typeUrl: "/cosmos.staking.v1beta1.ConsPubKeyRotationHistory";
+  value: Uint8Array;
+}
+/** ConsPubKeyRotationHistory contains a validator's consensus public key rotation history. */
+export interface ConsPubKeyRotationHistoryAmino {
+  /** operator_address defines the address of the validator's operator; bech encoded in JSON. */
+  operator_address?: string;
+  /** old_cons_pubkey is the old consensus public key of the validator, as a Protobuf Any. */
+  old_cons_pubkey?: AnyAmino | undefined;
+  /** new_cons_pubkey is the new consensus public key of the validator, as a Protobuf Any. */
+  new_cons_pubkey?: AnyAmino | undefined;
+  /** height defines the block height at which the rotation event occured. */
+  height?: string;
+  /** fee holds the amount of fee deduced for the rotation. */
+  fee: CoinAmino | undefined;
+}
+export interface ConsPubKeyRotationHistoryAminoMsg {
+  type: "cosmos-sdk/ConsPubKeyRotationHistory";
+  value: ConsPubKeyRotationHistoryAmino;
+}
+/**
+ * ValAddrsOfRotatedConsKeys contains the array of validator addresses which rotated their keys
+ * This is to block the validator's next rotation till unbonding period.
+ */
+export interface ValAddrsOfRotatedConsKeys {
+  addresses: string[];
+}
+export interface ValAddrsOfRotatedConsKeysProtoMsg {
+  typeUrl: "/cosmos.staking.v1beta1.ValAddrsOfRotatedConsKeys";
+  value: Uint8Array;
+}
+/**
+ * ValAddrsOfRotatedConsKeys contains the array of validator addresses which rotated their keys
+ * This is to block the validator's next rotation till unbonding period.
+ */
+export interface ValAddrsOfRotatedConsKeysAmino {
+  addresses?: string[];
+}
+export interface ValAddrsOfRotatedConsKeysAminoMsg {
+  type: "cosmos-sdk/ValAddrsOfRotatedConsKeys";
+  value: ValAddrsOfRotatedConsKeysAmino;
 }
 function createBaseHistoricalInfo(): HistoricalInfo {
   return {
@@ -929,9 +999,9 @@ export const CommissionRates = {
   },
   toAmino(message: CommissionRates): CommissionRatesAmino {
     const obj: any = {};
-    obj.rate = message.rate;
-    obj.max_rate = message.maxRate;
-    obj.max_change_rate = message.maxChangeRate;
+    obj.rate = message.rate ?? "";
+    obj.max_rate = message.maxRate ?? "";
+    obj.max_change_rate = message.maxChangeRate ?? "";
     return obj;
   },
   fromAminoMsg(object: CommissionRatesAminoMsg): CommissionRates {
@@ -2618,6 +2688,8 @@ function createBaseParams(): Params {
     historicalEntries: 0,
     bondDenom: "",
     minCommissionRate: "",
+    maxCommissionRate: "",
+    keyRotationFee: undefined,
   };
 }
 export const Params = {
@@ -2640,6 +2712,12 @@ export const Params = {
     }
     if (message.minCommissionRate !== "") {
       writer.uint32(50).string(message.minCommissionRate);
+    }
+    if (message.maxCommissionRate !== "") {
+      writer.uint32(58).string(message.maxCommissionRate);
+    }
+    if (message.keyRotationFee !== undefined) {
+      Coin.encode(message.keyRotationFee, writer.uint32(66).fork()).ldelim();
     }
     return writer;
   },
@@ -2668,6 +2746,12 @@ export const Params = {
         case 6:
           message.minCommissionRate = reader.string();
           break;
+        case 7:
+          message.maxCommissionRate = reader.string();
+          break;
+        case 8:
+          message.keyRotationFee = Coin.decode(reader, reader.uint32());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -2683,6 +2767,8 @@ export const Params = {
     if (isSet(object.historicalEntries)) obj.historicalEntries = Number(object.historicalEntries);
     if (isSet(object.bondDenom)) obj.bondDenom = String(object.bondDenom);
     if (isSet(object.minCommissionRate)) obj.minCommissionRate = String(object.minCommissionRate);
+    if (isSet(object.maxCommissionRate)) obj.maxCommissionRate = String(object.maxCommissionRate);
+    if (isSet(object.keyRotationFee)) obj.keyRotationFee = Coin.fromJSON(object.keyRotationFee);
     return obj;
   },
   toJSON(message: Params): unknown {
@@ -2695,6 +2781,9 @@ export const Params = {
       (obj.historicalEntries = Math.round(message.historicalEntries));
     message.bondDenom !== undefined && (obj.bondDenom = message.bondDenom);
     message.minCommissionRate !== undefined && (obj.minCommissionRate = message.minCommissionRate);
+    message.maxCommissionRate !== undefined && (obj.maxCommissionRate = message.maxCommissionRate);
+    message.keyRotationFee !== undefined &&
+      (obj.keyRotationFee = message.keyRotationFee ? Coin.toJSON(message.keyRotationFee) : undefined);
     return obj;
   },
   fromPartial(object: Partial<Params>): Params {
@@ -2707,6 +2796,10 @@ export const Params = {
     message.historicalEntries = object.historicalEntries ?? 0;
     message.bondDenom = object.bondDenom ?? "";
     message.minCommissionRate = object.minCommissionRate ?? "";
+    message.maxCommissionRate = object.maxCommissionRate ?? "";
+    if (object.keyRotationFee !== undefined && object.keyRotationFee !== null) {
+      message.keyRotationFee = Coin.fromPartial(object.keyRotationFee);
+    }
     return message;
   },
   fromAmino(object: ParamsAmino): Params {
@@ -2729,6 +2822,12 @@ export const Params = {
     if (object.min_commission_rate !== undefined && object.min_commission_rate !== null) {
       message.minCommissionRate = object.min_commission_rate;
     }
+    if (object.max_commission_rate !== undefined && object.max_commission_rate !== null) {
+      message.maxCommissionRate = object.max_commission_rate;
+    }
+    if (object.key_rotation_fee !== undefined && object.key_rotation_fee !== null) {
+      message.keyRotationFee = Coin.fromAmino(object.key_rotation_fee);
+    }
     return message;
   },
   toAmino(message: Params): ParamsAmino {
@@ -2738,7 +2837,9 @@ export const Params = {
     obj.max_entries = message.maxEntries;
     obj.historical_entries = message.historicalEntries;
     obj.bond_denom = message.bondDenom;
-    obj.min_commission_rate = message.minCommissionRate;
+    obj.min_commission_rate = message.minCommissionRate ?? "";
+    obj.max_commission_rate = message.maxCommissionRate ?? "";
+    obj.key_rotation_fee = message.keyRotationFee ? Coin.toAmino(message.keyRotationFee) : undefined;
     return obj;
   },
   fromAminoMsg(object: ParamsAminoMsg): Params {
@@ -3244,6 +3345,236 @@ export const ValidatorUpdates = {
     return {
       typeUrl: "/cosmos.staking.v1beta1.ValidatorUpdates",
       value: ValidatorUpdates.encode(message).finish(),
+    };
+  },
+};
+function createBaseConsPubKeyRotationHistory(): ConsPubKeyRotationHistory {
+  return {
+    operatorAddress: "",
+    oldConsPubkey: undefined,
+    newConsPubkey: undefined,
+    height: BigInt(0),
+    fee: undefined,
+  };
+}
+export const ConsPubKeyRotationHistory = {
+  typeUrl: "/cosmos.staking.v1beta1.ConsPubKeyRotationHistory",
+  encode(message: ConsPubKeyRotationHistory, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.operatorAddress !== "") {
+      writer.uint32(10).string(message.operatorAddress);
+    }
+    if (message.oldConsPubkey !== undefined) {
+      Any.encode(message.oldConsPubkey, writer.uint32(18).fork()).ldelim();
+    }
+    if (message.newConsPubkey !== undefined) {
+      Any.encode(message.newConsPubkey, writer.uint32(26).fork()).ldelim();
+    }
+    if (message.height !== BigInt(0)) {
+      writer.uint32(32).uint64(message.height);
+    }
+    if (message.fee !== undefined) {
+      Coin.encode(message.fee, writer.uint32(42).fork()).ldelim();
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): ConsPubKeyRotationHistory {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseConsPubKeyRotationHistory();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.operatorAddress = reader.string();
+          break;
+        case 2:
+          message.oldConsPubkey = Any.decode(reader, reader.uint32());
+          break;
+        case 3:
+          message.newConsPubkey = Any.decode(reader, reader.uint32());
+          break;
+        case 4:
+          message.height = reader.uint64();
+          break;
+        case 5:
+          message.fee = Coin.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): ConsPubKeyRotationHistory {
+    const obj = createBaseConsPubKeyRotationHistory();
+    if (isSet(object.operatorAddress)) obj.operatorAddress = String(object.operatorAddress);
+    if (isSet(object.oldConsPubkey)) obj.oldConsPubkey = Any.fromJSON(object.oldConsPubkey);
+    if (isSet(object.newConsPubkey)) obj.newConsPubkey = Any.fromJSON(object.newConsPubkey);
+    if (isSet(object.height)) obj.height = BigInt(object.height.toString());
+    if (isSet(object.fee)) obj.fee = Coin.fromJSON(object.fee);
+    return obj;
+  },
+  toJSON(message: ConsPubKeyRotationHistory): unknown {
+    const obj: any = {};
+    message.operatorAddress !== undefined && (obj.operatorAddress = message.operatorAddress);
+    message.oldConsPubkey !== undefined &&
+      (obj.oldConsPubkey = message.oldConsPubkey ? Any.toJSON(message.oldConsPubkey) : undefined);
+    message.newConsPubkey !== undefined &&
+      (obj.newConsPubkey = message.newConsPubkey ? Any.toJSON(message.newConsPubkey) : undefined);
+    message.height !== undefined && (obj.height = (message.height || BigInt(0)).toString());
+    message.fee !== undefined && (obj.fee = message.fee ? Coin.toJSON(message.fee) : undefined);
+    return obj;
+  },
+  fromPartial(object: Partial<ConsPubKeyRotationHistory>): ConsPubKeyRotationHistory {
+    const message = createBaseConsPubKeyRotationHistory();
+    message.operatorAddress = object.operatorAddress ?? "";
+    if (object.oldConsPubkey !== undefined && object.oldConsPubkey !== null) {
+      message.oldConsPubkey = Any.fromPartial(object.oldConsPubkey);
+    }
+    if (object.newConsPubkey !== undefined && object.newConsPubkey !== null) {
+      message.newConsPubkey = Any.fromPartial(object.newConsPubkey);
+    }
+    if (object.height !== undefined && object.height !== null) {
+      message.height = BigInt(object.height.toString());
+    }
+    if (object.fee !== undefined && object.fee !== null) {
+      message.fee = Coin.fromPartial(object.fee);
+    }
+    return message;
+  },
+  fromAmino(object: ConsPubKeyRotationHistoryAmino): ConsPubKeyRotationHistory {
+    const message = createBaseConsPubKeyRotationHistory();
+    if (object.operator_address !== undefined && object.operator_address !== null) {
+      message.operatorAddress = object.operator_address;
+    }
+    if (object.old_cons_pubkey !== undefined && object.old_cons_pubkey !== null) {
+      message.oldConsPubkey = encodePubkey(object.old_cons_pubkey);
+    }
+    if (object.new_cons_pubkey !== undefined && object.new_cons_pubkey !== null) {
+      message.newConsPubkey = encodePubkey(object.new_cons_pubkey);
+    }
+    if (object.height !== undefined && object.height !== null) {
+      message.height = BigInt(object.height);
+    }
+    if (object.fee !== undefined && object.fee !== null) {
+      message.fee = Coin.fromAmino(object.fee);
+    }
+    return message;
+  },
+  toAmino(message: ConsPubKeyRotationHistory): ConsPubKeyRotationHistoryAmino {
+    const obj: any = {};
+    obj.operator_address = message.operatorAddress;
+    obj.old_cons_pubkey = message.oldConsPubkey ? decodePubkey(message.oldConsPubkey) : undefined;
+    obj.new_cons_pubkey = message.newConsPubkey ? decodePubkey(message.newConsPubkey) : undefined;
+    obj.height = message.height ? message.height.toString() : undefined;
+    obj.fee = message.fee ? Coin.toAmino(message.fee) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: ConsPubKeyRotationHistoryAminoMsg): ConsPubKeyRotationHistory {
+    return ConsPubKeyRotationHistory.fromAmino(object.value);
+  },
+  toAminoMsg(message: ConsPubKeyRotationHistory): ConsPubKeyRotationHistoryAminoMsg {
+    return {
+      type: "cosmos-sdk/ConsPubKeyRotationHistory",
+      value: ConsPubKeyRotationHistory.toAmino(message),
+    };
+  },
+  fromProtoMsg(message: ConsPubKeyRotationHistoryProtoMsg): ConsPubKeyRotationHistory {
+    return ConsPubKeyRotationHistory.decode(message.value);
+  },
+  toProto(message: ConsPubKeyRotationHistory): Uint8Array {
+    return ConsPubKeyRotationHistory.encode(message).finish();
+  },
+  toProtoMsg(message: ConsPubKeyRotationHistory): ConsPubKeyRotationHistoryProtoMsg {
+    return {
+      typeUrl: "/cosmos.staking.v1beta1.ConsPubKeyRotationHistory",
+      value: ConsPubKeyRotationHistory.encode(message).finish(),
+    };
+  },
+};
+function createBaseValAddrsOfRotatedConsKeys(): ValAddrsOfRotatedConsKeys {
+  return {
+    addresses: [],
+  };
+}
+export const ValAddrsOfRotatedConsKeys = {
+  typeUrl: "/cosmos.staking.v1beta1.ValAddrsOfRotatedConsKeys",
+  encode(message: ValAddrsOfRotatedConsKeys, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    for (const v of message.addresses) {
+      writer.uint32(10).string(v!);
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): ValAddrsOfRotatedConsKeys {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseValAddrsOfRotatedConsKeys();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.addresses.push(reader.string());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): ValAddrsOfRotatedConsKeys {
+    const obj = createBaseValAddrsOfRotatedConsKeys();
+    if (Array.isArray(object?.addresses)) obj.addresses = object.addresses.map((e: any) => String(e));
+    return obj;
+  },
+  toJSON(message: ValAddrsOfRotatedConsKeys): unknown {
+    const obj: any = {};
+    if (message.addresses) {
+      obj.addresses = message.addresses.map((e) => e);
+    } else {
+      obj.addresses = [];
+    }
+    return obj;
+  },
+  fromPartial(object: Partial<ValAddrsOfRotatedConsKeys>): ValAddrsOfRotatedConsKeys {
+    const message = createBaseValAddrsOfRotatedConsKeys();
+    message.addresses = object.addresses?.map((e) => e) || [];
+    return message;
+  },
+  fromAmino(object: ValAddrsOfRotatedConsKeysAmino): ValAddrsOfRotatedConsKeys {
+    const message = createBaseValAddrsOfRotatedConsKeys();
+    message.addresses = object.addresses?.map((e) => e) || [];
+    return message;
+  },
+  toAmino(message: ValAddrsOfRotatedConsKeys): ValAddrsOfRotatedConsKeysAmino {
+    const obj: any = {};
+    if (message.addresses) {
+      obj.addresses = message.addresses.map((e) => e);
+    } else {
+      obj.addresses = [];
+    }
+    return obj;
+  },
+  fromAminoMsg(object: ValAddrsOfRotatedConsKeysAminoMsg): ValAddrsOfRotatedConsKeys {
+    return ValAddrsOfRotatedConsKeys.fromAmino(object.value);
+  },
+  toAminoMsg(message: ValAddrsOfRotatedConsKeys): ValAddrsOfRotatedConsKeysAminoMsg {
+    return {
+      type: "cosmos-sdk/ValAddrsOfRotatedConsKeys",
+      value: ValAddrsOfRotatedConsKeys.toAmino(message),
+    };
+  },
+  fromProtoMsg(message: ValAddrsOfRotatedConsKeysProtoMsg): ValAddrsOfRotatedConsKeys {
+    return ValAddrsOfRotatedConsKeys.decode(message.value);
+  },
+  toProto(message: ValAddrsOfRotatedConsKeys): Uint8Array {
+    return ValAddrsOfRotatedConsKeys.encode(message).finish();
+  },
+  toProtoMsg(message: ValAddrsOfRotatedConsKeys): ValAddrsOfRotatedConsKeysProtoMsg {
+    return {
+      typeUrl: "/cosmos.staking.v1beta1.ValAddrsOfRotatedConsKeys",
+      value: ValAddrsOfRotatedConsKeys.encode(message).finish(),
     };
   },
 };

@@ -1,6 +1,12 @@
-[submodule "protos/cosmos-sdk"]
-	path = protos/cosmos-sdk
-	url = https://github.com/cosmos/cosmos-sdk
 [submodule "protos/atomone"]
 	path = protos/atomone
 	url = https://github.com/atomone-hub/atomone
+[submodule "ics23"]
+	path = protos/ics23
+	url = https://github.com/cosmos/ics23
+[submodule "protos/ibc-go"]
+	path = protos/ibc-go
+	url = https://github.com/cosmos/ibc-go
+[submodule "protos/cosmos-sdk"]
+	path = protos/cosmos-sdk
+	url = https://github.com/atomone-hub/atomone-sdk

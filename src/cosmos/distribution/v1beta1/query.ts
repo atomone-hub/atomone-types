@@ -496,6 +496,46 @@ export interface QueryCommunityPoolResponseAminoMsg {
   type: "cosmos-sdk/QueryCommunityPoolResponse";
   value: QueryCommunityPoolResponseAmino;
 }
+/**
+ * QueryNakamotoBonusCoefficientRequest is the request type for the Query/NakamotoBonusCoefficientRequest RPC
+ * method.
+ */
+export interface QueryNakamotoBonusCoefficientRequest {}
+export interface QueryNakamotoBonusCoefficientRequestProtoMsg {
+  typeUrl: "/cosmos.distribution.v1beta1.QueryNakamotoBonusCoefficientRequest";
+  value: Uint8Array;
+}
+/**
+ * QueryNakamotoBonusCoefficientRequest is the request type for the Query/NakamotoBonusCoefficientRequest RPC
+ * method.
+ */
+export interface QueryNakamotoBonusCoefficientRequestAmino {}
+export interface QueryNakamotoBonusCoefficientRequestAminoMsg {
+  type: "cosmos-sdk/QueryNakamotoBonusCoefficientRequest";
+  value: QueryNakamotoBonusCoefficientRequestAmino;
+}
+/**
+ * QueryNakamotoBonusCoefficientResponse is the response type for the Query/NakamotoBonusCoefficientRequest
+ * RPC method.
+ */
+export interface QueryNakamotoBonusCoefficientResponse {
+  coefficient: string;
+}
+export interface QueryNakamotoBonusCoefficientResponseProtoMsg {
+  typeUrl: "/cosmos.distribution.v1beta1.QueryNakamotoBonusCoefficientResponse";
+  value: Uint8Array;
+}
+/**
+ * QueryNakamotoBonusCoefficientResponse is the response type for the Query/NakamotoBonusCoefficientRequest
+ * RPC method.
+ */
+export interface QueryNakamotoBonusCoefficientResponseAmino {
+  coefficient: string;
+}
+export interface QueryNakamotoBonusCoefficientResponseAminoMsg {
+  type: "cosmos-sdk/QueryNakamotoBonusCoefficientResponse";
+  value: QueryNakamotoBonusCoefficientResponseAmino;
+}
 function createBaseQueryParamsRequest(): QueryParamsRequest {
   return {};
 }
@@ -2308,6 +2348,157 @@ export const QueryCommunityPoolResponse = {
     };
   },
 };
+function createBaseQueryNakamotoBonusCoefficientRequest(): QueryNakamotoBonusCoefficientRequest {
+  return {};
+}
+export const QueryNakamotoBonusCoefficientRequest = {
+  typeUrl: "/cosmos.distribution.v1beta1.QueryNakamotoBonusCoefficientRequest",
+  encode(
+    _: QueryNakamotoBonusCoefficientRequest,
+    writer: BinaryWriter = BinaryWriter.create(),
+  ): BinaryWriter {
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryNakamotoBonusCoefficientRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryNakamotoBonusCoefficientRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(_: any): QueryNakamotoBonusCoefficientRequest {
+    const obj = createBaseQueryNakamotoBonusCoefficientRequest();
+    return obj;
+  },
+  toJSON(_: QueryNakamotoBonusCoefficientRequest): unknown {
+    const obj: any = {};
+    return obj;
+  },
+  fromPartial(_: Partial<QueryNakamotoBonusCoefficientRequest>): QueryNakamotoBonusCoefficientRequest {
+    const message = createBaseQueryNakamotoBonusCoefficientRequest();
+    return message;
+  },
+  fromAmino(_: QueryNakamotoBonusCoefficientRequestAmino): QueryNakamotoBonusCoefficientRequest {
+    const message = createBaseQueryNakamotoBonusCoefficientRequest();
+    return message;
+  },
+  toAmino(_: QueryNakamotoBonusCoefficientRequest): QueryNakamotoBonusCoefficientRequestAmino {
+    const obj: any = {};
+    return obj;
+  },
+  fromAminoMsg(object: QueryNakamotoBonusCoefficientRequestAminoMsg): QueryNakamotoBonusCoefficientRequest {
+    return QueryNakamotoBonusCoefficientRequest.fromAmino(object.value);
+  },
+  toAminoMsg(message: QueryNakamotoBonusCoefficientRequest): QueryNakamotoBonusCoefficientRequestAminoMsg {
+    return {
+      type: "cosmos-sdk/QueryNakamotoBonusCoefficientRequest",
+      value: QueryNakamotoBonusCoefficientRequest.toAmino(message),
+    };
+  },
+  fromProtoMsg(message: QueryNakamotoBonusCoefficientRequestProtoMsg): QueryNakamotoBonusCoefficientRequest {
+    return QueryNakamotoBonusCoefficientRequest.decode(message.value);
+  },
+  toProto(message: QueryNakamotoBonusCoefficientRequest): Uint8Array {
+    return QueryNakamotoBonusCoefficientRequest.encode(message).finish();
+  },
+  toProtoMsg(message: QueryNakamotoBonusCoefficientRequest): QueryNakamotoBonusCoefficientRequestProtoMsg {
+    return {
+      typeUrl: "/cosmos.distribution.v1beta1.QueryNakamotoBonusCoefficientRequest",
+      value: QueryNakamotoBonusCoefficientRequest.encode(message).finish(),
+    };
+  },
+};
+function createBaseQueryNakamotoBonusCoefficientResponse(): QueryNakamotoBonusCoefficientResponse {
+  return {
+    coefficient: "",
+  };
+}
+export const QueryNakamotoBonusCoefficientResponse = {
+  typeUrl: "/cosmos.distribution.v1beta1.QueryNakamotoBonusCoefficientResponse",
+  encode(
+    message: QueryNakamotoBonusCoefficientResponse,
+    writer: BinaryWriter = BinaryWriter.create(),
+  ): BinaryWriter {
+    if (message.coefficient !== "") {
+      writer.uint32(10).string(message.coefficient);
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryNakamotoBonusCoefficientResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryNakamotoBonusCoefficientResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.coefficient = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): QueryNakamotoBonusCoefficientResponse {
+    const obj = createBaseQueryNakamotoBonusCoefficientResponse();
+    if (isSet(object.coefficient)) obj.coefficient = String(object.coefficient);
+    return obj;
+  },
+  toJSON(message: QueryNakamotoBonusCoefficientResponse): unknown {
+    const obj: any = {};
+    message.coefficient !== undefined && (obj.coefficient = message.coefficient);
+    return obj;
+  },
+  fromPartial(object: Partial<QueryNakamotoBonusCoefficientResponse>): QueryNakamotoBonusCoefficientResponse {
+    const message = createBaseQueryNakamotoBonusCoefficientResponse();
+    message.coefficient = object.coefficient ?? "";
+    return message;
+  },
+  fromAmino(object: QueryNakamotoBonusCoefficientResponseAmino): QueryNakamotoBonusCoefficientResponse {
+    const message = createBaseQueryNakamotoBonusCoefficientResponse();
+    if (object.coefficient !== undefined && object.coefficient !== null) {
+      message.coefficient = object.coefficient;
+    }
+    return message;
+  },
+  toAmino(message: QueryNakamotoBonusCoefficientResponse): QueryNakamotoBonusCoefficientResponseAmino {
+    const obj: any = {};
+    obj.coefficient = message.coefficient ?? "";
+    return obj;
+  },
+  fromAminoMsg(object: QueryNakamotoBonusCoefficientResponseAminoMsg): QueryNakamotoBonusCoefficientResponse {
+    return QueryNakamotoBonusCoefficientResponse.fromAmino(object.value);
+  },
+  toAminoMsg(message: QueryNakamotoBonusCoefficientResponse): QueryNakamotoBonusCoefficientResponseAminoMsg {
+    return {
+      type: "cosmos-sdk/QueryNakamotoBonusCoefficientResponse",
+      value: QueryNakamotoBonusCoefficientResponse.toAmino(message),
+    };
+  },
+  fromProtoMsg(
+    message: QueryNakamotoBonusCoefficientResponseProtoMsg,
+  ): QueryNakamotoBonusCoefficientResponse {
+    return QueryNakamotoBonusCoefficientResponse.decode(message.value);
+  },
+  toProto(message: QueryNakamotoBonusCoefficientResponse): Uint8Array {
+    return QueryNakamotoBonusCoefficientResponse.encode(message).finish();
+  },
+  toProtoMsg(message: QueryNakamotoBonusCoefficientResponse): QueryNakamotoBonusCoefficientResponseProtoMsg {
+    return {
+      typeUrl: "/cosmos.distribution.v1beta1.QueryNakamotoBonusCoefficientResponse",
+      value: QueryNakamotoBonusCoefficientResponse.encode(message).finish(),
+    };
+  },
+};
 /** Query defines the gRPC querier service for distribution module. */
 export interface Query {
   /** Params queries params of the distribution module. */
@@ -2327,7 +2518,7 @@ export interface Query {
   /** DelegationRewards queries the total rewards accrued by a delegation. */
   DelegationRewards(request: QueryDelegationRewardsRequest): Promise<QueryDelegationRewardsResponse>;
   /**
-   * DelegationTotalRewards queries the total rewards accrued by a each
+   * DelegationTotalRewards queries the total rewards accrued by each
    * validator.
    */
   DelegationTotalRewards(
@@ -2341,6 +2532,10 @@ export interface Query {
   ): Promise<QueryDelegatorWithdrawAddressResponse>;
   /** CommunityPool queries the community pool coins. */
   CommunityPool(request?: QueryCommunityPoolRequest): Promise<QueryCommunityPoolResponse>;
+  /** NakamotoBonusCoefficient queries the current NakamotoBonusCoefficient parameter. */
+  NakamotoBonusCoefficient(
+    request?: QueryNakamotoBonusCoefficientRequest,
+  ): Promise<QueryNakamotoBonusCoefficientResponse>;
 }
 export class QueryClientImpl implements Query {
   private readonly rpc: TxRpc;
@@ -2356,6 +2551,7 @@ export class QueryClientImpl implements Query {
     this.DelegatorValidators = this.DelegatorValidators.bind(this);
     this.DelegatorWithdrawAddress = this.DelegatorWithdrawAddress.bind(this);
     this.CommunityPool = this.CommunityPool.bind(this);
+    this.NakamotoBonusCoefficient = this.NakamotoBonusCoefficient.bind(this);
   }
   Params(request: QueryParamsRequest = {}): Promise<QueryParamsResponse> {
     const data = QueryParamsRequest.encode(request).finish();
@@ -2418,5 +2614,12 @@ export class QueryClientImpl implements Query {
     const data = QueryCommunityPoolRequest.encode(request).finish();
     const promise = this.rpc.request("cosmos.distribution.v1beta1.Query", "CommunityPool", data);
     return promise.then((data) => QueryCommunityPoolResponse.decode(new BinaryReader(data)));
+  }
+  NakamotoBonusCoefficient(
+    request: QueryNakamotoBonusCoefficientRequest = {},
+  ): Promise<QueryNakamotoBonusCoefficientResponse> {
+    const data = QueryNakamotoBonusCoefficientRequest.encode(request).finish();
+    const promise = this.rpc.request("cosmos.distribution.v1beta1.Query", "NakamotoBonusCoefficient", data);
+    return promise.then((data) => QueryNakamotoBonusCoefficientResponse.decode(new BinaryReader(data)));
   }
 }

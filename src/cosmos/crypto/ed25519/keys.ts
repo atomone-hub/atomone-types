@@ -31,7 +31,7 @@ export interface PubKeyAminoMsg {
   value: PubKeyAmino;
 }
 /**
- * Deprecated: PrivKey defines a ed25519 private key.
+ * PrivKey defines a ed25519 private key.
  * NOTE: ed25519 keys must not be used in SDK apps except in a tendermint validator context.
  */
 export interface PrivKey {
@@ -42,7 +42,7 @@ export interface PrivKeyProtoMsg {
   value: Uint8Array;
 }
 /**
- * Deprecated: PrivKey defines a ed25519 private key.
+ * PrivKey defines a ed25519 private key.
  * NOTE: ed25519 keys must not be used in SDK apps except in a tendermint validator context.
  */
 export interface PrivKeyAmino {

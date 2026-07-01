@@ -8,6 +8,11 @@ import {
   MsgUpdateParams,
   MsgProposeLaw,
   MsgProposeConstitutionAmendment,
+  MsgCreateGovernor,
+  MsgEditGovernor,
+  MsgUpdateGovernorStatus,
+  MsgDelegateGovernor,
+  MsgUndelegateGovernor,
 } from "./tx";
 export const AminoConverter = {
   "/atomone.gov.v1.MsgSubmitProposal": {
@@ -49,5 +54,30 @@ export const AminoConverter = {
     aminoType: "atomone/x/gov/v1/MsgProposeAmendment",
     toAmino: MsgProposeConstitutionAmendment.toAmino,
     fromAmino: MsgProposeConstitutionAmendment.fromAmino,
+  },
+  "/atomone.gov.v1.MsgCreateGovernor": {
+    aminoType: "atomone/v1/MsgCreateGovernor",
+    toAmino: MsgCreateGovernor.toAmino,
+    fromAmino: MsgCreateGovernor.fromAmino,
+  },
+  "/atomone.gov.v1.MsgEditGovernor": {
+    aminoType: "atomone/v1/MsgEditGovernor",
+    toAmino: MsgEditGovernor.toAmino,
+    fromAmino: MsgEditGovernor.fromAmino,
+  },
+  "/atomone.gov.v1.MsgUpdateGovernorStatus": {
+    aminoType: "atomone/v1/MsgUpdateGovernorStatus",
+    toAmino: MsgUpdateGovernorStatus.toAmino,
+    fromAmino: MsgUpdateGovernorStatus.fromAmino,
+  },
+  "/atomone.gov.v1.MsgDelegateGovernor": {
+    aminoType: "atomone/v1/MsgDelegateGovernor",
+    toAmino: MsgDelegateGovernor.toAmino,
+    fromAmino: MsgDelegateGovernor.fromAmino,
+  },
+  "/atomone.gov.v1.MsgUndelegateGovernor": {
+    aminoType: "atomone/v1/MsgUndelegateGovernor",
+    toAmino: MsgUndelegateGovernor.toAmino,
+    fromAmino: MsgUndelegateGovernor.fromAmino,
   },
 };

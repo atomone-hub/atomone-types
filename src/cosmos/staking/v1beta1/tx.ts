@@ -20,6 +20,12 @@ export interface MsgCreateValidator {
   description: Description | undefined;
   commission: CommissionRates | undefined;
   minSelfDelegation: string;
+  /**
+   * Deprecated: Use of Delegator Address in MsgCreateValidator is deprecated.
+   * The validator address bytes and delegator address bytes refer to the same account while creating validator (defer
+   * only in bech32 notation).
+   */
+  /** @deprecated */
   delegatorAddress: string;
   validatorAddress: string;
   pubkey?: Any | undefined;
@@ -33,7 +39,13 @@ export interface MsgCreateValidatorProtoMsg {
 export interface MsgCreateValidatorAmino {
   description: DescriptionAmino | undefined;
   commission: CommissionRatesAmino | undefined;
-  min_self_delegation?: string;
+  min_self_delegation: string;
+  /**
+   * Deprecated: Use of Delegator Address in MsgCreateValidator is deprecated.
+   * The validator address bytes and delegator address bytes refer to the same account while creating validator (defer
+   * only in bech32 notation).
+   */
+  /** @deprecated */
   delegator_address?: string;
   validator_address?: string;
   pubkey?: AnyAmino | undefined;
@@ -212,6 +224,12 @@ export interface MsgUndelegateAminoMsg {
 /** MsgUndelegateResponse defines the Msg/Undelegate response type. */
 export interface MsgUndelegateResponse {
   completionTime: Timestamp | undefined;
+  /**
+   * amount returns the amount of undelegated coins
+   *
+   * Since: cosmos-sdk 0.50
+   */
+  amount: Coin | undefined;
 }
 export interface MsgUndelegateResponseProtoMsg {
   typeUrl: "/cosmos.staking.v1beta1.MsgUndelegateResponse";
@@ -220,6 +238,12 @@ export interface MsgUndelegateResponseProtoMsg {
 /** MsgUndelegateResponse defines the Msg/Undelegate response type. */
 export interface MsgUndelegateResponseAmino {
   completion_time: string | undefined;
+  /**
+   * amount returns the amount of undelegated coins
+   *
+   * Since: cosmos-sdk 0.50
+   */
+  amount: CoinAmino | undefined;
 }
 export interface MsgUndelegateResponseAminoMsg {
   type: "cosmos-sdk/MsgUndelegateResponse";
@@ -338,6 +362,54 @@ export interface MsgUpdateParamsResponseAmino {}
 export interface MsgUpdateParamsResponseAminoMsg {
   type: "cosmos-sdk/MsgUpdateParamsResponse";
   value: MsgUpdateParamsResponseAmino;
+}
+/**
+ * MsgRotateConsPubKey is the Msg/RotateConsPubKey request type.
+ *
+ * Since: cosmos-sdk 0.51
+ */
+export interface MsgRotateConsPubKey {
+  validatorAddress: string;
+  newPubkey?: Any | undefined;
+}
+export interface MsgRotateConsPubKeyProtoMsg {
+  typeUrl: "/cosmos.staking.v1beta1.MsgRotateConsPubKey";
+  value: Uint8Array;
+}
+/**
+ * MsgRotateConsPubKey is the Msg/RotateConsPubKey request type.
+ *
+ * Since: cosmos-sdk 0.51
+ */
+export interface MsgRotateConsPubKeyAmino {
+  validator_address?: string;
+  new_pubkey?: AnyAmino | undefined;
+}
+export interface MsgRotateConsPubKeyAminoMsg {
+  type: "cosmos-sdk/MsgRotateConsPubKey";
+  value: MsgRotateConsPubKeyAmino;
+}
+/**
+ * MsgRotateConsPubKeyResponse defines the response structure for executing a
+ * MsgRotateConsPubKey message.
+ *
+ * Since: cosmos-sdk 0.51
+ */
+export interface MsgRotateConsPubKeyResponse {}
+export interface MsgRotateConsPubKeyResponseProtoMsg {
+  typeUrl: "/cosmos.staking.v1beta1.MsgRotateConsPubKeyResponse";
+  value: Uint8Array;
+}
+/**
+ * MsgRotateConsPubKeyResponse defines the response structure for executing a
+ * MsgRotateConsPubKey message.
+ *
+ * Since: cosmos-sdk 0.51
+ */
+export interface MsgRotateConsPubKeyResponseAmino {}
+export interface MsgRotateConsPubKeyResponseAminoMsg {
+  type: "cosmos-sdk/MsgRotateConsPubKeyResponse";
+  value: MsgRotateConsPubKeyResponseAmino;
 }
 function createBaseMsgCreateValidator(): MsgCreateValidator {
   return {
@@ -487,7 +559,7 @@ export const MsgCreateValidator = {
     obj.commission = message.commission
       ? CommissionRates.toAmino(message.commission)
       : CommissionRates.fromPartial({});
-    obj.min_self_delegation = message.minSelfDelegation;
+    obj.min_self_delegation = message.minSelfDelegation ?? "";
     obj.delegator_address = message.delegatorAddress;
     obj.validator_address = message.validatorAddress;
     obj.pubkey = message.pubkey ? decodePubkey(message.pubkey) : undefined;
@@ -1260,6 +1332,7 @@ export const MsgUndelegate = {
 function createBaseMsgUndelegateResponse(): MsgUndelegateResponse {
   return {
     completionTime: undefined,
+    amount: undefined,
   };
 }
 export const MsgUndelegateResponse = {
@@ -1267,6 +1340,9 @@ export const MsgUndelegateResponse = {
   encode(message: MsgUndelegateResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.completionTime !== undefined) {
       Timestamp.encode(message.completionTime, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.amount !== undefined) {
+      Coin.encode(message.amount, writer.uint32(18).fork()).ldelim();
     }
     return writer;
   },
@@ -1280,6 +1356,9 @@ export const MsgUndelegateResponse = {
         case 1:
           message.completionTime = Timestamp.decode(reader, reader.uint32());
           break;
+        case 2:
+          message.amount = Coin.decode(reader, reader.uint32());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1290,18 +1369,23 @@ export const MsgUndelegateResponse = {
   fromJSON(object: any): MsgUndelegateResponse {
     const obj = createBaseMsgUndelegateResponse();
     if (isSet(object.completionTime)) obj.completionTime = fromJsonTimestamp(object.completionTime);
+    if (isSet(object.amount)) obj.amount = Coin.fromJSON(object.amount);
     return obj;
   },
   toJSON(message: MsgUndelegateResponse): unknown {
     const obj: any = {};
     message.completionTime !== undefined &&
       (obj.completionTime = fromTimestamp(message.completionTime).toISOString());
+    message.amount !== undefined && (obj.amount = message.amount ? Coin.toJSON(message.amount) : undefined);
     return obj;
   },
   fromPartial(object: Partial<MsgUndelegateResponse>): MsgUndelegateResponse {
     const message = createBaseMsgUndelegateResponse();
     if (object.completionTime !== undefined && object.completionTime !== null) {
       message.completionTime = Timestamp.fromPartial(object.completionTime);
+    }
+    if (object.amount !== undefined && object.amount !== null) {
+      message.amount = Coin.fromPartial(object.amount);
     }
     return message;
   },
@@ -1310,11 +1394,15 @@ export const MsgUndelegateResponse = {
     if (object.completion_time !== undefined && object.completion_time !== null) {
       message.completionTime = Timestamp.fromAmino(object.completion_time);
     }
+    if (object.amount !== undefined && object.amount !== null) {
+      message.amount = Coin.fromAmino(object.amount);
+    }
     return message;
   },
   toAmino(message: MsgUndelegateResponse): MsgUndelegateResponseAmino {
     const obj: any = {};
     obj.completion_time = message.completionTime ? Timestamp.toAmino(message.completionTime) : undefined;
+    obj.amount = message.amount ? Coin.toAmino(message.amount) : undefined;
     return obj;
   },
   fromAminoMsg(object: MsgUndelegateResponseAminoMsg): MsgUndelegateResponse {
@@ -1691,6 +1779,166 @@ export const MsgUpdateParamsResponse = {
     };
   },
 };
+function createBaseMsgRotateConsPubKey(): MsgRotateConsPubKey {
+  return {
+    validatorAddress: "",
+    newPubkey: undefined,
+  };
+}
+export const MsgRotateConsPubKey = {
+  typeUrl: "/cosmos.staking.v1beta1.MsgRotateConsPubKey",
+  encode(message: MsgRotateConsPubKey, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.validatorAddress !== "") {
+      writer.uint32(10).string(message.validatorAddress);
+    }
+    if (message.newPubkey !== undefined) {
+      Any.encode(message.newPubkey, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgRotateConsPubKey {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgRotateConsPubKey();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.validatorAddress = reader.string();
+          break;
+        case 2:
+          message.newPubkey = Any.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): MsgRotateConsPubKey {
+    const obj = createBaseMsgRotateConsPubKey();
+    if (isSet(object.validatorAddress)) obj.validatorAddress = String(object.validatorAddress);
+    if (isSet(object.newPubkey)) obj.newPubkey = Any.fromJSON(object.newPubkey);
+    return obj;
+  },
+  toJSON(message: MsgRotateConsPubKey): unknown {
+    const obj: any = {};
+    message.validatorAddress !== undefined && (obj.validatorAddress = message.validatorAddress);
+    message.newPubkey !== undefined &&
+      (obj.newPubkey = message.newPubkey ? Any.toJSON(message.newPubkey) : undefined);
+    return obj;
+  },
+  fromPartial(object: Partial<MsgRotateConsPubKey>): MsgRotateConsPubKey {
+    const message = createBaseMsgRotateConsPubKey();
+    message.validatorAddress = object.validatorAddress ?? "";
+    if (object.newPubkey !== undefined && object.newPubkey !== null) {
+      message.newPubkey = Any.fromPartial(object.newPubkey);
+    }
+    return message;
+  },
+  fromAmino(object: MsgRotateConsPubKeyAmino): MsgRotateConsPubKey {
+    const message = createBaseMsgRotateConsPubKey();
+    if (object.validator_address !== undefined && object.validator_address !== null) {
+      message.validatorAddress = object.validator_address;
+    }
+    if (object.new_pubkey !== undefined && object.new_pubkey !== null) {
+      message.newPubkey = encodePubkey(object.new_pubkey);
+    }
+    return message;
+  },
+  toAmino(message: MsgRotateConsPubKey): MsgRotateConsPubKeyAmino {
+    const obj: any = {};
+    obj.validator_address = message.validatorAddress;
+    obj.new_pubkey = message.newPubkey ? decodePubkey(message.newPubkey) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: MsgRotateConsPubKeyAminoMsg): MsgRotateConsPubKey {
+    return MsgRotateConsPubKey.fromAmino(object.value);
+  },
+  toAminoMsg(message: MsgRotateConsPubKey): MsgRotateConsPubKeyAminoMsg {
+    return {
+      type: "cosmos-sdk/MsgRotateConsPubKey",
+      value: MsgRotateConsPubKey.toAmino(message),
+    };
+  },
+  fromProtoMsg(message: MsgRotateConsPubKeyProtoMsg): MsgRotateConsPubKey {
+    return MsgRotateConsPubKey.decode(message.value);
+  },
+  toProto(message: MsgRotateConsPubKey): Uint8Array {
+    return MsgRotateConsPubKey.encode(message).finish();
+  },
+  toProtoMsg(message: MsgRotateConsPubKey): MsgRotateConsPubKeyProtoMsg {
+    return {
+      typeUrl: "/cosmos.staking.v1beta1.MsgRotateConsPubKey",
+      value: MsgRotateConsPubKey.encode(message).finish(),
+    };
+  },
+};
+function createBaseMsgRotateConsPubKeyResponse(): MsgRotateConsPubKeyResponse {
+  return {};
+}
+export const MsgRotateConsPubKeyResponse = {
+  typeUrl: "/cosmos.staking.v1beta1.MsgRotateConsPubKeyResponse",
+  encode(_: MsgRotateConsPubKeyResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgRotateConsPubKeyResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgRotateConsPubKeyResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(_: any): MsgRotateConsPubKeyResponse {
+    const obj = createBaseMsgRotateConsPubKeyResponse();
+    return obj;
+  },
+  toJSON(_: MsgRotateConsPubKeyResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+  fromPartial(_: Partial<MsgRotateConsPubKeyResponse>): MsgRotateConsPubKeyResponse {
+    const message = createBaseMsgRotateConsPubKeyResponse();
+    return message;
+  },
+  fromAmino(_: MsgRotateConsPubKeyResponseAmino): MsgRotateConsPubKeyResponse {
+    const message = createBaseMsgRotateConsPubKeyResponse();
+    return message;
+  },
+  toAmino(_: MsgRotateConsPubKeyResponse): MsgRotateConsPubKeyResponseAmino {
+    const obj: any = {};
+    return obj;
+  },
+  fromAminoMsg(object: MsgRotateConsPubKeyResponseAminoMsg): MsgRotateConsPubKeyResponse {
+    return MsgRotateConsPubKeyResponse.fromAmino(object.value);
+  },
+  toAminoMsg(message: MsgRotateConsPubKeyResponse): MsgRotateConsPubKeyResponseAminoMsg {
+    return {
+      type: "cosmos-sdk/MsgRotateConsPubKeyResponse",
+      value: MsgRotateConsPubKeyResponse.toAmino(message),
+    };
+  },
+  fromProtoMsg(message: MsgRotateConsPubKeyResponseProtoMsg): MsgRotateConsPubKeyResponse {
+    return MsgRotateConsPubKeyResponse.decode(message.value);
+  },
+  toProto(message: MsgRotateConsPubKeyResponse): Uint8Array {
+    return MsgRotateConsPubKeyResponse.encode(message).finish();
+  },
+  toProtoMsg(message: MsgRotateConsPubKeyResponse): MsgRotateConsPubKeyResponseProtoMsg {
+    return {
+      typeUrl: "/cosmos.staking.v1beta1.MsgRotateConsPubKeyResponse",
+      value: MsgRotateConsPubKeyResponse.encode(message).finish(),
+    };
+  },
+};
 /** Msg defines the staking Msg service. */
 export interface Msg {
   /** CreateValidator defines a method for creating a new validator. */
@@ -1727,6 +1975,12 @@ export interface Msg {
    * Since: cosmos-sdk 0.47
    */
   UpdateParams(request: MsgUpdateParams): Promise<MsgUpdateParamsResponse>;
+  /**
+   * RotateConsPubKey defines an operation for rotating the consensus keys
+   * of a validator.
+   * Since: cosmos-sdk 0.48
+   */
+  RotateConsPubKey(request: MsgRotateConsPubKey): Promise<MsgRotateConsPubKeyResponse>;
 }
 export class MsgClientImpl implements Msg {
   private readonly rpc: TxRpc;
@@ -1739,6 +1993,7 @@ export class MsgClientImpl implements Msg {
     this.Undelegate = this.Undelegate.bind(this);
     this.CancelUnbondingDelegation = this.CancelUnbondingDelegation.bind(this);
     this.UpdateParams = this.UpdateParams.bind(this);
+    this.RotateConsPubKey = this.RotateConsPubKey.bind(this);
   }
   CreateValidator(request: MsgCreateValidator): Promise<MsgCreateValidatorResponse> {
     const data = MsgCreateValidator.encode(request).finish();
@@ -1776,5 +2031,10 @@ export class MsgClientImpl implements Msg {
     const data = MsgUpdateParams.encode(request).finish();
     const promise = this.rpc.request("cosmos.staking.v1beta1.Msg", "UpdateParams", data);
     return promise.then((data) => MsgUpdateParamsResponse.decode(new BinaryReader(data)));
+  }
+  RotateConsPubKey(request: MsgRotateConsPubKey): Promise<MsgRotateConsPubKeyResponse> {
+    const data = MsgRotateConsPubKey.encode(request).finish();
+    const promise = this.rpc.request("cosmos.staking.v1beta1.Msg", "RotateConsPubKey", data);
+    return promise.then((data) => MsgRotateConsPubKeyResponse.decode(new BinaryReader(data)));
   }
 }

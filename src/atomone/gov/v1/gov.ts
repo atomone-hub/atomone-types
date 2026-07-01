@@ -1,7 +1,7 @@
 /* eslint-disable */
 import { Coin, CoinAmino } from "../../../cosmos/base/v1beta1/coin";
-import { Any, AnyAmino } from "../../../google/protobuf/any";
 import { Timestamp } from "../../../google/protobuf/timestamp";
+import { Any, AnyAmino } from "../../../google/protobuf/any";
 import { Duration, DurationAmino } from "../../../google/protobuf/duration";
 import { BinaryReader, BinaryWriter } from "../../../binary";
 import { isSet, fromJsonTimestamp, fromTimestamp } from "../../../helpers";
@@ -83,6 +83,11 @@ export enum ProposalStatus {
    * failed.
    */
   PROPOSAL_STATUS_FAILED = 5,
+  /**
+   * PROPOSAL_STATUS_VETOED - PROPOSAL_STATUS_VETOED defines a proposal status of a proposal that has
+   * been vetoed.
+   */
+  PROPOSAL_STATUS_VETOED = 6,
   UNRECOGNIZED = -1,
 }
 export const ProposalStatusAmino = ProposalStatus;
@@ -106,6 +111,9 @@ export function proposalStatusFromJSON(object: any): ProposalStatus {
     case 5:
     case "PROPOSAL_STATUS_FAILED":
       return ProposalStatus.PROPOSAL_STATUS_FAILED;
+    case 6:
+    case "PROPOSAL_STATUS_VETOED":
+      return ProposalStatus.PROPOSAL_STATUS_VETOED;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -126,7 +134,50 @@ export function proposalStatusToJSON(object: ProposalStatus): string {
       return "PROPOSAL_STATUS_REJECTED";
     case ProposalStatus.PROPOSAL_STATUS_FAILED:
       return "PROPOSAL_STATUS_FAILED";
+    case ProposalStatus.PROPOSAL_STATUS_VETOED:
+      return "PROPOSAL_STATUS_VETOED";
     case ProposalStatus.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+/** GovernorStatus is the status of a governor. */
+export enum GovernorStatus {
+  /** GOVERNOR_STATUS_UNSPECIFIED - UNSPECIFIED defines an invalid governor status. */
+  GOVERNOR_STATUS_UNSPECIFIED = 0,
+  /** GOVERNOR_STATUS_ACTIVE - ACTIVE defines a governor that is active. */
+  GOVERNOR_STATUS_ACTIVE = 1,
+  /** GOVERNOR_STATUS_INACTIVE - INACTIVE defines a governor that is inactive. */
+  GOVERNOR_STATUS_INACTIVE = 2,
+  UNRECOGNIZED = -1,
+}
+export const GovernorStatusAmino = GovernorStatus;
+export function governorStatusFromJSON(object: any): GovernorStatus {
+  switch (object) {
+    case 0:
+    case "GOVERNOR_STATUS_UNSPECIFIED":
+      return GovernorStatus.GOVERNOR_STATUS_UNSPECIFIED;
+    case 1:
+    case "GOVERNOR_STATUS_ACTIVE":
+      return GovernorStatus.GOVERNOR_STATUS_ACTIVE;
+    case 2:
+    case "GOVERNOR_STATUS_INACTIVE":
+      return GovernorStatus.GOVERNOR_STATUS_INACTIVE;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return GovernorStatus.UNRECOGNIZED;
+  }
+}
+export function governorStatusToJSON(object: GovernorStatus): string {
+  switch (object) {
+    case GovernorStatus.GOVERNOR_STATUS_UNSPECIFIED:
+      return "GOVERNOR_STATUS_UNSPECIFIED";
+    case GovernorStatus.GOVERNOR_STATUS_ACTIVE:
+      return "GOVERNOR_STATUS_ACTIVE";
+    case GovernorStatus.GOVERNOR_STATUS_INACTIVE:
+      return "GOVERNOR_STATUS_INACTIVE";
+    case GovernorStatus.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
   }
@@ -191,6 +242,34 @@ export interface DepositAminoMsg {
   type: "/atomone.gov.v1.Deposit";
   value: DepositAmino;
 }
+/**
+ * LastMinDeposit is a record of the last time the minimum deposit
+ * was updated in the store, both its value and a timestamp
+ */
+export interface LastMinDeposit {
+  /** value is the value of the minimum deposit */
+  value: Coin[];
+  /** time is the time the minimum deposit was last updated */
+  time?: Timestamp | undefined;
+}
+export interface LastMinDepositProtoMsg {
+  typeUrl: "/atomone.gov.v1.LastMinDeposit";
+  value: Uint8Array;
+}
+/**
+ * LastMinDeposit is a record of the last time the minimum deposit
+ * was updated in the store, both its value and a timestamp
+ */
+export interface LastMinDepositAmino {
+  /** value is the value of the minimum deposit */
+  value: CoinAmino[];
+  /** time is the time the minimum deposit was last updated */
+  time?: string | undefined;
+}
+export interface LastMinDepositAminoMsg {
+  type: "/atomone.gov.v1.LastMinDeposit";
+  value: LastMinDepositAmino;
+}
 /** Proposal defines the core field members of a governance proposal. */
 export interface Proposal {
   /** id defines the unique id of the proposal. */
@@ -235,6 +314,21 @@ export interface Proposal {
    * Since: cosmos-sdk 0.47
    */
   proposer: string;
+  /**
+   * endorsed is a boolean indicating whether the proposal has been endorsed
+   * by the Steering DAO.
+   */
+  endorsed: boolean;
+  /**
+   * annotation is an optional field that contains annotations
+   * added by the Steering DAO.
+   */
+  annotation: string;
+  /**
+   * times_voting_period_extended is the number of times the voting period
+   * has been extended from one of the core DAOs.
+   */
+  timesVotingPeriodExtended: number;
 }
 export interface ProposalProtoMsg {
   typeUrl: "/atomone.gov.v1.Proposal";
@@ -284,6 +378,21 @@ export interface ProposalAmino {
    * Since: cosmos-sdk 0.47
    */
   proposer?: string;
+  /**
+   * endorsed is a boolean indicating whether the proposal has been endorsed
+   * by the Steering DAO.
+   */
+  endorsed?: boolean;
+  /**
+   * annotation is an optional field that contains annotations
+   * added by the Steering DAO.
+   */
+  annotation?: string;
+  /**
+   * times_voting_period_extended is the number of times the voting period
+   * has been extended from one of the core DAOs.
+   */
+  times_voting_period_extended?: number;
 }
 export interface ProposalAminoMsg {
   type: "/atomone.gov.v1.Proposal";
@@ -443,14 +552,17 @@ export interface TallyParams {
    * Minimum percentage of total stake needed to vote for a result to be
    * considered valid.
    */
+  /** @deprecated */
   quorum: string;
   /** Minimum proportion of Yes votes for proposal to pass. Default value: 2/3. */
   threshold: string;
   /** quorum for constitution amendment proposals */
+  /** @deprecated */
   constitutionAmendmentQuorum: string;
   /** Minimum proportion of Yes votes for a Constitution Amendment proposal to pass. Default value: 0.9. */
   constitutionAmendmentThreshold: string;
   /** quorum for law proposals */
+  /** @deprecated */
   lawQuorum: string;
   /** Minimum proportion of Yes votes for a Law proposal to pass. Default value: 0.9. */
   lawThreshold: string;
@@ -465,14 +577,17 @@ export interface TallyParamsAmino {
    * Minimum percentage of total stake needed to vote for a result to be
    * considered valid.
    */
+  /** @deprecated */
   quorum?: string;
   /** Minimum proportion of Yes votes for proposal to pass. Default value: 2/3. */
   threshold?: string;
   /** quorum for constitution amendment proposals */
+  /** @deprecated */
   constitution_amendment_quorum?: string;
   /** Minimum proportion of Yes votes for a Constitution Amendment proposal to pass. Default value: 0.9. */
   constitution_amendment_threshold?: string;
   /** quorum for law proposals */
+  /** @deprecated */
   law_quorum?: string;
   /** Minimum proportion of Yes votes for a Law proposal to pass. Default value: 0.9. */
   law_threshold?: string;
@@ -481,13 +596,149 @@ export interface TallyParamsAminoMsg {
   type: "/atomone.gov.v1.TallyParams";
   value: TallyParamsAmino;
 }
+export interface MinDepositThrottler {
+  /** Floor value for the minimum deposit required for a proposal to enter the voting period. */
+  floorValue: Coin[];
+  /**
+   * Duration that dictates after how long the dynamic minimum deposit should be recalculated
+   * for time-based decreases.
+   */
+  updatePeriod?: Duration | undefined;
+  /** The number of active proposals the dynamic minimum deposit should target. */
+  targetActiveProposals: bigint;
+  /**
+   * The ratio of increase for the minimum deposit when the number of active proposals
+   * is at or above the target.
+   */
+  increaseRatio: string;
+  /**
+   * The ratio of decrease for the minimum deposit when the number of active proposals
+   * is 1 less than the target.
+   */
+  decreaseRatio: string;
+  /**
+   * A positive integer representing the sensitivity of dynamic minimum deposit
+   * decreases to the distance from the target number of active proposals.
+   * The higher the number, the lower the sensitivity. A value of 1 represents the
+   * highest sensitivity.
+   */
+  decreaseSensitivityTargetDistance: bigint;
+}
+export interface MinDepositThrottlerProtoMsg {
+  typeUrl: "/atomone.gov.v1.MinDepositThrottler";
+  value: Uint8Array;
+}
+export interface MinDepositThrottlerAmino {
+  /** Floor value for the minimum deposit required for a proposal to enter the voting period. */
+  floor_value: CoinAmino[];
+  /**
+   * Duration that dictates after how long the dynamic minimum deposit should be recalculated
+   * for time-based decreases.
+   */
+  update_period?: DurationAmino | undefined;
+  /** The number of active proposals the dynamic minimum deposit should target. */
+  target_active_proposals?: string;
+  /**
+   * The ratio of increase for the minimum deposit when the number of active proposals
+   * is at or above the target.
+   */
+  increase_ratio?: string;
+  /**
+   * The ratio of decrease for the minimum deposit when the number of active proposals
+   * is 1 less than the target.
+   */
+  decrease_ratio?: string;
+  /**
+   * A positive integer representing the sensitivity of dynamic minimum deposit
+   * decreases to the distance from the target number of active proposals.
+   * The higher the number, the lower the sensitivity. A value of 1 represents the
+   * highest sensitivity.
+   */
+  decrease_sensitivity_target_distance?: string;
+}
+export interface MinDepositThrottlerAminoMsg {
+  type: "/atomone.gov.v1.MinDepositThrottler";
+  value: MinDepositThrottlerAmino;
+}
+export interface MinInitialDepositThrottler {
+  /** Floor value for the minimum initial deposit required for a proposal to enter the deposit period. */
+  floorValue: Coin[];
+  /**
+   * Duration that dictates after how long the dynamic minimum deposit should be recalculated
+   * for time-based decreases.
+   */
+  updatePeriod?: Duration | undefined;
+  /** The number of proposals in deposit period the dynamic minimum initial deposit should target. */
+  targetProposals: bigint;
+  /**
+   * The ratio of increase for the minimum initial deposit when the number of proposals
+   * in deposit period is at or above the target.
+   */
+  increaseRatio: string;
+  /**
+   * The ratio of decrease for the minimum initial deposit when the number of proposals
+   * in deposit period is 1 less than the target.
+   */
+  decreaseRatio: string;
+  /**
+   * A positive integer representing the sensitivity of dynamic minimum initial
+   * deposit decreases to the distance from the target number of proposals
+   * in deposit period. The higher the number, the lower the sensitivity. A value
+   * of 1 represents the highest sensitivity.
+   */
+  decreaseSensitivityTargetDistance: bigint;
+}
+export interface MinInitialDepositThrottlerProtoMsg {
+  typeUrl: "/atomone.gov.v1.MinInitialDepositThrottler";
+  value: Uint8Array;
+}
+export interface MinInitialDepositThrottlerAmino {
+  /** Floor value for the minimum initial deposit required for a proposal to enter the deposit period. */
+  floor_value: CoinAmino[];
+  /**
+   * Duration that dictates after how long the dynamic minimum deposit should be recalculated
+   * for time-based decreases.
+   */
+  update_period?: DurationAmino | undefined;
+  /** The number of proposals in deposit period the dynamic minimum initial deposit should target. */
+  target_proposals?: string;
+  /**
+   * The ratio of increase for the minimum initial deposit when the number of proposals
+   * in deposit period is at or above the target.
+   */
+  increase_ratio?: string;
+  /**
+   * The ratio of decrease for the minimum initial deposit when the number of proposals
+   * in deposit period is 1 less than the target.
+   */
+  decrease_ratio?: string;
+  /**
+   * A positive integer representing the sensitivity of dynamic minimum initial
+   * deposit decreases to the distance from the target number of proposals
+   * in deposit period. The higher the number, the lower the sensitivity. A value
+   * of 1 represents the highest sensitivity.
+   */
+  decrease_sensitivity_target_distance?: string;
+}
+export interface MinInitialDepositThrottlerAminoMsg {
+  type: "/atomone.gov.v1.MinInitialDepositThrottler";
+  value: MinInitialDepositThrottlerAmino;
+}
 /**
  * Params defines the parameters for the x/gov module.
  *
  * Since: cosmos-sdk 0.47
  */
 export interface Params {
-  /** Minimum deposit for a proposal to enter voting period. */
+  /**
+   * Minimum deposit for a proposal to enter voting period.
+   * Deprecated: a dynamic system now determines the minimum deposit,
+   * see the other params inside the min_deposit_throttler field.
+   * While setting this value returns an error, when queried it is set to the
+   * value of the current minimum deposit value as determined by the dynamic
+   * system for backward compatibility.
+   */
+  /** @deprecated */
   minDeposit: Coin[];
   /**
    * Maximum period for Atom holders to deposit on a proposal. Initial value: 2
@@ -500,10 +751,12 @@ export interface Params {
    * Minimum percentage of total stake needed to vote for a result to be
    *  considered valid. Default value: 0.25.
    */
+  /** @deprecated */
   quorum: string;
   /** Minimum proportion of Yes votes for proposal to pass. Default value: 2/3. */
   threshold: string;
   /** The ratio representing the proportion of the deposit value that must be paid at proposal submission. */
+  /** @deprecated */
   minInitialDepositRatio: string;
   /** burn deposits if a proposal does not meet quorum */
   burnVoteQuorum: boolean;
@@ -520,10 +773,12 @@ export interface Params {
    */
   minDepositRatio: string;
   /** quorum for constitution amendment proposals */
+  /** @deprecated */
   constitutionAmendmentQuorum: string;
   /** Minimum proportion of Yes votes for a Constitution Amendment proposal to pass. Default value: 0.9. */
   constitutionAmendmentThreshold: string;
   /** quorum for law proposals */
+  /** @deprecated */
   lawQuorum: string;
   /** Minimum proportion of Yes votes for a Law proposal to pass. Default value: 0.9. */
   lawThreshold: string;
@@ -542,6 +797,24 @@ export interface Params {
    * has elapsed. Used to compute the amount of time in between quorum checks.
    */
   quorumCheckCount: bigint;
+  minDepositThrottler?: MinDepositThrottler | undefined;
+  minInitialDepositThrottler?: MinInitialDepositThrottler | undefined;
+  /** Minimum proportion of No Votes for a proposal deposit to be burnt. */
+  burnDepositNoThreshold: string;
+  /** Achievable quorum */
+  quorumRange?: QuorumRange | undefined;
+  /** Achievable quorum for constitution amendment proposals */
+  constitutionAmendmentQuorumRange?: QuorumRange | undefined;
+  /** Achievable quorum for law proposals */
+  lawQuorumRange?: QuorumRange | undefined;
+  /** Defines the duration of time that need to elapse between governor status changes. */
+  governorStatusChangePeriod?: Duration | undefined;
+  /**
+   * Defines the minimum amound of bonded tokens, aka the "self-delegation" (because active governors
+   * must have the governance VP from the base account automatically delegated to them), that a governor
+   * must have to be considered active.
+   */
+  minGovernorSelfDelegation: string;
 }
 export interface ParamsProtoMsg {
   typeUrl: "/atomone.gov.v1.Params";
@@ -553,7 +826,15 @@ export interface ParamsProtoMsg {
  * Since: cosmos-sdk 0.47
  */
 export interface ParamsAmino {
-  /** Minimum deposit for a proposal to enter voting period. */
+  /**
+   * Minimum deposit for a proposal to enter voting period.
+   * Deprecated: a dynamic system now determines the minimum deposit,
+   * see the other params inside the min_deposit_throttler field.
+   * While setting this value returns an error, when queried it is set to the
+   * value of the current minimum deposit value as determined by the dynamic
+   * system for backward compatibility.
+   */
+  /** @deprecated */
   min_deposit: CoinAmino[];
   /**
    * Maximum period for Atom holders to deposit on a proposal. Initial value: 2
@@ -566,10 +847,12 @@ export interface ParamsAmino {
    * Minimum percentage of total stake needed to vote for a result to be
    *  considered valid. Default value: 0.25.
    */
+  /** @deprecated */
   quorum?: string;
   /** Minimum proportion of Yes votes for proposal to pass. Default value: 2/3. */
   threshold?: string;
   /** The ratio representing the proportion of the deposit value that must be paid at proposal submission. */
+  /** @deprecated */
   min_initial_deposit_ratio?: string;
   /** burn deposits if a proposal does not meet quorum */
   burn_vote_quorum?: boolean;
@@ -586,10 +869,12 @@ export interface ParamsAmino {
    */
   min_deposit_ratio?: string;
   /** quorum for constitution amendment proposals */
+  /** @deprecated */
   constitution_amendment_quorum?: string;
   /** Minimum proportion of Yes votes for a Constitution Amendment proposal to pass. Default value: 0.9. */
   constitution_amendment_threshold?: string;
   /** quorum for law proposals */
+  /** @deprecated */
   law_quorum?: string;
   /** Minimum proportion of Yes votes for a Law proposal to pass. Default value: 0.9. */
   law_threshold?: string;
@@ -608,10 +893,176 @@ export interface ParamsAmino {
    * has elapsed. Used to compute the amount of time in between quorum checks.
    */
   quorum_check_count?: string;
+  min_deposit_throttler?: MinDepositThrottlerAmino | undefined;
+  min_initial_deposit_throttler?: MinInitialDepositThrottlerAmino | undefined;
+  /** Minimum proportion of No Votes for a proposal deposit to be burnt. */
+  burn_deposit_no_threshold?: string;
+  /** Achievable quorum */
+  quorum_range?: QuorumRangeAmino | undefined;
+  /** Achievable quorum for constitution amendment proposals */
+  constitution_amendment_quorum_range?: QuorumRangeAmino | undefined;
+  /** Achievable quorum for law proposals */
+  law_quorum_range?: QuorumRangeAmino | undefined;
+  /** Defines the duration of time that need to elapse between governor status changes. */
+  governor_status_change_period?: DurationAmino | undefined;
+  /**
+   * Defines the minimum amound of bonded tokens, aka the "self-delegation" (because active governors
+   * must have the governance VP from the base account automatically delegated to them), that a governor
+   * must have to be considered active.
+   */
+  min_governor_self_delegation?: string;
 }
 export interface ParamsAminoMsg {
   type: "/atomone.gov.v1.Params";
   value: ParamsAmino;
+}
+export interface QuorumRange {
+  /** Maximum achievable quorum */
+  max: string;
+  /** Minimum achievable quorum */
+  min: string;
+}
+export interface QuorumRangeProtoMsg {
+  typeUrl: "/atomone.gov.v1.QuorumRange";
+  value: Uint8Array;
+}
+export interface QuorumRangeAmino {
+  /** Maximum achievable quorum */
+  max?: string;
+  /** Minimum achievable quorum */
+  min?: string;
+}
+export interface QuorumRangeAminoMsg {
+  type: "/atomone.gov.v1.QuorumRange";
+  value: QuorumRangeAmino;
+}
+/**
+ * Governor defines a governor, together with the total amount of delegated
+ * validator's bond shares for a set amount of validators. When a delegator
+ * delegates a percentage of its x/gov power to a governor, the resulting
+ * shares from each delegators delegations in x/staking are added to the
+ * governor's total shares.
+ */
+export interface Governor {
+  /** governor_address defines the address of the governor; bech32-encoded. */
+  governorAddress: string;
+  /** status is the status of the governor (active/inactive). */
+  status: GovernorStatus;
+  /** description defines the description terms for the governor. */
+  description: GovernorDescription | undefined;
+  /** last_status_change_time is the time when the governor's status was last changed. */
+  lastStatusChangeTime?: Timestamp | undefined;
+}
+export interface GovernorProtoMsg {
+  typeUrl: "/atomone.gov.v1.Governor";
+  value: Uint8Array;
+}
+/**
+ * Governor defines a governor, together with the total amount of delegated
+ * validator's bond shares for a set amount of validators. When a delegator
+ * delegates a percentage of its x/gov power to a governor, the resulting
+ * shares from each delegators delegations in x/staking are added to the
+ * governor's total shares.
+ */
+export interface GovernorAmino {
+  /** governor_address defines the address of the governor; bech32-encoded. */
+  governor_address?: string;
+  /** status is the status of the governor (active/inactive). */
+  status?: GovernorStatus;
+  /** description defines the description terms for the governor. */
+  description: GovernorDescriptionAmino | undefined;
+  /** last_status_change_time is the time when the governor's status was last changed. */
+  last_status_change_time?: string | undefined;
+}
+export interface GovernorAminoMsg {
+  type: "/atomone.gov.v1.Governor";
+  value: GovernorAmino;
+}
+/** Description defines a governor description. */
+export interface GovernorDescription {
+  /** moniker defines a human-readable name for the governor. */
+  moniker: string;
+  /** identity defines an optional identity signature (ex. UPort or Keybase). */
+  identity: string;
+  /** website defines an optional website link. */
+  website: string;
+  /** security_contact defines an optional email for security contact. */
+  securityContact: string;
+  /** details define other optional details. */
+  details: string;
+}
+export interface GovernorDescriptionProtoMsg {
+  typeUrl: "/atomone.gov.v1.GovernorDescription";
+  value: Uint8Array;
+}
+/** Description defines a governor description. */
+export interface GovernorDescriptionAmino {
+  /** moniker defines a human-readable name for the governor. */
+  moniker?: string;
+  /** identity defines an optional identity signature (ex. UPort or Keybase). */
+  identity?: string;
+  /** website defines an optional website link. */
+  website?: string;
+  /** security_contact defines an optional email for security contact. */
+  security_contact?: string;
+  /** details define other optional details. */
+  details?: string;
+}
+export interface GovernorDescriptionAminoMsg {
+  type: "/atomone.gov.v1.GovernorDescription";
+  value: GovernorDescriptionAmino;
+}
+/**
+ * GovernorValShares holds the number of virtual shares from the
+ * specific validator that a governor can use to vote on proposals.
+ */
+export interface GovernorValShares {
+  governorAddress: string;
+  validatorAddress: string;
+  /** shares define the delegation shares available from this validator. */
+  shares: string;
+}
+export interface GovernorValSharesProtoMsg {
+  typeUrl: "/atomone.gov.v1.GovernorValShares";
+  value: Uint8Array;
+}
+/**
+ * GovernorValShares holds the number of virtual shares from the
+ * specific validator that a governor can use to vote on proposals.
+ */
+export interface GovernorValSharesAmino {
+  governor_address?: string;
+  validator_address?: string;
+  /** shares define the delegation shares available from this validator. */
+  shares?: string;
+}
+export interface GovernorValSharesAminoMsg {
+  type: "/atomone.gov.v1.GovernorValShares";
+  value: GovernorValSharesAmino;
+}
+/**
+ * GovernanceDelegation defines a delegation of governance voting power from a
+ * delegator to a governor.
+ */
+export interface GovernanceDelegation {
+  delegatorAddress: string;
+  governorAddress: string;
+}
+export interface GovernanceDelegationProtoMsg {
+  typeUrl: "/atomone.gov.v1.GovernanceDelegation";
+  value: Uint8Array;
+}
+/**
+ * GovernanceDelegation defines a delegation of governance voting power from a
+ * delegator to a governor.
+ */
+export interface GovernanceDelegationAmino {
+  delegator_address?: string;
+  governor_address?: string;
+}
+export interface GovernanceDelegationAminoMsg {
+  type: "/atomone.gov.v1.GovernanceDelegation";
+  value: GovernanceDelegationAmino;
 }
 function createBaseWeightedVoteOption(): WeightedVoteOption {
   return {
@@ -809,6 +1260,101 @@ export const Deposit = {
     };
   },
 };
+function createBaseLastMinDeposit(): LastMinDeposit {
+  return {
+    value: [],
+    time: undefined,
+  };
+}
+export const LastMinDeposit = {
+  typeUrl: "/atomone.gov.v1.LastMinDeposit",
+  encode(message: LastMinDeposit, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    for (const v of message.value) {
+      Coin.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.time !== undefined) {
+      Timestamp.encode(message.time, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): LastMinDeposit {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseLastMinDeposit();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.value.push(Coin.decode(reader, reader.uint32()));
+          break;
+        case 2:
+          message.time = Timestamp.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): LastMinDeposit {
+    const obj = createBaseLastMinDeposit();
+    if (Array.isArray(object?.value)) obj.value = object.value.map((e: any) => Coin.fromJSON(e));
+    if (isSet(object.time)) obj.time = fromJsonTimestamp(object.time);
+    return obj;
+  },
+  toJSON(message: LastMinDeposit): unknown {
+    const obj: any = {};
+    if (message.value) {
+      obj.value = message.value.map((e) => (e ? Coin.toJSON(e) : undefined));
+    } else {
+      obj.value = [];
+    }
+    message.time !== undefined && (obj.time = fromTimestamp(message.time).toISOString());
+    return obj;
+  },
+  fromPartial(object: Partial<LastMinDeposit>): LastMinDeposit {
+    const message = createBaseLastMinDeposit();
+    message.value = object.value?.map((e) => Coin.fromPartial(e)) || [];
+    if (object.time !== undefined && object.time !== null) {
+      message.time = Timestamp.fromPartial(object.time);
+    }
+    return message;
+  },
+  fromAmino(object: LastMinDepositAmino): LastMinDeposit {
+    const message = createBaseLastMinDeposit();
+    message.value = object.value?.map((e) => Coin.fromAmino(e)) || [];
+    if (object.time !== undefined && object.time !== null) {
+      message.time = Timestamp.fromAmino(object.time);
+    }
+    return message;
+  },
+  toAmino(message: LastMinDeposit): LastMinDepositAmino {
+    const obj: any = {};
+    if (message.value) {
+      obj.value = message.value.map((e) => (e ? Coin.toAmino(e) : undefined));
+    } else {
+      obj.value = [];
+    }
+    obj.time = message.time ? Timestamp.toAmino(message.time) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: LastMinDepositAminoMsg): LastMinDeposit {
+    return LastMinDeposit.fromAmino(object.value);
+  },
+  fromProtoMsg(message: LastMinDepositProtoMsg): LastMinDeposit {
+    return LastMinDeposit.decode(message.value);
+  },
+  toProto(message: LastMinDeposit): Uint8Array {
+    return LastMinDeposit.encode(message).finish();
+  },
+  toProtoMsg(message: LastMinDeposit): LastMinDepositProtoMsg {
+    return {
+      typeUrl: "/atomone.gov.v1.LastMinDeposit",
+      value: LastMinDeposit.encode(message).finish(),
+    };
+  },
+};
 function createBaseProposal(): Proposal {
   return {
     id: BigInt(0),
@@ -824,6 +1370,9 @@ function createBaseProposal(): Proposal {
     title: "",
     summary: "",
     proposer: "",
+    endorsed: false,
+    annotation: "",
+    timesVotingPeriodExtended: 0,
   };
 }
 export const Proposal = {
@@ -867,6 +1416,15 @@ export const Proposal = {
     }
     if (message.proposer !== "") {
       writer.uint32(106).string(message.proposer);
+    }
+    if (message.endorsed === true) {
+      writer.uint32(112).bool(message.endorsed);
+    }
+    if (message.annotation !== "") {
+      writer.uint32(122).string(message.annotation);
+    }
+    if (message.timesVotingPeriodExtended !== 0) {
+      writer.uint32(128).uint32(message.timesVotingPeriodExtended);
     }
     return writer;
   },
@@ -916,6 +1474,15 @@ export const Proposal = {
         case 13:
           message.proposer = reader.string();
           break;
+        case 14:
+          message.endorsed = reader.bool();
+          break;
+        case 15:
+          message.annotation = reader.string();
+          break;
+        case 16:
+          message.timesVotingPeriodExtended = reader.uint32();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -939,6 +1506,10 @@ export const Proposal = {
     if (isSet(object.title)) obj.title = String(object.title);
     if (isSet(object.summary)) obj.summary = String(object.summary);
     if (isSet(object.proposer)) obj.proposer = String(object.proposer);
+    if (isSet(object.endorsed)) obj.endorsed = Boolean(object.endorsed);
+    if (isSet(object.annotation)) obj.annotation = String(object.annotation);
+    if (isSet(object.timesVotingPeriodExtended))
+      obj.timesVotingPeriodExtended = Number(object.timesVotingPeriodExtended);
     return obj;
   },
   toJSON(message: Proposal): unknown {
@@ -970,6 +1541,10 @@ export const Proposal = {
     message.title !== undefined && (obj.title = message.title);
     message.summary !== undefined && (obj.summary = message.summary);
     message.proposer !== undefined && (obj.proposer = message.proposer);
+    message.endorsed !== undefined && (obj.endorsed = message.endorsed);
+    message.annotation !== undefined && (obj.annotation = message.annotation);
+    message.timesVotingPeriodExtended !== undefined &&
+      (obj.timesVotingPeriodExtended = Math.round(message.timesVotingPeriodExtended));
     return obj;
   },
   fromPartial(object: Partial<Proposal>): Proposal {
@@ -999,6 +1574,9 @@ export const Proposal = {
     message.title = object.title ?? "";
     message.summary = object.summary ?? "";
     message.proposer = object.proposer ?? "";
+    message.endorsed = object.endorsed ?? false;
+    message.annotation = object.annotation ?? "";
+    message.timesVotingPeriodExtended = object.timesVotingPeriodExtended ?? 0;
     return message;
   },
   fromAmino(object: ProposalAmino): Proposal {
@@ -1038,6 +1616,15 @@ export const Proposal = {
     if (object.proposer !== undefined && object.proposer !== null) {
       message.proposer = object.proposer;
     }
+    if (object.endorsed !== undefined && object.endorsed !== null) {
+      message.endorsed = object.endorsed;
+    }
+    if (object.annotation !== undefined && object.annotation !== null) {
+      message.annotation = object.annotation;
+    }
+    if (object.times_voting_period_extended !== undefined && object.times_voting_period_extended !== null) {
+      message.timesVotingPeriodExtended = object.times_voting_period_extended;
+    }
     return message;
   },
   toAmino(message: Proposal): ProposalAmino {
@@ -1065,6 +1652,9 @@ export const Proposal = {
     obj.title = message.title;
     obj.summary = message.summary;
     obj.proposer = message.proposer;
+    obj.endorsed = message.endorsed;
+    obj.annotation = message.annotation;
+    obj.times_voting_period_extended = message.timesVotingPeriodExtended;
     return obj;
   },
   fromAminoMsg(object: ProposalAminoMsg): Proposal {
@@ -1747,6 +2337,349 @@ export const TallyParams = {
     };
   },
 };
+function createBaseMinDepositThrottler(): MinDepositThrottler {
+  return {
+    floorValue: [],
+    updatePeriod: undefined,
+    targetActiveProposals: BigInt(0),
+    increaseRatio: "",
+    decreaseRatio: "",
+    decreaseSensitivityTargetDistance: BigInt(0),
+  };
+}
+export const MinDepositThrottler = {
+  typeUrl: "/atomone.gov.v1.MinDepositThrottler",
+  encode(message: MinDepositThrottler, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    for (const v of message.floorValue) {
+      Coin.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.updatePeriod !== undefined) {
+      Duration.encode(message.updatePeriod, writer.uint32(18).fork()).ldelim();
+    }
+    if (message.targetActiveProposals !== BigInt(0)) {
+      writer.uint32(24).uint64(message.targetActiveProposals);
+    }
+    if (message.increaseRatio !== "") {
+      writer.uint32(34).string(message.increaseRatio);
+    }
+    if (message.decreaseRatio !== "") {
+      writer.uint32(42).string(message.decreaseRatio);
+    }
+    if (message.decreaseSensitivityTargetDistance !== BigInt(0)) {
+      writer.uint32(48).uint64(message.decreaseSensitivityTargetDistance);
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): MinDepositThrottler {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMinDepositThrottler();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.floorValue.push(Coin.decode(reader, reader.uint32()));
+          break;
+        case 2:
+          message.updatePeriod = Duration.decode(reader, reader.uint32());
+          break;
+        case 3:
+          message.targetActiveProposals = reader.uint64();
+          break;
+        case 4:
+          message.increaseRatio = reader.string();
+          break;
+        case 5:
+          message.decreaseRatio = reader.string();
+          break;
+        case 6:
+          message.decreaseSensitivityTargetDistance = reader.uint64();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): MinDepositThrottler {
+    const obj = createBaseMinDepositThrottler();
+    if (Array.isArray(object?.floorValue))
+      obj.floorValue = object.floorValue.map((e: any) => Coin.fromJSON(e));
+    if (isSet(object.updatePeriod)) obj.updatePeriod = Duration.fromJSON(object.updatePeriod);
+    if (isSet(object.targetActiveProposals))
+      obj.targetActiveProposals = BigInt(object.targetActiveProposals.toString());
+    if (isSet(object.increaseRatio)) obj.increaseRatio = String(object.increaseRatio);
+    if (isSet(object.decreaseRatio)) obj.decreaseRatio = String(object.decreaseRatio);
+    if (isSet(object.decreaseSensitivityTargetDistance))
+      obj.decreaseSensitivityTargetDistance = BigInt(object.decreaseSensitivityTargetDistance.toString());
+    return obj;
+  },
+  toJSON(message: MinDepositThrottler): unknown {
+    const obj: any = {};
+    if (message.floorValue) {
+      obj.floorValue = message.floorValue.map((e) => (e ? Coin.toJSON(e) : undefined));
+    } else {
+      obj.floorValue = [];
+    }
+    message.updatePeriod !== undefined &&
+      (obj.updatePeriod = message.updatePeriod ? Duration.toJSON(message.updatePeriod) : undefined);
+    message.targetActiveProposals !== undefined &&
+      (obj.targetActiveProposals = (message.targetActiveProposals || BigInt(0)).toString());
+    message.increaseRatio !== undefined && (obj.increaseRatio = message.increaseRatio);
+    message.decreaseRatio !== undefined && (obj.decreaseRatio = message.decreaseRatio);
+    message.decreaseSensitivityTargetDistance !== undefined &&
+      (obj.decreaseSensitivityTargetDistance = (
+        message.decreaseSensitivityTargetDistance || BigInt(0)
+      ).toString());
+    return obj;
+  },
+  fromPartial(object: Partial<MinDepositThrottler>): MinDepositThrottler {
+    const message = createBaseMinDepositThrottler();
+    message.floorValue = object.floorValue?.map((e) => Coin.fromPartial(e)) || [];
+    if (object.updatePeriod !== undefined && object.updatePeriod !== null) {
+      message.updatePeriod = Duration.fromPartial(object.updatePeriod);
+    }
+    if (object.targetActiveProposals !== undefined && object.targetActiveProposals !== null) {
+      message.targetActiveProposals = BigInt(object.targetActiveProposals.toString());
+    }
+    message.increaseRatio = object.increaseRatio ?? "";
+    message.decreaseRatio = object.decreaseRatio ?? "";
+    if (
+      object.decreaseSensitivityTargetDistance !== undefined &&
+      object.decreaseSensitivityTargetDistance !== null
+    ) {
+      message.decreaseSensitivityTargetDistance = BigInt(object.decreaseSensitivityTargetDistance.toString());
+    }
+    return message;
+  },
+  fromAmino(object: MinDepositThrottlerAmino): MinDepositThrottler {
+    const message = createBaseMinDepositThrottler();
+    message.floorValue = object.floor_value?.map((e) => Coin.fromAmino(e)) || [];
+    if (object.update_period !== undefined && object.update_period !== null) {
+      message.updatePeriod = Duration.fromAmino(object.update_period);
+    }
+    if (object.target_active_proposals !== undefined && object.target_active_proposals !== null) {
+      message.targetActiveProposals = BigInt(object.target_active_proposals);
+    }
+    if (object.increase_ratio !== undefined && object.increase_ratio !== null) {
+      message.increaseRatio = object.increase_ratio;
+    }
+    if (object.decrease_ratio !== undefined && object.decrease_ratio !== null) {
+      message.decreaseRatio = object.decrease_ratio;
+    }
+    if (
+      object.decrease_sensitivity_target_distance !== undefined &&
+      object.decrease_sensitivity_target_distance !== null
+    ) {
+      message.decreaseSensitivityTargetDistance = BigInt(object.decrease_sensitivity_target_distance);
+    }
+    return message;
+  },
+  toAmino(message: MinDepositThrottler): MinDepositThrottlerAmino {
+    const obj: any = {};
+    if (message.floorValue) {
+      obj.floor_value = message.floorValue.map((e) => (e ? Coin.toAmino(e) : undefined));
+    } else {
+      obj.floor_value = [];
+    }
+    obj.update_period = message.updatePeriod ? Duration.toAmino(message.updatePeriod) : undefined;
+    obj.target_active_proposals = message.targetActiveProposals
+      ? message.targetActiveProposals.toString()
+      : undefined;
+    obj.increase_ratio = message.increaseRatio;
+    obj.decrease_ratio = message.decreaseRatio;
+    obj.decrease_sensitivity_target_distance = message.decreaseSensitivityTargetDistance
+      ? message.decreaseSensitivityTargetDistance.toString()
+      : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: MinDepositThrottlerAminoMsg): MinDepositThrottler {
+    return MinDepositThrottler.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MinDepositThrottlerProtoMsg): MinDepositThrottler {
+    return MinDepositThrottler.decode(message.value);
+  },
+  toProto(message: MinDepositThrottler): Uint8Array {
+    return MinDepositThrottler.encode(message).finish();
+  },
+  toProtoMsg(message: MinDepositThrottler): MinDepositThrottlerProtoMsg {
+    return {
+      typeUrl: "/atomone.gov.v1.MinDepositThrottler",
+      value: MinDepositThrottler.encode(message).finish(),
+    };
+  },
+};
+function createBaseMinInitialDepositThrottler(): MinInitialDepositThrottler {
+  return {
+    floorValue: [],
+    updatePeriod: undefined,
+    targetProposals: BigInt(0),
+    increaseRatio: "",
+    decreaseRatio: "",
+    decreaseSensitivityTargetDistance: BigInt(0),
+  };
+}
+export const MinInitialDepositThrottler = {
+  typeUrl: "/atomone.gov.v1.MinInitialDepositThrottler",
+  encode(message: MinInitialDepositThrottler, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    for (const v of message.floorValue) {
+      Coin.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.updatePeriod !== undefined) {
+      Duration.encode(message.updatePeriod, writer.uint32(18).fork()).ldelim();
+    }
+    if (message.targetProposals !== BigInt(0)) {
+      writer.uint32(24).uint64(message.targetProposals);
+    }
+    if (message.increaseRatio !== "") {
+      writer.uint32(34).string(message.increaseRatio);
+    }
+    if (message.decreaseRatio !== "") {
+      writer.uint32(42).string(message.decreaseRatio);
+    }
+    if (message.decreaseSensitivityTargetDistance !== BigInt(0)) {
+      writer.uint32(48).uint64(message.decreaseSensitivityTargetDistance);
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): MinInitialDepositThrottler {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMinInitialDepositThrottler();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.floorValue.push(Coin.decode(reader, reader.uint32()));
+          break;
+        case 2:
+          message.updatePeriod = Duration.decode(reader, reader.uint32());
+          break;
+        case 3:
+          message.targetProposals = reader.uint64();
+          break;
+        case 4:
+          message.increaseRatio = reader.string();
+          break;
+        case 5:
+          message.decreaseRatio = reader.string();
+          break;
+        case 6:
+          message.decreaseSensitivityTargetDistance = reader.uint64();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): MinInitialDepositThrottler {
+    const obj = createBaseMinInitialDepositThrottler();
+    if (Array.isArray(object?.floorValue))
+      obj.floorValue = object.floorValue.map((e: any) => Coin.fromJSON(e));
+    if (isSet(object.updatePeriod)) obj.updatePeriod = Duration.fromJSON(object.updatePeriod);
+    if (isSet(object.targetProposals)) obj.targetProposals = BigInt(object.targetProposals.toString());
+    if (isSet(object.increaseRatio)) obj.increaseRatio = String(object.increaseRatio);
+    if (isSet(object.decreaseRatio)) obj.decreaseRatio = String(object.decreaseRatio);
+    if (isSet(object.decreaseSensitivityTargetDistance))
+      obj.decreaseSensitivityTargetDistance = BigInt(object.decreaseSensitivityTargetDistance.toString());
+    return obj;
+  },
+  toJSON(message: MinInitialDepositThrottler): unknown {
+    const obj: any = {};
+    if (message.floorValue) {
+      obj.floorValue = message.floorValue.map((e) => (e ? Coin.toJSON(e) : undefined));
+    } else {
+      obj.floorValue = [];
+    }
+    message.updatePeriod !== undefined &&
+      (obj.updatePeriod = message.updatePeriod ? Duration.toJSON(message.updatePeriod) : undefined);
+    message.targetProposals !== undefined &&
+      (obj.targetProposals = (message.targetProposals || BigInt(0)).toString());
+    message.increaseRatio !== undefined && (obj.increaseRatio = message.increaseRatio);
+    message.decreaseRatio !== undefined && (obj.decreaseRatio = message.decreaseRatio);
+    message.decreaseSensitivityTargetDistance !== undefined &&
+      (obj.decreaseSensitivityTargetDistance = (
+        message.decreaseSensitivityTargetDistance || BigInt(0)
+      ).toString());
+    return obj;
+  },
+  fromPartial(object: Partial<MinInitialDepositThrottler>): MinInitialDepositThrottler {
+    const message = createBaseMinInitialDepositThrottler();
+    message.floorValue = object.floorValue?.map((e) => Coin.fromPartial(e)) || [];
+    if (object.updatePeriod !== undefined && object.updatePeriod !== null) {
+      message.updatePeriod = Duration.fromPartial(object.updatePeriod);
+    }
+    if (object.targetProposals !== undefined && object.targetProposals !== null) {
+      message.targetProposals = BigInt(object.targetProposals.toString());
+    }
+    message.increaseRatio = object.increaseRatio ?? "";
+    message.decreaseRatio = object.decreaseRatio ?? "";
+    if (
+      object.decreaseSensitivityTargetDistance !== undefined &&
+      object.decreaseSensitivityTargetDistance !== null
+    ) {
+      message.decreaseSensitivityTargetDistance = BigInt(object.decreaseSensitivityTargetDistance.toString());
+    }
+    return message;
+  },
+  fromAmino(object: MinInitialDepositThrottlerAmino): MinInitialDepositThrottler {
+    const message = createBaseMinInitialDepositThrottler();
+    message.floorValue = object.floor_value?.map((e) => Coin.fromAmino(e)) || [];
+    if (object.update_period !== undefined && object.update_period !== null) {
+      message.updatePeriod = Duration.fromAmino(object.update_period);
+    }
+    if (object.target_proposals !== undefined && object.target_proposals !== null) {
+      message.targetProposals = BigInt(object.target_proposals);
+    }
+    if (object.increase_ratio !== undefined && object.increase_ratio !== null) {
+      message.increaseRatio = object.increase_ratio;
+    }
+    if (object.decrease_ratio !== undefined && object.decrease_ratio !== null) {
+      message.decreaseRatio = object.decrease_ratio;
+    }
+    if (
+      object.decrease_sensitivity_target_distance !== undefined &&
+      object.decrease_sensitivity_target_distance !== null
+    ) {
+      message.decreaseSensitivityTargetDistance = BigInt(object.decrease_sensitivity_target_distance);
+    }
+    return message;
+  },
+  toAmino(message: MinInitialDepositThrottler): MinInitialDepositThrottlerAmino {
+    const obj: any = {};
+    if (message.floorValue) {
+      obj.floor_value = message.floorValue.map((e) => (e ? Coin.toAmino(e) : undefined));
+    } else {
+      obj.floor_value = [];
+    }
+    obj.update_period = message.updatePeriod ? Duration.toAmino(message.updatePeriod) : undefined;
+    obj.target_proposals = message.targetProposals ? message.targetProposals.toString() : undefined;
+    obj.increase_ratio = message.increaseRatio;
+    obj.decrease_ratio = message.decreaseRatio;
+    obj.decrease_sensitivity_target_distance = message.decreaseSensitivityTargetDistance
+      ? message.decreaseSensitivityTargetDistance.toString()
+      : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: MinInitialDepositThrottlerAminoMsg): MinInitialDepositThrottler {
+    return MinInitialDepositThrottler.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MinInitialDepositThrottlerProtoMsg): MinInitialDepositThrottler {
+    return MinInitialDepositThrottler.decode(message.value);
+  },
+  toProto(message: MinInitialDepositThrottler): Uint8Array {
+    return MinInitialDepositThrottler.encode(message).finish();
+  },
+  toProtoMsg(message: MinInitialDepositThrottler): MinInitialDepositThrottlerProtoMsg {
+    return {
+      typeUrl: "/atomone.gov.v1.MinInitialDepositThrottler",
+      value: MinInitialDepositThrottler.encode(message).finish(),
+    };
+  },
+};
 function createBaseParams(): Params {
   return {
     minDeposit: [],
@@ -1765,6 +2698,14 @@ function createBaseParams(): Params {
     quorumTimeout: undefined,
     maxVotingPeriodExtension: undefined,
     quorumCheckCount: BigInt(0),
+    minDepositThrottler: undefined,
+    minInitialDepositThrottler: undefined,
+    burnDepositNoThreshold: "",
+    quorumRange: undefined,
+    constitutionAmendmentQuorumRange: undefined,
+    lawQuorumRange: undefined,
+    governorStatusChangePeriod: undefined,
+    minGovernorSelfDelegation: "",
   };
 }
 export const Params = {
@@ -1817,6 +2758,33 @@ export const Params = {
     }
     if (message.quorumCheckCount !== BigInt(0)) {
       writer.uint32(176).uint64(message.quorumCheckCount);
+    }
+    if (message.minDepositThrottler !== undefined) {
+      MinDepositThrottler.encode(message.minDepositThrottler, writer.uint32(186).fork()).ldelim();
+    }
+    if (message.minInitialDepositThrottler !== undefined) {
+      MinInitialDepositThrottler.encode(
+        message.minInitialDepositThrottler,
+        writer.uint32(194).fork(),
+      ).ldelim();
+    }
+    if (message.burnDepositNoThreshold !== "") {
+      writer.uint32(202).string(message.burnDepositNoThreshold);
+    }
+    if (message.quorumRange !== undefined) {
+      QuorumRange.encode(message.quorumRange, writer.uint32(210).fork()).ldelim();
+    }
+    if (message.constitutionAmendmentQuorumRange !== undefined) {
+      QuorumRange.encode(message.constitutionAmendmentQuorumRange, writer.uint32(218).fork()).ldelim();
+    }
+    if (message.lawQuorumRange !== undefined) {
+      QuorumRange.encode(message.lawQuorumRange, writer.uint32(226).fork()).ldelim();
+    }
+    if (message.governorStatusChangePeriod !== undefined) {
+      Duration.encode(message.governorStatusChangePeriod, writer.uint32(234).fork()).ldelim();
+    }
+    if (message.minGovernorSelfDelegation !== "") {
+      writer.uint32(242).string(message.minGovernorSelfDelegation);
     }
     return writer;
   },
@@ -1875,6 +2843,30 @@ export const Params = {
         case 22:
           message.quorumCheckCount = reader.uint64();
           break;
+        case 23:
+          message.minDepositThrottler = MinDepositThrottler.decode(reader, reader.uint32());
+          break;
+        case 24:
+          message.minInitialDepositThrottler = MinInitialDepositThrottler.decode(reader, reader.uint32());
+          break;
+        case 25:
+          message.burnDepositNoThreshold = reader.string();
+          break;
+        case 26:
+          message.quorumRange = QuorumRange.decode(reader, reader.uint32());
+          break;
+        case 27:
+          message.constitutionAmendmentQuorumRange = QuorumRange.decode(reader, reader.uint32());
+          break;
+        case 28:
+          message.lawQuorumRange = QuorumRange.decode(reader, reader.uint32());
+          break;
+        case 29:
+          message.governorStatusChangePeriod = Duration.decode(reader, reader.uint32());
+          break;
+        case 30:
+          message.minGovernorSelfDelegation = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1906,6 +2898,20 @@ export const Params = {
     if (isSet(object.maxVotingPeriodExtension))
       obj.maxVotingPeriodExtension = Duration.fromJSON(object.maxVotingPeriodExtension);
     if (isSet(object.quorumCheckCount)) obj.quorumCheckCount = BigInt(object.quorumCheckCount.toString());
+    if (isSet(object.minDepositThrottler))
+      obj.minDepositThrottler = MinDepositThrottler.fromJSON(object.minDepositThrottler);
+    if (isSet(object.minInitialDepositThrottler))
+      obj.minInitialDepositThrottler = MinInitialDepositThrottler.fromJSON(object.minInitialDepositThrottler);
+    if (isSet(object.burnDepositNoThreshold))
+      obj.burnDepositNoThreshold = String(object.burnDepositNoThreshold);
+    if (isSet(object.quorumRange)) obj.quorumRange = QuorumRange.fromJSON(object.quorumRange);
+    if (isSet(object.constitutionAmendmentQuorumRange))
+      obj.constitutionAmendmentQuorumRange = QuorumRange.fromJSON(object.constitutionAmendmentQuorumRange);
+    if (isSet(object.lawQuorumRange)) obj.lawQuorumRange = QuorumRange.fromJSON(object.lawQuorumRange);
+    if (isSet(object.governorStatusChangePeriod))
+      obj.governorStatusChangePeriod = Duration.fromJSON(object.governorStatusChangePeriod);
+    if (isSet(object.minGovernorSelfDelegation))
+      obj.minGovernorSelfDelegation = String(object.minGovernorSelfDelegation);
     return obj;
   },
   toJSON(message: Params): unknown {
@@ -1943,6 +2949,30 @@ export const Params = {
         : undefined);
     message.quorumCheckCount !== undefined &&
       (obj.quorumCheckCount = (message.quorumCheckCount || BigInt(0)).toString());
+    message.minDepositThrottler !== undefined &&
+      (obj.minDepositThrottler = message.minDepositThrottler
+        ? MinDepositThrottler.toJSON(message.minDepositThrottler)
+        : undefined);
+    message.minInitialDepositThrottler !== undefined &&
+      (obj.minInitialDepositThrottler = message.minInitialDepositThrottler
+        ? MinInitialDepositThrottler.toJSON(message.minInitialDepositThrottler)
+        : undefined);
+    message.burnDepositNoThreshold !== undefined &&
+      (obj.burnDepositNoThreshold = message.burnDepositNoThreshold);
+    message.quorumRange !== undefined &&
+      (obj.quorumRange = message.quorumRange ? QuorumRange.toJSON(message.quorumRange) : undefined);
+    message.constitutionAmendmentQuorumRange !== undefined &&
+      (obj.constitutionAmendmentQuorumRange = message.constitutionAmendmentQuorumRange
+        ? QuorumRange.toJSON(message.constitutionAmendmentQuorumRange)
+        : undefined);
+    message.lawQuorumRange !== undefined &&
+      (obj.lawQuorumRange = message.lawQuorumRange ? QuorumRange.toJSON(message.lawQuorumRange) : undefined);
+    message.governorStatusChangePeriod !== undefined &&
+      (obj.governorStatusChangePeriod = message.governorStatusChangePeriod
+        ? Duration.toJSON(message.governorStatusChangePeriod)
+        : undefined);
+    message.minGovernorSelfDelegation !== undefined &&
+      (obj.minGovernorSelfDelegation = message.minGovernorSelfDelegation);
     return obj;
   },
   fromPartial(object: Partial<Params>): Params {
@@ -1973,6 +3003,33 @@ export const Params = {
     if (object.quorumCheckCount !== undefined && object.quorumCheckCount !== null) {
       message.quorumCheckCount = BigInt(object.quorumCheckCount.toString());
     }
+    if (object.minDepositThrottler !== undefined && object.minDepositThrottler !== null) {
+      message.minDepositThrottler = MinDepositThrottler.fromPartial(object.minDepositThrottler);
+    }
+    if (object.minInitialDepositThrottler !== undefined && object.minInitialDepositThrottler !== null) {
+      message.minInitialDepositThrottler = MinInitialDepositThrottler.fromPartial(
+        object.minInitialDepositThrottler,
+      );
+    }
+    message.burnDepositNoThreshold = object.burnDepositNoThreshold ?? "";
+    if (object.quorumRange !== undefined && object.quorumRange !== null) {
+      message.quorumRange = QuorumRange.fromPartial(object.quorumRange);
+    }
+    if (
+      object.constitutionAmendmentQuorumRange !== undefined &&
+      object.constitutionAmendmentQuorumRange !== null
+    ) {
+      message.constitutionAmendmentQuorumRange = QuorumRange.fromPartial(
+        object.constitutionAmendmentQuorumRange,
+      );
+    }
+    if (object.lawQuorumRange !== undefined && object.lawQuorumRange !== null) {
+      message.lawQuorumRange = QuorumRange.fromPartial(object.lawQuorumRange);
+    }
+    if (object.governorStatusChangePeriod !== undefined && object.governorStatusChangePeriod !== null) {
+      message.governorStatusChangePeriod = Duration.fromPartial(object.governorStatusChangePeriod);
+    }
+    message.minGovernorSelfDelegation = object.minGovernorSelfDelegation ?? "";
     return message;
   },
   fromAmino(object: ParamsAmino): Params {
@@ -2026,6 +3083,37 @@ export const Params = {
     if (object.quorum_check_count !== undefined && object.quorum_check_count !== null) {
       message.quorumCheckCount = BigInt(object.quorum_check_count);
     }
+    if (object.min_deposit_throttler !== undefined && object.min_deposit_throttler !== null) {
+      message.minDepositThrottler = MinDepositThrottler.fromAmino(object.min_deposit_throttler);
+    }
+    if (object.min_initial_deposit_throttler !== undefined && object.min_initial_deposit_throttler !== null) {
+      message.minInitialDepositThrottler = MinInitialDepositThrottler.fromAmino(
+        object.min_initial_deposit_throttler,
+      );
+    }
+    if (object.burn_deposit_no_threshold !== undefined && object.burn_deposit_no_threshold !== null) {
+      message.burnDepositNoThreshold = object.burn_deposit_no_threshold;
+    }
+    if (object.quorum_range !== undefined && object.quorum_range !== null) {
+      message.quorumRange = QuorumRange.fromAmino(object.quorum_range);
+    }
+    if (
+      object.constitution_amendment_quorum_range !== undefined &&
+      object.constitution_amendment_quorum_range !== null
+    ) {
+      message.constitutionAmendmentQuorumRange = QuorumRange.fromAmino(
+        object.constitution_amendment_quorum_range,
+      );
+    }
+    if (object.law_quorum_range !== undefined && object.law_quorum_range !== null) {
+      message.lawQuorumRange = QuorumRange.fromAmino(object.law_quorum_range);
+    }
+    if (object.governor_status_change_period !== undefined && object.governor_status_change_period !== null) {
+      message.governorStatusChangePeriod = Duration.fromAmino(object.governor_status_change_period);
+    }
+    if (object.min_governor_self_delegation !== undefined && object.min_governor_self_delegation !== null) {
+      message.minGovernorSelfDelegation = object.min_governor_self_delegation;
+    }
     return message;
   },
   toAmino(message: Params): ParamsAmino {
@@ -2054,6 +3142,22 @@ export const Params = {
       ? Duration.toAmino(message.maxVotingPeriodExtension)
       : undefined;
     obj.quorum_check_count = message.quorumCheckCount ? message.quorumCheckCount.toString() : undefined;
+    obj.min_deposit_throttler = message.minDepositThrottler
+      ? MinDepositThrottler.toAmino(message.minDepositThrottler)
+      : undefined;
+    obj.min_initial_deposit_throttler = message.minInitialDepositThrottler
+      ? MinInitialDepositThrottler.toAmino(message.minInitialDepositThrottler)
+      : undefined;
+    obj.burn_deposit_no_threshold = message.burnDepositNoThreshold;
+    obj.quorum_range = message.quorumRange ? QuorumRange.toAmino(message.quorumRange) : undefined;
+    obj.constitution_amendment_quorum_range = message.constitutionAmendmentQuorumRange
+      ? QuorumRange.toAmino(message.constitutionAmendmentQuorumRange)
+      : undefined;
+    obj.law_quorum_range = message.lawQuorumRange ? QuorumRange.toAmino(message.lawQuorumRange) : undefined;
+    obj.governor_status_change_period = message.governorStatusChangePeriod
+      ? Duration.toAmino(message.governorStatusChangePeriod)
+      : undefined;
+    obj.min_governor_self_delegation = message.minGovernorSelfDelegation;
     return obj;
   },
   fromAminoMsg(object: ParamsAminoMsg): Params {
@@ -2069,6 +3173,536 @@ export const Params = {
     return {
       typeUrl: "/atomone.gov.v1.Params",
       value: Params.encode(message).finish(),
+    };
+  },
+};
+function createBaseQuorumRange(): QuorumRange {
+  return {
+    max: "",
+    min: "",
+  };
+}
+export const QuorumRange = {
+  typeUrl: "/atomone.gov.v1.QuorumRange",
+  encode(message: QuorumRange, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.max !== "") {
+      writer.uint32(10).string(message.max);
+    }
+    if (message.min !== "") {
+      writer.uint32(18).string(message.min);
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): QuorumRange {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQuorumRange();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.max = reader.string();
+          break;
+        case 2:
+          message.min = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): QuorumRange {
+    const obj = createBaseQuorumRange();
+    if (isSet(object.max)) obj.max = String(object.max);
+    if (isSet(object.min)) obj.min = String(object.min);
+    return obj;
+  },
+  toJSON(message: QuorumRange): unknown {
+    const obj: any = {};
+    message.max !== undefined && (obj.max = message.max);
+    message.min !== undefined && (obj.min = message.min);
+    return obj;
+  },
+  fromPartial(object: Partial<QuorumRange>): QuorumRange {
+    const message = createBaseQuorumRange();
+    message.max = object.max ?? "";
+    message.min = object.min ?? "";
+    return message;
+  },
+  fromAmino(object: QuorumRangeAmino): QuorumRange {
+    const message = createBaseQuorumRange();
+    if (object.max !== undefined && object.max !== null) {
+      message.max = object.max;
+    }
+    if (object.min !== undefined && object.min !== null) {
+      message.min = object.min;
+    }
+    return message;
+  },
+  toAmino(message: QuorumRange): QuorumRangeAmino {
+    const obj: any = {};
+    obj.max = message.max;
+    obj.min = message.min;
+    return obj;
+  },
+  fromAminoMsg(object: QuorumRangeAminoMsg): QuorumRange {
+    return QuorumRange.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QuorumRangeProtoMsg): QuorumRange {
+    return QuorumRange.decode(message.value);
+  },
+  toProto(message: QuorumRange): Uint8Array {
+    return QuorumRange.encode(message).finish();
+  },
+  toProtoMsg(message: QuorumRange): QuorumRangeProtoMsg {
+    return {
+      typeUrl: "/atomone.gov.v1.QuorumRange",
+      value: QuorumRange.encode(message).finish(),
+    };
+  },
+};
+function createBaseGovernor(): Governor {
+  return {
+    governorAddress: "",
+    status: 0,
+    description: GovernorDescription.fromPartial({}),
+    lastStatusChangeTime: undefined,
+  };
+}
+export const Governor = {
+  typeUrl: "/atomone.gov.v1.Governor",
+  encode(message: Governor, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.governorAddress !== "") {
+      writer.uint32(10).string(message.governorAddress);
+    }
+    if (message.status !== 0) {
+      writer.uint32(16).int32(message.status);
+    }
+    if (message.description !== undefined) {
+      GovernorDescription.encode(message.description, writer.uint32(26).fork()).ldelim();
+    }
+    if (message.lastStatusChangeTime !== undefined) {
+      Timestamp.encode(message.lastStatusChangeTime, writer.uint32(34).fork()).ldelim();
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): Governor {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGovernor();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.governorAddress = reader.string();
+          break;
+        case 2:
+          message.status = reader.int32() as any;
+          break;
+        case 3:
+          message.description = GovernorDescription.decode(reader, reader.uint32());
+          break;
+        case 4:
+          message.lastStatusChangeTime = Timestamp.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): Governor {
+    const obj = createBaseGovernor();
+    if (isSet(object.governorAddress)) obj.governorAddress = String(object.governorAddress);
+    if (isSet(object.status)) obj.status = governorStatusFromJSON(object.status);
+    if (isSet(object.description)) obj.description = GovernorDescription.fromJSON(object.description);
+    if (isSet(object.lastStatusChangeTime))
+      obj.lastStatusChangeTime = fromJsonTimestamp(object.lastStatusChangeTime);
+    return obj;
+  },
+  toJSON(message: Governor): unknown {
+    const obj: any = {};
+    message.governorAddress !== undefined && (obj.governorAddress = message.governorAddress);
+    message.status !== undefined && (obj.status = governorStatusToJSON(message.status));
+    message.description !== undefined &&
+      (obj.description = message.description ? GovernorDescription.toJSON(message.description) : undefined);
+    message.lastStatusChangeTime !== undefined &&
+      (obj.lastStatusChangeTime = fromTimestamp(message.lastStatusChangeTime).toISOString());
+    return obj;
+  },
+  fromPartial(object: Partial<Governor>): Governor {
+    const message = createBaseGovernor();
+    message.governorAddress = object.governorAddress ?? "";
+    message.status = object.status ?? 0;
+    if (object.description !== undefined && object.description !== null) {
+      message.description = GovernorDescription.fromPartial(object.description);
+    }
+    if (object.lastStatusChangeTime !== undefined && object.lastStatusChangeTime !== null) {
+      message.lastStatusChangeTime = Timestamp.fromPartial(object.lastStatusChangeTime);
+    }
+    return message;
+  },
+  fromAmino(object: GovernorAmino): Governor {
+    const message = createBaseGovernor();
+    if (object.governor_address !== undefined && object.governor_address !== null) {
+      message.governorAddress = object.governor_address;
+    }
+    if (object.status !== undefined && object.status !== null) {
+      message.status = governorStatusFromJSON(object.status);
+    }
+    if (object.description !== undefined && object.description !== null) {
+      message.description = GovernorDescription.fromAmino(object.description);
+    }
+    if (object.last_status_change_time !== undefined && object.last_status_change_time !== null) {
+      message.lastStatusChangeTime = Timestamp.fromAmino(object.last_status_change_time);
+    }
+    return message;
+  },
+  toAmino(message: Governor): GovernorAmino {
+    const obj: any = {};
+    obj.governor_address = message.governorAddress;
+    obj.status = message.status;
+    obj.description = message.description
+      ? GovernorDescription.toAmino(message.description)
+      : GovernorDescription.fromPartial({});
+    obj.last_status_change_time = message.lastStatusChangeTime
+      ? Timestamp.toAmino(message.lastStatusChangeTime)
+      : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: GovernorAminoMsg): Governor {
+    return Governor.fromAmino(object.value);
+  },
+  fromProtoMsg(message: GovernorProtoMsg): Governor {
+    return Governor.decode(message.value);
+  },
+  toProto(message: Governor): Uint8Array {
+    return Governor.encode(message).finish();
+  },
+  toProtoMsg(message: Governor): GovernorProtoMsg {
+    return {
+      typeUrl: "/atomone.gov.v1.Governor",
+      value: Governor.encode(message).finish(),
+    };
+  },
+};
+function createBaseGovernorDescription(): GovernorDescription {
+  return {
+    moniker: "",
+    identity: "",
+    website: "",
+    securityContact: "",
+    details: "",
+  };
+}
+export const GovernorDescription = {
+  typeUrl: "/atomone.gov.v1.GovernorDescription",
+  encode(message: GovernorDescription, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.moniker !== "") {
+      writer.uint32(10).string(message.moniker);
+    }
+    if (message.identity !== "") {
+      writer.uint32(18).string(message.identity);
+    }
+    if (message.website !== "") {
+      writer.uint32(26).string(message.website);
+    }
+    if (message.securityContact !== "") {
+      writer.uint32(34).string(message.securityContact);
+    }
+    if (message.details !== "") {
+      writer.uint32(42).string(message.details);
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): GovernorDescription {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGovernorDescription();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.moniker = reader.string();
+          break;
+        case 2:
+          message.identity = reader.string();
+          break;
+        case 3:
+          message.website = reader.string();
+          break;
+        case 4:
+          message.securityContact = reader.string();
+          break;
+        case 5:
+          message.details = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): GovernorDescription {
+    const obj = createBaseGovernorDescription();
+    if (isSet(object.moniker)) obj.moniker = String(object.moniker);
+    if (isSet(object.identity)) obj.identity = String(object.identity);
+    if (isSet(object.website)) obj.website = String(object.website);
+    if (isSet(object.securityContact)) obj.securityContact = String(object.securityContact);
+    if (isSet(object.details)) obj.details = String(object.details);
+    return obj;
+  },
+  toJSON(message: GovernorDescription): unknown {
+    const obj: any = {};
+    message.moniker !== undefined && (obj.moniker = message.moniker);
+    message.identity !== undefined && (obj.identity = message.identity);
+    message.website !== undefined && (obj.website = message.website);
+    message.securityContact !== undefined && (obj.securityContact = message.securityContact);
+    message.details !== undefined && (obj.details = message.details);
+    return obj;
+  },
+  fromPartial(object: Partial<GovernorDescription>): GovernorDescription {
+    const message = createBaseGovernorDescription();
+    message.moniker = object.moniker ?? "";
+    message.identity = object.identity ?? "";
+    message.website = object.website ?? "";
+    message.securityContact = object.securityContact ?? "";
+    message.details = object.details ?? "";
+    return message;
+  },
+  fromAmino(object: GovernorDescriptionAmino): GovernorDescription {
+    const message = createBaseGovernorDescription();
+    if (object.moniker !== undefined && object.moniker !== null) {
+      message.moniker = object.moniker;
+    }
+    if (object.identity !== undefined && object.identity !== null) {
+      message.identity = object.identity;
+    }
+    if (object.website !== undefined && object.website !== null) {
+      message.website = object.website;
+    }
+    if (object.security_contact !== undefined && object.security_contact !== null) {
+      message.securityContact = object.security_contact;
+    }
+    if (object.details !== undefined && object.details !== null) {
+      message.details = object.details;
+    }
+    return message;
+  },
+  toAmino(message: GovernorDescription): GovernorDescriptionAmino {
+    const obj: any = {};
+    obj.moniker = message.moniker;
+    obj.identity = message.identity;
+    obj.website = message.website;
+    obj.security_contact = message.securityContact;
+    obj.details = message.details;
+    return obj;
+  },
+  fromAminoMsg(object: GovernorDescriptionAminoMsg): GovernorDescription {
+    return GovernorDescription.fromAmino(object.value);
+  },
+  fromProtoMsg(message: GovernorDescriptionProtoMsg): GovernorDescription {
+    return GovernorDescription.decode(message.value);
+  },
+  toProto(message: GovernorDescription): Uint8Array {
+    return GovernorDescription.encode(message).finish();
+  },
+  toProtoMsg(message: GovernorDescription): GovernorDescriptionProtoMsg {
+    return {
+      typeUrl: "/atomone.gov.v1.GovernorDescription",
+      value: GovernorDescription.encode(message).finish(),
+    };
+  },
+};
+function createBaseGovernorValShares(): GovernorValShares {
+  return {
+    governorAddress: "",
+    validatorAddress: "",
+    shares: "",
+  };
+}
+export const GovernorValShares = {
+  typeUrl: "/atomone.gov.v1.GovernorValShares",
+  encode(message: GovernorValShares, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.governorAddress !== "") {
+      writer.uint32(10).string(message.governorAddress);
+    }
+    if (message.validatorAddress !== "") {
+      writer.uint32(18).string(message.validatorAddress);
+    }
+    if (message.shares !== "") {
+      writer.uint32(26).string(message.shares);
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): GovernorValShares {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGovernorValShares();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.governorAddress = reader.string();
+          break;
+        case 2:
+          message.validatorAddress = reader.string();
+          break;
+        case 3:
+          message.shares = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): GovernorValShares {
+    const obj = createBaseGovernorValShares();
+    if (isSet(object.governorAddress)) obj.governorAddress = String(object.governorAddress);
+    if (isSet(object.validatorAddress)) obj.validatorAddress = String(object.validatorAddress);
+    if (isSet(object.shares)) obj.shares = String(object.shares);
+    return obj;
+  },
+  toJSON(message: GovernorValShares): unknown {
+    const obj: any = {};
+    message.governorAddress !== undefined && (obj.governorAddress = message.governorAddress);
+    message.validatorAddress !== undefined && (obj.validatorAddress = message.validatorAddress);
+    message.shares !== undefined && (obj.shares = message.shares);
+    return obj;
+  },
+  fromPartial(object: Partial<GovernorValShares>): GovernorValShares {
+    const message = createBaseGovernorValShares();
+    message.governorAddress = object.governorAddress ?? "";
+    message.validatorAddress = object.validatorAddress ?? "";
+    message.shares = object.shares ?? "";
+    return message;
+  },
+  fromAmino(object: GovernorValSharesAmino): GovernorValShares {
+    const message = createBaseGovernorValShares();
+    if (object.governor_address !== undefined && object.governor_address !== null) {
+      message.governorAddress = object.governor_address;
+    }
+    if (object.validator_address !== undefined && object.validator_address !== null) {
+      message.validatorAddress = object.validator_address;
+    }
+    if (object.shares !== undefined && object.shares !== null) {
+      message.shares = object.shares;
+    }
+    return message;
+  },
+  toAmino(message: GovernorValShares): GovernorValSharesAmino {
+    const obj: any = {};
+    obj.governor_address = message.governorAddress;
+    obj.validator_address = message.validatorAddress;
+    obj.shares = message.shares;
+    return obj;
+  },
+  fromAminoMsg(object: GovernorValSharesAminoMsg): GovernorValShares {
+    return GovernorValShares.fromAmino(object.value);
+  },
+  fromProtoMsg(message: GovernorValSharesProtoMsg): GovernorValShares {
+    return GovernorValShares.decode(message.value);
+  },
+  toProto(message: GovernorValShares): Uint8Array {
+    return GovernorValShares.encode(message).finish();
+  },
+  toProtoMsg(message: GovernorValShares): GovernorValSharesProtoMsg {
+    return {
+      typeUrl: "/atomone.gov.v1.GovernorValShares",
+      value: GovernorValShares.encode(message).finish(),
+    };
+  },
+};
+function createBaseGovernanceDelegation(): GovernanceDelegation {
+  return {
+    delegatorAddress: "",
+    governorAddress: "",
+  };
+}
+export const GovernanceDelegation = {
+  typeUrl: "/atomone.gov.v1.GovernanceDelegation",
+  encode(message: GovernanceDelegation, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.delegatorAddress !== "") {
+      writer.uint32(10).string(message.delegatorAddress);
+    }
+    if (message.governorAddress !== "") {
+      writer.uint32(18).string(message.governorAddress);
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): GovernanceDelegation {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGovernanceDelegation();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.delegatorAddress = reader.string();
+          break;
+        case 2:
+          message.governorAddress = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): GovernanceDelegation {
+    const obj = createBaseGovernanceDelegation();
+    if (isSet(object.delegatorAddress)) obj.delegatorAddress = String(object.delegatorAddress);
+    if (isSet(object.governorAddress)) obj.governorAddress = String(object.governorAddress);
+    return obj;
+  },
+  toJSON(message: GovernanceDelegation): unknown {
+    const obj: any = {};
+    message.delegatorAddress !== undefined && (obj.delegatorAddress = message.delegatorAddress);
+    message.governorAddress !== undefined && (obj.governorAddress = message.governorAddress);
+    return obj;
+  },
+  fromPartial(object: Partial<GovernanceDelegation>): GovernanceDelegation {
+    const message = createBaseGovernanceDelegation();
+    message.delegatorAddress = object.delegatorAddress ?? "";
+    message.governorAddress = object.governorAddress ?? "";
+    return message;
+  },
+  fromAmino(object: GovernanceDelegationAmino): GovernanceDelegation {
+    const message = createBaseGovernanceDelegation();
+    if (object.delegator_address !== undefined && object.delegator_address !== null) {
+      message.delegatorAddress = object.delegator_address;
+    }
+    if (object.governor_address !== undefined && object.governor_address !== null) {
+      message.governorAddress = object.governor_address;
+    }
+    return message;
+  },
+  toAmino(message: GovernanceDelegation): GovernanceDelegationAmino {
+    const obj: any = {};
+    obj.delegator_address = message.delegatorAddress;
+    obj.governor_address = message.governorAddress;
+    return obj;
+  },
+  fromAminoMsg(object: GovernanceDelegationAminoMsg): GovernanceDelegation {
+    return GovernanceDelegation.fromAmino(object.value);
+  },
+  fromProtoMsg(message: GovernanceDelegationProtoMsg): GovernanceDelegation {
+    return GovernanceDelegation.decode(message.value);
+  },
+  toProto(message: GovernanceDelegation): Uint8Array {
+    return GovernanceDelegation.encode(message).finish();
+  },
+  toProtoMsg(message: GovernanceDelegation): GovernanceDelegationProtoMsg {
+    return {
+      typeUrl: "/atomone.gov.v1.GovernanceDelegation",
+      value: GovernanceDelegation.encode(message).finish(),
     };
   },
 };

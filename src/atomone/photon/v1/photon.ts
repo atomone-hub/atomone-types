@@ -1,0 +1,128 @@
+/* eslint-disable */
+import { BinaryReader, BinaryWriter } from "../../../binary";
+import { isSet } from "../../../helpers";
+export const protobufPackage = "atomone.photon.v1";
+/** Params defines the parameters for the x/photon module. */
+export interface Params {
+  /** Allow to mint photon or not */
+  mintDisabled: boolean;
+  /**
+   * tx_fee_exceptions holds the msg type urls that are allowed to use some
+   * different tx fee coins than photon.
+   * A wildcard "*" can be used to allow all transactions to use any fee denom.
+   */
+  txFeeExceptions: string[];
+}
+export interface ParamsProtoMsg {
+  typeUrl: "/atomone.photon.v1.Params";
+  value: Uint8Array;
+}
+/** Params defines the parameters for the x/photon module. */
+export interface ParamsAmino {
+  /** Allow to mint photon or not */
+  mint_disabled?: boolean;
+  /**
+   * tx_fee_exceptions holds the msg type urls that are allowed to use some
+   * different tx fee coins than photon.
+   * A wildcard "*" can be used to allow all transactions to use any fee denom.
+   */
+  tx_fee_exceptions?: string[];
+}
+export interface ParamsAminoMsg {
+  type: "/atomone.photon.v1.Params";
+  value: ParamsAmino;
+}
+function createBaseParams(): Params {
+  return {
+    mintDisabled: false,
+    txFeeExceptions: [],
+  };
+}
+export const Params = {
+  typeUrl: "/atomone.photon.v1.Params",
+  encode(message: Params, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.mintDisabled === true) {
+      writer.uint32(8).bool(message.mintDisabled);
+    }
+    for (const v of message.txFeeExceptions) {
+      writer.uint32(18).string(v!);
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): Params {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseParams();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.mintDisabled = reader.bool();
+          break;
+        case 2:
+          message.txFeeExceptions.push(reader.string());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): Params {
+    const obj = createBaseParams();
+    if (isSet(object.mintDisabled)) obj.mintDisabled = Boolean(object.mintDisabled);
+    if (Array.isArray(object?.txFeeExceptions))
+      obj.txFeeExceptions = object.txFeeExceptions.map((e: any) => String(e));
+    return obj;
+  },
+  toJSON(message: Params): unknown {
+    const obj: any = {};
+    message.mintDisabled !== undefined && (obj.mintDisabled = message.mintDisabled);
+    if (message.txFeeExceptions) {
+      obj.txFeeExceptions = message.txFeeExceptions.map((e) => e);
+    } else {
+      obj.txFeeExceptions = [];
+    }
+    return obj;
+  },
+  fromPartial(object: Partial<Params>): Params {
+    const message = createBaseParams();
+    message.mintDisabled = object.mintDisabled ?? false;
+    message.txFeeExceptions = object.txFeeExceptions?.map((e) => e) || [];
+    return message;
+  },
+  fromAmino(object: ParamsAmino): Params {
+    const message = createBaseParams();
+    if (object.mint_disabled !== undefined && object.mint_disabled !== null) {
+      message.mintDisabled = object.mint_disabled;
+    }
+    message.txFeeExceptions = object.tx_fee_exceptions?.map((e) => e) || [];
+    return message;
+  },
+  toAmino(message: Params): ParamsAmino {
+    const obj: any = {};
+    obj.mint_disabled = message.mintDisabled;
+    if (message.txFeeExceptions) {
+      obj.tx_fee_exceptions = message.txFeeExceptions.map((e) => e);
+    } else {
+      obj.tx_fee_exceptions = [];
+    }
+    return obj;
+  },
+  fromAminoMsg(object: ParamsAminoMsg): Params {
+    return Params.fromAmino(object.value);
+  },
+  fromProtoMsg(message: ParamsProtoMsg): Params {
+    return Params.decode(message.value);
+  },
+  toProto(message: Params): Uint8Array {
+    return Params.encode(message).finish();
+  },
+  toProtoMsg(message: Params): ParamsProtoMsg {
+    return {
+      typeUrl: "/atomone.photon.v1.Params",
+      value: Params.encode(message).finish(),
+    };
+  },
+};

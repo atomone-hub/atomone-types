@@ -9,6 +9,7 @@ import {
   MsgUndelegate,
   MsgCancelUnbondingDelegation,
   MsgUpdateParams,
+  MsgRotateConsPubKey,
 } from "./tx";
 export const registry: ReadonlyArray<[string, TelescopeGeneratedType<any, any, any>]> = [
   ["/cosmos.staking.v1beta1.MsgCreateValidator", MsgCreateValidator],
@@ -18,6 +19,7 @@ export const registry: ReadonlyArray<[string, TelescopeGeneratedType<any, any, a
   ["/cosmos.staking.v1beta1.MsgUndelegate", MsgUndelegate],
   ["/cosmos.staking.v1beta1.MsgCancelUnbondingDelegation", MsgCancelUnbondingDelegation],
   ["/cosmos.staking.v1beta1.MsgUpdateParams", MsgUpdateParams],
+  ["/cosmos.staking.v1beta1.MsgRotateConsPubKey", MsgRotateConsPubKey],
 ];
 export const load = (protoRegistry: Registry) => {
   registry.forEach(([typeUrl, mod]) => {
@@ -68,6 +70,12 @@ export const MessageComposer = {
         value: MsgUpdateParams.encode(value).finish(),
       };
     },
+    rotateConsPubKey(value: MsgRotateConsPubKey) {
+      return {
+        typeUrl: "/cosmos.staking.v1beta1.MsgRotateConsPubKey",
+        value: MsgRotateConsPubKey.encode(value).finish(),
+      };
+    },
   },
   withTypeUrl: {
     createValidator(value: MsgCreateValidator) {
@@ -109,6 +117,12 @@ export const MessageComposer = {
     updateParams(value: MsgUpdateParams) {
       return {
         typeUrl: "/cosmos.staking.v1beta1.MsgUpdateParams",
+        value,
+      };
+    },
+    rotateConsPubKey(value: MsgRotateConsPubKey) {
+      return {
+        typeUrl: "/cosmos.staking.v1beta1.MsgRotateConsPubKey",
         value,
       };
     },
@@ -156,6 +170,12 @@ export const MessageComposer = {
         value: MsgUpdateParams.toJSON(value),
       };
     },
+    rotateConsPubKey(value: MsgRotateConsPubKey) {
+      return {
+        typeUrl: "/cosmos.staking.v1beta1.MsgRotateConsPubKey",
+        value: MsgRotateConsPubKey.toJSON(value),
+      };
+    },
   },
   fromJSON: {
     createValidator(value: any) {
@@ -200,6 +220,12 @@ export const MessageComposer = {
         value: MsgUpdateParams.fromJSON(value),
       };
     },
+    rotateConsPubKey(value: any) {
+      return {
+        typeUrl: "/cosmos.staking.v1beta1.MsgRotateConsPubKey",
+        value: MsgRotateConsPubKey.fromJSON(value),
+      };
+    },
   },
   fromPartial: {
     createValidator(value: MsgCreateValidator) {
@@ -242,6 +268,12 @@ export const MessageComposer = {
       return {
         typeUrl: "/cosmos.staking.v1beta1.MsgUpdateParams",
         value: MsgUpdateParams.fromPartial(value),
+      };
+    },
+    rotateConsPubKey(value: MsgRotateConsPubKey) {
+      return {
+        typeUrl: "/cosmos.staking.v1beta1.MsgRotateConsPubKey",
+        value: MsgRotateConsPubKey.fromPartial(value),
       };
     },
   },

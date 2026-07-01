@@ -10,6 +10,11 @@ import {
   MsgUpdateParams,
   MsgProposeLaw,
   MsgProposeConstitutionAmendment,
+  MsgCreateGovernor,
+  MsgEditGovernor,
+  MsgUpdateGovernorStatus,
+  MsgDelegateGovernor,
+  MsgUndelegateGovernor,
 } from "./tx";
 export const registry: ReadonlyArray<[string, TelescopeGeneratedType<any, any, any>]> = [
   ["/atomone.gov.v1.MsgSubmitProposal", MsgSubmitProposal],
@@ -20,6 +25,11 @@ export const registry: ReadonlyArray<[string, TelescopeGeneratedType<any, any, a
   ["/atomone.gov.v1.MsgUpdateParams", MsgUpdateParams],
   ["/atomone.gov.v1.MsgProposeLaw", MsgProposeLaw],
   ["/atomone.gov.v1.MsgProposeConstitutionAmendment", MsgProposeConstitutionAmendment],
+  ["/atomone.gov.v1.MsgCreateGovernor", MsgCreateGovernor],
+  ["/atomone.gov.v1.MsgEditGovernor", MsgEditGovernor],
+  ["/atomone.gov.v1.MsgUpdateGovernorStatus", MsgUpdateGovernorStatus],
+  ["/atomone.gov.v1.MsgDelegateGovernor", MsgDelegateGovernor],
+  ["/atomone.gov.v1.MsgUndelegateGovernor", MsgUndelegateGovernor],
 ];
 export const load = (protoRegistry: Registry) => {
   registry.forEach(([typeUrl, mod]) => {
@@ -76,6 +86,36 @@ export const MessageComposer = {
         value: MsgProposeConstitutionAmendment.encode(value).finish(),
       };
     },
+    createGovernor(value: MsgCreateGovernor) {
+      return {
+        typeUrl: "/atomone.gov.v1.MsgCreateGovernor",
+        value: MsgCreateGovernor.encode(value).finish(),
+      };
+    },
+    editGovernor(value: MsgEditGovernor) {
+      return {
+        typeUrl: "/atomone.gov.v1.MsgEditGovernor",
+        value: MsgEditGovernor.encode(value).finish(),
+      };
+    },
+    updateGovernorStatus(value: MsgUpdateGovernorStatus) {
+      return {
+        typeUrl: "/atomone.gov.v1.MsgUpdateGovernorStatus",
+        value: MsgUpdateGovernorStatus.encode(value).finish(),
+      };
+    },
+    delegateGovernor(value: MsgDelegateGovernor) {
+      return {
+        typeUrl: "/atomone.gov.v1.MsgDelegateGovernor",
+        value: MsgDelegateGovernor.encode(value).finish(),
+      };
+    },
+    undelegateGovernor(value: MsgUndelegateGovernor) {
+      return {
+        typeUrl: "/atomone.gov.v1.MsgUndelegateGovernor",
+        value: MsgUndelegateGovernor.encode(value).finish(),
+      };
+    },
   },
   withTypeUrl: {
     submitProposal(value: MsgSubmitProposal) {
@@ -123,6 +163,36 @@ export const MessageComposer = {
     proposeConstitutionAmendment(value: MsgProposeConstitutionAmendment) {
       return {
         typeUrl: "/atomone.gov.v1.MsgProposeConstitutionAmendment",
+        value,
+      };
+    },
+    createGovernor(value: MsgCreateGovernor) {
+      return {
+        typeUrl: "/atomone.gov.v1.MsgCreateGovernor",
+        value,
+      };
+    },
+    editGovernor(value: MsgEditGovernor) {
+      return {
+        typeUrl: "/atomone.gov.v1.MsgEditGovernor",
+        value,
+      };
+    },
+    updateGovernorStatus(value: MsgUpdateGovernorStatus) {
+      return {
+        typeUrl: "/atomone.gov.v1.MsgUpdateGovernorStatus",
+        value,
+      };
+    },
+    delegateGovernor(value: MsgDelegateGovernor) {
+      return {
+        typeUrl: "/atomone.gov.v1.MsgDelegateGovernor",
+        value,
+      };
+    },
+    undelegateGovernor(value: MsgUndelegateGovernor) {
+      return {
+        typeUrl: "/atomone.gov.v1.MsgUndelegateGovernor",
         value,
       };
     },
@@ -176,6 +246,36 @@ export const MessageComposer = {
         value: MsgProposeConstitutionAmendment.toJSON(value),
       };
     },
+    createGovernor(value: MsgCreateGovernor) {
+      return {
+        typeUrl: "/atomone.gov.v1.MsgCreateGovernor",
+        value: MsgCreateGovernor.toJSON(value),
+      };
+    },
+    editGovernor(value: MsgEditGovernor) {
+      return {
+        typeUrl: "/atomone.gov.v1.MsgEditGovernor",
+        value: MsgEditGovernor.toJSON(value),
+      };
+    },
+    updateGovernorStatus(value: MsgUpdateGovernorStatus) {
+      return {
+        typeUrl: "/atomone.gov.v1.MsgUpdateGovernorStatus",
+        value: MsgUpdateGovernorStatus.toJSON(value),
+      };
+    },
+    delegateGovernor(value: MsgDelegateGovernor) {
+      return {
+        typeUrl: "/atomone.gov.v1.MsgDelegateGovernor",
+        value: MsgDelegateGovernor.toJSON(value),
+      };
+    },
+    undelegateGovernor(value: MsgUndelegateGovernor) {
+      return {
+        typeUrl: "/atomone.gov.v1.MsgUndelegateGovernor",
+        value: MsgUndelegateGovernor.toJSON(value),
+      };
+    },
   },
   fromJSON: {
     submitProposal(value: any) {
@@ -226,6 +326,36 @@ export const MessageComposer = {
         value: MsgProposeConstitutionAmendment.fromJSON(value),
       };
     },
+    createGovernor(value: any) {
+      return {
+        typeUrl: "/atomone.gov.v1.MsgCreateGovernor",
+        value: MsgCreateGovernor.fromJSON(value),
+      };
+    },
+    editGovernor(value: any) {
+      return {
+        typeUrl: "/atomone.gov.v1.MsgEditGovernor",
+        value: MsgEditGovernor.fromJSON(value),
+      };
+    },
+    updateGovernorStatus(value: any) {
+      return {
+        typeUrl: "/atomone.gov.v1.MsgUpdateGovernorStatus",
+        value: MsgUpdateGovernorStatus.fromJSON(value),
+      };
+    },
+    delegateGovernor(value: any) {
+      return {
+        typeUrl: "/atomone.gov.v1.MsgDelegateGovernor",
+        value: MsgDelegateGovernor.fromJSON(value),
+      };
+    },
+    undelegateGovernor(value: any) {
+      return {
+        typeUrl: "/atomone.gov.v1.MsgUndelegateGovernor",
+        value: MsgUndelegateGovernor.fromJSON(value),
+      };
+    },
   },
   fromPartial: {
     submitProposal(value: MsgSubmitProposal) {
@@ -274,6 +404,36 @@ export const MessageComposer = {
       return {
         typeUrl: "/atomone.gov.v1.MsgProposeConstitutionAmendment",
         value: MsgProposeConstitutionAmendment.fromPartial(value),
+      };
+    },
+    createGovernor(value: MsgCreateGovernor) {
+      return {
+        typeUrl: "/atomone.gov.v1.MsgCreateGovernor",
+        value: MsgCreateGovernor.fromPartial(value),
+      };
+    },
+    editGovernor(value: MsgEditGovernor) {
+      return {
+        typeUrl: "/atomone.gov.v1.MsgEditGovernor",
+        value: MsgEditGovernor.fromPartial(value),
+      };
+    },
+    updateGovernorStatus(value: MsgUpdateGovernorStatus) {
+      return {
+        typeUrl: "/atomone.gov.v1.MsgUpdateGovernorStatus",
+        value: MsgUpdateGovernorStatus.fromPartial(value),
+      };
+    },
+    delegateGovernor(value: MsgDelegateGovernor) {
+      return {
+        typeUrl: "/atomone.gov.v1.MsgDelegateGovernor",
+        value: MsgDelegateGovernor.fromPartial(value),
+      };
+    },
+    undelegateGovernor(value: MsgUndelegateGovernor) {
+      return {
+        typeUrl: "/atomone.gov.v1.MsgUndelegateGovernor",
+        value: MsgUndelegateGovernor.fromPartial(value),
       };
     },
   },

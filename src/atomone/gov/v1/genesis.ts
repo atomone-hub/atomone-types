@@ -14,6 +14,12 @@ import {
   TallyParamsAmino,
   Params,
   ParamsAmino,
+  LastMinDeposit,
+  LastMinDepositAmino,
+  Governor,
+  GovernorAmino,
+  GovernanceDelegation,
+  GovernanceDelegationAmino,
 } from "./gov";
 import { BinaryReader, BinaryWriter } from "../../../binary";
 import { isSet } from "../../../helpers";
@@ -58,6 +64,32 @@ export interface GenesisState {
    * Since: cosmos-sdk 0.48
    */
   constitution: string;
+  /** last updated value for the dynamic min deposit */
+  lastMinDeposit?: LastMinDeposit | undefined;
+  /** last updated value for the dynamic min initial deposit */
+  lastMinInitialDeposit?: LastMinDeposit | undefined;
+  /**
+   * governance participation EMA
+   * If unset or set to 0, the quorum for the next proposal will be set to the
+   * params.MinQuorum value.
+   */
+  participationEma: string;
+  /**
+   * governance participation EMA for constitution amendment proposals.
+   * If unset or set to 0, the quorum for the next constitution amendment
+   * proposal will be set to the params.MinConstitutionAmendmentQuorum value.
+   */
+  constitutionAmendmentParticipationEma: string;
+  /**
+   * governance participation EMA for law proposals.
+   * If unset or set to 0, the quorum for the next law proposal will be set to
+   * the params.LawMinQuorum value.
+   */
+  lawParticipationEma: string;
+  /** governors defines all the governors present at genesis. */
+  governors: Governor[];
+  /** governance_delegations defines all the governance delegations present at genesis. */
+  governanceDelegations: GovernanceDelegation[];
 }
 export interface GenesisStateProtoMsg {
   typeUrl: "/atomone.gov.v1.GenesisState";
@@ -103,6 +135,32 @@ export interface GenesisStateAmino {
    * Since: cosmos-sdk 0.48
    */
   constitution?: string;
+  /** last updated value for the dynamic min deposit */
+  last_min_deposit?: LastMinDepositAmino | undefined;
+  /** last updated value for the dynamic min initial deposit */
+  last_min_initial_deposit?: LastMinDepositAmino | undefined;
+  /**
+   * governance participation EMA
+   * If unset or set to 0, the quorum for the next proposal will be set to the
+   * params.MinQuorum value.
+   */
+  participation_ema?: string;
+  /**
+   * governance participation EMA for constitution amendment proposals.
+   * If unset or set to 0, the quorum for the next constitution amendment
+   * proposal will be set to the params.MinConstitutionAmendmentQuorum value.
+   */
+  constitution_amendment_participation_ema?: string;
+  /**
+   * governance participation EMA for law proposals.
+   * If unset or set to 0, the quorum for the next law proposal will be set to
+   * the params.LawMinQuorum value.
+   */
+  law_participation_ema?: string;
+  /** governors defines all the governors present at genesis. */
+  governors?: GovernorAmino[];
+  /** governance_delegations defines all the governance delegations present at genesis. */
+  governance_delegations?: GovernanceDelegationAmino[];
 }
 export interface GenesisStateAminoMsg {
   type: "/atomone.gov.v1.GenesisState";
@@ -119,6 +177,13 @@ function createBaseGenesisState(): GenesisState {
     tallyParams: undefined,
     params: undefined,
     constitution: "",
+    lastMinDeposit: undefined,
+    lastMinInitialDeposit: undefined,
+    participationEma: "",
+    constitutionAmendmentParticipationEma: "",
+    lawParticipationEma: "",
+    governors: [],
+    governanceDelegations: [],
   };
 }
 export const GenesisState = {
@@ -150,6 +215,27 @@ export const GenesisState = {
     }
     if (message.constitution !== "") {
       writer.uint32(74).string(message.constitution);
+    }
+    if (message.lastMinDeposit !== undefined) {
+      LastMinDeposit.encode(message.lastMinDeposit, writer.uint32(82).fork()).ldelim();
+    }
+    if (message.lastMinInitialDeposit !== undefined) {
+      LastMinDeposit.encode(message.lastMinInitialDeposit, writer.uint32(90).fork()).ldelim();
+    }
+    if (message.participationEma !== "") {
+      writer.uint32(98).string(message.participationEma);
+    }
+    if (message.constitutionAmendmentParticipationEma !== "") {
+      writer.uint32(106).string(message.constitutionAmendmentParticipationEma);
+    }
+    if (message.lawParticipationEma !== "") {
+      writer.uint32(114).string(message.lawParticipationEma);
+    }
+    for (const v of message.governors) {
+      Governor.encode(v!, writer.uint32(122).fork()).ldelim();
+    }
+    for (const v of message.governanceDelegations) {
+      GovernanceDelegation.encode(v!, writer.uint32(130).fork()).ldelim();
     }
     return writer;
   },
@@ -187,6 +273,27 @@ export const GenesisState = {
         case 9:
           message.constitution = reader.string();
           break;
+        case 10:
+          message.lastMinDeposit = LastMinDeposit.decode(reader, reader.uint32());
+          break;
+        case 11:
+          message.lastMinInitialDeposit = LastMinDeposit.decode(reader, reader.uint32());
+          break;
+        case 12:
+          message.participationEma = reader.string();
+          break;
+        case 13:
+          message.constitutionAmendmentParticipationEma = reader.string();
+          break;
+        case 14:
+          message.lawParticipationEma = reader.string();
+          break;
+        case 15:
+          message.governors.push(Governor.decode(reader, reader.uint32()));
+          break;
+        case 16:
+          message.governanceDelegations.push(GovernanceDelegation.decode(reader, reader.uint32()));
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -207,6 +314,19 @@ export const GenesisState = {
     if (isSet(object.tallyParams)) obj.tallyParams = TallyParams.fromJSON(object.tallyParams);
     if (isSet(object.params)) obj.params = Params.fromJSON(object.params);
     if (isSet(object.constitution)) obj.constitution = String(object.constitution);
+    if (isSet(object.lastMinDeposit)) obj.lastMinDeposit = LastMinDeposit.fromJSON(object.lastMinDeposit);
+    if (isSet(object.lastMinInitialDeposit))
+      obj.lastMinInitialDeposit = LastMinDeposit.fromJSON(object.lastMinInitialDeposit);
+    if (isSet(object.participationEma)) obj.participationEma = String(object.participationEma);
+    if (isSet(object.constitutionAmendmentParticipationEma))
+      obj.constitutionAmendmentParticipationEma = String(object.constitutionAmendmentParticipationEma);
+    if (isSet(object.lawParticipationEma)) obj.lawParticipationEma = String(object.lawParticipationEma);
+    if (Array.isArray(object?.governors))
+      obj.governors = object.governors.map((e: any) => Governor.fromJSON(e));
+    if (Array.isArray(object?.governanceDelegations))
+      obj.governanceDelegations = object.governanceDelegations.map((e: any) =>
+        GovernanceDelegation.fromJSON(e),
+      );
     return obj;
   },
   toJSON(message: GenesisState): unknown {
@@ -236,6 +356,30 @@ export const GenesisState = {
       (obj.tallyParams = message.tallyParams ? TallyParams.toJSON(message.tallyParams) : undefined);
     message.params !== undefined && (obj.params = message.params ? Params.toJSON(message.params) : undefined);
     message.constitution !== undefined && (obj.constitution = message.constitution);
+    message.lastMinDeposit !== undefined &&
+      (obj.lastMinDeposit = message.lastMinDeposit
+        ? LastMinDeposit.toJSON(message.lastMinDeposit)
+        : undefined);
+    message.lastMinInitialDeposit !== undefined &&
+      (obj.lastMinInitialDeposit = message.lastMinInitialDeposit
+        ? LastMinDeposit.toJSON(message.lastMinInitialDeposit)
+        : undefined);
+    message.participationEma !== undefined && (obj.participationEma = message.participationEma);
+    message.constitutionAmendmentParticipationEma !== undefined &&
+      (obj.constitutionAmendmentParticipationEma = message.constitutionAmendmentParticipationEma);
+    message.lawParticipationEma !== undefined && (obj.lawParticipationEma = message.lawParticipationEma);
+    if (message.governors) {
+      obj.governors = message.governors.map((e) => (e ? Governor.toJSON(e) : undefined));
+    } else {
+      obj.governors = [];
+    }
+    if (message.governanceDelegations) {
+      obj.governanceDelegations = message.governanceDelegations.map((e) =>
+        e ? GovernanceDelegation.toJSON(e) : undefined,
+      );
+    } else {
+      obj.governanceDelegations = [];
+    }
     return obj;
   },
   fromPartial(object: Partial<GenesisState>): GenesisState {
@@ -259,6 +403,18 @@ export const GenesisState = {
       message.params = Params.fromPartial(object.params);
     }
     message.constitution = object.constitution ?? "";
+    if (object.lastMinDeposit !== undefined && object.lastMinDeposit !== null) {
+      message.lastMinDeposit = LastMinDeposit.fromPartial(object.lastMinDeposit);
+    }
+    if (object.lastMinInitialDeposit !== undefined && object.lastMinInitialDeposit !== null) {
+      message.lastMinInitialDeposit = LastMinDeposit.fromPartial(object.lastMinInitialDeposit);
+    }
+    message.participationEma = object.participationEma ?? "";
+    message.constitutionAmendmentParticipationEma = object.constitutionAmendmentParticipationEma ?? "";
+    message.lawParticipationEma = object.lawParticipationEma ?? "";
+    message.governors = object.governors?.map((e) => Governor.fromPartial(e)) || [];
+    message.governanceDelegations =
+      object.governanceDelegations?.map((e) => GovernanceDelegation.fromPartial(e)) || [];
     return message;
   },
   fromAmino(object: GenesisStateAmino): GenesisState {
@@ -284,6 +440,27 @@ export const GenesisState = {
     if (object.constitution !== undefined && object.constitution !== null) {
       message.constitution = object.constitution;
     }
+    if (object.last_min_deposit !== undefined && object.last_min_deposit !== null) {
+      message.lastMinDeposit = LastMinDeposit.fromAmino(object.last_min_deposit);
+    }
+    if (object.last_min_initial_deposit !== undefined && object.last_min_initial_deposit !== null) {
+      message.lastMinInitialDeposit = LastMinDeposit.fromAmino(object.last_min_initial_deposit);
+    }
+    if (object.participation_ema !== undefined && object.participation_ema !== null) {
+      message.participationEma = object.participation_ema;
+    }
+    if (
+      object.constitution_amendment_participation_ema !== undefined &&
+      object.constitution_amendment_participation_ema !== null
+    ) {
+      message.constitutionAmendmentParticipationEma = object.constitution_amendment_participation_ema;
+    }
+    if (object.law_participation_ema !== undefined && object.law_participation_ema !== null) {
+      message.lawParticipationEma = object.law_participation_ema;
+    }
+    message.governors = object.governors?.map((e) => Governor.fromAmino(e)) || [];
+    message.governanceDelegations =
+      object.governance_delegations?.map((e) => GovernanceDelegation.fromAmino(e)) || [];
     return message;
   },
   toAmino(message: GenesisState): GenesisStateAmino {
@@ -309,6 +486,27 @@ export const GenesisState = {
     obj.tally_params = message.tallyParams ? TallyParams.toAmino(message.tallyParams) : undefined;
     obj.params = message.params ? Params.toAmino(message.params) : undefined;
     obj.constitution = message.constitution;
+    obj.last_min_deposit = message.lastMinDeposit
+      ? LastMinDeposit.toAmino(message.lastMinDeposit)
+      : undefined;
+    obj.last_min_initial_deposit = message.lastMinInitialDeposit
+      ? LastMinDeposit.toAmino(message.lastMinInitialDeposit)
+      : undefined;
+    obj.participation_ema = message.participationEma;
+    obj.constitution_amendment_participation_ema = message.constitutionAmendmentParticipationEma;
+    obj.law_participation_ema = message.lawParticipationEma;
+    if (message.governors) {
+      obj.governors = message.governors.map((e) => (e ? Governor.toAmino(e) : undefined));
+    } else {
+      obj.governors = [];
+    }
+    if (message.governanceDelegations) {
+      obj.governance_delegations = message.governanceDelegations.map((e) =>
+        e ? GovernanceDelegation.toAmino(e) : undefined,
+      );
+    } else {
+      obj.governance_delegations = [];
+    }
     return obj;
   },
   fromAminoMsg(object: GenesisStateAminoMsg): GenesisState {

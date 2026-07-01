@@ -1,6 +1,6 @@
 //@ts-nocheck
 /* eslint-disable */
-import { MsgGrant, MsgExec, MsgRevoke } from "./tx";
+import { MsgGrant, MsgExec, MsgRevoke, MsgPruneExpiredGrants } from "./tx";
 export const AminoConverter = {
   "/cosmos.authz.v1beta1.MsgGrant": {
     aminoType: "cosmos-sdk/MsgGrant",
@@ -16,5 +16,10 @@ export const AminoConverter = {
     aminoType: "cosmos-sdk/MsgRevoke",
     toAmino: MsgRevoke.toAmino,
     fromAmino: MsgRevoke.fromAmino,
+  },
+  "/cosmos.authz.v1beta1.MsgPruneExpiredGrants": {
+    aminoType: "cosmos-sdk/MsgPruneExpiredGrants",
+    toAmino: MsgPruneExpiredGrants.toAmino,
+    fromAmino: MsgPruneExpiredGrants.fromAmino,
   },
 };

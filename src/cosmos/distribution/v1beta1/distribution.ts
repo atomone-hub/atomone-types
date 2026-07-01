@@ -3,22 +3,37 @@ import { DecCoin, DecCoinAmino, Coin, CoinAmino } from "../../base/v1beta1/coin"
 import { BinaryReader, BinaryWriter } from "../../../binary";
 import { isSet } from "../../../helpers";
 export const protobufPackage = "cosmos.distribution.v1beta1";
+/** NakamotoBonus defines the nakamoto bonus parameters */
+export interface NakamotoBonus {
+  enabled: boolean;
+  step: string;
+  /** period_epoch_identifier is the identifier of the epoch at which the nakamoto bonus coefficient is adjusted */
+  periodEpochIdentifier: string;
+  minimumCoefficient: string;
+  maximumCoefficient: string;
+}
+export interface NakamotoBonusProtoMsg {
+  typeUrl: "/cosmos.distribution.v1beta1.NakamotoBonus";
+  value: Uint8Array;
+}
+/** NakamotoBonus defines the nakamoto bonus parameters */
+export interface NakamotoBonusAmino {
+  enabled?: boolean;
+  step: string;
+  /** period_epoch_identifier is the identifier of the epoch at which the nakamoto bonus coefficient is adjusted */
+  period_epoch_identifier?: string;
+  minimum_coefficient: string;
+  maximum_coefficient: string;
+}
+export interface NakamotoBonusAminoMsg {
+  type: "cosmos-sdk/NakamotoBonus";
+  value: NakamotoBonusAmino;
+}
 /** Params defines the set of params for the distribution module. */
 export interface Params {
   communityTax: string;
-  /**
-   * Deprecated: The base_proposer_reward field is deprecated and is no longer used
-   * in the x/distribution module's reward mechanism.
-   */
-  /** @deprecated */
-  baseProposerReward: string;
-  /**
-   * Deprecated: The bonus_proposer_reward field is deprecated and is no longer used
-   * in the x/distribution module's reward mechanism.
-   */
-  /** @deprecated */
-  bonusProposerReward: string;
   withdrawAddrEnabled: boolean;
+  nakamotoBonus: NakamotoBonus | undefined;
 }
 export interface ParamsProtoMsg {
   typeUrl: "/cosmos.distribution.v1beta1.Params";
@@ -26,20 +41,9 @@ export interface ParamsProtoMsg {
 }
 /** Params defines the set of params for the distribution module. */
 export interface ParamsAmino {
-  community_tax?: string;
-  /**
-   * Deprecated: The base_proposer_reward field is deprecated and is no longer used
-   * in the x/distribution module's reward mechanism.
-   */
-  /** @deprecated */
-  base_proposer_reward?: string;
-  /**
-   * Deprecated: The bonus_proposer_reward field is deprecated and is no longer used
-   * in the x/distribution module's reward mechanism.
-   */
-  /** @deprecated */
-  bonus_proposer_reward?: string;
+  community_tax: string;
   withdraw_addr_enabled?: boolean;
+  nakamoto_bonus: NakamotoBonusAmino | undefined;
 }
 export interface ParamsAminoMsg {
   type: "cosmos-sdk/x/distribution/Params";
@@ -288,7 +292,7 @@ export interface DelegatorStartingInfoProtoMsg {
  */
 export interface DelegatorStartingInfoAmino {
   previous_period?: string;
-  stake?: string;
+  stake: string;
   height: string;
 }
 export interface DelegatorStartingInfoAminoMsg {
@@ -349,12 +353,147 @@ export interface CommunityPoolSpendProposalWithDepositAminoMsg {
   type: "cosmos-sdk/CommunityPoolSpendProposalWithDeposit";
   value: CommunityPoolSpendProposalWithDepositAmino;
 }
+function createBaseNakamotoBonus(): NakamotoBonus {
+  return {
+    enabled: false,
+    step: "",
+    periodEpochIdentifier: "",
+    minimumCoefficient: "",
+    maximumCoefficient: "",
+  };
+}
+export const NakamotoBonus = {
+  typeUrl: "/cosmos.distribution.v1beta1.NakamotoBonus",
+  encode(message: NakamotoBonus, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.enabled === true) {
+      writer.uint32(8).bool(message.enabled);
+    }
+    if (message.step !== "") {
+      writer.uint32(18).string(message.step);
+    }
+    if (message.periodEpochIdentifier !== "") {
+      writer.uint32(26).string(message.periodEpochIdentifier);
+    }
+    if (message.minimumCoefficient !== "") {
+      writer.uint32(34).string(message.minimumCoefficient);
+    }
+    if (message.maximumCoefficient !== "") {
+      writer.uint32(42).string(message.maximumCoefficient);
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): NakamotoBonus {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseNakamotoBonus();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.enabled = reader.bool();
+          break;
+        case 2:
+          message.step = reader.string();
+          break;
+        case 3:
+          message.periodEpochIdentifier = reader.string();
+          break;
+        case 4:
+          message.minimumCoefficient = reader.string();
+          break;
+        case 5:
+          message.maximumCoefficient = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): NakamotoBonus {
+    const obj = createBaseNakamotoBonus();
+    if (isSet(object.enabled)) obj.enabled = Boolean(object.enabled);
+    if (isSet(object.step)) obj.step = String(object.step);
+    if (isSet(object.periodEpochIdentifier)) obj.periodEpochIdentifier = String(object.periodEpochIdentifier);
+    if (isSet(object.minimumCoefficient)) obj.minimumCoefficient = String(object.minimumCoefficient);
+    if (isSet(object.maximumCoefficient)) obj.maximumCoefficient = String(object.maximumCoefficient);
+    return obj;
+  },
+  toJSON(message: NakamotoBonus): unknown {
+    const obj: any = {};
+    message.enabled !== undefined && (obj.enabled = message.enabled);
+    message.step !== undefined && (obj.step = message.step);
+    message.periodEpochIdentifier !== undefined &&
+      (obj.periodEpochIdentifier = message.periodEpochIdentifier);
+    message.minimumCoefficient !== undefined && (obj.minimumCoefficient = message.minimumCoefficient);
+    message.maximumCoefficient !== undefined && (obj.maximumCoefficient = message.maximumCoefficient);
+    return obj;
+  },
+  fromPartial(object: Partial<NakamotoBonus>): NakamotoBonus {
+    const message = createBaseNakamotoBonus();
+    message.enabled = object.enabled ?? false;
+    message.step = object.step ?? "";
+    message.periodEpochIdentifier = object.periodEpochIdentifier ?? "";
+    message.minimumCoefficient = object.minimumCoefficient ?? "";
+    message.maximumCoefficient = object.maximumCoefficient ?? "";
+    return message;
+  },
+  fromAmino(object: NakamotoBonusAmino): NakamotoBonus {
+    const message = createBaseNakamotoBonus();
+    if (object.enabled !== undefined && object.enabled !== null) {
+      message.enabled = object.enabled;
+    }
+    if (object.step !== undefined && object.step !== null) {
+      message.step = object.step;
+    }
+    if (object.period_epoch_identifier !== undefined && object.period_epoch_identifier !== null) {
+      message.periodEpochIdentifier = object.period_epoch_identifier;
+    }
+    if (object.minimum_coefficient !== undefined && object.minimum_coefficient !== null) {
+      message.minimumCoefficient = object.minimum_coefficient;
+    }
+    if (object.maximum_coefficient !== undefined && object.maximum_coefficient !== null) {
+      message.maximumCoefficient = object.maximum_coefficient;
+    }
+    return message;
+  },
+  toAmino(message: NakamotoBonus): NakamotoBonusAmino {
+    const obj: any = {};
+    obj.enabled = message.enabled;
+    obj.step = message.step ?? "";
+    obj.period_epoch_identifier = message.periodEpochIdentifier;
+    obj.minimum_coefficient = message.minimumCoefficient ?? "";
+    obj.maximum_coefficient = message.maximumCoefficient ?? "";
+    return obj;
+  },
+  fromAminoMsg(object: NakamotoBonusAminoMsg): NakamotoBonus {
+    return NakamotoBonus.fromAmino(object.value);
+  },
+  toAminoMsg(message: NakamotoBonus): NakamotoBonusAminoMsg {
+    return {
+      type: "cosmos-sdk/NakamotoBonus",
+      value: NakamotoBonus.toAmino(message),
+    };
+  },
+  fromProtoMsg(message: NakamotoBonusProtoMsg): NakamotoBonus {
+    return NakamotoBonus.decode(message.value);
+  },
+  toProto(message: NakamotoBonus): Uint8Array {
+    return NakamotoBonus.encode(message).finish();
+  },
+  toProtoMsg(message: NakamotoBonus): NakamotoBonusProtoMsg {
+    return {
+      typeUrl: "/cosmos.distribution.v1beta1.NakamotoBonus",
+      value: NakamotoBonus.encode(message).finish(),
+    };
+  },
+};
 function createBaseParams(): Params {
   return {
     communityTax: "",
-    baseProposerReward: "",
-    bonusProposerReward: "",
     withdrawAddrEnabled: false,
+    nakamotoBonus: NakamotoBonus.fromPartial({}),
   };
 }
 export const Params = {
@@ -363,14 +502,11 @@ export const Params = {
     if (message.communityTax !== "") {
       writer.uint32(10).string(message.communityTax);
     }
-    if (message.baseProposerReward !== "") {
-      writer.uint32(18).string(message.baseProposerReward);
-    }
-    if (message.bonusProposerReward !== "") {
-      writer.uint32(26).string(message.bonusProposerReward);
-    }
     if (message.withdrawAddrEnabled === true) {
       writer.uint32(32).bool(message.withdrawAddrEnabled);
+    }
+    if (message.nakamotoBonus !== undefined) {
+      NakamotoBonus.encode(message.nakamotoBonus, writer.uint32(42).fork()).ldelim();
     }
     return writer;
   },
@@ -384,14 +520,11 @@ export const Params = {
         case 1:
           message.communityTax = reader.string();
           break;
-        case 2:
-          message.baseProposerReward = reader.string();
-          break;
-        case 3:
-          message.bonusProposerReward = reader.string();
-          break;
         case 4:
           message.withdrawAddrEnabled = reader.bool();
+          break;
+        case 5:
+          message.nakamotoBonus = NakamotoBonus.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -403,25 +536,25 @@ export const Params = {
   fromJSON(object: any): Params {
     const obj = createBaseParams();
     if (isSet(object.communityTax)) obj.communityTax = String(object.communityTax);
-    if (isSet(object.baseProposerReward)) obj.baseProposerReward = String(object.baseProposerReward);
-    if (isSet(object.bonusProposerReward)) obj.bonusProposerReward = String(object.bonusProposerReward);
     if (isSet(object.withdrawAddrEnabled)) obj.withdrawAddrEnabled = Boolean(object.withdrawAddrEnabled);
+    if (isSet(object.nakamotoBonus)) obj.nakamotoBonus = NakamotoBonus.fromJSON(object.nakamotoBonus);
     return obj;
   },
   toJSON(message: Params): unknown {
     const obj: any = {};
     message.communityTax !== undefined && (obj.communityTax = message.communityTax);
-    message.baseProposerReward !== undefined && (obj.baseProposerReward = message.baseProposerReward);
-    message.bonusProposerReward !== undefined && (obj.bonusProposerReward = message.bonusProposerReward);
     message.withdrawAddrEnabled !== undefined && (obj.withdrawAddrEnabled = message.withdrawAddrEnabled);
+    message.nakamotoBonus !== undefined &&
+      (obj.nakamotoBonus = message.nakamotoBonus ? NakamotoBonus.toJSON(message.nakamotoBonus) : undefined);
     return obj;
   },
   fromPartial(object: Partial<Params>): Params {
     const message = createBaseParams();
     message.communityTax = object.communityTax ?? "";
-    message.baseProposerReward = object.baseProposerReward ?? "";
-    message.bonusProposerReward = object.bonusProposerReward ?? "";
     message.withdrawAddrEnabled = object.withdrawAddrEnabled ?? false;
+    if (object.nakamotoBonus !== undefined && object.nakamotoBonus !== null) {
+      message.nakamotoBonus = NakamotoBonus.fromPartial(object.nakamotoBonus);
+    }
     return message;
   },
   fromAmino(object: ParamsAmino): Params {
@@ -429,23 +562,21 @@ export const Params = {
     if (object.community_tax !== undefined && object.community_tax !== null) {
       message.communityTax = object.community_tax;
     }
-    if (object.base_proposer_reward !== undefined && object.base_proposer_reward !== null) {
-      message.baseProposerReward = object.base_proposer_reward;
-    }
-    if (object.bonus_proposer_reward !== undefined && object.bonus_proposer_reward !== null) {
-      message.bonusProposerReward = object.bonus_proposer_reward;
-    }
     if (object.withdraw_addr_enabled !== undefined && object.withdraw_addr_enabled !== null) {
       message.withdrawAddrEnabled = object.withdraw_addr_enabled;
+    }
+    if (object.nakamoto_bonus !== undefined && object.nakamoto_bonus !== null) {
+      message.nakamotoBonus = NakamotoBonus.fromAmino(object.nakamoto_bonus);
     }
     return message;
   },
   toAmino(message: Params): ParamsAmino {
     const obj: any = {};
-    obj.community_tax = message.communityTax;
-    obj.base_proposer_reward = message.baseProposerReward;
-    obj.bonus_proposer_reward = message.bonusProposerReward;
+    obj.community_tax = message.communityTax ?? "";
     obj.withdraw_addr_enabled = message.withdrawAddrEnabled;
+    obj.nakamoto_bonus = message.nakamotoBonus
+      ? NakamotoBonus.toAmino(message.nakamotoBonus)
+      : NakamotoBonus.fromPartial({});
     return obj;
   },
   fromAminoMsg(object: ParamsAminoMsg): Params {
@@ -1336,7 +1467,7 @@ export const DelegatorStartingInfo = {
   toAmino(message: DelegatorStartingInfo): DelegatorStartingInfoAmino {
     const obj: any = {};
     obj.previous_period = message.previousPeriod ? message.previousPeriod.toString() : undefined;
-    obj.stake = message.stake;
+    obj.stake = message.stake ?? "";
     obj.height = message.height ? message.height.toString() : "0";
     return obj;
   },

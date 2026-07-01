@@ -1,11 +1,12 @@
 /* eslint-disable */
 import { TelescopeGeneratedType } from "../../../types";
 import { Registry } from "@cosmjs/proto-signing";
-import { MsgGrant, MsgExec, MsgRevoke } from "./tx";
+import { MsgGrant, MsgExec, MsgRevoke, MsgPruneExpiredGrants } from "./tx";
 export const registry: ReadonlyArray<[string, TelescopeGeneratedType<any, any, any>]> = [
   ["/cosmos.authz.v1beta1.MsgGrant", MsgGrant],
   ["/cosmos.authz.v1beta1.MsgExec", MsgExec],
   ["/cosmos.authz.v1beta1.MsgRevoke", MsgRevoke],
+  ["/cosmos.authz.v1beta1.MsgPruneExpiredGrants", MsgPruneExpiredGrants],
 ];
 export const load = (protoRegistry: Registry) => {
   registry.forEach(([typeUrl, mod]) => {
@@ -32,6 +33,12 @@ export const MessageComposer = {
         value: MsgRevoke.encode(value).finish(),
       };
     },
+    pruneExpiredGrants(value: MsgPruneExpiredGrants) {
+      return {
+        typeUrl: "/cosmos.authz.v1beta1.MsgPruneExpiredGrants",
+        value: MsgPruneExpiredGrants.encode(value).finish(),
+      };
+    },
   },
   withTypeUrl: {
     grant(value: MsgGrant) {
@@ -49,6 +56,12 @@ export const MessageComposer = {
     revoke(value: MsgRevoke) {
       return {
         typeUrl: "/cosmos.authz.v1beta1.MsgRevoke",
+        value,
+      };
+    },
+    pruneExpiredGrants(value: MsgPruneExpiredGrants) {
+      return {
+        typeUrl: "/cosmos.authz.v1beta1.MsgPruneExpiredGrants",
         value,
       };
     },
@@ -72,6 +85,12 @@ export const MessageComposer = {
         value: MsgRevoke.toJSON(value),
       };
     },
+    pruneExpiredGrants(value: MsgPruneExpiredGrants) {
+      return {
+        typeUrl: "/cosmos.authz.v1beta1.MsgPruneExpiredGrants",
+        value: MsgPruneExpiredGrants.toJSON(value),
+      };
+    },
   },
   fromJSON: {
     grant(value: any) {
@@ -92,6 +111,12 @@ export const MessageComposer = {
         value: MsgRevoke.fromJSON(value),
       };
     },
+    pruneExpiredGrants(value: any) {
+      return {
+        typeUrl: "/cosmos.authz.v1beta1.MsgPruneExpiredGrants",
+        value: MsgPruneExpiredGrants.fromJSON(value),
+      };
+    },
   },
   fromPartial: {
     grant(value: MsgGrant) {
@@ -110,6 +135,12 @@ export const MessageComposer = {
       return {
         typeUrl: "/cosmos.authz.v1beta1.MsgRevoke",
         value: MsgRevoke.fromPartial(value),
+      };
+    },
+    pruneExpiredGrants(value: MsgPruneExpiredGrants) {
+      return {
+        typeUrl: "/cosmos.authz.v1beta1.MsgPruneExpiredGrants",
+        value: MsgPruneExpiredGrants.fromPartial(value),
       };
     },
   },

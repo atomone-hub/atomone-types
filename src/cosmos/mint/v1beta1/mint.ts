@@ -48,13 +48,13 @@ export interface ParamsAmino {
   /** type of coin to mint */
   mint_denom?: string;
   /** maximum annual change in inflation rate */
-  inflation_rate_change?: string;
+  inflation_rate_change: string;
   /** maximum inflation rate */
-  inflation_max?: string;
+  inflation_max: string;
   /** minimum inflation rate */
-  inflation_min?: string;
+  inflation_min: string;
   /** goal of percent bonded atoms */
-  goal_bonded?: string;
+  goal_bonded: string;
   /** expected blocks per year */
   blocks_per_year?: string;
 }
@@ -278,10 +278,10 @@ export const Params = {
   toAmino(message: Params): ParamsAmino {
     const obj: any = {};
     obj.mint_denom = message.mintDenom;
-    obj.inflation_rate_change = message.inflationRateChange;
-    obj.inflation_max = message.inflationMax;
-    obj.inflation_min = message.inflationMin;
-    obj.goal_bonded = message.goalBonded;
+    obj.inflation_rate_change = message.inflationRateChange ?? "";
+    obj.inflation_max = message.inflationMax ?? "";
+    obj.inflation_min = message.inflationMin ?? "";
+    obj.goal_bonded = message.goalBonded ?? "";
     obj.blocks_per_year = message.blocksPerYear ? message.blocksPerYear.toString() : undefined;
     return obj;
   },

@@ -7,6 +7,7 @@ import {
   MsgUndelegate,
   MsgCancelUnbondingDelegation,
   MsgUpdateParams,
+  MsgRotateConsPubKey,
 } from "./tx";
 export const AminoConverter = {
   "/cosmos.staking.v1beta1.MsgCreateValidator": {
@@ -43,5 +44,10 @@ export const AminoConverter = {
     aminoType: "cosmos-sdk/x/staking/MsgUpdateParams",
     toAmino: MsgUpdateParams.toAmino,
     fromAmino: MsgUpdateParams.fromAmino,
+  },
+  "/cosmos.staking.v1beta1.MsgRotateConsPubKey": {
+    aminoType: "cosmos-sdk/MsgRotateConsPubKey",
+    toAmino: MsgRotateConsPubKey.toAmino,
+    fromAmino: MsgRotateConsPubKey.fromAmino,
   },
 };

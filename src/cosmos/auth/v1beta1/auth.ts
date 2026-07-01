@@ -86,7 +86,7 @@ export interface ModuleCredentialAmino {
   derivation_keys?: string[];
 }
 export interface ModuleCredentialAminoMsg {
-  type: "cosmos-sdk/ModuleCredential";
+  type: "cosmos-sdk/GroupAccountCredential";
   value: ModuleCredentialAmino;
 }
 /** Params defines the parameters for the auth module. */
@@ -442,7 +442,7 @@ export const ModuleCredential = {
   },
   toAminoMsg(message: ModuleCredential): ModuleCredentialAminoMsg {
     return {
-      type: "cosmos-sdk/ModuleCredential",
+      type: "cosmos-sdk/GroupAccountCredential",
       value: ModuleCredential.toAmino(message),
     };
   },

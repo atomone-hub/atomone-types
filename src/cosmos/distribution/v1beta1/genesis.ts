@@ -231,6 +231,7 @@ export interface GenesisState {
   delegatorStartingInfos: DelegatorStartingInfoRecord[];
   /** fee_pool defines the validator slash events at genesis. */
   validatorSlashEvents: ValidatorSlashEventRecord[];
+  nakamotoBonus: string;
 }
 export interface GenesisStateProtoMsg {
   typeUrl: "/cosmos.distribution.v1beta1.GenesisState";
@@ -258,6 +259,7 @@ export interface GenesisStateAmino {
   delegator_starting_infos: DelegatorStartingInfoRecordAmino[];
   /** fee_pool defines the validator slash events at genesis. */
   validator_slash_events: ValidatorSlashEventRecordAmino[];
+  nakamoto_bonus: string;
 }
 export interface GenesisStateAminoMsg {
   type: "cosmos-sdk/GenesisState";
@@ -1037,6 +1039,7 @@ function createBaseGenesisState(): GenesisState {
     validatorCurrentRewards: [],
     delegatorStartingInfos: [],
     validatorSlashEvents: [],
+    nakamotoBonus: "",
   };
 }
 export const GenesisState = {
@@ -1071,6 +1074,9 @@ export const GenesisState = {
     }
     for (const v of message.validatorSlashEvents) {
       ValidatorSlashEventRecord.encode(v!, writer.uint32(82).fork()).ldelim();
+    }
+    if (message.nakamotoBonus !== "") {
+      writer.uint32(90).string(message.nakamotoBonus);
     }
     return writer;
   },
@@ -1115,6 +1121,9 @@ export const GenesisState = {
         case 10:
           message.validatorSlashEvents.push(ValidatorSlashEventRecord.decode(reader, reader.uint32()));
           break;
+        case 11:
+          message.nakamotoBonus = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1155,6 +1164,7 @@ export const GenesisState = {
       obj.validatorSlashEvents = object.validatorSlashEvents.map((e: any) =>
         ValidatorSlashEventRecord.fromJSON(e),
       );
+    if (isSet(object.nakamotoBonus)) obj.nakamotoBonus = String(object.nakamotoBonus);
     return obj;
   },
   toJSON(message: GenesisState): unknown {
@@ -1212,6 +1222,7 @@ export const GenesisState = {
     } else {
       obj.validatorSlashEvents = [];
     }
+    message.nakamotoBonus !== undefined && (obj.nakamotoBonus = message.nakamotoBonus);
     return obj;
   },
   fromPartial(object: Partial<GenesisState>): GenesisState {
@@ -1239,6 +1250,7 @@ export const GenesisState = {
       object.delegatorStartingInfos?.map((e) => DelegatorStartingInfoRecord.fromPartial(e)) || [];
     message.validatorSlashEvents =
       object.validatorSlashEvents?.map((e) => ValidatorSlashEventRecord.fromPartial(e)) || [];
+    message.nakamotoBonus = object.nakamotoBonus ?? "";
     return message;
   },
   fromAmino(object: GenesisStateAmino): GenesisState {
@@ -1268,6 +1280,9 @@ export const GenesisState = {
       object.delegator_starting_infos?.map((e) => DelegatorStartingInfoRecord.fromAmino(e)) || [];
     message.validatorSlashEvents =
       object.validator_slash_events?.map((e) => ValidatorSlashEventRecord.fromAmino(e)) || [];
+    if (object.nakamoto_bonus !== undefined && object.nakamoto_bonus !== null) {
+      message.nakamotoBonus = object.nakamoto_bonus;
+    }
     return message;
   },
   toAmino(message: GenesisState): GenesisStateAmino {
@@ -1324,6 +1339,7 @@ export const GenesisState = {
     } else {
       obj.validator_slash_events = [];
     }
+    obj.nakamoto_bonus = message.nakamotoBonus ?? "";
     return obj;
   },
   fromAminoMsg(object: GenesisStateAminoMsg): GenesisState {

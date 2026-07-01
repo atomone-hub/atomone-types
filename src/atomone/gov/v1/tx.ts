@@ -7,8 +7,13 @@ import {
   WeightedVoteOptionAmino,
   Params,
   ParamsAmino,
+  GovernorDescription,
+  GovernorDescriptionAmino,
+  GovernorStatus,
   voteOptionFromJSON,
   voteOptionToJSON,
+  governorStatusFromJSON,
+  governorStatusToJSON,
 } from "./gov";
 import { BinaryReader, BinaryWriter } from "../../../binary";
 import { isSet } from "../../../helpers";
@@ -413,6 +418,166 @@ export interface MsgProposeConstitutionAmendmentResponseAmino {}
 export interface MsgProposeConstitutionAmendmentResponseAminoMsg {
   type: "/atomone.gov.v1.MsgProposeConstitutionAmendmentResponse";
   value: MsgProposeConstitutionAmendmentResponseAmino;
+}
+/** MsgCreateGovernor defines a SDK message for creating a new governor. */
+export interface MsgCreateGovernor {
+  /** address is the base account address that is creating the governor. */
+  address: string;
+  description: GovernorDescription | undefined;
+}
+export interface MsgCreateGovernorProtoMsg {
+  typeUrl: "/atomone.gov.v1.MsgCreateGovernor";
+  value: Uint8Array;
+}
+/** MsgCreateGovernor defines a SDK message for creating a new governor. */
+export interface MsgCreateGovernorAmino {
+  /** address is the base account address that is creating the governor. */
+  address?: string;
+  description: GovernorDescriptionAmino | undefined;
+}
+export interface MsgCreateGovernorAminoMsg {
+  type: "atomone/v1/MsgCreateGovernor";
+  value: MsgCreateGovernorAmino;
+}
+/** MsgCreateGovernorrResponse defines the Msg/CreateGovernor response type. */
+export interface MsgCreateGovernorResponse {}
+export interface MsgCreateGovernorResponseProtoMsg {
+  typeUrl: "/atomone.gov.v1.MsgCreateGovernorResponse";
+  value: Uint8Array;
+}
+/** MsgCreateGovernorrResponse defines the Msg/CreateGovernor response type. */
+export interface MsgCreateGovernorResponseAmino {}
+export interface MsgCreateGovernorResponseAminoMsg {
+  type: "/atomone.gov.v1.MsgCreateGovernorResponse";
+  value: MsgCreateGovernorResponseAmino;
+}
+/** MsgEditGovernor defines a SDK message for editing an existing governor. */
+export interface MsgEditGovernor {
+  /** address is the base account address that is editing the corresponding governor. */
+  address: string;
+  description: GovernorDescription | undefined;
+}
+export interface MsgEditGovernorProtoMsg {
+  typeUrl: "/atomone.gov.v1.MsgEditGovernor";
+  value: Uint8Array;
+}
+/** MsgEditGovernor defines a SDK message for editing an existing governor. */
+export interface MsgEditGovernorAmino {
+  /** address is the base account address that is editing the corresponding governor. */
+  address?: string;
+  description: GovernorDescriptionAmino | undefined;
+}
+export interface MsgEditGovernorAminoMsg {
+  type: "atomone/v1/MsgEditGovernor";
+  value: MsgEditGovernorAmino;
+}
+/** MsgEditGovernorResponse defines the Msg/EditGovernor response type. */
+export interface MsgEditGovernorResponse {}
+export interface MsgEditGovernorResponseProtoMsg {
+  typeUrl: "/atomone.gov.v1.MsgEditGovernorResponse";
+  value: Uint8Array;
+}
+/** MsgEditGovernorResponse defines the Msg/EditGovernor response type. */
+export interface MsgEditGovernorResponseAmino {}
+export interface MsgEditGovernorResponseAminoMsg {
+  type: "/atomone.gov.v1.MsgEditGovernorResponse";
+  value: MsgEditGovernorResponseAmino;
+}
+/** MsgUpdateGovernorStatus defines a SDK message for updating the status of a governor. */
+export interface MsgUpdateGovernorStatus {
+  /** address is the base account address that is editing the corresponding governor. */
+  address: string;
+  status: GovernorStatus;
+}
+export interface MsgUpdateGovernorStatusProtoMsg {
+  typeUrl: "/atomone.gov.v1.MsgUpdateGovernorStatus";
+  value: Uint8Array;
+}
+/** MsgUpdateGovernorStatus defines a SDK message for updating the status of a governor. */
+export interface MsgUpdateGovernorStatusAmino {
+  /** address is the base account address that is editing the corresponding governor. */
+  address?: string;
+  status?: GovernorStatus;
+}
+export interface MsgUpdateGovernorStatusAminoMsg {
+  type: "atomone/v1/MsgUpdateGovernorStatus";
+  value: MsgUpdateGovernorStatusAmino;
+}
+/** MsgUpdateGovernorStatusResponse defines the Msg/UpdateGovernorStatus response type. */
+export interface MsgUpdateGovernorStatusResponse {}
+export interface MsgUpdateGovernorStatusResponseProtoMsg {
+  typeUrl: "/atomone.gov.v1.MsgUpdateGovernorStatusResponse";
+  value: Uint8Array;
+}
+/** MsgUpdateGovernorStatusResponse defines the Msg/UpdateGovernorStatus response type. */
+export interface MsgUpdateGovernorStatusResponseAmino {}
+export interface MsgUpdateGovernorStatusResponseAminoMsg {
+  type: "/atomone.gov.v1.MsgUpdateGovernorStatusResponse";
+  value: MsgUpdateGovernorStatusResponseAmino;
+}
+/**
+ * MsgDelegateGovernor defines a SDK message for performing a delegation of governance voting power
+ * from a delegator to a governor.
+ */
+export interface MsgDelegateGovernor {
+  delegatorAddress: string;
+  governorAddress: string;
+}
+export interface MsgDelegateGovernorProtoMsg {
+  typeUrl: "/atomone.gov.v1.MsgDelegateGovernor";
+  value: Uint8Array;
+}
+/**
+ * MsgDelegateGovernor defines a SDK message for performing a delegation of governance voting power
+ * from a delegator to a governor.
+ */
+export interface MsgDelegateGovernorAmino {
+  delegator_address?: string;
+  governor_address?: string;
+}
+export interface MsgDelegateGovernorAminoMsg {
+  type: "atomone/v1/MsgDelegateGovernor";
+  value: MsgDelegateGovernorAmino;
+}
+/** MsgDelegateGovernorResponse defines the Msg/Delegate response type. */
+export interface MsgDelegateGovernorResponse {}
+export interface MsgDelegateGovernorResponseProtoMsg {
+  typeUrl: "/atomone.gov.v1.MsgDelegateGovernorResponse";
+  value: Uint8Array;
+}
+/** MsgDelegateGovernorResponse defines the Msg/Delegate response type. */
+export interface MsgDelegateGovernorResponseAmino {}
+export interface MsgDelegateGovernorResponseAminoMsg {
+  type: "/atomone.gov.v1.MsgDelegateGovernorResponse";
+  value: MsgDelegateGovernorResponseAmino;
+}
+/** MsgUndelegateGovernor defines a SDK message for undelegating governance voting power */
+export interface MsgUndelegateGovernor {
+  delegatorAddress: string;
+}
+export interface MsgUndelegateGovernorProtoMsg {
+  typeUrl: "/atomone.gov.v1.MsgUndelegateGovernor";
+  value: Uint8Array;
+}
+/** MsgUndelegateGovernor defines a SDK message for undelegating governance voting power */
+export interface MsgUndelegateGovernorAmino {
+  delegator_address?: string;
+}
+export interface MsgUndelegateGovernorAminoMsg {
+  type: "atomone/v1/MsgUndelegateGovernor";
+  value: MsgUndelegateGovernorAmino;
+}
+/** MsgUndelegateGovernorResponse defines the Msg/UndelegateGovernor response type. */
+export interface MsgUndelegateGovernorResponse {}
+export interface MsgUndelegateGovernorResponseProtoMsg {
+  typeUrl: "/atomone.gov.v1.MsgUndelegateGovernorResponse";
+  value: Uint8Array;
+}
+/** MsgUndelegateGovernorResponse defines the Msg/UndelegateGovernor response type. */
+export interface MsgUndelegateGovernorResponseAmino {}
+export interface MsgUndelegateGovernorResponseAminoMsg {
+  type: "/atomone.gov.v1.MsgUndelegateGovernorResponse";
+  value: MsgUndelegateGovernorResponseAmino;
 }
 function createBaseMsgSubmitProposal(): MsgSubmitProposal {
   return {
@@ -1800,6 +1965,757 @@ export const MsgProposeConstitutionAmendmentResponse = {
     };
   },
 };
+function createBaseMsgCreateGovernor(): MsgCreateGovernor {
+  return {
+    address: "",
+    description: GovernorDescription.fromPartial({}),
+  };
+}
+export const MsgCreateGovernor = {
+  typeUrl: "/atomone.gov.v1.MsgCreateGovernor",
+  encode(message: MsgCreateGovernor, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.address !== "") {
+      writer.uint32(10).string(message.address);
+    }
+    if (message.description !== undefined) {
+      GovernorDescription.encode(message.description, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgCreateGovernor {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgCreateGovernor();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.address = reader.string();
+          break;
+        case 2:
+          message.description = GovernorDescription.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): MsgCreateGovernor {
+    const obj = createBaseMsgCreateGovernor();
+    if (isSet(object.address)) obj.address = String(object.address);
+    if (isSet(object.description)) obj.description = GovernorDescription.fromJSON(object.description);
+    return obj;
+  },
+  toJSON(message: MsgCreateGovernor): unknown {
+    const obj: any = {};
+    message.address !== undefined && (obj.address = message.address);
+    message.description !== undefined &&
+      (obj.description = message.description ? GovernorDescription.toJSON(message.description) : undefined);
+    return obj;
+  },
+  fromPartial(object: Partial<MsgCreateGovernor>): MsgCreateGovernor {
+    const message = createBaseMsgCreateGovernor();
+    message.address = object.address ?? "";
+    if (object.description !== undefined && object.description !== null) {
+      message.description = GovernorDescription.fromPartial(object.description);
+    }
+    return message;
+  },
+  fromAmino(object: MsgCreateGovernorAmino): MsgCreateGovernor {
+    const message = createBaseMsgCreateGovernor();
+    if (object.address !== undefined && object.address !== null) {
+      message.address = object.address;
+    }
+    if (object.description !== undefined && object.description !== null) {
+      message.description = GovernorDescription.fromAmino(object.description);
+    }
+    return message;
+  },
+  toAmino(message: MsgCreateGovernor): MsgCreateGovernorAmino {
+    const obj: any = {};
+    obj.address = message.address;
+    obj.description = message.description
+      ? GovernorDescription.toAmino(message.description)
+      : GovernorDescription.fromPartial({});
+    return obj;
+  },
+  fromAminoMsg(object: MsgCreateGovernorAminoMsg): MsgCreateGovernor {
+    return MsgCreateGovernor.fromAmino(object.value);
+  },
+  toAminoMsg(message: MsgCreateGovernor): MsgCreateGovernorAminoMsg {
+    return {
+      type: "atomone/v1/MsgCreateGovernor",
+      value: MsgCreateGovernor.toAmino(message),
+    };
+  },
+  fromProtoMsg(message: MsgCreateGovernorProtoMsg): MsgCreateGovernor {
+    return MsgCreateGovernor.decode(message.value);
+  },
+  toProto(message: MsgCreateGovernor): Uint8Array {
+    return MsgCreateGovernor.encode(message).finish();
+  },
+  toProtoMsg(message: MsgCreateGovernor): MsgCreateGovernorProtoMsg {
+    return {
+      typeUrl: "/atomone.gov.v1.MsgCreateGovernor",
+      value: MsgCreateGovernor.encode(message).finish(),
+    };
+  },
+};
+function createBaseMsgCreateGovernorResponse(): MsgCreateGovernorResponse {
+  return {};
+}
+export const MsgCreateGovernorResponse = {
+  typeUrl: "/atomone.gov.v1.MsgCreateGovernorResponse",
+  encode(_: MsgCreateGovernorResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgCreateGovernorResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgCreateGovernorResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(_: any): MsgCreateGovernorResponse {
+    const obj = createBaseMsgCreateGovernorResponse();
+    return obj;
+  },
+  toJSON(_: MsgCreateGovernorResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+  fromPartial(_: Partial<MsgCreateGovernorResponse>): MsgCreateGovernorResponse {
+    const message = createBaseMsgCreateGovernorResponse();
+    return message;
+  },
+  fromAmino(_: MsgCreateGovernorResponseAmino): MsgCreateGovernorResponse {
+    const message = createBaseMsgCreateGovernorResponse();
+    return message;
+  },
+  toAmino(_: MsgCreateGovernorResponse): MsgCreateGovernorResponseAmino {
+    const obj: any = {};
+    return obj;
+  },
+  fromAminoMsg(object: MsgCreateGovernorResponseAminoMsg): MsgCreateGovernorResponse {
+    return MsgCreateGovernorResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MsgCreateGovernorResponseProtoMsg): MsgCreateGovernorResponse {
+    return MsgCreateGovernorResponse.decode(message.value);
+  },
+  toProto(message: MsgCreateGovernorResponse): Uint8Array {
+    return MsgCreateGovernorResponse.encode(message).finish();
+  },
+  toProtoMsg(message: MsgCreateGovernorResponse): MsgCreateGovernorResponseProtoMsg {
+    return {
+      typeUrl: "/atomone.gov.v1.MsgCreateGovernorResponse",
+      value: MsgCreateGovernorResponse.encode(message).finish(),
+    };
+  },
+};
+function createBaseMsgEditGovernor(): MsgEditGovernor {
+  return {
+    address: "",
+    description: GovernorDescription.fromPartial({}),
+  };
+}
+export const MsgEditGovernor = {
+  typeUrl: "/atomone.gov.v1.MsgEditGovernor",
+  encode(message: MsgEditGovernor, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.address !== "") {
+      writer.uint32(10).string(message.address);
+    }
+    if (message.description !== undefined) {
+      GovernorDescription.encode(message.description, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgEditGovernor {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgEditGovernor();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.address = reader.string();
+          break;
+        case 2:
+          message.description = GovernorDescription.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): MsgEditGovernor {
+    const obj = createBaseMsgEditGovernor();
+    if (isSet(object.address)) obj.address = String(object.address);
+    if (isSet(object.description)) obj.description = GovernorDescription.fromJSON(object.description);
+    return obj;
+  },
+  toJSON(message: MsgEditGovernor): unknown {
+    const obj: any = {};
+    message.address !== undefined && (obj.address = message.address);
+    message.description !== undefined &&
+      (obj.description = message.description ? GovernorDescription.toJSON(message.description) : undefined);
+    return obj;
+  },
+  fromPartial(object: Partial<MsgEditGovernor>): MsgEditGovernor {
+    const message = createBaseMsgEditGovernor();
+    message.address = object.address ?? "";
+    if (object.description !== undefined && object.description !== null) {
+      message.description = GovernorDescription.fromPartial(object.description);
+    }
+    return message;
+  },
+  fromAmino(object: MsgEditGovernorAmino): MsgEditGovernor {
+    const message = createBaseMsgEditGovernor();
+    if (object.address !== undefined && object.address !== null) {
+      message.address = object.address;
+    }
+    if (object.description !== undefined && object.description !== null) {
+      message.description = GovernorDescription.fromAmino(object.description);
+    }
+    return message;
+  },
+  toAmino(message: MsgEditGovernor): MsgEditGovernorAmino {
+    const obj: any = {};
+    obj.address = message.address;
+    obj.description = message.description
+      ? GovernorDescription.toAmino(message.description)
+      : GovernorDescription.fromPartial({});
+    return obj;
+  },
+  fromAminoMsg(object: MsgEditGovernorAminoMsg): MsgEditGovernor {
+    return MsgEditGovernor.fromAmino(object.value);
+  },
+  toAminoMsg(message: MsgEditGovernor): MsgEditGovernorAminoMsg {
+    return {
+      type: "atomone/v1/MsgEditGovernor",
+      value: MsgEditGovernor.toAmino(message),
+    };
+  },
+  fromProtoMsg(message: MsgEditGovernorProtoMsg): MsgEditGovernor {
+    return MsgEditGovernor.decode(message.value);
+  },
+  toProto(message: MsgEditGovernor): Uint8Array {
+    return MsgEditGovernor.encode(message).finish();
+  },
+  toProtoMsg(message: MsgEditGovernor): MsgEditGovernorProtoMsg {
+    return {
+      typeUrl: "/atomone.gov.v1.MsgEditGovernor",
+      value: MsgEditGovernor.encode(message).finish(),
+    };
+  },
+};
+function createBaseMsgEditGovernorResponse(): MsgEditGovernorResponse {
+  return {};
+}
+export const MsgEditGovernorResponse = {
+  typeUrl: "/atomone.gov.v1.MsgEditGovernorResponse",
+  encode(_: MsgEditGovernorResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgEditGovernorResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgEditGovernorResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(_: any): MsgEditGovernorResponse {
+    const obj = createBaseMsgEditGovernorResponse();
+    return obj;
+  },
+  toJSON(_: MsgEditGovernorResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+  fromPartial(_: Partial<MsgEditGovernorResponse>): MsgEditGovernorResponse {
+    const message = createBaseMsgEditGovernorResponse();
+    return message;
+  },
+  fromAmino(_: MsgEditGovernorResponseAmino): MsgEditGovernorResponse {
+    const message = createBaseMsgEditGovernorResponse();
+    return message;
+  },
+  toAmino(_: MsgEditGovernorResponse): MsgEditGovernorResponseAmino {
+    const obj: any = {};
+    return obj;
+  },
+  fromAminoMsg(object: MsgEditGovernorResponseAminoMsg): MsgEditGovernorResponse {
+    return MsgEditGovernorResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MsgEditGovernorResponseProtoMsg): MsgEditGovernorResponse {
+    return MsgEditGovernorResponse.decode(message.value);
+  },
+  toProto(message: MsgEditGovernorResponse): Uint8Array {
+    return MsgEditGovernorResponse.encode(message).finish();
+  },
+  toProtoMsg(message: MsgEditGovernorResponse): MsgEditGovernorResponseProtoMsg {
+    return {
+      typeUrl: "/atomone.gov.v1.MsgEditGovernorResponse",
+      value: MsgEditGovernorResponse.encode(message).finish(),
+    };
+  },
+};
+function createBaseMsgUpdateGovernorStatus(): MsgUpdateGovernorStatus {
+  return {
+    address: "",
+    status: 0,
+  };
+}
+export const MsgUpdateGovernorStatus = {
+  typeUrl: "/atomone.gov.v1.MsgUpdateGovernorStatus",
+  encode(message: MsgUpdateGovernorStatus, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.address !== "") {
+      writer.uint32(10).string(message.address);
+    }
+    if (message.status !== 0) {
+      writer.uint32(16).int32(message.status);
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgUpdateGovernorStatus {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgUpdateGovernorStatus();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.address = reader.string();
+          break;
+        case 2:
+          message.status = reader.int32() as any;
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): MsgUpdateGovernorStatus {
+    const obj = createBaseMsgUpdateGovernorStatus();
+    if (isSet(object.address)) obj.address = String(object.address);
+    if (isSet(object.status)) obj.status = governorStatusFromJSON(object.status);
+    return obj;
+  },
+  toJSON(message: MsgUpdateGovernorStatus): unknown {
+    const obj: any = {};
+    message.address !== undefined && (obj.address = message.address);
+    message.status !== undefined && (obj.status = governorStatusToJSON(message.status));
+    return obj;
+  },
+  fromPartial(object: Partial<MsgUpdateGovernorStatus>): MsgUpdateGovernorStatus {
+    const message = createBaseMsgUpdateGovernorStatus();
+    message.address = object.address ?? "";
+    message.status = object.status ?? 0;
+    return message;
+  },
+  fromAmino(object: MsgUpdateGovernorStatusAmino): MsgUpdateGovernorStatus {
+    const message = createBaseMsgUpdateGovernorStatus();
+    if (object.address !== undefined && object.address !== null) {
+      message.address = object.address;
+    }
+    if (object.status !== undefined && object.status !== null) {
+      message.status = governorStatusFromJSON(object.status);
+    }
+    return message;
+  },
+  toAmino(message: MsgUpdateGovernorStatus): MsgUpdateGovernorStatusAmino {
+    const obj: any = {};
+    obj.address = message.address;
+    obj.status = message.status;
+    return obj;
+  },
+  fromAminoMsg(object: MsgUpdateGovernorStatusAminoMsg): MsgUpdateGovernorStatus {
+    return MsgUpdateGovernorStatus.fromAmino(object.value);
+  },
+  toAminoMsg(message: MsgUpdateGovernorStatus): MsgUpdateGovernorStatusAminoMsg {
+    return {
+      type: "atomone/v1/MsgUpdateGovernorStatus",
+      value: MsgUpdateGovernorStatus.toAmino(message),
+    };
+  },
+  fromProtoMsg(message: MsgUpdateGovernorStatusProtoMsg): MsgUpdateGovernorStatus {
+    return MsgUpdateGovernorStatus.decode(message.value);
+  },
+  toProto(message: MsgUpdateGovernorStatus): Uint8Array {
+    return MsgUpdateGovernorStatus.encode(message).finish();
+  },
+  toProtoMsg(message: MsgUpdateGovernorStatus): MsgUpdateGovernorStatusProtoMsg {
+    return {
+      typeUrl: "/atomone.gov.v1.MsgUpdateGovernorStatus",
+      value: MsgUpdateGovernorStatus.encode(message).finish(),
+    };
+  },
+};
+function createBaseMsgUpdateGovernorStatusResponse(): MsgUpdateGovernorStatusResponse {
+  return {};
+}
+export const MsgUpdateGovernorStatusResponse = {
+  typeUrl: "/atomone.gov.v1.MsgUpdateGovernorStatusResponse",
+  encode(_: MsgUpdateGovernorStatusResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgUpdateGovernorStatusResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgUpdateGovernorStatusResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(_: any): MsgUpdateGovernorStatusResponse {
+    const obj = createBaseMsgUpdateGovernorStatusResponse();
+    return obj;
+  },
+  toJSON(_: MsgUpdateGovernorStatusResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+  fromPartial(_: Partial<MsgUpdateGovernorStatusResponse>): MsgUpdateGovernorStatusResponse {
+    const message = createBaseMsgUpdateGovernorStatusResponse();
+    return message;
+  },
+  fromAmino(_: MsgUpdateGovernorStatusResponseAmino): MsgUpdateGovernorStatusResponse {
+    const message = createBaseMsgUpdateGovernorStatusResponse();
+    return message;
+  },
+  toAmino(_: MsgUpdateGovernorStatusResponse): MsgUpdateGovernorStatusResponseAmino {
+    const obj: any = {};
+    return obj;
+  },
+  fromAminoMsg(object: MsgUpdateGovernorStatusResponseAminoMsg): MsgUpdateGovernorStatusResponse {
+    return MsgUpdateGovernorStatusResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MsgUpdateGovernorStatusResponseProtoMsg): MsgUpdateGovernorStatusResponse {
+    return MsgUpdateGovernorStatusResponse.decode(message.value);
+  },
+  toProto(message: MsgUpdateGovernorStatusResponse): Uint8Array {
+    return MsgUpdateGovernorStatusResponse.encode(message).finish();
+  },
+  toProtoMsg(message: MsgUpdateGovernorStatusResponse): MsgUpdateGovernorStatusResponseProtoMsg {
+    return {
+      typeUrl: "/atomone.gov.v1.MsgUpdateGovernorStatusResponse",
+      value: MsgUpdateGovernorStatusResponse.encode(message).finish(),
+    };
+  },
+};
+function createBaseMsgDelegateGovernor(): MsgDelegateGovernor {
+  return {
+    delegatorAddress: "",
+    governorAddress: "",
+  };
+}
+export const MsgDelegateGovernor = {
+  typeUrl: "/atomone.gov.v1.MsgDelegateGovernor",
+  encode(message: MsgDelegateGovernor, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.delegatorAddress !== "") {
+      writer.uint32(10).string(message.delegatorAddress);
+    }
+    if (message.governorAddress !== "") {
+      writer.uint32(18).string(message.governorAddress);
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgDelegateGovernor {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgDelegateGovernor();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.delegatorAddress = reader.string();
+          break;
+        case 2:
+          message.governorAddress = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): MsgDelegateGovernor {
+    const obj = createBaseMsgDelegateGovernor();
+    if (isSet(object.delegatorAddress)) obj.delegatorAddress = String(object.delegatorAddress);
+    if (isSet(object.governorAddress)) obj.governorAddress = String(object.governorAddress);
+    return obj;
+  },
+  toJSON(message: MsgDelegateGovernor): unknown {
+    const obj: any = {};
+    message.delegatorAddress !== undefined && (obj.delegatorAddress = message.delegatorAddress);
+    message.governorAddress !== undefined && (obj.governorAddress = message.governorAddress);
+    return obj;
+  },
+  fromPartial(object: Partial<MsgDelegateGovernor>): MsgDelegateGovernor {
+    const message = createBaseMsgDelegateGovernor();
+    message.delegatorAddress = object.delegatorAddress ?? "";
+    message.governorAddress = object.governorAddress ?? "";
+    return message;
+  },
+  fromAmino(object: MsgDelegateGovernorAmino): MsgDelegateGovernor {
+    const message = createBaseMsgDelegateGovernor();
+    if (object.delegator_address !== undefined && object.delegator_address !== null) {
+      message.delegatorAddress = object.delegator_address;
+    }
+    if (object.governor_address !== undefined && object.governor_address !== null) {
+      message.governorAddress = object.governor_address;
+    }
+    return message;
+  },
+  toAmino(message: MsgDelegateGovernor): MsgDelegateGovernorAmino {
+    const obj: any = {};
+    obj.delegator_address = message.delegatorAddress;
+    obj.governor_address = message.governorAddress;
+    return obj;
+  },
+  fromAminoMsg(object: MsgDelegateGovernorAminoMsg): MsgDelegateGovernor {
+    return MsgDelegateGovernor.fromAmino(object.value);
+  },
+  toAminoMsg(message: MsgDelegateGovernor): MsgDelegateGovernorAminoMsg {
+    return {
+      type: "atomone/v1/MsgDelegateGovernor",
+      value: MsgDelegateGovernor.toAmino(message),
+    };
+  },
+  fromProtoMsg(message: MsgDelegateGovernorProtoMsg): MsgDelegateGovernor {
+    return MsgDelegateGovernor.decode(message.value);
+  },
+  toProto(message: MsgDelegateGovernor): Uint8Array {
+    return MsgDelegateGovernor.encode(message).finish();
+  },
+  toProtoMsg(message: MsgDelegateGovernor): MsgDelegateGovernorProtoMsg {
+    return {
+      typeUrl: "/atomone.gov.v1.MsgDelegateGovernor",
+      value: MsgDelegateGovernor.encode(message).finish(),
+    };
+  },
+};
+function createBaseMsgDelegateGovernorResponse(): MsgDelegateGovernorResponse {
+  return {};
+}
+export const MsgDelegateGovernorResponse = {
+  typeUrl: "/atomone.gov.v1.MsgDelegateGovernorResponse",
+  encode(_: MsgDelegateGovernorResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgDelegateGovernorResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgDelegateGovernorResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(_: any): MsgDelegateGovernorResponse {
+    const obj = createBaseMsgDelegateGovernorResponse();
+    return obj;
+  },
+  toJSON(_: MsgDelegateGovernorResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+  fromPartial(_: Partial<MsgDelegateGovernorResponse>): MsgDelegateGovernorResponse {
+    const message = createBaseMsgDelegateGovernorResponse();
+    return message;
+  },
+  fromAmino(_: MsgDelegateGovernorResponseAmino): MsgDelegateGovernorResponse {
+    const message = createBaseMsgDelegateGovernorResponse();
+    return message;
+  },
+  toAmino(_: MsgDelegateGovernorResponse): MsgDelegateGovernorResponseAmino {
+    const obj: any = {};
+    return obj;
+  },
+  fromAminoMsg(object: MsgDelegateGovernorResponseAminoMsg): MsgDelegateGovernorResponse {
+    return MsgDelegateGovernorResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MsgDelegateGovernorResponseProtoMsg): MsgDelegateGovernorResponse {
+    return MsgDelegateGovernorResponse.decode(message.value);
+  },
+  toProto(message: MsgDelegateGovernorResponse): Uint8Array {
+    return MsgDelegateGovernorResponse.encode(message).finish();
+  },
+  toProtoMsg(message: MsgDelegateGovernorResponse): MsgDelegateGovernorResponseProtoMsg {
+    return {
+      typeUrl: "/atomone.gov.v1.MsgDelegateGovernorResponse",
+      value: MsgDelegateGovernorResponse.encode(message).finish(),
+    };
+  },
+};
+function createBaseMsgUndelegateGovernor(): MsgUndelegateGovernor {
+  return {
+    delegatorAddress: "",
+  };
+}
+export const MsgUndelegateGovernor = {
+  typeUrl: "/atomone.gov.v1.MsgUndelegateGovernor",
+  encode(message: MsgUndelegateGovernor, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.delegatorAddress !== "") {
+      writer.uint32(10).string(message.delegatorAddress);
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgUndelegateGovernor {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgUndelegateGovernor();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.delegatorAddress = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): MsgUndelegateGovernor {
+    const obj = createBaseMsgUndelegateGovernor();
+    if (isSet(object.delegatorAddress)) obj.delegatorAddress = String(object.delegatorAddress);
+    return obj;
+  },
+  toJSON(message: MsgUndelegateGovernor): unknown {
+    const obj: any = {};
+    message.delegatorAddress !== undefined && (obj.delegatorAddress = message.delegatorAddress);
+    return obj;
+  },
+  fromPartial(object: Partial<MsgUndelegateGovernor>): MsgUndelegateGovernor {
+    const message = createBaseMsgUndelegateGovernor();
+    message.delegatorAddress = object.delegatorAddress ?? "";
+    return message;
+  },
+  fromAmino(object: MsgUndelegateGovernorAmino): MsgUndelegateGovernor {
+    const message = createBaseMsgUndelegateGovernor();
+    if (object.delegator_address !== undefined && object.delegator_address !== null) {
+      message.delegatorAddress = object.delegator_address;
+    }
+    return message;
+  },
+  toAmino(message: MsgUndelegateGovernor): MsgUndelegateGovernorAmino {
+    const obj: any = {};
+    obj.delegator_address = message.delegatorAddress;
+    return obj;
+  },
+  fromAminoMsg(object: MsgUndelegateGovernorAminoMsg): MsgUndelegateGovernor {
+    return MsgUndelegateGovernor.fromAmino(object.value);
+  },
+  toAminoMsg(message: MsgUndelegateGovernor): MsgUndelegateGovernorAminoMsg {
+    return {
+      type: "atomone/v1/MsgUndelegateGovernor",
+      value: MsgUndelegateGovernor.toAmino(message),
+    };
+  },
+  fromProtoMsg(message: MsgUndelegateGovernorProtoMsg): MsgUndelegateGovernor {
+    return MsgUndelegateGovernor.decode(message.value);
+  },
+  toProto(message: MsgUndelegateGovernor): Uint8Array {
+    return MsgUndelegateGovernor.encode(message).finish();
+  },
+  toProtoMsg(message: MsgUndelegateGovernor): MsgUndelegateGovernorProtoMsg {
+    return {
+      typeUrl: "/atomone.gov.v1.MsgUndelegateGovernor",
+      value: MsgUndelegateGovernor.encode(message).finish(),
+    };
+  },
+};
+function createBaseMsgUndelegateGovernorResponse(): MsgUndelegateGovernorResponse {
+  return {};
+}
+export const MsgUndelegateGovernorResponse = {
+  typeUrl: "/atomone.gov.v1.MsgUndelegateGovernorResponse",
+  encode(_: MsgUndelegateGovernorResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgUndelegateGovernorResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgUndelegateGovernorResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(_: any): MsgUndelegateGovernorResponse {
+    const obj = createBaseMsgUndelegateGovernorResponse();
+    return obj;
+  },
+  toJSON(_: MsgUndelegateGovernorResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+  fromPartial(_: Partial<MsgUndelegateGovernorResponse>): MsgUndelegateGovernorResponse {
+    const message = createBaseMsgUndelegateGovernorResponse();
+    return message;
+  },
+  fromAmino(_: MsgUndelegateGovernorResponseAmino): MsgUndelegateGovernorResponse {
+    const message = createBaseMsgUndelegateGovernorResponse();
+    return message;
+  },
+  toAmino(_: MsgUndelegateGovernorResponse): MsgUndelegateGovernorResponseAmino {
+    const obj: any = {};
+    return obj;
+  },
+  fromAminoMsg(object: MsgUndelegateGovernorResponseAminoMsg): MsgUndelegateGovernorResponse {
+    return MsgUndelegateGovernorResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MsgUndelegateGovernorResponseProtoMsg): MsgUndelegateGovernorResponse {
+    return MsgUndelegateGovernorResponse.decode(message.value);
+  },
+  toProto(message: MsgUndelegateGovernorResponse): Uint8Array {
+    return MsgUndelegateGovernorResponse.encode(message).finish();
+  },
+  toProtoMsg(message: MsgUndelegateGovernorResponse): MsgUndelegateGovernorResponseProtoMsg {
+    return {
+      typeUrl: "/atomone.gov.v1.MsgUndelegateGovernorResponse",
+      value: MsgUndelegateGovernorResponse.encode(message).finish(),
+    };
+  },
+};
 /** Msg defines the gov Msg service. */
 export interface Msg {
   /** SubmitProposal defines a method to create new proposal given the messages. */
@@ -1837,6 +2753,22 @@ export interface Msg {
   ProposeConstitutionAmendment(
     request: MsgProposeConstitutionAmendment,
   ): Promise<MsgProposeConstitutionAmendmentResponse>;
+  /** CreateGovernor defines a method to create a new governor. */
+  CreateGovernor(request: MsgCreateGovernor): Promise<MsgCreateGovernorResponse>;
+  /**
+   * EditGovernor defines a method to edit an existing governor.
+   * It also sets its status.
+   */
+  EditGovernor(request: MsgEditGovernor): Promise<MsgEditGovernorResponse>;
+  /** UpdateGovernorStatus defines a method to update the status of a governor. */
+  UpdateGovernorStatus(request: MsgUpdateGovernorStatus): Promise<MsgUpdateGovernorStatusResponse>;
+  /**
+   * DelegateGovernor defines a method to delegate a non-zero percentange of
+   * governance voting power from a delegator to a governor.
+   */
+  DelegateGovernor(request: MsgDelegateGovernor): Promise<MsgDelegateGovernorResponse>;
+  /** UndelegateGovernor defines a method to undelegate governance voting power */
+  UndelegateGovernor(request: MsgUndelegateGovernor): Promise<MsgUndelegateGovernorResponse>;
 }
 export class MsgClientImpl implements Msg {
   private readonly rpc: TxRpc;
@@ -1850,6 +2782,11 @@ export class MsgClientImpl implements Msg {
     this.UpdateParams = this.UpdateParams.bind(this);
     this.ProposeLaw = this.ProposeLaw.bind(this);
     this.ProposeConstitutionAmendment = this.ProposeConstitutionAmendment.bind(this);
+    this.CreateGovernor = this.CreateGovernor.bind(this);
+    this.EditGovernor = this.EditGovernor.bind(this);
+    this.UpdateGovernorStatus = this.UpdateGovernorStatus.bind(this);
+    this.DelegateGovernor = this.DelegateGovernor.bind(this);
+    this.UndelegateGovernor = this.UndelegateGovernor.bind(this);
   }
   SubmitProposal(request: MsgSubmitProposal): Promise<MsgSubmitProposalResponse> {
     const data = MsgSubmitProposal.encode(request).finish();
@@ -1892,5 +2829,30 @@ export class MsgClientImpl implements Msg {
     const data = MsgProposeConstitutionAmendment.encode(request).finish();
     const promise = this.rpc.request("atomone.gov.v1.Msg", "ProposeConstitutionAmendment", data);
     return promise.then((data) => MsgProposeConstitutionAmendmentResponse.decode(new BinaryReader(data)));
+  }
+  CreateGovernor(request: MsgCreateGovernor): Promise<MsgCreateGovernorResponse> {
+    const data = MsgCreateGovernor.encode(request).finish();
+    const promise = this.rpc.request("atomone.gov.v1.Msg", "CreateGovernor", data);
+    return promise.then((data) => MsgCreateGovernorResponse.decode(new BinaryReader(data)));
+  }
+  EditGovernor(request: MsgEditGovernor): Promise<MsgEditGovernorResponse> {
+    const data = MsgEditGovernor.encode(request).finish();
+    const promise = this.rpc.request("atomone.gov.v1.Msg", "EditGovernor", data);
+    return promise.then((data) => MsgEditGovernorResponse.decode(new BinaryReader(data)));
+  }
+  UpdateGovernorStatus(request: MsgUpdateGovernorStatus): Promise<MsgUpdateGovernorStatusResponse> {
+    const data = MsgUpdateGovernorStatus.encode(request).finish();
+    const promise = this.rpc.request("atomone.gov.v1.Msg", "UpdateGovernorStatus", data);
+    return promise.then((data) => MsgUpdateGovernorStatusResponse.decode(new BinaryReader(data)));
+  }
+  DelegateGovernor(request: MsgDelegateGovernor): Promise<MsgDelegateGovernorResponse> {
+    const data = MsgDelegateGovernor.encode(request).finish();
+    const promise = this.rpc.request("atomone.gov.v1.Msg", "DelegateGovernor", data);
+    return promise.then((data) => MsgDelegateGovernorResponse.decode(new BinaryReader(data)));
+  }
+  UndelegateGovernor(request: MsgUndelegateGovernor): Promise<MsgUndelegateGovernorResponse> {
+    const data = MsgUndelegateGovernor.encode(request).finish();
+    const promise = this.rpc.request("atomone.gov.v1.Msg", "UndelegateGovernor", data);
+    return promise.then((data) => MsgUndelegateGovernorResponse.decode(new BinaryReader(data)));
   }
 }
