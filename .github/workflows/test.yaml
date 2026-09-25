@@ -17,28 +17,31 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v7
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v6
+
       - name: Setup Node.js
         uses: actions/setup-node@v7
         with:
           node-version: 'lts/*'
-          cache: 'npm'
+          cache: 'pnpm'
 
       - name: Install modules
-        run: npm ci
+        run: pnpm install --frozen-lockfile
 
       - name: Formatting
-        run: npm run format:check
+        run: pnpm run format:check
 
       # tsc runs with noEmitOnError, so this is the type check as well.
       - name: Build
-        run: npm run build
+        run: pnpm run build
 
       # The package is assembled by copying build output to the repo root and
       # listing it in "files", so a new generated module silently goes missing
       # from the tarball. Compare the two rather than trusting the list.
       - name: Check the published package carries every built module
         run: |
-          npm pack --pack-destination "$RUNNER_TEMP" >/dev/null
+          pnpm pack --pack-destination "$RUNNER_TEMP" >/dev/null
           tar xzf "$RUNNER_TEMP"/atomone-atomone-types-*.tgz -C "$RUNNER_TEMP"
 
           failed=0

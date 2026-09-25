@@ -21,16 +21,18 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v7
 
-      # Node 24 ships an npm new enough for trusted publishing (>= 11.5.1).
+      - name: Install pnpm
+        uses: pnpm/action-setup@v6
+
       - name: Setup Node.js
         uses: actions/setup-node@v7
         with:
           node-version: '24'
           registry-url: 'https://registry.npmjs.org'
-          cache: 'npm'
+          cache: 'pnpm'
 
       - name: Install modules
-        run: npm ci
+        run: pnpm install --frozen-lockfile
 
       # The version is maintained by hand, so a mistyped tag would publish the
       # wrong version under the right name.
@@ -45,10 +47,12 @@ jobs:
           fi
 
       - name: Build
-        run: npm run build
+        run: pnpm run build
 
+      # --no-git-checks: the tag is already checked above, and pnpm otherwise
+      # refuses to publish from a detached tag checkout.
       - name: Publish
-        run: npm publish --access public
+        run: pnpm publish --access public --no-git-checks
         env:
           NPM_CONFIG_PROVENANCE: 'true'
           # Unset when the package uses a Trusted Publisher on npm, which is

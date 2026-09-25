@@ -1,5 +1,6 @@
-# We use npm, not yarn
+# We use pnpm
 yarn.lock
+package-lock.json
 
 node_modules/
 
