@@ -51,7 +51,7 @@
     "@cosmjs/proto-signing": "^0.39.0",
     "@cosmjs/stargate": "^0.39.0",
     "@cosmjs/tendermint-rpc": "^0.39.0",
-    "@cosmology/telescope": "^1.12.21",
+    "@cosmology/telescope": "^2.1.0",
     "@types/node": "^26.6.2",
     "typescript": "^7.0.2"
   }
