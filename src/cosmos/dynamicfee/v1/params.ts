@@ -12,14 +12,14 @@ export interface Params {
   /**
    * Alpha is the amount we additively increase the learning rate
    * when it is above or below the target +/- threshold.
-   *
+   * 
    * Must be > 0.
    */
   alpha: string;
   /**
    * Beta is the amount we multiplicatively decrease the learning rate
    * when it is within the target +/- threshold.
-   *
+   * 
    * Must be [0, 1].
    */
   beta: string;
@@ -28,7 +28,7 @@ export interface Params {
    * above or below the target +/- threshold, we additively increase the
    * learning rate by Alpha. Otherwise, we multiplicatively decrease the
    * learning rate by Beta.
-   *
+   * 
    * Must be [0, 0.5].
    */
   gamma: string;
@@ -81,14 +81,14 @@ export interface ParamsAmino {
   /**
    * Alpha is the amount we additively increase the learning rate
    * when it is above or below the target +/- threshold.
-   *
+   * 
    * Must be > 0.
    */
   alpha?: string;
   /**
    * Beta is the amount we multiplicatively decrease the learning rate
    * when it is within the target +/- threshold.
-   *
+   * 
    * Must be [0, 1].
    */
   beta?: string;
@@ -97,7 +97,7 @@ export interface ParamsAmino {
    * above or below the target +/- threshold, we additively increase the
    * learning rate by Alpha. Otherwise, we multiplicatively decrease the
    * learning rate by Beta.
-   *
+   * 
    * Must be [0, 0.5].
    */
   gamma?: string;
@@ -157,45 +157,17 @@ function createBaseParams(): Params {
     maxLearningRate: "",
     window: BigInt(0),
     feeDenom: "",
-    enabled: false,
+    enabled: false
   };
 }
 export const Params = {
   typeUrl: "/cosmos.dynamicfee.v1.Params",
   aminoType: "cosmos-sdk/Params",
   is(o: any): o is Params {
-    return (
-      o &&
-      (o.$typeUrl === Params.typeUrl ||
-        (typeof o.alpha === "string" &&
-          typeof o.beta === "string" &&
-          typeof o.gamma === "string" &&
-          typeof o.minBaseGasPrice === "string" &&
-          typeof o.targetBlockUtilization === "string" &&
-          typeof o.defaultMaxBlockGas === "bigint" &&
-          typeof o.minLearningRate === "string" &&
-          typeof o.maxLearningRate === "string" &&
-          typeof o.window === "bigint" &&
-          typeof o.feeDenom === "string" &&
-          typeof o.enabled === "boolean"))
-    );
+    return o && (o.$typeUrl === Params.typeUrl || typeof o.alpha === "string" && typeof o.beta === "string" && typeof o.gamma === "string" && typeof o.minBaseGasPrice === "string" && typeof o.targetBlockUtilization === "string" && typeof o.defaultMaxBlockGas === "bigint" && typeof o.minLearningRate === "string" && typeof o.maxLearningRate === "string" && typeof o.window === "bigint" && typeof o.feeDenom === "string" && typeof o.enabled === "boolean");
   },
   isAmino(o: any): o is ParamsAmino {
-    return (
-      o &&
-      (o.$typeUrl === Params.typeUrl ||
-        (typeof o.alpha === "string" &&
-          typeof o.beta === "string" &&
-          typeof o.gamma === "string" &&
-          typeof o.min_base_gas_price === "string" &&
-          typeof o.target_block_utilization === "string" &&
-          typeof o.default_max_block_gas === "bigint" &&
-          typeof o.min_learning_rate === "string" &&
-          typeof o.max_learning_rate === "string" &&
-          typeof o.window === "bigint" &&
-          typeof o.fee_denom === "string" &&
-          typeof o.enabled === "boolean"))
-    );
+    return o && (o.$typeUrl === Params.typeUrl || typeof o.alpha === "string" && typeof o.beta === "string" && typeof o.gamma === "string" && typeof o.min_base_gas_price === "string" && typeof o.target_block_utilization === "string" && typeof o.default_max_block_gas === "bigint" && typeof o.min_learning_rate === "string" && typeof o.max_learning_rate === "string" && typeof o.window === "bigint" && typeof o.fee_denom === "string" && typeof o.enabled === "boolean");
   },
   encode(message: Params, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.alpha !== "") {
@@ -286,10 +258,8 @@ export const Params = {
     if (isSet(object.beta)) obj.beta = String(object.beta);
     if (isSet(object.gamma)) obj.gamma = String(object.gamma);
     if (isSet(object.minBaseGasPrice)) obj.minBaseGasPrice = String(object.minBaseGasPrice);
-    if (isSet(object.targetBlockUtilization))
-      obj.targetBlockUtilization = String(object.targetBlockUtilization);
-    if (isSet(object.defaultMaxBlockGas))
-      obj.defaultMaxBlockGas = BigInt(object.defaultMaxBlockGas.toString());
+    if (isSet(object.targetBlockUtilization)) obj.targetBlockUtilization = String(object.targetBlockUtilization);
+    if (isSet(object.defaultMaxBlockGas)) obj.defaultMaxBlockGas = BigInt(object.defaultMaxBlockGas.toString());
     if (isSet(object.minLearningRate)) obj.minLearningRate = String(object.minLearningRate);
     if (isSet(object.maxLearningRate)) obj.maxLearningRate = String(object.maxLearningRate);
     if (isSet(object.window)) obj.window = BigInt(object.window.toString());
@@ -303,10 +273,8 @@ export const Params = {
     message.beta !== undefined && (obj.beta = message.beta);
     message.gamma !== undefined && (obj.gamma = message.gamma);
     message.minBaseGasPrice !== undefined && (obj.minBaseGasPrice = message.minBaseGasPrice);
-    message.targetBlockUtilization !== undefined &&
-      (obj.targetBlockUtilization = message.targetBlockUtilization);
-    message.defaultMaxBlockGas !== undefined &&
-      (obj.defaultMaxBlockGas = (message.defaultMaxBlockGas || BigInt(0)).toString());
+    message.targetBlockUtilization !== undefined && (obj.targetBlockUtilization = message.targetBlockUtilization);
+    message.defaultMaxBlockGas !== undefined && (obj.defaultMaxBlockGas = (message.defaultMaxBlockGas || BigInt(0)).toString());
     message.minLearningRate !== undefined && (obj.minLearningRate = message.minLearningRate);
     message.maxLearningRate !== undefined && (obj.maxLearningRate = message.maxLearningRate);
     message.window !== undefined && (obj.window = (message.window || BigInt(0)).toString());
@@ -376,10 +344,8 @@ export const Params = {
     obj.beta = message.beta === "" ? undefined : message.beta;
     obj.gamma = message.gamma === "" ? undefined : message.gamma;
     obj.min_base_gas_price = message.minBaseGasPrice === "" ? undefined : message.minBaseGasPrice;
-    obj.target_block_utilization =
-      message.targetBlockUtilization === "" ? undefined : message.targetBlockUtilization;
-    obj.default_max_block_gas =
-      message.defaultMaxBlockGas !== BigInt(0) ? message.defaultMaxBlockGas?.toString() : undefined;
+    obj.target_block_utilization = message.targetBlockUtilization === "" ? undefined : message.targetBlockUtilization;
+    obj.default_max_block_gas = message.defaultMaxBlockGas !== BigInt(0) ? message.defaultMaxBlockGas?.toString() : undefined;
     obj.min_learning_rate = message.minLearningRate === "" ? undefined : message.minLearningRate;
     obj.max_learning_rate = message.maxLearningRate === "" ? undefined : message.maxLearningRate;
     obj.window = message.window !== BigInt(0) ? message.window?.toString() : undefined;
@@ -393,7 +359,7 @@ export const Params = {
   toAminoMsg(message: Params): ParamsAminoMsg {
     return {
       type: "cosmos-sdk/Params",
-      value: Params.toAmino(message),
+      value: Params.toAmino(message)
     };
   },
   fromProtoMsg(message: ParamsProtoMsg): Params {
@@ -405,9 +371,9 @@ export const Params = {
   toProtoMsg(message: Params): ParamsProtoMsg {
     return {
       typeUrl: "/cosmos.dynamicfee.v1.Params",
-      value: Params.encode(message).finish(),
+      value: Params.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(Params.typeUrl, Params);
 GlobalDecoderRegistry.registerAminoProtoMapping(Params.aminoType, Params.typeUrl);

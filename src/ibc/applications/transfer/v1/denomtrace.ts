@@ -48,23 +48,17 @@ export interface DenomTraceAminoMsg {
 function createBaseDenomTrace(): DenomTrace {
   return {
     path: "",
-    baseDenom: "",
+    baseDenom: ""
   };
 }
 export const DenomTrace = {
   typeUrl: "/ibc.applications.transfer.v1.DenomTrace",
   aminoType: "cosmos-sdk/DenomTrace",
   is(o: any): o is DenomTrace {
-    return (
-      o &&
-      (o.$typeUrl === DenomTrace.typeUrl || (typeof o.path === "string" && typeof o.baseDenom === "string"))
-    );
+    return o && (o.$typeUrl === DenomTrace.typeUrl || typeof o.path === "string" && typeof o.baseDenom === "string");
   },
   isAmino(o: any): o is DenomTraceAmino {
-    return (
-      o &&
-      (o.$typeUrl === DenomTrace.typeUrl || (typeof o.path === "string" && typeof o.base_denom === "string"))
-    );
+    return o && (o.$typeUrl === DenomTrace.typeUrl || typeof o.path === "string" && typeof o.base_denom === "string");
   },
   encode(message: DenomTrace, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.path !== "") {
@@ -135,7 +129,7 @@ export const DenomTrace = {
   toAminoMsg(message: DenomTrace): DenomTraceAminoMsg {
     return {
       type: "cosmos-sdk/DenomTrace",
-      value: DenomTrace.toAmino(message),
+      value: DenomTrace.toAmino(message)
     };
   },
   fromProtoMsg(message: DenomTraceProtoMsg): DenomTrace {
@@ -147,9 +141,9 @@ export const DenomTrace = {
   toProtoMsg(message: DenomTrace): DenomTraceProtoMsg {
     return {
       typeUrl: "/ibc.applications.transfer.v1.DenomTrace",
-      value: DenomTrace.encode(message).finish(),
+      value: DenomTrace.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(DenomTrace.typeUrl, DenomTrace);
 GlobalDecoderRegistry.registerAminoProtoMapping(DenomTrace.aminoType, DenomTrace.typeUrl);

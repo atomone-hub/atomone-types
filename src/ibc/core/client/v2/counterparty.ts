@@ -38,33 +38,17 @@ export interface CounterpartyInfoAminoMsg {
 function createBaseCounterpartyInfo(): CounterpartyInfo {
   return {
     merklePrefix: [],
-    clientId: "",
+    clientId: ""
   };
 }
 export const CounterpartyInfo = {
   typeUrl: "/ibc.core.client.v2.CounterpartyInfo",
   aminoType: "cosmos-sdk/CounterpartyInfo",
   is(o: any): o is CounterpartyInfo {
-    return (
-      o &&
-      (o.$typeUrl === CounterpartyInfo.typeUrl ||
-        (Array.isArray(o.merklePrefix) &&
-          (!o.merklePrefix.length ||
-            o.merklePrefix[0] instanceof Uint8Array ||
-            typeof o.merklePrefix[0] === "string") &&
-          typeof o.clientId === "string"))
-    );
+    return o && (o.$typeUrl === CounterpartyInfo.typeUrl || Array.isArray(o.merklePrefix) && (!o.merklePrefix.length || o.merklePrefix[0] instanceof Uint8Array || typeof o.merklePrefix[0] === "string") && typeof o.clientId === "string");
   },
   isAmino(o: any): o is CounterpartyInfoAmino {
-    return (
-      o &&
-      (o.$typeUrl === CounterpartyInfo.typeUrl ||
-        (Array.isArray(o.merkle_prefix) &&
-          (!o.merkle_prefix.length ||
-            o.merkle_prefix[0] instanceof Uint8Array ||
-            typeof o.merkle_prefix[0] === "string") &&
-          typeof o.client_id === "string"))
-    );
+    return o && (o.$typeUrl === CounterpartyInfo.typeUrl || Array.isArray(o.merkle_prefix) && (!o.merkle_prefix.length || o.merkle_prefix[0] instanceof Uint8Array || typeof o.merkle_prefix[0] === "string") && typeof o.client_id === "string");
   },
   encode(message: CounterpartyInfo, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.merklePrefix) {
@@ -97,17 +81,14 @@ export const CounterpartyInfo = {
   },
   fromJSON(object: any): CounterpartyInfo {
     const obj = createBaseCounterpartyInfo();
-    if (Array.isArray(object?.merklePrefix))
-      obj.merklePrefix = object.merklePrefix.map((e: any) => bytesFromBase64(e));
+    if (Array.isArray(object?.merklePrefix)) obj.merklePrefix = object.merklePrefix.map((e: any) => bytesFromBase64(e));
     if (isSet(object.clientId)) obj.clientId = String(object.clientId);
     return obj;
   },
   toJSON(message: CounterpartyInfo): JsonSafe<CounterpartyInfo> {
     const obj: any = {};
     if (message.merklePrefix) {
-      obj.merklePrefix = message.merklePrefix.map((e) =>
-        base64FromBytes(e !== undefined ? e : new Uint8Array()),
-      );
+      obj.merklePrefix = message.merklePrefix.map(e => base64FromBytes(e !== undefined ? e : new Uint8Array()));
     } else {
       obj.merklePrefix = [];
     }
@@ -116,13 +97,13 @@ export const CounterpartyInfo = {
   },
   fromPartial(object: Partial<CounterpartyInfo>): CounterpartyInfo {
     const message = createBaseCounterpartyInfo();
-    message.merklePrefix = object.merklePrefix?.map((e) => e) || [];
+    message.merklePrefix = object.merklePrefix?.map(e => e) || [];
     message.clientId = object.clientId ?? "";
     return message;
   },
   fromAmino(object: CounterpartyInfoAmino): CounterpartyInfo {
     const message = createBaseCounterpartyInfo();
-    message.merklePrefix = object.merkle_prefix?.map((e) => bytesFromBase64(e)) || [];
+    message.merklePrefix = object.merkle_prefix?.map(e => bytesFromBase64(e)) || [];
     if (object.client_id !== undefined && object.client_id !== null) {
       message.clientId = object.client_id;
     }
@@ -131,7 +112,7 @@ export const CounterpartyInfo = {
   toAmino(message: CounterpartyInfo): CounterpartyInfoAmino {
     const obj: any = {};
     if (message.merklePrefix) {
-      obj.merkle_prefix = message.merklePrefix.map((e) => base64FromBytes(e));
+      obj.merkle_prefix = message.merklePrefix.map(e => base64FromBytes(e));
     } else {
       obj.merkle_prefix = message.merklePrefix;
     }
@@ -144,7 +125,7 @@ export const CounterpartyInfo = {
   toAminoMsg(message: CounterpartyInfo): CounterpartyInfoAminoMsg {
     return {
       type: "cosmos-sdk/CounterpartyInfo",
-      value: CounterpartyInfo.toAmino(message),
+      value: CounterpartyInfo.toAmino(message)
     };
   },
   fromProtoMsg(message: CounterpartyInfoProtoMsg): CounterpartyInfo {
@@ -156,9 +137,9 @@ export const CounterpartyInfo = {
   toProtoMsg(message: CounterpartyInfo): CounterpartyInfoProtoMsg {
     return {
       typeUrl: "/ibc.core.client.v2.CounterpartyInfo",
-      value: CounterpartyInfo.encode(message).finish(),
+      value: CounterpartyInfo.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(CounterpartyInfo.typeUrl, CounterpartyInfo);
 GlobalDecoderRegistry.registerAminoProtoMapping(CounterpartyInfo.aminoType, CounterpartyInfo.typeUrl);

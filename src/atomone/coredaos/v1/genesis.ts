@@ -28,7 +28,7 @@ export interface GenesisStateAminoMsg {
 }
 function createBaseGenesisState(): GenesisState {
   return {
-    params: Params.fromPartial({}),
+    params: Params.fromPartial({})
   };
 }
 export const GenesisState = {
@@ -103,8 +103,8 @@ export const GenesisState = {
   toProtoMsg(message: GenesisState): GenesisStateProtoMsg {
     return {
       typeUrl: "/atomone.coredaos.v1.GenesisState",
-      value: GenesisState.encode(message).finish(),
+      value: GenesisState.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(GenesisState.typeUrl, GenesisState);

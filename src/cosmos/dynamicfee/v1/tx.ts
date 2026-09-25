@@ -69,24 +69,17 @@ export interface MsgUpdateParamsResponseAminoMsg {
 function createBaseMsgUpdateParams(): MsgUpdateParams {
   return {
     authority: "",
-    params: Params.fromPartial({}),
+    params: Params.fromPartial({})
   };
 }
 export const MsgUpdateParams = {
   typeUrl: "/cosmos.dynamicfee.v1.MsgUpdateParams",
   aminoType: "cosmos/x/dynamicfee/v1/MsgUpdateParams",
   is(o: any): o is MsgUpdateParams {
-    return (
-      o &&
-      (o.$typeUrl === MsgUpdateParams.typeUrl || (typeof o.authority === "string" && Params.is(o.params)))
-    );
+    return o && (o.$typeUrl === MsgUpdateParams.typeUrl || typeof o.authority === "string" && Params.is(o.params));
   },
   isAmino(o: any): o is MsgUpdateParamsAmino {
-    return (
-      o &&
-      (o.$typeUrl === MsgUpdateParams.typeUrl ||
-        (typeof o.authority === "string" && Params.isAmino(o.params)))
-    );
+    return o && (o.$typeUrl === MsgUpdateParams.typeUrl || typeof o.authority === "string" && Params.isAmino(o.params));
   },
   encode(message: MsgUpdateParams, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.authority !== "") {
@@ -159,7 +152,7 @@ export const MsgUpdateParams = {
   toAminoMsg(message: MsgUpdateParams): MsgUpdateParamsAminoMsg {
     return {
       type: "cosmos/x/dynamicfee/v1/MsgUpdateParams",
-      value: MsgUpdateParams.toAmino(message),
+      value: MsgUpdateParams.toAmino(message)
     };
   },
   fromProtoMsg(message: MsgUpdateParamsProtoMsg): MsgUpdateParams {
@@ -171,9 +164,9 @@ export const MsgUpdateParams = {
   toProtoMsg(message: MsgUpdateParams): MsgUpdateParamsProtoMsg {
     return {
       typeUrl: "/cosmos.dynamicfee.v1.MsgUpdateParams",
-      value: MsgUpdateParams.encode(message).finish(),
+      value: MsgUpdateParams.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(MsgUpdateParams.typeUrl, MsgUpdateParams);
 GlobalDecoderRegistry.registerAminoProtoMapping(MsgUpdateParams.aminoType, MsgUpdateParams.typeUrl);
@@ -232,7 +225,7 @@ export const MsgUpdateParamsResponse = {
   toAminoMsg(message: MsgUpdateParamsResponse): MsgUpdateParamsResponseAminoMsg {
     return {
       type: "cosmos-sdk/MsgUpdateParamsResponse",
-      value: MsgUpdateParamsResponse.toAmino(message),
+      value: MsgUpdateParamsResponse.toAmino(message)
     };
   },
   fromProtoMsg(message: MsgUpdateParamsResponseProtoMsg): MsgUpdateParamsResponse {
@@ -244,15 +237,12 @@ export const MsgUpdateParamsResponse = {
   toProtoMsg(message: MsgUpdateParamsResponse): MsgUpdateParamsResponseProtoMsg {
     return {
       typeUrl: "/cosmos.dynamicfee.v1.MsgUpdateParamsResponse",
-      value: MsgUpdateParamsResponse.encode(message).finish(),
+      value: MsgUpdateParamsResponse.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(MsgUpdateParamsResponse.typeUrl, MsgUpdateParamsResponse);
-GlobalDecoderRegistry.registerAminoProtoMapping(
-  MsgUpdateParamsResponse.aminoType,
-  MsgUpdateParamsResponse.typeUrl,
-);
+GlobalDecoderRegistry.registerAminoProtoMapping(MsgUpdateParamsResponse.aminoType, MsgUpdateParamsResponse.typeUrl);
 /** Message service defines the types of messages supported by the dynamicfee
  module. */
 export interface Msg {
@@ -268,6 +258,6 @@ export class MsgClientImpl implements Msg {
   UpdateParams(request: MsgUpdateParams): Promise<MsgUpdateParamsResponse> {
     const data = MsgUpdateParams.encode(request).finish();
     const promise = this.rpc.request("cosmos.dynamicfee.v1.Msg", "UpdateParams", data);
-    return promise.then((data) => MsgUpdateParamsResponse.decode(new BinaryReader(data)));
+    return promise.then(data => MsgUpdateParamsResponse.decode(new BinaryReader(data)));
   }
 }

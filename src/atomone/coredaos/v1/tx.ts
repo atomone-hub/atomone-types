@@ -235,7 +235,7 @@ export interface MsgUpdateParams {
   authority: string;
   /**
    * params defines the x/coredaos parameters to update.
-   *
+   * 
    * NOTE: All parameters must be supplied.
    */
   params: Params | undefined;
@@ -258,7 +258,7 @@ export interface MsgUpdateParamsAmino {
   authority?: string;
   /**
    * params defines the x/coredaos parameters to update.
-   *
+   * 
    * NOTE: All parameters must be supplied.
    */
   params: ParamsAmino | undefined;
@@ -293,31 +293,17 @@ function createBaseMsgAnnotateProposal(): MsgAnnotateProposal {
     annotator: "",
     proposalId: BigInt(0),
     annotation: "",
-    overwrite: false,
+    overwrite: false
   };
 }
 export const MsgAnnotateProposal = {
   typeUrl: "/atomone.coredaos.v1.MsgAnnotateProposal",
   aminoType: "atomone/coredaos/v1/MsgAnnotateProposal",
   is(o: any): o is MsgAnnotateProposal {
-    return (
-      o &&
-      (o.$typeUrl === MsgAnnotateProposal.typeUrl ||
-        (typeof o.annotator === "string" &&
-          typeof o.proposalId === "bigint" &&
-          typeof o.annotation === "string" &&
-          typeof o.overwrite === "boolean"))
-    );
+    return o && (o.$typeUrl === MsgAnnotateProposal.typeUrl || typeof o.annotator === "string" && typeof o.proposalId === "bigint" && typeof o.annotation === "string" && typeof o.overwrite === "boolean");
   },
   isAmino(o: any): o is MsgAnnotateProposalAmino {
-    return (
-      o &&
-      (o.$typeUrl === MsgAnnotateProposal.typeUrl ||
-        (typeof o.annotator === "string" &&
-          typeof o.proposal_id === "bigint" &&
-          typeof o.annotation === "string" &&
-          typeof o.overwrite === "boolean"))
-    );
+    return o && (o.$typeUrl === MsgAnnotateProposal.typeUrl || typeof o.annotator === "string" && typeof o.proposal_id === "bigint" && typeof o.annotation === "string" && typeof o.overwrite === "boolean");
   },
   encode(message: MsgAnnotateProposal, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.annotator !== "") {
@@ -416,7 +402,7 @@ export const MsgAnnotateProposal = {
   toAminoMsg(message: MsgAnnotateProposal): MsgAnnotateProposalAminoMsg {
     return {
       type: "atomone/coredaos/v1/MsgAnnotateProposal",
-      value: MsgAnnotateProposal.toAmino(message),
+      value: MsgAnnotateProposal.toAmino(message)
     };
   },
   fromProtoMsg(message: MsgAnnotateProposalProtoMsg): MsgAnnotateProposal {
@@ -428,9 +414,9 @@ export const MsgAnnotateProposal = {
   toProtoMsg(message: MsgAnnotateProposal): MsgAnnotateProposalProtoMsg {
     return {
       typeUrl: "/atomone.coredaos.v1.MsgAnnotateProposal",
-      value: MsgAnnotateProposal.encode(message).finish(),
+      value: MsgAnnotateProposal.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(MsgAnnotateProposal.typeUrl, MsgAnnotateProposal);
 GlobalDecoderRegistry.registerAminoProtoMapping(MsgAnnotateProposal.aminoType, MsgAnnotateProposal.typeUrl);
@@ -494,33 +480,25 @@ export const MsgAnnotateProposalResponse = {
   toProtoMsg(message: MsgAnnotateProposalResponse): MsgAnnotateProposalResponseProtoMsg {
     return {
       typeUrl: "/atomone.coredaos.v1.MsgAnnotateProposalResponse",
-      value: MsgAnnotateProposalResponse.encode(message).finish(),
+      value: MsgAnnotateProposalResponse.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(MsgAnnotateProposalResponse.typeUrl, MsgAnnotateProposalResponse);
 function createBaseMsgEndorseProposal(): MsgEndorseProposal {
   return {
     endorser: "",
-    proposalId: BigInt(0),
+    proposalId: BigInt(0)
   };
 }
 export const MsgEndorseProposal = {
   typeUrl: "/atomone.coredaos.v1.MsgEndorseProposal",
   aminoType: "atomone/coredaos/v1/MsgEndorseProposal",
   is(o: any): o is MsgEndorseProposal {
-    return (
-      o &&
-      (o.$typeUrl === MsgEndorseProposal.typeUrl ||
-        (typeof o.endorser === "string" && typeof o.proposalId === "bigint"))
-    );
+    return o && (o.$typeUrl === MsgEndorseProposal.typeUrl || typeof o.endorser === "string" && typeof o.proposalId === "bigint");
   },
   isAmino(o: any): o is MsgEndorseProposalAmino {
-    return (
-      o &&
-      (o.$typeUrl === MsgEndorseProposal.typeUrl ||
-        (typeof o.endorser === "string" && typeof o.proposal_id === "bigint"))
-    );
+    return o && (o.$typeUrl === MsgEndorseProposal.typeUrl || typeof o.endorser === "string" && typeof o.proposal_id === "bigint");
   },
   encode(message: MsgEndorseProposal, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.endorser !== "") {
@@ -593,7 +571,7 @@ export const MsgEndorseProposal = {
   toAminoMsg(message: MsgEndorseProposal): MsgEndorseProposalAminoMsg {
     return {
       type: "atomone/coredaos/v1/MsgEndorseProposal",
-      value: MsgEndorseProposal.toAmino(message),
+      value: MsgEndorseProposal.toAmino(message)
     };
   },
   fromProtoMsg(message: MsgEndorseProposalProtoMsg): MsgEndorseProposal {
@@ -605,9 +583,9 @@ export const MsgEndorseProposal = {
   toProtoMsg(message: MsgEndorseProposal): MsgEndorseProposalProtoMsg {
     return {
       typeUrl: "/atomone.coredaos.v1.MsgEndorseProposal",
-      value: MsgEndorseProposal.encode(message).finish(),
+      value: MsgEndorseProposal.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(MsgEndorseProposal.typeUrl, MsgEndorseProposal);
 GlobalDecoderRegistry.registerAminoProtoMapping(MsgEndorseProposal.aminoType, MsgEndorseProposal.typeUrl);
@@ -671,33 +649,25 @@ export const MsgEndorseProposalResponse = {
   toProtoMsg(message: MsgEndorseProposalResponse): MsgEndorseProposalResponseProtoMsg {
     return {
       typeUrl: "/atomone.coredaos.v1.MsgEndorseProposalResponse",
-      value: MsgEndorseProposalResponse.encode(message).finish(),
+      value: MsgEndorseProposalResponse.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(MsgEndorseProposalResponse.typeUrl, MsgEndorseProposalResponse);
 function createBaseMsgExtendVotingPeriod(): MsgExtendVotingPeriod {
   return {
     extender: "",
-    proposalId: BigInt(0),
+    proposalId: BigInt(0)
   };
 }
 export const MsgExtendVotingPeriod = {
   typeUrl: "/atomone.coredaos.v1.MsgExtendVotingPeriod",
   aminoType: "atomone/coredaos/v1/MsgExtendVotingPeriod",
   is(o: any): o is MsgExtendVotingPeriod {
-    return (
-      o &&
-      (o.$typeUrl === MsgExtendVotingPeriod.typeUrl ||
-        (typeof o.extender === "string" && typeof o.proposalId === "bigint"))
-    );
+    return o && (o.$typeUrl === MsgExtendVotingPeriod.typeUrl || typeof o.extender === "string" && typeof o.proposalId === "bigint");
   },
   isAmino(o: any): o is MsgExtendVotingPeriodAmino {
-    return (
-      o &&
-      (o.$typeUrl === MsgExtendVotingPeriod.typeUrl ||
-        (typeof o.extender === "string" && typeof o.proposal_id === "bigint"))
-    );
+    return o && (o.$typeUrl === MsgExtendVotingPeriod.typeUrl || typeof o.extender === "string" && typeof o.proposal_id === "bigint");
   },
   encode(message: MsgExtendVotingPeriod, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.extender !== "") {
@@ -770,7 +740,7 @@ export const MsgExtendVotingPeriod = {
   toAminoMsg(message: MsgExtendVotingPeriod): MsgExtendVotingPeriodAminoMsg {
     return {
       type: "atomone/coredaos/v1/MsgExtendVotingPeriod",
-      value: MsgExtendVotingPeriod.toAmino(message),
+      value: MsgExtendVotingPeriod.toAmino(message)
     };
   },
   fromProtoMsg(message: MsgExtendVotingPeriodProtoMsg): MsgExtendVotingPeriod {
@@ -782,15 +752,12 @@ export const MsgExtendVotingPeriod = {
   toProtoMsg(message: MsgExtendVotingPeriod): MsgExtendVotingPeriodProtoMsg {
     return {
       typeUrl: "/atomone.coredaos.v1.MsgExtendVotingPeriod",
-      value: MsgExtendVotingPeriod.encode(message).finish(),
+      value: MsgExtendVotingPeriod.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(MsgExtendVotingPeriod.typeUrl, MsgExtendVotingPeriod);
-GlobalDecoderRegistry.registerAminoProtoMapping(
-  MsgExtendVotingPeriod.aminoType,
-  MsgExtendVotingPeriod.typeUrl,
-);
+GlobalDecoderRegistry.registerAminoProtoMapping(MsgExtendVotingPeriod.aminoType, MsgExtendVotingPeriod.typeUrl);
 function createBaseMsgExtendVotingPeriodResponse(): MsgExtendVotingPeriodResponse {
   return {};
 }
@@ -851,38 +818,26 @@ export const MsgExtendVotingPeriodResponse = {
   toProtoMsg(message: MsgExtendVotingPeriodResponse): MsgExtendVotingPeriodResponseProtoMsg {
     return {
       typeUrl: "/atomone.coredaos.v1.MsgExtendVotingPeriodResponse",
-      value: MsgExtendVotingPeriodResponse.encode(message).finish(),
+      value: MsgExtendVotingPeriodResponse.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(MsgExtendVotingPeriodResponse.typeUrl, MsgExtendVotingPeriodResponse);
 function createBaseMsgVetoProposal(): MsgVetoProposal {
   return {
     vetoer: "",
     proposalId: BigInt(0),
-    burnDeposit: false,
+    burnDeposit: false
   };
 }
 export const MsgVetoProposal = {
   typeUrl: "/atomone.coredaos.v1.MsgVetoProposal",
   aminoType: "atomone/coredaos/v1/MsgVetoProposal",
   is(o: any): o is MsgVetoProposal {
-    return (
-      o &&
-      (o.$typeUrl === MsgVetoProposal.typeUrl ||
-        (typeof o.vetoer === "string" &&
-          typeof o.proposalId === "bigint" &&
-          typeof o.burnDeposit === "boolean"))
-    );
+    return o && (o.$typeUrl === MsgVetoProposal.typeUrl || typeof o.vetoer === "string" && typeof o.proposalId === "bigint" && typeof o.burnDeposit === "boolean");
   },
   isAmino(o: any): o is MsgVetoProposalAmino {
-    return (
-      o &&
-      (o.$typeUrl === MsgVetoProposal.typeUrl ||
-        (typeof o.vetoer === "string" &&
-          typeof o.proposal_id === "bigint" &&
-          typeof o.burn_deposit === "boolean"))
-    );
+    return o && (o.$typeUrl === MsgVetoProposal.typeUrl || typeof o.vetoer === "string" && typeof o.proposal_id === "bigint" && typeof o.burn_deposit === "boolean");
   },
   encode(message: MsgVetoProposal, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.vetoer !== "") {
@@ -968,7 +923,7 @@ export const MsgVetoProposal = {
   toAminoMsg(message: MsgVetoProposal): MsgVetoProposalAminoMsg {
     return {
       type: "atomone/coredaos/v1/MsgVetoProposal",
-      value: MsgVetoProposal.toAmino(message),
+      value: MsgVetoProposal.toAmino(message)
     };
   },
   fromProtoMsg(message: MsgVetoProposalProtoMsg): MsgVetoProposal {
@@ -980,9 +935,9 @@ export const MsgVetoProposal = {
   toProtoMsg(message: MsgVetoProposal): MsgVetoProposalProtoMsg {
     return {
       typeUrl: "/atomone.coredaos.v1.MsgVetoProposal",
-      value: MsgVetoProposal.encode(message).finish(),
+      value: MsgVetoProposal.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(MsgVetoProposal.typeUrl, MsgVetoProposal);
 GlobalDecoderRegistry.registerAminoProtoMapping(MsgVetoProposal.aminoType, MsgVetoProposal.typeUrl);
@@ -1046,31 +1001,24 @@ export const MsgVetoProposalResponse = {
   toProtoMsg(message: MsgVetoProposalResponse): MsgVetoProposalResponseProtoMsg {
     return {
       typeUrl: "/atomone.coredaos.v1.MsgVetoProposalResponse",
-      value: MsgVetoProposalResponse.encode(message).finish(),
+      value: MsgVetoProposalResponse.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(MsgVetoProposalResponse.typeUrl, MsgVetoProposalResponse);
 function createBaseMsgUpdateParams(): MsgUpdateParams {
   return {
     authority: "",
-    params: Params.fromPartial({}),
+    params: Params.fromPartial({})
   };
 }
 export const MsgUpdateParams = {
   typeUrl: "/atomone.coredaos.v1.MsgUpdateParams",
   is(o: any): o is MsgUpdateParams {
-    return (
-      o &&
-      (o.$typeUrl === MsgUpdateParams.typeUrl || (typeof o.authority === "string" && Params.is(o.params)))
-    );
+    return o && (o.$typeUrl === MsgUpdateParams.typeUrl || typeof o.authority === "string" && Params.is(o.params));
   },
   isAmino(o: any): o is MsgUpdateParamsAmino {
-    return (
-      o &&
-      (o.$typeUrl === MsgUpdateParams.typeUrl ||
-        (typeof o.authority === "string" && Params.isAmino(o.params)))
-    );
+    return o && (o.$typeUrl === MsgUpdateParams.typeUrl || typeof o.authority === "string" && Params.isAmino(o.params));
   },
   encode(message: MsgUpdateParams, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.authority !== "") {
@@ -1149,9 +1097,9 @@ export const MsgUpdateParams = {
   toProtoMsg(message: MsgUpdateParams): MsgUpdateParamsProtoMsg {
     return {
       typeUrl: "/atomone.coredaos.v1.MsgUpdateParams",
-      value: MsgUpdateParams.encode(message).finish(),
+      value: MsgUpdateParams.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(MsgUpdateParams.typeUrl, MsgUpdateParams);
 function createBaseMsgUpdateParamsResponse(): MsgUpdateParamsResponse {
@@ -1214,9 +1162,9 @@ export const MsgUpdateParamsResponse = {
   toProtoMsg(message: MsgUpdateParamsResponse): MsgUpdateParamsResponseProtoMsg {
     return {
       typeUrl: "/atomone.coredaos.v1.MsgUpdateParamsResponse",
-      value: MsgUpdateParamsResponse.encode(message).finish(),
+      value: MsgUpdateParamsResponse.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(MsgUpdateParamsResponse.typeUrl, MsgUpdateParamsResponse);
 /** Msg defines the Msg service. */
@@ -1261,26 +1209,26 @@ export class MsgClientImpl implements Msg {
   AnnotateProposal(request: MsgAnnotateProposal): Promise<MsgAnnotateProposalResponse> {
     const data = MsgAnnotateProposal.encode(request).finish();
     const promise = this.rpc.request("atomone.coredaos.v1.Msg", "AnnotateProposal", data);
-    return promise.then((data) => MsgAnnotateProposalResponse.decode(new BinaryReader(data)));
+    return promise.then(data => MsgAnnotateProposalResponse.decode(new BinaryReader(data)));
   }
   EndorseProposal(request: MsgEndorseProposal): Promise<MsgEndorseProposalResponse> {
     const data = MsgEndorseProposal.encode(request).finish();
     const promise = this.rpc.request("atomone.coredaos.v1.Msg", "EndorseProposal", data);
-    return promise.then((data) => MsgEndorseProposalResponse.decode(new BinaryReader(data)));
+    return promise.then(data => MsgEndorseProposalResponse.decode(new BinaryReader(data)));
   }
   ExtendVotingPeriod(request: MsgExtendVotingPeriod): Promise<MsgExtendVotingPeriodResponse> {
     const data = MsgExtendVotingPeriod.encode(request).finish();
     const promise = this.rpc.request("atomone.coredaos.v1.Msg", "ExtendVotingPeriod", data);
-    return promise.then((data) => MsgExtendVotingPeriodResponse.decode(new BinaryReader(data)));
+    return promise.then(data => MsgExtendVotingPeriodResponse.decode(new BinaryReader(data)));
   }
   VetoProposal(request: MsgVetoProposal): Promise<MsgVetoProposalResponse> {
     const data = MsgVetoProposal.encode(request).finish();
     const promise = this.rpc.request("atomone.coredaos.v1.Msg", "VetoProposal", data);
-    return promise.then((data) => MsgVetoProposalResponse.decode(new BinaryReader(data)));
+    return promise.then(data => MsgVetoProposalResponse.decode(new BinaryReader(data)));
   }
   UpdateParams(request: MsgUpdateParams): Promise<MsgUpdateParamsResponse> {
     const data = MsgUpdateParams.encode(request).finish();
     const promise = this.rpc.request("atomone.coredaos.v1.Msg", "UpdateParams", data);
-    return promise.then((data) => MsgUpdateParamsResponse.decode(new BinaryReader(data)));
+    return promise.then(data => MsgUpdateParamsResponse.decode(new BinaryReader(data)));
   }
 }

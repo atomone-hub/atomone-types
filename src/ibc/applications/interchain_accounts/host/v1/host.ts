@@ -85,29 +85,17 @@ export interface QueryRequestAminoMsg {
 function createBaseParams(): Params {
   return {
     hostEnabled: false,
-    allowMessages: [],
+    allowMessages: []
   };
 }
 export const Params = {
   typeUrl: "/ibc.applications.interchain_accounts.host.v1.Params",
   aminoType: "cosmos-sdk/Params",
   is(o: any): o is Params {
-    return (
-      o &&
-      (o.$typeUrl === Params.typeUrl ||
-        (typeof o.hostEnabled === "boolean" &&
-          Array.isArray(o.allowMessages) &&
-          (!o.allowMessages.length || typeof o.allowMessages[0] === "string")))
-    );
+    return o && (o.$typeUrl === Params.typeUrl || typeof o.hostEnabled === "boolean" && Array.isArray(o.allowMessages) && (!o.allowMessages.length || typeof o.allowMessages[0] === "string"));
   },
   isAmino(o: any): o is ParamsAmino {
-    return (
-      o &&
-      (o.$typeUrl === Params.typeUrl ||
-        (typeof o.host_enabled === "boolean" &&
-          Array.isArray(o.allow_messages) &&
-          (!o.allow_messages.length || typeof o.allow_messages[0] === "string")))
-    );
+    return o && (o.$typeUrl === Params.typeUrl || typeof o.host_enabled === "boolean" && Array.isArray(o.allow_messages) && (!o.allow_messages.length || typeof o.allow_messages[0] === "string"));
   },
   encode(message: Params, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.hostEnabled === true) {
@@ -141,15 +129,14 @@ export const Params = {
   fromJSON(object: any): Params {
     const obj = createBaseParams();
     if (isSet(object.hostEnabled)) obj.hostEnabled = Boolean(object.hostEnabled);
-    if (Array.isArray(object?.allowMessages))
-      obj.allowMessages = object.allowMessages.map((e: any) => String(e));
+    if (Array.isArray(object?.allowMessages)) obj.allowMessages = object.allowMessages.map((e: any) => String(e));
     return obj;
   },
   toJSON(message: Params): JsonSafe<Params> {
     const obj: any = {};
     message.hostEnabled !== undefined && (obj.hostEnabled = message.hostEnabled);
     if (message.allowMessages) {
-      obj.allowMessages = message.allowMessages.map((e) => e);
+      obj.allowMessages = message.allowMessages.map(e => e);
     } else {
       obj.allowMessages = [];
     }
@@ -158,7 +145,7 @@ export const Params = {
   fromPartial(object: Partial<Params>): Params {
     const message = createBaseParams();
     message.hostEnabled = object.hostEnabled ?? false;
-    message.allowMessages = object.allowMessages?.map((e) => e) || [];
+    message.allowMessages = object.allowMessages?.map(e => e) || [];
     return message;
   },
   fromAmino(object: ParamsAmino): Params {
@@ -166,14 +153,14 @@ export const Params = {
     if (object.host_enabled !== undefined && object.host_enabled !== null) {
       message.hostEnabled = object.host_enabled;
     }
-    message.allowMessages = object.allow_messages?.map((e) => e) || [];
+    message.allowMessages = object.allow_messages?.map(e => e) || [];
     return message;
   },
   toAmino(message: Params): ParamsAmino {
     const obj: any = {};
     obj.host_enabled = message.hostEnabled === false ? undefined : message.hostEnabled;
     if (message.allowMessages) {
-      obj.allow_messages = message.allowMessages.map((e) => e);
+      obj.allow_messages = message.allowMessages.map(e => e);
     } else {
       obj.allow_messages = message.allowMessages;
     }
@@ -185,7 +172,7 @@ export const Params = {
   toAminoMsg(message: Params): ParamsAminoMsg {
     return {
       type: "cosmos-sdk/Params",
-      value: Params.toAmino(message),
+      value: Params.toAmino(message)
     };
   },
   fromProtoMsg(message: ParamsProtoMsg): Params {
@@ -197,34 +184,26 @@ export const Params = {
   toProtoMsg(message: Params): ParamsProtoMsg {
     return {
       typeUrl: "/ibc.applications.interchain_accounts.host.v1.Params",
-      value: Params.encode(message).finish(),
+      value: Params.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(Params.typeUrl, Params);
 GlobalDecoderRegistry.registerAminoProtoMapping(Params.aminoType, Params.typeUrl);
 function createBaseQueryRequest(): QueryRequest {
   return {
     path: "",
-    data: new Uint8Array(),
+    data: new Uint8Array()
   };
 }
 export const QueryRequest = {
   typeUrl: "/ibc.applications.interchain_accounts.host.v1.QueryRequest",
   aminoType: "cosmos-sdk/QueryRequest",
   is(o: any): o is QueryRequest {
-    return (
-      o &&
-      (o.$typeUrl === QueryRequest.typeUrl ||
-        (typeof o.path === "string" && (o.data instanceof Uint8Array || typeof o.data === "string")))
-    );
+    return o && (o.$typeUrl === QueryRequest.typeUrl || typeof o.path === "string" && (o.data instanceof Uint8Array || typeof o.data === "string"));
   },
   isAmino(o: any): o is QueryRequestAmino {
-    return (
-      o &&
-      (o.$typeUrl === QueryRequest.typeUrl ||
-        (typeof o.path === "string" && (o.data instanceof Uint8Array || typeof o.data === "string")))
-    );
+    return o && (o.$typeUrl === QueryRequest.typeUrl || typeof o.path === "string" && (o.data instanceof Uint8Array || typeof o.data === "string"));
   },
   encode(message: QueryRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.path !== "") {
@@ -264,8 +243,7 @@ export const QueryRequest = {
   toJSON(message: QueryRequest): JsonSafe<QueryRequest> {
     const obj: any = {};
     message.path !== undefined && (obj.path = message.path);
-    message.data !== undefined &&
-      (obj.data = base64FromBytes(message.data !== undefined ? message.data : new Uint8Array()));
+    message.data !== undefined && (obj.data = base64FromBytes(message.data !== undefined ? message.data : new Uint8Array()));
     return obj;
   },
   fromPartial(object: Partial<QueryRequest>): QueryRequest {
@@ -296,7 +274,7 @@ export const QueryRequest = {
   toAminoMsg(message: QueryRequest): QueryRequestAminoMsg {
     return {
       type: "cosmos-sdk/QueryRequest",
-      value: QueryRequest.toAmino(message),
+      value: QueryRequest.toAmino(message)
     };
   },
   fromProtoMsg(message: QueryRequestProtoMsg): QueryRequest {
@@ -308,9 +286,9 @@ export const QueryRequest = {
   toProtoMsg(message: QueryRequest): QueryRequestProtoMsg {
     return {
       typeUrl: "/ibc.applications.interchain_accounts.host.v1.QueryRequest",
-      value: QueryRequest.encode(message).finish(),
+      value: QueryRequest.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(QueryRequest.typeUrl, QueryRequest);
 GlobalDecoderRegistry.registerAminoProtoMapping(QueryRequest.aminoType, QueryRequest.typeUrl);

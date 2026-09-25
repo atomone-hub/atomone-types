@@ -109,7 +109,7 @@ export interface QueryConfigResponseAminoMsg {
 }
 function createBaseQueryCounterpartyInfoRequest(): QueryCounterpartyInfoRequest {
   return {
-    clientId: "",
+    clientId: ""
   };
 }
 export const QueryCounterpartyInfoRequest = {
@@ -177,7 +177,7 @@ export const QueryCounterpartyInfoRequest = {
   toAminoMsg(message: QueryCounterpartyInfoRequest): QueryCounterpartyInfoRequestAminoMsg {
     return {
       type: "cosmos-sdk/QueryCounterpartyInfoRequest",
-      value: QueryCounterpartyInfoRequest.toAmino(message),
+      value: QueryCounterpartyInfoRequest.toAmino(message)
     };
   },
   fromProtoMsg(message: QueryCounterpartyInfoRequestProtoMsg): QueryCounterpartyInfoRequest {
@@ -189,18 +189,15 @@ export const QueryCounterpartyInfoRequest = {
   toProtoMsg(message: QueryCounterpartyInfoRequest): QueryCounterpartyInfoRequestProtoMsg {
     return {
       typeUrl: "/ibc.core.client.v2.QueryCounterpartyInfoRequest",
-      value: QueryCounterpartyInfoRequest.encode(message).finish(),
+      value: QueryCounterpartyInfoRequest.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(QueryCounterpartyInfoRequest.typeUrl, QueryCounterpartyInfoRequest);
-GlobalDecoderRegistry.registerAminoProtoMapping(
-  QueryCounterpartyInfoRequest.aminoType,
-  QueryCounterpartyInfoRequest.typeUrl,
-);
+GlobalDecoderRegistry.registerAminoProtoMapping(QueryCounterpartyInfoRequest.aminoType, QueryCounterpartyInfoRequest.typeUrl);
 function createBaseQueryCounterpartyInfoResponse(): QueryCounterpartyInfoResponse {
   return {
-    counterpartyInfo: undefined,
+    counterpartyInfo: undefined
   };
 }
 export const QueryCounterpartyInfoResponse = {
@@ -237,16 +234,12 @@ export const QueryCounterpartyInfoResponse = {
   },
   fromJSON(object: any): QueryCounterpartyInfoResponse {
     const obj = createBaseQueryCounterpartyInfoResponse();
-    if (isSet(object.counterpartyInfo))
-      obj.counterpartyInfo = CounterpartyInfo.fromJSON(object.counterpartyInfo);
+    if (isSet(object.counterpartyInfo)) obj.counterpartyInfo = CounterpartyInfo.fromJSON(object.counterpartyInfo);
     return obj;
   },
   toJSON(message: QueryCounterpartyInfoResponse): JsonSafe<QueryCounterpartyInfoResponse> {
     const obj: any = {};
-    message.counterpartyInfo !== undefined &&
-      (obj.counterpartyInfo = message.counterpartyInfo
-        ? CounterpartyInfo.toJSON(message.counterpartyInfo)
-        : undefined);
+    message.counterpartyInfo !== undefined && (obj.counterpartyInfo = message.counterpartyInfo ? CounterpartyInfo.toJSON(message.counterpartyInfo) : undefined);
     return obj;
   },
   fromPartial(object: Partial<QueryCounterpartyInfoResponse>): QueryCounterpartyInfoResponse {
@@ -265,9 +258,7 @@ export const QueryCounterpartyInfoResponse = {
   },
   toAmino(message: QueryCounterpartyInfoResponse): QueryCounterpartyInfoResponseAmino {
     const obj: any = {};
-    obj.counterparty_info = message.counterpartyInfo
-      ? CounterpartyInfo.toAmino(message.counterpartyInfo)
-      : undefined;
+    obj.counterparty_info = message.counterpartyInfo ? CounterpartyInfo.toAmino(message.counterpartyInfo) : undefined;
     return obj;
   },
   fromAminoMsg(object: QueryCounterpartyInfoResponseAminoMsg): QueryCounterpartyInfoResponse {
@@ -276,7 +267,7 @@ export const QueryCounterpartyInfoResponse = {
   toAminoMsg(message: QueryCounterpartyInfoResponse): QueryCounterpartyInfoResponseAminoMsg {
     return {
       type: "cosmos-sdk/QueryCounterpartyInfoResponse",
-      value: QueryCounterpartyInfoResponse.toAmino(message),
+      value: QueryCounterpartyInfoResponse.toAmino(message)
     };
   },
   fromProtoMsg(message: QueryCounterpartyInfoResponseProtoMsg): QueryCounterpartyInfoResponse {
@@ -288,18 +279,15 @@ export const QueryCounterpartyInfoResponse = {
   toProtoMsg(message: QueryCounterpartyInfoResponse): QueryCounterpartyInfoResponseProtoMsg {
     return {
       typeUrl: "/ibc.core.client.v2.QueryCounterpartyInfoResponse",
-      value: QueryCounterpartyInfoResponse.encode(message).finish(),
+      value: QueryCounterpartyInfoResponse.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(QueryCounterpartyInfoResponse.typeUrl, QueryCounterpartyInfoResponse);
-GlobalDecoderRegistry.registerAminoProtoMapping(
-  QueryCounterpartyInfoResponse.aminoType,
-  QueryCounterpartyInfoResponse.typeUrl,
-);
+GlobalDecoderRegistry.registerAminoProtoMapping(QueryCounterpartyInfoResponse.aminoType, QueryCounterpartyInfoResponse.typeUrl);
 function createBaseQueryConfigRequest(): QueryConfigRequest {
   return {
-    clientId: "",
+    clientId: ""
   };
 }
 export const QueryConfigRequest = {
@@ -367,7 +355,7 @@ export const QueryConfigRequest = {
   toAminoMsg(message: QueryConfigRequest): QueryConfigRequestAminoMsg {
     return {
       type: "cosmos-sdk/QueryConfigRequest",
-      value: QueryConfigRequest.toAmino(message),
+      value: QueryConfigRequest.toAmino(message)
     };
   },
   fromProtoMsg(message: QueryConfigRequestProtoMsg): QueryConfigRequest {
@@ -379,15 +367,15 @@ export const QueryConfigRequest = {
   toProtoMsg(message: QueryConfigRequest): QueryConfigRequestProtoMsg {
     return {
       typeUrl: "/ibc.core.client.v2.QueryConfigRequest",
-      value: QueryConfigRequest.encode(message).finish(),
+      value: QueryConfigRequest.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(QueryConfigRequest.typeUrl, QueryConfigRequest);
 GlobalDecoderRegistry.registerAminoProtoMapping(QueryConfigRequest.aminoType, QueryConfigRequest.typeUrl);
 function createBaseQueryConfigResponse(): QueryConfigResponse {
   return {
-    config: undefined,
+    config: undefined
   };
 }
 export const QueryConfigResponse = {
@@ -457,7 +445,7 @@ export const QueryConfigResponse = {
   toAminoMsg(message: QueryConfigResponse): QueryConfigResponseAminoMsg {
     return {
       type: "cosmos-sdk/QueryConfigResponse",
-      value: QueryConfigResponse.toAmino(message),
+      value: QueryConfigResponse.toAmino(message)
     };
   },
   fromProtoMsg(message: QueryConfigResponseProtoMsg): QueryConfigResponse {
@@ -469,9 +457,9 @@ export const QueryConfigResponse = {
   toProtoMsg(message: QueryConfigResponse): QueryConfigResponseProtoMsg {
     return {
       typeUrl: "/ibc.core.client.v2.QueryConfigResponse",
-      value: QueryConfigResponse.encode(message).finish(),
+      value: QueryConfigResponse.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(QueryConfigResponse.typeUrl, QueryConfigResponse);
 GlobalDecoderRegistry.registerAminoProtoMapping(QueryConfigResponse.aminoType, QueryConfigResponse.typeUrl);
@@ -492,11 +480,11 @@ export class QueryClientImpl implements Query {
   CounterpartyInfo(request: QueryCounterpartyInfoRequest): Promise<QueryCounterpartyInfoResponse> {
     const data = QueryCounterpartyInfoRequest.encode(request).finish();
     const promise = this.rpc.request("ibc.core.client.v2.Query", "CounterpartyInfo", data);
-    return promise.then((data) => QueryCounterpartyInfoResponse.decode(new BinaryReader(data)));
+    return promise.then(data => QueryCounterpartyInfoResponse.decode(new BinaryReader(data)));
   }
   Config(request: QueryConfigRequest): Promise<QueryConfigResponse> {
     const data = QueryConfigRequest.encode(request).finish();
     const promise = this.rpc.request("ibc.core.client.v2.Query", "Config", data);
-    return promise.then((data) => QueryConfigResponse.decode(new BinaryReader(data)));
+    return promise.then(data => QueryConfigResponse.decode(new BinaryReader(data)));
   }
 }

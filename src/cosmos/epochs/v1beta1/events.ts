@@ -50,7 +50,7 @@ export interface EventEpochStartAminoMsg {
 }
 function createBaseEventEpochEnd(): EventEpochEnd {
   return {
-    epochNumber: BigInt(0),
+    epochNumber: BigInt(0)
   };
 }
 export const EventEpochEnd = {
@@ -120,7 +120,7 @@ export const EventEpochEnd = {
   toAminoMsg(message: EventEpochEnd): EventEpochEndAminoMsg {
     return {
       type: "cosmos-sdk/EventEpochEnd",
-      value: EventEpochEnd.toAmino(message),
+      value: EventEpochEnd.toAmino(message)
     };
   },
   fromProtoMsg(message: EventEpochEndProtoMsg): EventEpochEnd {
@@ -132,34 +132,26 @@ export const EventEpochEnd = {
   toProtoMsg(message: EventEpochEnd): EventEpochEndProtoMsg {
     return {
       typeUrl: "/cosmos.epochs.v1beta1.EventEpochEnd",
-      value: EventEpochEnd.encode(message).finish(),
+      value: EventEpochEnd.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(EventEpochEnd.typeUrl, EventEpochEnd);
 GlobalDecoderRegistry.registerAminoProtoMapping(EventEpochEnd.aminoType, EventEpochEnd.typeUrl);
 function createBaseEventEpochStart(): EventEpochStart {
   return {
     epochNumber: BigInt(0),
-    epochStartTime: BigInt(0),
+    epochStartTime: BigInt(0)
   };
 }
 export const EventEpochStart = {
   typeUrl: "/cosmos.epochs.v1beta1.EventEpochStart",
   aminoType: "cosmos-sdk/EventEpochStart",
   is(o: any): o is EventEpochStart {
-    return (
-      o &&
-      (o.$typeUrl === EventEpochStart.typeUrl ||
-        (typeof o.epochNumber === "bigint" && typeof o.epochStartTime === "bigint"))
-    );
+    return o && (o.$typeUrl === EventEpochStart.typeUrl || typeof o.epochNumber === "bigint" && typeof o.epochStartTime === "bigint");
   },
   isAmino(o: any): o is EventEpochStartAmino {
-    return (
-      o &&
-      (o.$typeUrl === EventEpochStart.typeUrl ||
-        (typeof o.epoch_number === "bigint" && typeof o.epoch_start_time === "bigint"))
-    );
+    return o && (o.$typeUrl === EventEpochStart.typeUrl || typeof o.epoch_number === "bigint" && typeof o.epoch_start_time === "bigint");
   },
   encode(message: EventEpochStart, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.epochNumber !== BigInt(0)) {
@@ -199,8 +191,7 @@ export const EventEpochStart = {
   toJSON(message: EventEpochStart): JsonSafe<EventEpochStart> {
     const obj: any = {};
     message.epochNumber !== undefined && (obj.epochNumber = (message.epochNumber || BigInt(0)).toString());
-    message.epochStartTime !== undefined &&
-      (obj.epochStartTime = (message.epochStartTime || BigInt(0)).toString());
+    message.epochStartTime !== undefined && (obj.epochStartTime = (message.epochStartTime || BigInt(0)).toString());
     return obj;
   },
   fromPartial(object: Partial<EventEpochStart>): EventEpochStart {
@@ -226,8 +217,7 @@ export const EventEpochStart = {
   toAmino(message: EventEpochStart): EventEpochStartAmino {
     const obj: any = {};
     obj.epoch_number = message.epochNumber !== BigInt(0) ? message.epochNumber?.toString() : undefined;
-    obj.epoch_start_time =
-      message.epochStartTime !== BigInt(0) ? message.epochStartTime?.toString() : undefined;
+    obj.epoch_start_time = message.epochStartTime !== BigInt(0) ? message.epochStartTime?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: EventEpochStartAminoMsg): EventEpochStart {
@@ -236,7 +226,7 @@ export const EventEpochStart = {
   toAminoMsg(message: EventEpochStart): EventEpochStartAminoMsg {
     return {
       type: "cosmos-sdk/EventEpochStart",
-      value: EventEpochStart.toAmino(message),
+      value: EventEpochStart.toAmino(message)
     };
   },
   fromProtoMsg(message: EventEpochStartProtoMsg): EventEpochStart {
@@ -248,9 +238,9 @@ export const EventEpochStart = {
   toProtoMsg(message: EventEpochStart): EventEpochStartProtoMsg {
     return {
       typeUrl: "/cosmos.epochs.v1beta1.EventEpochStart",
-      value: EventEpochStart.encode(message).finish(),
+      value: EventEpochStart.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(EventEpochStart.typeUrl, EventEpochStart);
 GlobalDecoderRegistry.registerAminoProtoMapping(EventEpochStart.aminoType, EventEpochStart.typeUrl);

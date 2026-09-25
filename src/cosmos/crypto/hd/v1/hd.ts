@@ -63,33 +63,17 @@ function createBaseBIP44Params(): BIP44Params {
     coinType: 0,
     account: 0,
     change: false,
-    addressIndex: 0,
+    addressIndex: 0
   };
 }
 export const BIP44Params = {
   typeUrl: "/cosmos.crypto.hd.v1.BIP44Params",
   aminoType: "crypto/keys/hd/BIP44Params",
   is(o: any): o is BIP44Params {
-    return (
-      o &&
-      (o.$typeUrl === BIP44Params.typeUrl ||
-        (typeof o.purpose === "number" &&
-          typeof o.coinType === "number" &&
-          typeof o.account === "number" &&
-          typeof o.change === "boolean" &&
-          typeof o.addressIndex === "number"))
-    );
+    return o && (o.$typeUrl === BIP44Params.typeUrl || typeof o.purpose === "number" && typeof o.coinType === "number" && typeof o.account === "number" && typeof o.change === "boolean" && typeof o.addressIndex === "number");
   },
   isAmino(o: any): o is BIP44ParamsAmino {
-    return (
-      o &&
-      (o.$typeUrl === BIP44Params.typeUrl ||
-        (typeof o.purpose === "number" &&
-          typeof o.coin_type === "number" &&
-          typeof o.account === "number" &&
-          typeof o.change === "boolean" &&
-          typeof o.address_index === "number"))
-    );
+    return o && (o.$typeUrl === BIP44Params.typeUrl || typeof o.purpose === "number" && typeof o.coin_type === "number" && typeof o.account === "number" && typeof o.change === "boolean" && typeof o.address_index === "number");
   },
   encode(message: BIP44Params, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.purpose !== 0) {
@@ -199,7 +183,7 @@ export const BIP44Params = {
   toAminoMsg(message: BIP44Params): BIP44ParamsAminoMsg {
     return {
       type: "crypto/keys/hd/BIP44Params",
-      value: BIP44Params.toAmino(message),
+      value: BIP44Params.toAmino(message)
     };
   },
   fromProtoMsg(message: BIP44ParamsProtoMsg): BIP44Params {
@@ -211,9 +195,9 @@ export const BIP44Params = {
   toProtoMsg(message: BIP44Params): BIP44ParamsProtoMsg {
     return {
       typeUrl: "/cosmos.crypto.hd.v1.BIP44Params",
-      value: BIP44Params.encode(message).finish(),
+      value: BIP44Params.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(BIP44Params.typeUrl, BIP44Params);
 GlobalDecoderRegistry.registerAminoProtoMapping(BIP44Params.aminoType, BIP44Params.typeUrl);

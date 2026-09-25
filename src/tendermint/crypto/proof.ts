@@ -138,32 +138,16 @@ function createBaseProof(): Proof {
     total: BigInt(0),
     index: BigInt(0),
     leafHash: new Uint8Array(),
-    aunts: [],
+    aunts: []
   };
 }
 export const Proof = {
   typeUrl: "/tendermint.crypto.Proof",
   is(o: any): o is Proof {
-    return (
-      o &&
-      (o.$typeUrl === Proof.typeUrl ||
-        (typeof o.total === "bigint" &&
-          typeof o.index === "bigint" &&
-          (o.leafHash instanceof Uint8Array || typeof o.leafHash === "string") &&
-          Array.isArray(o.aunts) &&
-          (!o.aunts.length || o.aunts[0] instanceof Uint8Array || typeof o.aunts[0] === "string")))
-    );
+    return o && (o.$typeUrl === Proof.typeUrl || typeof o.total === "bigint" && typeof o.index === "bigint" && (o.leafHash instanceof Uint8Array || typeof o.leafHash === "string") && Array.isArray(o.aunts) && (!o.aunts.length || o.aunts[0] instanceof Uint8Array || typeof o.aunts[0] === "string"));
   },
   isAmino(o: any): o is ProofAmino {
-    return (
-      o &&
-      (o.$typeUrl === Proof.typeUrl ||
-        (typeof o.total === "bigint" &&
-          typeof o.index === "bigint" &&
-          (o.leaf_hash instanceof Uint8Array || typeof o.leaf_hash === "string") &&
-          Array.isArray(o.aunts) &&
-          (!o.aunts.length || o.aunts[0] instanceof Uint8Array || typeof o.aunts[0] === "string")))
-    );
+    return o && (o.$typeUrl === Proof.typeUrl || typeof o.total === "bigint" && typeof o.index === "bigint" && (o.leaf_hash instanceof Uint8Array || typeof o.leaf_hash === "string") && Array.isArray(o.aunts) && (!o.aunts.length || o.aunts[0] instanceof Uint8Array || typeof o.aunts[0] === "string"));
   },
   encode(message: Proof, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.total !== BigInt(0)) {
@@ -218,10 +202,9 @@ export const Proof = {
     const obj: any = {};
     message.total !== undefined && (obj.total = (message.total || BigInt(0)).toString());
     message.index !== undefined && (obj.index = (message.index || BigInt(0)).toString());
-    message.leafHash !== undefined &&
-      (obj.leafHash = base64FromBytes(message.leafHash !== undefined ? message.leafHash : new Uint8Array()));
+    message.leafHash !== undefined && (obj.leafHash = base64FromBytes(message.leafHash !== undefined ? message.leafHash : new Uint8Array()));
     if (message.aunts) {
-      obj.aunts = message.aunts.map((e) => base64FromBytes(e !== undefined ? e : new Uint8Array()));
+      obj.aunts = message.aunts.map(e => base64FromBytes(e !== undefined ? e : new Uint8Array()));
     } else {
       obj.aunts = [];
     }
@@ -236,7 +219,7 @@ export const Proof = {
       message.index = BigInt(object.index.toString());
     }
     message.leafHash = object.leafHash ?? new Uint8Array();
-    message.aunts = object.aunts?.map((e) => e) || [];
+    message.aunts = object.aunts?.map(e => e) || [];
     return message;
   },
   fromAmino(object: ProofAmino): Proof {
@@ -250,7 +233,7 @@ export const Proof = {
     if (object.leaf_hash !== undefined && object.leaf_hash !== null) {
       message.leafHash = bytesFromBase64(object.leaf_hash);
     }
-    message.aunts = object.aunts?.map((e) => bytesFromBase64(e)) || [];
+    message.aunts = object.aunts?.map(e => bytesFromBase64(e)) || [];
     return message;
   },
   toAmino(message: Proof): ProofAmino {
@@ -259,7 +242,7 @@ export const Proof = {
     obj.index = message.index !== BigInt(0) ? message.index?.toString() : undefined;
     obj.leaf_hash = message.leafHash ? base64FromBytes(message.leafHash) : undefined;
     if (message.aunts) {
-      obj.aunts = message.aunts.map((e) => base64FromBytes(e));
+      obj.aunts = message.aunts.map(e => base64FromBytes(e));
     } else {
       obj.aunts = message.aunts;
     }
@@ -277,15 +260,15 @@ export const Proof = {
   toProtoMsg(message: Proof): ProofProtoMsg {
     return {
       typeUrl: "/tendermint.crypto.Proof",
-      value: Proof.encode(message).finish(),
+      value: Proof.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(Proof.typeUrl, Proof);
 function createBaseValueOp(): ValueOp {
   return {
     key: new Uint8Array(),
-    proof: undefined,
+    proof: undefined
   };
 }
 export const ValueOp = {
@@ -333,8 +316,7 @@ export const ValueOp = {
   },
   toJSON(message: ValueOp): JsonSafe<ValueOp> {
     const obj: any = {};
-    message.key !== undefined &&
-      (obj.key = base64FromBytes(message.key !== undefined ? message.key : new Uint8Array()));
+    message.key !== undefined && (obj.key = base64FromBytes(message.key !== undefined ? message.key : new Uint8Array()));
     message.proof !== undefined && (obj.proof = message.proof ? Proof.toJSON(message.proof) : undefined);
     return obj;
   },
@@ -374,33 +356,25 @@ export const ValueOp = {
   toProtoMsg(message: ValueOp): ValueOpProtoMsg {
     return {
       typeUrl: "/tendermint.crypto.ValueOp",
-      value: ValueOp.encode(message).finish(),
+      value: ValueOp.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(ValueOp.typeUrl, ValueOp);
 function createBaseDominoOp(): DominoOp {
   return {
     key: "",
     input: "",
-    output: "",
+    output: ""
   };
 }
 export const DominoOp = {
   typeUrl: "/tendermint.crypto.DominoOp",
   is(o: any): o is DominoOp {
-    return (
-      o &&
-      (o.$typeUrl === DominoOp.typeUrl ||
-        (typeof o.key === "string" && typeof o.input === "string" && typeof o.output === "string"))
-    );
+    return o && (o.$typeUrl === DominoOp.typeUrl || typeof o.key === "string" && typeof o.input === "string" && typeof o.output === "string");
   },
   isAmino(o: any): o is DominoOpAmino {
-    return (
-      o &&
-      (o.$typeUrl === DominoOp.typeUrl ||
-        (typeof o.key === "string" && typeof o.input === "string" && typeof o.output === "string"))
-    );
+    return o && (o.$typeUrl === DominoOp.typeUrl || typeof o.key === "string" && typeof o.input === "string" && typeof o.output === "string");
   },
   encode(message: DominoOp, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.key !== "") {
@@ -490,37 +464,25 @@ export const DominoOp = {
   toProtoMsg(message: DominoOp): DominoOpProtoMsg {
     return {
       typeUrl: "/tendermint.crypto.DominoOp",
-      value: DominoOp.encode(message).finish(),
+      value: DominoOp.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(DominoOp.typeUrl, DominoOp);
 function createBaseProofOp(): ProofOp {
   return {
     type: "",
     key: new Uint8Array(),
-    data: new Uint8Array(),
+    data: new Uint8Array()
   };
 }
 export const ProofOp = {
   typeUrl: "/tendermint.crypto.ProofOp",
   is(o: any): o is ProofOp {
-    return (
-      o &&
-      (o.$typeUrl === ProofOp.typeUrl ||
-        (typeof o.type === "string" &&
-          (o.key instanceof Uint8Array || typeof o.key === "string") &&
-          (o.data instanceof Uint8Array || typeof o.data === "string")))
-    );
+    return o && (o.$typeUrl === ProofOp.typeUrl || typeof o.type === "string" && (o.key instanceof Uint8Array || typeof o.key === "string") && (o.data instanceof Uint8Array || typeof o.data === "string"));
   },
   isAmino(o: any): o is ProofOpAmino {
-    return (
-      o &&
-      (o.$typeUrl === ProofOp.typeUrl ||
-        (typeof o.type === "string" &&
-          (o.key instanceof Uint8Array || typeof o.key === "string") &&
-          (o.data instanceof Uint8Array || typeof o.data === "string")))
-    );
+    return o && (o.$typeUrl === ProofOp.typeUrl || typeof o.type === "string" && (o.key instanceof Uint8Array || typeof o.key === "string") && (o.data instanceof Uint8Array || typeof o.data === "string"));
   },
   encode(message: ProofOp, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.type !== "") {
@@ -567,10 +529,8 @@ export const ProofOp = {
   toJSON(message: ProofOp): JsonSafe<ProofOp> {
     const obj: any = {};
     message.type !== undefined && (obj.type = message.type);
-    message.key !== undefined &&
-      (obj.key = base64FromBytes(message.key !== undefined ? message.key : new Uint8Array()));
-    message.data !== undefined &&
-      (obj.data = base64FromBytes(message.data !== undefined ? message.data : new Uint8Array()));
+    message.key !== undefined && (obj.key = base64FromBytes(message.key !== undefined ? message.key : new Uint8Array()));
+    message.data !== undefined && (obj.data = base64FromBytes(message.data !== undefined ? message.data : new Uint8Array()));
     return obj;
   },
   fromPartial(object: Partial<ProofOp>): ProofOp {
@@ -612,30 +572,23 @@ export const ProofOp = {
   toProtoMsg(message: ProofOp): ProofOpProtoMsg {
     return {
       typeUrl: "/tendermint.crypto.ProofOp",
-      value: ProofOp.encode(message).finish(),
+      value: ProofOp.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(ProofOp.typeUrl, ProofOp);
 function createBaseProofOps(): ProofOps {
   return {
-    ops: [],
+    ops: []
   };
 }
 export const ProofOps = {
   typeUrl: "/tendermint.crypto.ProofOps",
   is(o: any): o is ProofOps {
-    return (
-      o &&
-      (o.$typeUrl === ProofOps.typeUrl || (Array.isArray(o.ops) && (!o.ops.length || ProofOp.is(o.ops[0]))))
-    );
+    return o && (o.$typeUrl === ProofOps.typeUrl || Array.isArray(o.ops) && (!o.ops.length || ProofOp.is(o.ops[0])));
   },
   isAmino(o: any): o is ProofOpsAmino {
-    return (
-      o &&
-      (o.$typeUrl === ProofOps.typeUrl ||
-        (Array.isArray(o.ops) && (!o.ops.length || ProofOp.isAmino(o.ops[0]))))
-    );
+    return o && (o.$typeUrl === ProofOps.typeUrl || Array.isArray(o.ops) && (!o.ops.length || ProofOp.isAmino(o.ops[0])));
   },
   encode(message: ProofOps, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.ops) {
@@ -668,7 +621,7 @@ export const ProofOps = {
   toJSON(message: ProofOps): JsonSafe<ProofOps> {
     const obj: any = {};
     if (message.ops) {
-      obj.ops = message.ops.map((e) => (e ? ProofOp.toJSON(e) : undefined));
+      obj.ops = message.ops.map(e => e ? ProofOp.toJSON(e) : undefined);
     } else {
       obj.ops = [];
     }
@@ -676,18 +629,18 @@ export const ProofOps = {
   },
   fromPartial(object: Partial<ProofOps>): ProofOps {
     const message = createBaseProofOps();
-    message.ops = object.ops?.map((e) => ProofOp.fromPartial(e)) || [];
+    message.ops = object.ops?.map(e => ProofOp.fromPartial(e)) || [];
     return message;
   },
   fromAmino(object: ProofOpsAmino): ProofOps {
     const message = createBaseProofOps();
-    message.ops = object.ops?.map((e) => ProofOp.fromAmino(e)) || [];
+    message.ops = object.ops?.map(e => ProofOp.fromAmino(e)) || [];
     return message;
   },
   toAmino(message: ProofOps): ProofOpsAmino {
     const obj: any = {};
     if (message.ops) {
-      obj.ops = message.ops.map((e) => (e ? ProofOp.toAmino(e) : undefined));
+      obj.ops = message.ops.map(e => e ? ProofOp.toAmino(e) : undefined);
     } else {
       obj.ops = message.ops;
     }
@@ -705,8 +658,8 @@ export const ProofOps = {
   toProtoMsg(message: ProofOps): ProofOpsProtoMsg {
     return {
       typeUrl: "/tendermint.crypto.ProofOps",
-      value: ProofOps.encode(message).finish(),
+      value: ProofOps.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(ProofOps.typeUrl, ProofOps);

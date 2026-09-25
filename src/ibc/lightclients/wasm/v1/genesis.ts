@@ -56,25 +56,17 @@ export interface ContractAminoMsg {
 }
 function createBaseGenesisState(): GenesisState {
   return {
-    contracts: [],
+    contracts: []
   };
 }
 export const GenesisState = {
   typeUrl: "/ibc.lightclients.wasm.v1.GenesisState",
   aminoType: "cosmos-sdk/GenesisState",
   is(o: any): o is GenesisState {
-    return (
-      o &&
-      (o.$typeUrl === GenesisState.typeUrl ||
-        (Array.isArray(o.contracts) && (!o.contracts.length || Contract.is(o.contracts[0]))))
-    );
+    return o && (o.$typeUrl === GenesisState.typeUrl || Array.isArray(o.contracts) && (!o.contracts.length || Contract.is(o.contracts[0])));
   },
   isAmino(o: any): o is GenesisStateAmino {
-    return (
-      o &&
-      (o.$typeUrl === GenesisState.typeUrl ||
-        (Array.isArray(o.contracts) && (!o.contracts.length || Contract.isAmino(o.contracts[0]))))
-    );
+    return o && (o.$typeUrl === GenesisState.typeUrl || Array.isArray(o.contracts) && (!o.contracts.length || Contract.isAmino(o.contracts[0])));
   },
   encode(message: GenesisState, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.contracts) {
@@ -101,14 +93,13 @@ export const GenesisState = {
   },
   fromJSON(object: any): GenesisState {
     const obj = createBaseGenesisState();
-    if (Array.isArray(object?.contracts))
-      obj.contracts = object.contracts.map((e: any) => Contract.fromJSON(e));
+    if (Array.isArray(object?.contracts)) obj.contracts = object.contracts.map((e: any) => Contract.fromJSON(e));
     return obj;
   },
   toJSON(message: GenesisState): JsonSafe<GenesisState> {
     const obj: any = {};
     if (message.contracts) {
-      obj.contracts = message.contracts.map((e) => (e ? Contract.toJSON(e) : undefined));
+      obj.contracts = message.contracts.map(e => e ? Contract.toJSON(e) : undefined);
     } else {
       obj.contracts = [];
     }
@@ -116,18 +107,18 @@ export const GenesisState = {
   },
   fromPartial(object: Partial<GenesisState>): GenesisState {
     const message = createBaseGenesisState();
-    message.contracts = object.contracts?.map((e) => Contract.fromPartial(e)) || [];
+    message.contracts = object.contracts?.map(e => Contract.fromPartial(e)) || [];
     return message;
   },
   fromAmino(object: GenesisStateAmino): GenesisState {
     const message = createBaseGenesisState();
-    message.contracts = object.contracts?.map((e) => Contract.fromAmino(e)) || [];
+    message.contracts = object.contracts?.map(e => Contract.fromAmino(e)) || [];
     return message;
   },
   toAmino(message: GenesisState): GenesisStateAmino {
     const obj: any = {};
     if (message.contracts) {
-      obj.contracts = message.contracts.map((e) => (e ? Contract.toAmino(e) : undefined));
+      obj.contracts = message.contracts.map(e => e ? Contract.toAmino(e) : undefined);
     } else {
       obj.contracts = message.contracts;
     }
@@ -139,7 +130,7 @@ export const GenesisState = {
   toAminoMsg(message: GenesisState): GenesisStateAminoMsg {
     return {
       type: "cosmos-sdk/GenesisState",
-      value: GenesisState.toAmino(message),
+      value: GenesisState.toAmino(message)
     };
   },
   fromProtoMsg(message: GenesisStateProtoMsg): GenesisState {
@@ -151,35 +142,25 @@ export const GenesisState = {
   toProtoMsg(message: GenesisState): GenesisStateProtoMsg {
     return {
       typeUrl: "/ibc.lightclients.wasm.v1.GenesisState",
-      value: GenesisState.encode(message).finish(),
+      value: GenesisState.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(GenesisState.typeUrl, GenesisState);
 GlobalDecoderRegistry.registerAminoProtoMapping(GenesisState.aminoType, GenesisState.typeUrl);
 function createBaseContract(): Contract {
   return {
-    codeBytes: new Uint8Array(),
+    codeBytes: new Uint8Array()
   };
 }
 export const Contract = {
   typeUrl: "/ibc.lightclients.wasm.v1.Contract",
   aminoType: "cosmos-sdk/Contract",
   is(o: any): o is Contract {
-    return (
-      o &&
-      (o.$typeUrl === Contract.typeUrl ||
-        o.codeBytes instanceof Uint8Array ||
-        typeof o.codeBytes === "string")
-    );
+    return o && (o.$typeUrl === Contract.typeUrl || o.codeBytes instanceof Uint8Array || typeof o.codeBytes === "string");
   },
   isAmino(o: any): o is ContractAmino {
-    return (
-      o &&
-      (o.$typeUrl === Contract.typeUrl ||
-        o.code_bytes instanceof Uint8Array ||
-        typeof o.code_bytes === "string")
-    );
+    return o && (o.$typeUrl === Contract.typeUrl || o.code_bytes instanceof Uint8Array || typeof o.code_bytes === "string");
   },
   encode(message: Contract, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.codeBytes.length !== 0) {
@@ -211,10 +192,7 @@ export const Contract = {
   },
   toJSON(message: Contract): JsonSafe<Contract> {
     const obj: any = {};
-    message.codeBytes !== undefined &&
-      (obj.codeBytes = base64FromBytes(
-        message.codeBytes !== undefined ? message.codeBytes : new Uint8Array(),
-      ));
+    message.codeBytes !== undefined && (obj.codeBytes = base64FromBytes(message.codeBytes !== undefined ? message.codeBytes : new Uint8Array()));
     return obj;
   },
   fromPartial(object: Partial<Contract>): Contract {
@@ -240,7 +218,7 @@ export const Contract = {
   toAminoMsg(message: Contract): ContractAminoMsg {
     return {
       type: "cosmos-sdk/Contract",
-      value: Contract.toAmino(message),
+      value: Contract.toAmino(message)
     };
   },
   fromProtoMsg(message: ContractProtoMsg): Contract {
@@ -252,9 +230,9 @@ export const Contract = {
   toProtoMsg(message: Contract): ContractProtoMsg {
     return {
       typeUrl: "/ibc.lightclients.wasm.v1.Contract",
-      value: Contract.encode(message).finish(),
+      value: Contract.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(Contract.typeUrl, Contract);
 GlobalDecoderRegistry.registerAminoProtoMapping(Contract.aminoType, Contract.typeUrl);

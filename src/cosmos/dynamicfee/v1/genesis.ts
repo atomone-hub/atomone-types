@@ -104,17 +104,17 @@ export interface StateAminoMsg {
 function createBaseGenesisState(): GenesisState {
   return {
     params: Params.fromPartial({}),
-    state: State.fromPartial({}),
+    state: State.fromPartial({})
   };
 }
 export const GenesisState = {
   typeUrl: "/cosmos.dynamicfee.v1.GenesisState",
   aminoType: "cosmos-sdk/GenesisState",
   is(o: any): o is GenesisState {
-    return o && (o.$typeUrl === GenesisState.typeUrl || (Params.is(o.params) && State.is(o.state)));
+    return o && (o.$typeUrl === GenesisState.typeUrl || Params.is(o.params) && State.is(o.state));
   },
   isAmino(o: any): o is GenesisStateAmino {
-    return o && (o.$typeUrl === GenesisState.typeUrl || (Params.isAmino(o.params) && State.isAmino(o.state)));
+    return o && (o.$typeUrl === GenesisState.typeUrl || Params.isAmino(o.params) && State.isAmino(o.state));
   },
   encode(message: GenesisState, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.params !== undefined) {
@@ -189,7 +189,7 @@ export const GenesisState = {
   toAminoMsg(message: GenesisState): GenesisStateAminoMsg {
     return {
       type: "cosmos-sdk/GenesisState",
-      value: GenesisState.toAmino(message),
+      value: GenesisState.toAmino(message)
     };
   },
   fromProtoMsg(message: GenesisStateProtoMsg): GenesisState {
@@ -201,9 +201,9 @@ export const GenesisState = {
   toProtoMsg(message: GenesisState): GenesisStateProtoMsg {
     return {
       typeUrl: "/cosmos.dynamicfee.v1.GenesisState",
-      value: GenesisState.encode(message).finish(),
+      value: GenesisState.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(GenesisState.typeUrl, GenesisState);
 GlobalDecoderRegistry.registerAminoProtoMapping(GenesisState.aminoType, GenesisState.typeUrl);
@@ -212,33 +212,17 @@ function createBaseState(): State {
     baseGasPrice: "",
     learningRate: "",
     window: [],
-    index: BigInt(0),
+    index: BigInt(0)
   };
 }
 export const State = {
   typeUrl: "/cosmos.dynamicfee.v1.State",
   aminoType: "cosmos-sdk/State",
   is(o: any): o is State {
-    return (
-      o &&
-      (o.$typeUrl === State.typeUrl ||
-        (typeof o.baseGasPrice === "string" &&
-          typeof o.learningRate === "string" &&
-          Array.isArray(o.window) &&
-          (!o.window.length || typeof o.window[0] === "bigint") &&
-          typeof o.index === "bigint"))
-    );
+    return o && (o.$typeUrl === State.typeUrl || typeof o.baseGasPrice === "string" && typeof o.learningRate === "string" && Array.isArray(o.window) && (!o.window.length || typeof o.window[0] === "bigint") && typeof o.index === "bigint");
   },
   isAmino(o: any): o is StateAmino {
-    return (
-      o &&
-      (o.$typeUrl === State.typeUrl ||
-        (typeof o.base_gas_price === "string" &&
-          typeof o.learning_rate === "string" &&
-          Array.isArray(o.window) &&
-          (!o.window.length || typeof o.window[0] === "bigint") &&
-          typeof o.index === "bigint"))
-    );
+    return o && (o.$typeUrl === State.typeUrl || typeof o.base_gas_price === "string" && typeof o.learning_rate === "string" && Array.isArray(o.window) && (!o.window.length || typeof o.window[0] === "bigint") && typeof o.index === "bigint");
   },
   encode(message: State, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.baseGasPrice !== "") {
@@ -303,7 +287,7 @@ export const State = {
     message.baseGasPrice !== undefined && (obj.baseGasPrice = message.baseGasPrice);
     message.learningRate !== undefined && (obj.learningRate = message.learningRate);
     if (message.window) {
-      obj.window = message.window.map((e) => (e || BigInt(0)).toString());
+      obj.window = message.window.map(e => (e || BigInt(0)).toString());
     } else {
       obj.window = [];
     }
@@ -314,7 +298,7 @@ export const State = {
     const message = createBaseState();
     message.baseGasPrice = object.baseGasPrice ?? "";
     message.learningRate = object.learningRate ?? "";
-    message.window = object.window?.map((e) => BigInt(e.toString())) || [];
+    message.window = object.window?.map(e => BigInt(e.toString())) || [];
     if (object.index !== undefined && object.index !== null) {
       message.index = BigInt(object.index.toString());
     }
@@ -328,7 +312,7 @@ export const State = {
     if (object.learning_rate !== undefined && object.learning_rate !== null) {
       message.learningRate = object.learning_rate;
     }
-    message.window = object.window?.map((e) => BigInt(e)) || [];
+    message.window = object.window?.map(e => BigInt(e)) || [];
     if (object.index !== undefined && object.index !== null) {
       message.index = BigInt(object.index);
     }
@@ -339,7 +323,7 @@ export const State = {
     obj.base_gas_price = message.baseGasPrice === "" ? undefined : message.baseGasPrice;
     obj.learning_rate = message.learningRate === "" ? undefined : message.learningRate;
     if (message.window) {
-      obj.window = message.window.map((e) => e.toString());
+      obj.window = message.window.map(e => e.toString());
     } else {
       obj.window = message.window;
     }
@@ -352,7 +336,7 @@ export const State = {
   toAminoMsg(message: State): StateAminoMsg {
     return {
       type: "cosmos-sdk/State",
-      value: State.toAmino(message),
+      value: State.toAmino(message)
     };
   },
   fromProtoMsg(message: StateProtoMsg): State {
@@ -364,9 +348,9 @@ export const State = {
   toProtoMsg(message: State): StateProtoMsg {
     return {
       typeUrl: "/cosmos.dynamicfee.v1.State",
-      value: State.encode(message).finish(),
+      value: State.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(State.typeUrl, State);
 GlobalDecoderRegistry.registerAminoProtoMapping(State.aminoType, State.typeUrl);

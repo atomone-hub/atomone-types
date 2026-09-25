@@ -35,7 +35,7 @@ export interface ModuleAminoMsg {
 }
 function createBaseModule(): Module {
   return {
-    authority: "",
+    authority: ""
   };
 }
 export const Module = {
@@ -108,8 +108,8 @@ export const Module = {
   toProtoMsg(message: Module): ModuleProtoMsg {
     return {
       typeUrl: "/atomone.coredaos.module.v1.Module",
-      value: Module.encode(message).finish(),
+      value: Module.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(Module.typeUrl, Module);

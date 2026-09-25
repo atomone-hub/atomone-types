@@ -72,7 +72,7 @@ export interface MsgUpdateClientConfig {
   clientId: string;
   /**
    * allowed relayers
-   *
+   * 
    * NOTE: All fields in the config must be supplied.
    */
   config: Config | undefined;
@@ -96,7 +96,7 @@ export interface MsgUpdateClientConfigAmino {
   client_id?: string;
   /**
    * allowed relayers
-   *
+   * 
    * NOTE: All fields in the config must be supplied.
    */
   config?: ConfigAmino | undefined;
@@ -131,37 +131,17 @@ function createBaseMsgRegisterCounterparty(): MsgRegisterCounterparty {
     clientId: "",
     counterpartyMerklePrefix: [],
     counterpartyClientId: "",
-    signer: "",
+    signer: ""
   };
 }
 export const MsgRegisterCounterparty = {
   typeUrl: "/ibc.core.client.v2.MsgRegisterCounterparty",
   aminoType: "cosmos-sdk/MsgRegisterCounterparty",
   is(o: any): o is MsgRegisterCounterparty {
-    return (
-      o &&
-      (o.$typeUrl === MsgRegisterCounterparty.typeUrl ||
-        (typeof o.clientId === "string" &&
-          Array.isArray(o.counterpartyMerklePrefix) &&
-          (!o.counterpartyMerklePrefix.length ||
-            o.counterpartyMerklePrefix[0] instanceof Uint8Array ||
-            typeof o.counterpartyMerklePrefix[0] === "string") &&
-          typeof o.counterpartyClientId === "string" &&
-          typeof o.signer === "string"))
-    );
+    return o && (o.$typeUrl === MsgRegisterCounterparty.typeUrl || typeof o.clientId === "string" && Array.isArray(o.counterpartyMerklePrefix) && (!o.counterpartyMerklePrefix.length || o.counterpartyMerklePrefix[0] instanceof Uint8Array || typeof o.counterpartyMerklePrefix[0] === "string") && typeof o.counterpartyClientId === "string" && typeof o.signer === "string");
   },
   isAmino(o: any): o is MsgRegisterCounterpartyAmino {
-    return (
-      o &&
-      (o.$typeUrl === MsgRegisterCounterparty.typeUrl ||
-        (typeof o.client_id === "string" &&
-          Array.isArray(o.counterparty_merkle_prefix) &&
-          (!o.counterparty_merkle_prefix.length ||
-            o.counterparty_merkle_prefix[0] instanceof Uint8Array ||
-            typeof o.counterparty_merkle_prefix[0] === "string") &&
-          typeof o.counterparty_client_id === "string" &&
-          typeof o.signer === "string"))
-    );
+    return o && (o.$typeUrl === MsgRegisterCounterparty.typeUrl || typeof o.client_id === "string" && Array.isArray(o.counterparty_merkle_prefix) && (!o.counterparty_merkle_prefix.length || o.counterparty_merkle_prefix[0] instanceof Uint8Array || typeof o.counterparty_merkle_prefix[0] === "string") && typeof o.counterparty_client_id === "string" && typeof o.signer === "string");
   },
   encode(message: MsgRegisterCounterparty, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.clientId !== "") {
@@ -207,8 +187,7 @@ export const MsgRegisterCounterparty = {
   fromJSON(object: any): MsgRegisterCounterparty {
     const obj = createBaseMsgRegisterCounterparty();
     if (isSet(object.clientId)) obj.clientId = String(object.clientId);
-    if (Array.isArray(object?.counterpartyMerklePrefix))
-      obj.counterpartyMerklePrefix = object.counterpartyMerklePrefix.map((e: any) => bytesFromBase64(e));
+    if (Array.isArray(object?.counterpartyMerklePrefix)) obj.counterpartyMerklePrefix = object.counterpartyMerklePrefix.map((e: any) => bytesFromBase64(e));
     if (isSet(object.counterpartyClientId)) obj.counterpartyClientId = String(object.counterpartyClientId);
     if (isSet(object.signer)) obj.signer = String(object.signer);
     return obj;
@@ -217,9 +196,7 @@ export const MsgRegisterCounterparty = {
     const obj: any = {};
     message.clientId !== undefined && (obj.clientId = message.clientId);
     if (message.counterpartyMerklePrefix) {
-      obj.counterpartyMerklePrefix = message.counterpartyMerklePrefix.map((e) =>
-        base64FromBytes(e !== undefined ? e : new Uint8Array()),
-      );
+      obj.counterpartyMerklePrefix = message.counterpartyMerklePrefix.map(e => base64FromBytes(e !== undefined ? e : new Uint8Array()));
     } else {
       obj.counterpartyMerklePrefix = [];
     }
@@ -230,7 +207,7 @@ export const MsgRegisterCounterparty = {
   fromPartial(object: Partial<MsgRegisterCounterparty>): MsgRegisterCounterparty {
     const message = createBaseMsgRegisterCounterparty();
     message.clientId = object.clientId ?? "";
-    message.counterpartyMerklePrefix = object.counterpartyMerklePrefix?.map((e) => e) || [];
+    message.counterpartyMerklePrefix = object.counterpartyMerklePrefix?.map(e => e) || [];
     message.counterpartyClientId = object.counterpartyClientId ?? "";
     message.signer = object.signer ?? "";
     return message;
@@ -240,8 +217,7 @@ export const MsgRegisterCounterparty = {
     if (object.client_id !== undefined && object.client_id !== null) {
       message.clientId = object.client_id;
     }
-    message.counterpartyMerklePrefix =
-      object.counterparty_merkle_prefix?.map((e) => bytesFromBase64(e)) || [];
+    message.counterpartyMerklePrefix = object.counterparty_merkle_prefix?.map(e => bytesFromBase64(e)) || [];
     if (object.counterparty_client_id !== undefined && object.counterparty_client_id !== null) {
       message.counterpartyClientId = object.counterparty_client_id;
     }
@@ -254,12 +230,11 @@ export const MsgRegisterCounterparty = {
     const obj: any = {};
     obj.client_id = message.clientId === "" ? undefined : message.clientId;
     if (message.counterpartyMerklePrefix) {
-      obj.counterparty_merkle_prefix = message.counterpartyMerklePrefix.map((e) => base64FromBytes(e));
+      obj.counterparty_merkle_prefix = message.counterpartyMerklePrefix.map(e => base64FromBytes(e));
     } else {
       obj.counterparty_merkle_prefix = message.counterpartyMerklePrefix;
     }
-    obj.counterparty_client_id =
-      message.counterpartyClientId === "" ? undefined : message.counterpartyClientId;
+    obj.counterparty_client_id = message.counterpartyClientId === "" ? undefined : message.counterpartyClientId;
     obj.signer = message.signer === "" ? undefined : message.signer;
     return obj;
   },
@@ -269,7 +244,7 @@ export const MsgRegisterCounterparty = {
   toAminoMsg(message: MsgRegisterCounterparty): MsgRegisterCounterpartyAminoMsg {
     return {
       type: "cosmos-sdk/MsgRegisterCounterparty",
-      value: MsgRegisterCounterparty.toAmino(message),
+      value: MsgRegisterCounterparty.toAmino(message)
     };
   },
   fromProtoMsg(message: MsgRegisterCounterpartyProtoMsg): MsgRegisterCounterparty {
@@ -281,15 +256,12 @@ export const MsgRegisterCounterparty = {
   toProtoMsg(message: MsgRegisterCounterparty): MsgRegisterCounterpartyProtoMsg {
     return {
       typeUrl: "/ibc.core.client.v2.MsgRegisterCounterparty",
-      value: MsgRegisterCounterparty.encode(message).finish(),
+      value: MsgRegisterCounterparty.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(MsgRegisterCounterparty.typeUrl, MsgRegisterCounterparty);
-GlobalDecoderRegistry.registerAminoProtoMapping(
-  MsgRegisterCounterparty.aminoType,
-  MsgRegisterCounterparty.typeUrl,
-);
+GlobalDecoderRegistry.registerAminoProtoMapping(MsgRegisterCounterparty.aminoType, MsgRegisterCounterparty.typeUrl);
 function createBaseMsgRegisterCounterpartyResponse(): MsgRegisterCounterpartyResponse {
   return {};
 }
@@ -345,7 +317,7 @@ export const MsgRegisterCounterpartyResponse = {
   toAminoMsg(message: MsgRegisterCounterpartyResponse): MsgRegisterCounterpartyResponseAminoMsg {
     return {
       type: "cosmos-sdk/MsgRegisterCounterpartyResponse",
-      value: MsgRegisterCounterpartyResponse.toAmino(message),
+      value: MsgRegisterCounterpartyResponse.toAmino(message)
     };
   },
   fromProtoMsg(message: MsgRegisterCounterpartyResponseProtoMsg): MsgRegisterCounterpartyResponse {
@@ -357,38 +329,27 @@ export const MsgRegisterCounterpartyResponse = {
   toProtoMsg(message: MsgRegisterCounterpartyResponse): MsgRegisterCounterpartyResponseProtoMsg {
     return {
       typeUrl: "/ibc.core.client.v2.MsgRegisterCounterpartyResponse",
-      value: MsgRegisterCounterpartyResponse.encode(message).finish(),
+      value: MsgRegisterCounterpartyResponse.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(MsgRegisterCounterpartyResponse.typeUrl, MsgRegisterCounterpartyResponse);
-GlobalDecoderRegistry.registerAminoProtoMapping(
-  MsgRegisterCounterpartyResponse.aminoType,
-  MsgRegisterCounterpartyResponse.typeUrl,
-);
+GlobalDecoderRegistry.registerAminoProtoMapping(MsgRegisterCounterpartyResponse.aminoType, MsgRegisterCounterpartyResponse.typeUrl);
 function createBaseMsgUpdateClientConfig(): MsgUpdateClientConfig {
   return {
     clientId: "",
     config: Config.fromPartial({}),
-    signer: "",
+    signer: ""
   };
 }
 export const MsgUpdateClientConfig = {
   typeUrl: "/ibc.core.client.v2.MsgUpdateClientConfig",
   aminoType: "cosmos-sdk/MsgUpdateClientConfig",
   is(o: any): o is MsgUpdateClientConfig {
-    return (
-      o &&
-      (o.$typeUrl === MsgUpdateClientConfig.typeUrl ||
-        (typeof o.clientId === "string" && Config.is(o.config) && typeof o.signer === "string"))
-    );
+    return o && (o.$typeUrl === MsgUpdateClientConfig.typeUrl || typeof o.clientId === "string" && Config.is(o.config) && typeof o.signer === "string");
   },
   isAmino(o: any): o is MsgUpdateClientConfigAmino {
-    return (
-      o &&
-      (o.$typeUrl === MsgUpdateClientConfig.typeUrl ||
-        (typeof o.client_id === "string" && Config.isAmino(o.config) && typeof o.signer === "string"))
-    );
+    return o && (o.$typeUrl === MsgUpdateClientConfig.typeUrl || typeof o.client_id === "string" && Config.isAmino(o.config) && typeof o.signer === "string");
   },
   encode(message: MsgUpdateClientConfig, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.clientId !== "") {
@@ -474,7 +435,7 @@ export const MsgUpdateClientConfig = {
   toAminoMsg(message: MsgUpdateClientConfig): MsgUpdateClientConfigAminoMsg {
     return {
       type: "cosmos-sdk/MsgUpdateClientConfig",
-      value: MsgUpdateClientConfig.toAmino(message),
+      value: MsgUpdateClientConfig.toAmino(message)
     };
   },
   fromProtoMsg(message: MsgUpdateClientConfigProtoMsg): MsgUpdateClientConfig {
@@ -486,15 +447,12 @@ export const MsgUpdateClientConfig = {
   toProtoMsg(message: MsgUpdateClientConfig): MsgUpdateClientConfigProtoMsg {
     return {
       typeUrl: "/ibc.core.client.v2.MsgUpdateClientConfig",
-      value: MsgUpdateClientConfig.encode(message).finish(),
+      value: MsgUpdateClientConfig.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(MsgUpdateClientConfig.typeUrl, MsgUpdateClientConfig);
-GlobalDecoderRegistry.registerAminoProtoMapping(
-  MsgUpdateClientConfig.aminoType,
-  MsgUpdateClientConfig.typeUrl,
-);
+GlobalDecoderRegistry.registerAminoProtoMapping(MsgUpdateClientConfig.aminoType, MsgUpdateClientConfig.typeUrl);
 function createBaseMsgUpdateClientConfigResponse(): MsgUpdateClientConfigResponse {
   return {};
 }
@@ -550,7 +508,7 @@ export const MsgUpdateClientConfigResponse = {
   toAminoMsg(message: MsgUpdateClientConfigResponse): MsgUpdateClientConfigResponseAminoMsg {
     return {
       type: "cosmos-sdk/MsgUpdateClientConfigResponse",
-      value: MsgUpdateClientConfigResponse.toAmino(message),
+      value: MsgUpdateClientConfigResponse.toAmino(message)
     };
   },
   fromProtoMsg(message: MsgUpdateClientConfigResponseProtoMsg): MsgUpdateClientConfigResponse {
@@ -562,15 +520,12 @@ export const MsgUpdateClientConfigResponse = {
   toProtoMsg(message: MsgUpdateClientConfigResponse): MsgUpdateClientConfigResponseProtoMsg {
     return {
       typeUrl: "/ibc.core.client.v2.MsgUpdateClientConfigResponse",
-      value: MsgUpdateClientConfigResponse.encode(message).finish(),
+      value: MsgUpdateClientConfigResponse.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(MsgUpdateClientConfigResponse.typeUrl, MsgUpdateClientConfigResponse);
-GlobalDecoderRegistry.registerAminoProtoMapping(
-  MsgUpdateClientConfigResponse.aminoType,
-  MsgUpdateClientConfigResponse.typeUrl,
-);
+GlobalDecoderRegistry.registerAminoProtoMapping(MsgUpdateClientConfigResponse.aminoType, MsgUpdateClientConfigResponse.typeUrl);
 /** Msg defines the ibc/client/v2 Msg service. */
 export interface Msg {
   /** RegisterCounterparty defines a rpc handler method for MsgRegisterCounterparty. */
@@ -588,11 +543,11 @@ export class MsgClientImpl implements Msg {
   RegisterCounterparty(request: MsgRegisterCounterparty): Promise<MsgRegisterCounterpartyResponse> {
     const data = MsgRegisterCounterparty.encode(request).finish();
     const promise = this.rpc.request("ibc.core.client.v2.Msg", "RegisterCounterparty", data);
-    return promise.then((data) => MsgRegisterCounterpartyResponse.decode(new BinaryReader(data)));
+    return promise.then(data => MsgRegisterCounterpartyResponse.decode(new BinaryReader(data)));
   }
   UpdateClientConfig(request: MsgUpdateClientConfig): Promise<MsgUpdateClientConfigResponse> {
     const data = MsgUpdateClientConfig.encode(request).finish();
     const promise = this.rpc.request("ibc.core.client.v2.Msg", "UpdateClientConfig", data);
-    return promise.then((data) => MsgUpdateClientConfigResponse.decode(new BinaryReader(data)));
+    return promise.then(data => MsgUpdateClientConfigResponse.decode(new BinaryReader(data)));
   }
 }

@@ -65,7 +65,7 @@ export interface QueryParamsResponseAminoMsg {
 /**
  * QuerySubspacesRequest defines a request type for querying for all registered
  * subspaces and all keys for a subspace.
- *
+ * 
  * Since: cosmos-sdk 0.46
  */
 export interface QuerySubspacesRequest {}
@@ -76,7 +76,7 @@ export interface QuerySubspacesRequestProtoMsg {
 /**
  * QuerySubspacesRequest defines a request type for querying for all registered
  * subspaces and all keys for a subspace.
- *
+ * 
  * Since: cosmos-sdk 0.46
  * @name QuerySubspacesRequestAmino
  * @package cosmos.params.v1beta1
@@ -90,7 +90,7 @@ export interface QuerySubspacesRequestAminoMsg {
 /**
  * QuerySubspacesResponse defines the response types for querying for all
  * registered subspaces and all keys for a subspace.
- *
+ * 
  * Since: cosmos-sdk 0.46
  */
 export interface QuerySubspacesResponse {
@@ -103,7 +103,7 @@ export interface QuerySubspacesResponseProtoMsg {
 /**
  * QuerySubspacesResponse defines the response types for querying for all
  * registered subspaces and all keys for a subspace.
- *
+ * 
  * Since: cosmos-sdk 0.46
  * @name QuerySubspacesResponseAmino
  * @package cosmos.params.v1beta1
@@ -119,7 +119,7 @@ export interface QuerySubspacesResponseAminoMsg {
 /**
  * Subspace defines a parameter subspace name and all the keys that exist for
  * the subspace.
- *
+ * 
  * Since: cosmos-sdk 0.46
  */
 export interface Subspace {
@@ -133,7 +133,7 @@ export interface SubspaceProtoMsg {
 /**
  * Subspace defines a parameter subspace name and all the keys that exist for
  * the subspace.
- *
+ * 
  * Since: cosmos-sdk 0.46
  * @name SubspaceAmino
  * @package cosmos.params.v1beta1
@@ -150,25 +150,17 @@ export interface SubspaceAminoMsg {
 function createBaseQueryParamsRequest(): QueryParamsRequest {
   return {
     subspace: "",
-    key: "",
+    key: ""
   };
 }
 export const QueryParamsRequest = {
   typeUrl: "/cosmos.params.v1beta1.QueryParamsRequest",
   aminoType: "cosmos-sdk/QueryParamsRequest",
   is(o: any): o is QueryParamsRequest {
-    return (
-      o &&
-      (o.$typeUrl === QueryParamsRequest.typeUrl ||
-        (typeof o.subspace === "string" && typeof o.key === "string"))
-    );
+    return o && (o.$typeUrl === QueryParamsRequest.typeUrl || typeof o.subspace === "string" && typeof o.key === "string");
   },
   isAmino(o: any): o is QueryParamsRequestAmino {
-    return (
-      o &&
-      (o.$typeUrl === QueryParamsRequest.typeUrl ||
-        (typeof o.subspace === "string" && typeof o.key === "string"))
-    );
+    return o && (o.$typeUrl === QueryParamsRequest.typeUrl || typeof o.subspace === "string" && typeof o.key === "string");
   },
   encode(message: QueryParamsRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.subspace !== "") {
@@ -239,7 +231,7 @@ export const QueryParamsRequest = {
   toAminoMsg(message: QueryParamsRequest): QueryParamsRequestAminoMsg {
     return {
       type: "cosmos-sdk/QueryParamsRequest",
-      value: QueryParamsRequest.toAmino(message),
+      value: QueryParamsRequest.toAmino(message)
     };
   },
   fromProtoMsg(message: QueryParamsRequestProtoMsg): QueryParamsRequest {
@@ -251,15 +243,15 @@ export const QueryParamsRequest = {
   toProtoMsg(message: QueryParamsRequest): QueryParamsRequestProtoMsg {
     return {
       typeUrl: "/cosmos.params.v1beta1.QueryParamsRequest",
-      value: QueryParamsRequest.encode(message).finish(),
+      value: QueryParamsRequest.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(QueryParamsRequest.typeUrl, QueryParamsRequest);
 GlobalDecoderRegistry.registerAminoProtoMapping(QueryParamsRequest.aminoType, QueryParamsRequest.typeUrl);
 function createBaseQueryParamsResponse(): QueryParamsResponse {
   return {
-    param: ParamChange.fromPartial({}),
+    param: ParamChange.fromPartial({})
   };
 }
 export const QueryParamsResponse = {
@@ -301,8 +293,7 @@ export const QueryParamsResponse = {
   },
   toJSON(message: QueryParamsResponse): JsonSafe<QueryParamsResponse> {
     const obj: any = {};
-    message.param !== undefined &&
-      (obj.param = message.param ? ParamChange.toJSON(message.param) : undefined);
+    message.param !== undefined && (obj.param = message.param ? ParamChange.toJSON(message.param) : undefined);
     return obj;
   },
   fromPartial(object: Partial<QueryParamsResponse>): QueryParamsResponse {
@@ -321,9 +312,7 @@ export const QueryParamsResponse = {
   },
   toAmino(message: QueryParamsResponse): QueryParamsResponseAmino {
     const obj: any = {};
-    obj.param = message.param
-      ? ParamChange.toAmino(message.param)
-      : ParamChange.toAmino(ParamChange.fromPartial({}));
+    obj.param = message.param ? ParamChange.toAmino(message.param) : ParamChange.toAmino(ParamChange.fromPartial({}));
     return obj;
   },
   fromAminoMsg(object: QueryParamsResponseAminoMsg): QueryParamsResponse {
@@ -332,7 +321,7 @@ export const QueryParamsResponse = {
   toAminoMsg(message: QueryParamsResponse): QueryParamsResponseAminoMsg {
     return {
       type: "cosmos-sdk/QueryParamsResponse",
-      value: QueryParamsResponse.toAmino(message),
+      value: QueryParamsResponse.toAmino(message)
     };
   },
   fromProtoMsg(message: QueryParamsResponseProtoMsg): QueryParamsResponse {
@@ -344,9 +333,9 @@ export const QueryParamsResponse = {
   toProtoMsg(message: QueryParamsResponse): QueryParamsResponseProtoMsg {
     return {
       typeUrl: "/cosmos.params.v1beta1.QueryParamsResponse",
-      value: QueryParamsResponse.encode(message).finish(),
+      value: QueryParamsResponse.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(QueryParamsResponse.typeUrl, QueryParamsResponse);
 GlobalDecoderRegistry.registerAminoProtoMapping(QueryParamsResponse.aminoType, QueryParamsResponse.typeUrl);
@@ -405,7 +394,7 @@ export const QuerySubspacesRequest = {
   toAminoMsg(message: QuerySubspacesRequest): QuerySubspacesRequestAminoMsg {
     return {
       type: "cosmos-sdk/QuerySubspacesRequest",
-      value: QuerySubspacesRequest.toAmino(message),
+      value: QuerySubspacesRequest.toAmino(message)
     };
   },
   fromProtoMsg(message: QuerySubspacesRequestProtoMsg): QuerySubspacesRequest {
@@ -417,36 +406,25 @@ export const QuerySubspacesRequest = {
   toProtoMsg(message: QuerySubspacesRequest): QuerySubspacesRequestProtoMsg {
     return {
       typeUrl: "/cosmos.params.v1beta1.QuerySubspacesRequest",
-      value: QuerySubspacesRequest.encode(message).finish(),
+      value: QuerySubspacesRequest.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(QuerySubspacesRequest.typeUrl, QuerySubspacesRequest);
-GlobalDecoderRegistry.registerAminoProtoMapping(
-  QuerySubspacesRequest.aminoType,
-  QuerySubspacesRequest.typeUrl,
-);
+GlobalDecoderRegistry.registerAminoProtoMapping(QuerySubspacesRequest.aminoType, QuerySubspacesRequest.typeUrl);
 function createBaseQuerySubspacesResponse(): QuerySubspacesResponse {
   return {
-    subspaces: [],
+    subspaces: []
   };
 }
 export const QuerySubspacesResponse = {
   typeUrl: "/cosmos.params.v1beta1.QuerySubspacesResponse",
   aminoType: "cosmos-sdk/QuerySubspacesResponse",
   is(o: any): o is QuerySubspacesResponse {
-    return (
-      o &&
-      (o.$typeUrl === QuerySubspacesResponse.typeUrl ||
-        (Array.isArray(o.subspaces) && (!o.subspaces.length || Subspace.is(o.subspaces[0]))))
-    );
+    return o && (o.$typeUrl === QuerySubspacesResponse.typeUrl || Array.isArray(o.subspaces) && (!o.subspaces.length || Subspace.is(o.subspaces[0])));
   },
   isAmino(o: any): o is QuerySubspacesResponseAmino {
-    return (
-      o &&
-      (o.$typeUrl === QuerySubspacesResponse.typeUrl ||
-        (Array.isArray(o.subspaces) && (!o.subspaces.length || Subspace.isAmino(o.subspaces[0]))))
-    );
+    return o && (o.$typeUrl === QuerySubspacesResponse.typeUrl || Array.isArray(o.subspaces) && (!o.subspaces.length || Subspace.isAmino(o.subspaces[0])));
   },
   encode(message: QuerySubspacesResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.subspaces) {
@@ -473,14 +451,13 @@ export const QuerySubspacesResponse = {
   },
   fromJSON(object: any): QuerySubspacesResponse {
     const obj = createBaseQuerySubspacesResponse();
-    if (Array.isArray(object?.subspaces))
-      obj.subspaces = object.subspaces.map((e: any) => Subspace.fromJSON(e));
+    if (Array.isArray(object?.subspaces)) obj.subspaces = object.subspaces.map((e: any) => Subspace.fromJSON(e));
     return obj;
   },
   toJSON(message: QuerySubspacesResponse): JsonSafe<QuerySubspacesResponse> {
     const obj: any = {};
     if (message.subspaces) {
-      obj.subspaces = message.subspaces.map((e) => (e ? Subspace.toJSON(e) : undefined));
+      obj.subspaces = message.subspaces.map(e => e ? Subspace.toJSON(e) : undefined);
     } else {
       obj.subspaces = [];
     }
@@ -488,18 +465,18 @@ export const QuerySubspacesResponse = {
   },
   fromPartial(object: Partial<QuerySubspacesResponse>): QuerySubspacesResponse {
     const message = createBaseQuerySubspacesResponse();
-    message.subspaces = object.subspaces?.map((e) => Subspace.fromPartial(e)) || [];
+    message.subspaces = object.subspaces?.map(e => Subspace.fromPartial(e)) || [];
     return message;
   },
   fromAmino(object: QuerySubspacesResponseAmino): QuerySubspacesResponse {
     const message = createBaseQuerySubspacesResponse();
-    message.subspaces = object.subspaces?.map((e) => Subspace.fromAmino(e)) || [];
+    message.subspaces = object.subspaces?.map(e => Subspace.fromAmino(e)) || [];
     return message;
   },
   toAmino(message: QuerySubspacesResponse): QuerySubspacesResponseAmino {
     const obj: any = {};
     if (message.subspaces) {
-      obj.subspaces = message.subspaces.map((e) => (e ? Subspace.toAmino(e) : undefined));
+      obj.subspaces = message.subspaces.map(e => e ? Subspace.toAmino(e) : undefined);
     } else {
       obj.subspaces = message.subspaces;
     }
@@ -511,7 +488,7 @@ export const QuerySubspacesResponse = {
   toAminoMsg(message: QuerySubspacesResponse): QuerySubspacesResponseAminoMsg {
     return {
       type: "cosmos-sdk/QuerySubspacesResponse",
-      value: QuerySubspacesResponse.toAmino(message),
+      value: QuerySubspacesResponse.toAmino(message)
     };
   },
   fromProtoMsg(message: QuerySubspacesResponseProtoMsg): QuerySubspacesResponse {
@@ -523,41 +500,26 @@ export const QuerySubspacesResponse = {
   toProtoMsg(message: QuerySubspacesResponse): QuerySubspacesResponseProtoMsg {
     return {
       typeUrl: "/cosmos.params.v1beta1.QuerySubspacesResponse",
-      value: QuerySubspacesResponse.encode(message).finish(),
+      value: QuerySubspacesResponse.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(QuerySubspacesResponse.typeUrl, QuerySubspacesResponse);
-GlobalDecoderRegistry.registerAminoProtoMapping(
-  QuerySubspacesResponse.aminoType,
-  QuerySubspacesResponse.typeUrl,
-);
+GlobalDecoderRegistry.registerAminoProtoMapping(QuerySubspacesResponse.aminoType, QuerySubspacesResponse.typeUrl);
 function createBaseSubspace(): Subspace {
   return {
     subspace: "",
-    keys: [],
+    keys: []
   };
 }
 export const Subspace = {
   typeUrl: "/cosmos.params.v1beta1.Subspace",
   aminoType: "cosmos-sdk/Subspace",
   is(o: any): o is Subspace {
-    return (
-      o &&
-      (o.$typeUrl === Subspace.typeUrl ||
-        (typeof o.subspace === "string" &&
-          Array.isArray(o.keys) &&
-          (!o.keys.length || typeof o.keys[0] === "string")))
-    );
+    return o && (o.$typeUrl === Subspace.typeUrl || typeof o.subspace === "string" && Array.isArray(o.keys) && (!o.keys.length || typeof o.keys[0] === "string"));
   },
   isAmino(o: any): o is SubspaceAmino {
-    return (
-      o &&
-      (o.$typeUrl === Subspace.typeUrl ||
-        (typeof o.subspace === "string" &&
-          Array.isArray(o.keys) &&
-          (!o.keys.length || typeof o.keys[0] === "string")))
-    );
+    return o && (o.$typeUrl === Subspace.typeUrl || typeof o.subspace === "string" && Array.isArray(o.keys) && (!o.keys.length || typeof o.keys[0] === "string"));
   },
   encode(message: Subspace, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.subspace !== "") {
@@ -598,7 +560,7 @@ export const Subspace = {
     const obj: any = {};
     message.subspace !== undefined && (obj.subspace = message.subspace);
     if (message.keys) {
-      obj.keys = message.keys.map((e) => e);
+      obj.keys = message.keys.map(e => e);
     } else {
       obj.keys = [];
     }
@@ -607,7 +569,7 @@ export const Subspace = {
   fromPartial(object: Partial<Subspace>): Subspace {
     const message = createBaseSubspace();
     message.subspace = object.subspace ?? "";
-    message.keys = object.keys?.map((e) => e) || [];
+    message.keys = object.keys?.map(e => e) || [];
     return message;
   },
   fromAmino(object: SubspaceAmino): Subspace {
@@ -615,14 +577,14 @@ export const Subspace = {
     if (object.subspace !== undefined && object.subspace !== null) {
       message.subspace = object.subspace;
     }
-    message.keys = object.keys?.map((e) => e) || [];
+    message.keys = object.keys?.map(e => e) || [];
     return message;
   },
   toAmino(message: Subspace): SubspaceAmino {
     const obj: any = {};
     obj.subspace = message.subspace === "" ? undefined : message.subspace;
     if (message.keys) {
-      obj.keys = message.keys.map((e) => e);
+      obj.keys = message.keys.map(e => e);
     } else {
       obj.keys = message.keys;
     }
@@ -634,7 +596,7 @@ export const Subspace = {
   toAminoMsg(message: Subspace): SubspaceAminoMsg {
     return {
       type: "cosmos-sdk/Subspace",
-      value: Subspace.toAmino(message),
+      value: Subspace.toAmino(message)
     };
   },
   fromProtoMsg(message: SubspaceProtoMsg): Subspace {
@@ -646,9 +608,9 @@ export const Subspace = {
   toProtoMsg(message: Subspace): SubspaceProtoMsg {
     return {
       typeUrl: "/cosmos.params.v1beta1.Subspace",
-      value: Subspace.encode(message).finish(),
+      value: Subspace.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(Subspace.typeUrl, Subspace);
 GlobalDecoderRegistry.registerAminoProtoMapping(Subspace.aminoType, Subspace.typeUrl);
@@ -661,7 +623,7 @@ export interface Query {
   Params(request: QueryParamsRequest): Promise<QueryParamsResponse>;
   /**
    * Subspaces queries for all registered subspaces and all keys for a subspace.
-   *
+   * 
    * Since: cosmos-sdk 0.46
    */
   Subspaces(request?: QuerySubspacesRequest): Promise<QuerySubspacesResponse>;
@@ -676,11 +638,11 @@ export class QueryClientImpl implements Query {
   Params(request: QueryParamsRequest): Promise<QueryParamsResponse> {
     const data = QueryParamsRequest.encode(request).finish();
     const promise = this.rpc.request("cosmos.params.v1beta1.Query", "Params", data);
-    return promise.then((data) => QueryParamsResponse.decode(new BinaryReader(data)));
+    return promise.then(data => QueryParamsResponse.decode(new BinaryReader(data)));
   }
   Subspaces(request: QuerySubspacesRequest = {}): Promise<QuerySubspacesResponse> {
     const data = QuerySubspacesRequest.encode(request).finish();
     const promise = this.rpc.request("cosmos.params.v1beta1.Query", "Subspaces", data);
-    return promise.then((data) => QuerySubspacesResponse.decode(new BinaryReader(data)));
+    return promise.then(data => QuerySubspacesResponse.decode(new BinaryReader(data)));
   }
 }

@@ -21,7 +21,7 @@ export interface GenesisState {
   denomMetadata: Metadata[];
   /**
    * send_enabled defines the denoms where send is enabled or disabled.
-   *
+   * 
    * Since: cosmos-sdk 0.47
    */
   sendEnabled: SendEnabled[];
@@ -56,7 +56,7 @@ export interface GenesisStateAmino {
   denom_metadata: MetadataAmino[];
   /**
    * send_enabled defines the denoms where send is enabled or disabled.
-   *
+   * 
    * Since: cosmos-sdk 0.47
    */
   send_enabled: SendEnabledAmino[];
@@ -106,41 +106,17 @@ function createBaseGenesisState(): GenesisState {
     balances: [],
     supply: [],
     denomMetadata: [],
-    sendEnabled: [],
+    sendEnabled: []
   };
 }
 export const GenesisState = {
   typeUrl: "/cosmos.bank.v1beta1.GenesisState",
   aminoType: "cosmos-sdk/GenesisState",
   is(o: any): o is GenesisState {
-    return (
-      o &&
-      (o.$typeUrl === GenesisState.typeUrl ||
-        (Params.is(o.params) &&
-          Array.isArray(o.balances) &&
-          (!o.balances.length || Balance.is(o.balances[0])) &&
-          Array.isArray(o.supply) &&
-          (!o.supply.length || Coin.is(o.supply[0])) &&
-          Array.isArray(o.denomMetadata) &&
-          (!o.denomMetadata.length || Metadata.is(o.denomMetadata[0])) &&
-          Array.isArray(o.sendEnabled) &&
-          (!o.sendEnabled.length || SendEnabled.is(o.sendEnabled[0]))))
-    );
+    return o && (o.$typeUrl === GenesisState.typeUrl || Params.is(o.params) && Array.isArray(o.balances) && (!o.balances.length || Balance.is(o.balances[0])) && Array.isArray(o.supply) && (!o.supply.length || Coin.is(o.supply[0])) && Array.isArray(o.denomMetadata) && (!o.denomMetadata.length || Metadata.is(o.denomMetadata[0])) && Array.isArray(o.sendEnabled) && (!o.sendEnabled.length || SendEnabled.is(o.sendEnabled[0])));
   },
   isAmino(o: any): o is GenesisStateAmino {
-    return (
-      o &&
-      (o.$typeUrl === GenesisState.typeUrl ||
-        (Params.isAmino(o.params) &&
-          Array.isArray(o.balances) &&
-          (!o.balances.length || Balance.isAmino(o.balances[0])) &&
-          Array.isArray(o.supply) &&
-          (!o.supply.length || Coin.isAmino(o.supply[0])) &&
-          Array.isArray(o.denom_metadata) &&
-          (!o.denom_metadata.length || Metadata.isAmino(o.denom_metadata[0])) &&
-          Array.isArray(o.send_enabled) &&
-          (!o.send_enabled.length || SendEnabled.isAmino(o.send_enabled[0]))))
-    );
+    return o && (o.$typeUrl === GenesisState.typeUrl || Params.isAmino(o.params) && Array.isArray(o.balances) && (!o.balances.length || Balance.isAmino(o.balances[0])) && Array.isArray(o.supply) && (!o.supply.length || Coin.isAmino(o.supply[0])) && Array.isArray(o.denom_metadata) && (!o.denom_metadata.length || Metadata.isAmino(o.denom_metadata[0])) && Array.isArray(o.send_enabled) && (!o.send_enabled.length || SendEnabled.isAmino(o.send_enabled[0])));
   },
   encode(message: GenesisState, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.params !== undefined) {
@@ -194,32 +170,30 @@ export const GenesisState = {
     if (isSet(object.params)) obj.params = Params.fromJSON(object.params);
     if (Array.isArray(object?.balances)) obj.balances = object.balances.map((e: any) => Balance.fromJSON(e));
     if (Array.isArray(object?.supply)) obj.supply = object.supply.map((e: any) => Coin.fromJSON(e));
-    if (Array.isArray(object?.denomMetadata))
-      obj.denomMetadata = object.denomMetadata.map((e: any) => Metadata.fromJSON(e));
-    if (Array.isArray(object?.sendEnabled))
-      obj.sendEnabled = object.sendEnabled.map((e: any) => SendEnabled.fromJSON(e));
+    if (Array.isArray(object?.denomMetadata)) obj.denomMetadata = object.denomMetadata.map((e: any) => Metadata.fromJSON(e));
+    if (Array.isArray(object?.sendEnabled)) obj.sendEnabled = object.sendEnabled.map((e: any) => SendEnabled.fromJSON(e));
     return obj;
   },
   toJSON(message: GenesisState): JsonSafe<GenesisState> {
     const obj: any = {};
     message.params !== undefined && (obj.params = message.params ? Params.toJSON(message.params) : undefined);
     if (message.balances) {
-      obj.balances = message.balances.map((e) => (e ? Balance.toJSON(e) : undefined));
+      obj.balances = message.balances.map(e => e ? Balance.toJSON(e) : undefined);
     } else {
       obj.balances = [];
     }
     if (message.supply) {
-      obj.supply = message.supply.map((e) => (e ? Coin.toJSON(e) : undefined));
+      obj.supply = message.supply.map(e => e ? Coin.toJSON(e) : undefined);
     } else {
       obj.supply = [];
     }
     if (message.denomMetadata) {
-      obj.denomMetadata = message.denomMetadata.map((e) => (e ? Metadata.toJSON(e) : undefined));
+      obj.denomMetadata = message.denomMetadata.map(e => e ? Metadata.toJSON(e) : undefined);
     } else {
       obj.denomMetadata = [];
     }
     if (message.sendEnabled) {
-      obj.sendEnabled = message.sendEnabled.map((e) => (e ? SendEnabled.toJSON(e) : undefined));
+      obj.sendEnabled = message.sendEnabled.map(e => e ? SendEnabled.toJSON(e) : undefined);
     } else {
       obj.sendEnabled = [];
     }
@@ -230,10 +204,10 @@ export const GenesisState = {
     if (object.params !== undefined && object.params !== null) {
       message.params = Params.fromPartial(object.params);
     }
-    message.balances = object.balances?.map((e) => Balance.fromPartial(e)) || [];
-    message.supply = object.supply?.map((e) => Coin.fromPartial(e)) || [];
-    message.denomMetadata = object.denomMetadata?.map((e) => Metadata.fromPartial(e)) || [];
-    message.sendEnabled = object.sendEnabled?.map((e) => SendEnabled.fromPartial(e)) || [];
+    message.balances = object.balances?.map(e => Balance.fromPartial(e)) || [];
+    message.supply = object.supply?.map(e => Coin.fromPartial(e)) || [];
+    message.denomMetadata = object.denomMetadata?.map(e => Metadata.fromPartial(e)) || [];
+    message.sendEnabled = object.sendEnabled?.map(e => SendEnabled.fromPartial(e)) || [];
     return message;
   },
   fromAmino(object: GenesisStateAmino): GenesisState {
@@ -241,32 +215,32 @@ export const GenesisState = {
     if (object.params !== undefined && object.params !== null) {
       message.params = Params.fromAmino(object.params);
     }
-    message.balances = object.balances?.map((e) => Balance.fromAmino(e)) || [];
-    message.supply = object.supply?.map((e) => Coin.fromAmino(e)) || [];
-    message.denomMetadata = object.denom_metadata?.map((e) => Metadata.fromAmino(e)) || [];
-    message.sendEnabled = object.send_enabled?.map((e) => SendEnabled.fromAmino(e)) || [];
+    message.balances = object.balances?.map(e => Balance.fromAmino(e)) || [];
+    message.supply = object.supply?.map(e => Coin.fromAmino(e)) || [];
+    message.denomMetadata = object.denom_metadata?.map(e => Metadata.fromAmino(e)) || [];
+    message.sendEnabled = object.send_enabled?.map(e => SendEnabled.fromAmino(e)) || [];
     return message;
   },
   toAmino(message: GenesisState): GenesisStateAmino {
     const obj: any = {};
     obj.params = message.params ? Params.toAmino(message.params) : Params.toAmino(Params.fromPartial({}));
     if (message.balances) {
-      obj.balances = message.balances.map((e) => (e ? Balance.toAmino(e) : undefined));
+      obj.balances = message.balances.map(e => e ? Balance.toAmino(e) : undefined);
     } else {
       obj.balances = message.balances;
     }
     if (message.supply) {
-      obj.supply = message.supply.map((e) => (e ? Coin.toAmino(e) : undefined));
+      obj.supply = message.supply.map(e => e ? Coin.toAmino(e) : undefined);
     } else {
       obj.supply = message.supply;
     }
     if (message.denomMetadata) {
-      obj.denom_metadata = message.denomMetadata.map((e) => (e ? Metadata.toAmino(e) : undefined));
+      obj.denom_metadata = message.denomMetadata.map(e => e ? Metadata.toAmino(e) : undefined);
     } else {
       obj.denom_metadata = message.denomMetadata;
     }
     if (message.sendEnabled) {
-      obj.send_enabled = message.sendEnabled.map((e) => (e ? SendEnabled.toAmino(e) : undefined));
+      obj.send_enabled = message.sendEnabled.map(e => e ? SendEnabled.toAmino(e) : undefined);
     } else {
       obj.send_enabled = message.sendEnabled;
     }
@@ -278,7 +252,7 @@ export const GenesisState = {
   toAminoMsg(message: GenesisState): GenesisStateAminoMsg {
     return {
       type: "cosmos-sdk/GenesisState",
-      value: GenesisState.toAmino(message),
+      value: GenesisState.toAmino(message)
     };
   },
   fromProtoMsg(message: GenesisStateProtoMsg): GenesisState {
@@ -290,36 +264,26 @@ export const GenesisState = {
   toProtoMsg(message: GenesisState): GenesisStateProtoMsg {
     return {
       typeUrl: "/cosmos.bank.v1beta1.GenesisState",
-      value: GenesisState.encode(message).finish(),
+      value: GenesisState.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(GenesisState.typeUrl, GenesisState);
 GlobalDecoderRegistry.registerAminoProtoMapping(GenesisState.aminoType, GenesisState.typeUrl);
 function createBaseBalance(): Balance {
   return {
     address: "",
-    coins: [],
+    coins: []
   };
 }
 export const Balance = {
   typeUrl: "/cosmos.bank.v1beta1.Balance",
   aminoType: "cosmos-sdk/Balance",
   is(o: any): o is Balance {
-    return (
-      o &&
-      (o.$typeUrl === Balance.typeUrl ||
-        (typeof o.address === "string" && Array.isArray(o.coins) && (!o.coins.length || Coin.is(o.coins[0]))))
-    );
+    return o && (o.$typeUrl === Balance.typeUrl || typeof o.address === "string" && Array.isArray(o.coins) && (!o.coins.length || Coin.is(o.coins[0])));
   },
   isAmino(o: any): o is BalanceAmino {
-    return (
-      o &&
-      (o.$typeUrl === Balance.typeUrl ||
-        (typeof o.address === "string" &&
-          Array.isArray(o.coins) &&
-          (!o.coins.length || Coin.isAmino(o.coins[0]))))
-    );
+    return o && (o.$typeUrl === Balance.typeUrl || typeof o.address === "string" && Array.isArray(o.coins) && (!o.coins.length || Coin.isAmino(o.coins[0])));
   },
   encode(message: Balance, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.address !== "") {
@@ -360,7 +324,7 @@ export const Balance = {
     const obj: any = {};
     message.address !== undefined && (obj.address = message.address);
     if (message.coins) {
-      obj.coins = message.coins.map((e) => (e ? Coin.toJSON(e) : undefined));
+      obj.coins = message.coins.map(e => e ? Coin.toJSON(e) : undefined);
     } else {
       obj.coins = [];
     }
@@ -369,7 +333,7 @@ export const Balance = {
   fromPartial(object: Partial<Balance>): Balance {
     const message = createBaseBalance();
     message.address = object.address ?? "";
-    message.coins = object.coins?.map((e) => Coin.fromPartial(e)) || [];
+    message.coins = object.coins?.map(e => Coin.fromPartial(e)) || [];
     return message;
   },
   fromAmino(object: BalanceAmino): Balance {
@@ -377,14 +341,14 @@ export const Balance = {
     if (object.address !== undefined && object.address !== null) {
       message.address = object.address;
     }
-    message.coins = object.coins?.map((e) => Coin.fromAmino(e)) || [];
+    message.coins = object.coins?.map(e => Coin.fromAmino(e)) || [];
     return message;
   },
   toAmino(message: Balance): BalanceAmino {
     const obj: any = {};
     obj.address = message.address === "" ? undefined : message.address;
     if (message.coins) {
-      obj.coins = message.coins.map((e) => (e ? Coin.toAmino(e) : undefined));
+      obj.coins = message.coins.map(e => e ? Coin.toAmino(e) : undefined);
     } else {
       obj.coins = message.coins;
     }
@@ -396,7 +360,7 @@ export const Balance = {
   toAminoMsg(message: Balance): BalanceAminoMsg {
     return {
       type: "cosmos-sdk/Balance",
-      value: Balance.toAmino(message),
+      value: Balance.toAmino(message)
     };
   },
   fromProtoMsg(message: BalanceProtoMsg): Balance {
@@ -408,9 +372,9 @@ export const Balance = {
   toProtoMsg(message: Balance): BalanceProtoMsg {
     return {
       typeUrl: "/cosmos.bank.v1beta1.Balance",
-      value: Balance.encode(message).finish(),
+      value: Balance.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(Balance.typeUrl, Balance);
 GlobalDecoderRegistry.registerAminoProtoMapping(Balance.aminoType, Balance.typeUrl);

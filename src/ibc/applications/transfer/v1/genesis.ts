@@ -47,35 +47,17 @@ function createBaseGenesisState(): GenesisState {
     portId: "",
     denoms: [],
     params: Params.fromPartial({}),
-    totalEscrowed: [],
+    totalEscrowed: []
   };
 }
 export const GenesisState = {
   typeUrl: "/ibc.applications.transfer.v1.GenesisState",
   aminoType: "cosmos-sdk/GenesisState",
   is(o: any): o is GenesisState {
-    return (
-      o &&
-      (o.$typeUrl === GenesisState.typeUrl ||
-        (typeof o.portId === "string" &&
-          Array.isArray(o.denoms) &&
-          (!o.denoms.length || Denom.is(o.denoms[0])) &&
-          Params.is(o.params) &&
-          Array.isArray(o.totalEscrowed) &&
-          (!o.totalEscrowed.length || Coin.is(o.totalEscrowed[0]))))
-    );
+    return o && (o.$typeUrl === GenesisState.typeUrl || typeof o.portId === "string" && Array.isArray(o.denoms) && (!o.denoms.length || Denom.is(o.denoms[0])) && Params.is(o.params) && Array.isArray(o.totalEscrowed) && (!o.totalEscrowed.length || Coin.is(o.totalEscrowed[0])));
   },
   isAmino(o: any): o is GenesisStateAmino {
-    return (
-      o &&
-      (o.$typeUrl === GenesisState.typeUrl ||
-        (typeof o.port_id === "string" &&
-          Array.isArray(o.denoms) &&
-          (!o.denoms.length || Denom.isAmino(o.denoms[0])) &&
-          Params.isAmino(o.params) &&
-          Array.isArray(o.total_escrowed) &&
-          (!o.total_escrowed.length || Coin.isAmino(o.total_escrowed[0]))))
-    );
+    return o && (o.$typeUrl === GenesisState.typeUrl || typeof o.port_id === "string" && Array.isArray(o.denoms) && (!o.denoms.length || Denom.isAmino(o.denoms[0])) && Params.isAmino(o.params) && Array.isArray(o.total_escrowed) && (!o.total_escrowed.length || Coin.isAmino(o.total_escrowed[0])));
   },
   encode(message: GenesisState, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.portId !== "") {
@@ -123,21 +105,20 @@ export const GenesisState = {
     if (isSet(object.portId)) obj.portId = String(object.portId);
     if (Array.isArray(object?.denoms)) obj.denoms = object.denoms.map((e: any) => Denom.fromJSON(e));
     if (isSet(object.params)) obj.params = Params.fromJSON(object.params);
-    if (Array.isArray(object?.totalEscrowed))
-      obj.totalEscrowed = object.totalEscrowed.map((e: any) => Coin.fromJSON(e));
+    if (Array.isArray(object?.totalEscrowed)) obj.totalEscrowed = object.totalEscrowed.map((e: any) => Coin.fromJSON(e));
     return obj;
   },
   toJSON(message: GenesisState): JsonSafe<GenesisState> {
     const obj: any = {};
     message.portId !== undefined && (obj.portId = message.portId);
     if (message.denoms) {
-      obj.denoms = message.denoms.map((e) => (e ? Denom.toJSON(e) : undefined));
+      obj.denoms = message.denoms.map(e => e ? Denom.toJSON(e) : undefined);
     } else {
       obj.denoms = [];
     }
     message.params !== undefined && (obj.params = message.params ? Params.toJSON(message.params) : undefined);
     if (message.totalEscrowed) {
-      obj.totalEscrowed = message.totalEscrowed.map((e) => (e ? Coin.toJSON(e) : undefined));
+      obj.totalEscrowed = message.totalEscrowed.map(e => e ? Coin.toJSON(e) : undefined);
     } else {
       obj.totalEscrowed = [];
     }
@@ -146,11 +127,11 @@ export const GenesisState = {
   fromPartial(object: Partial<GenesisState>): GenesisState {
     const message = createBaseGenesisState();
     message.portId = object.portId ?? "";
-    message.denoms = object.denoms?.map((e) => Denom.fromPartial(e)) || [];
+    message.denoms = object.denoms?.map(e => Denom.fromPartial(e)) || [];
     if (object.params !== undefined && object.params !== null) {
       message.params = Params.fromPartial(object.params);
     }
-    message.totalEscrowed = object.totalEscrowed?.map((e) => Coin.fromPartial(e)) || [];
+    message.totalEscrowed = object.totalEscrowed?.map(e => Coin.fromPartial(e)) || [];
     return message;
   },
   fromAmino(object: GenesisStateAmino): GenesisState {
@@ -158,24 +139,24 @@ export const GenesisState = {
     if (object.port_id !== undefined && object.port_id !== null) {
       message.portId = object.port_id;
     }
-    message.denoms = object.denoms?.map((e) => Denom.fromAmino(e)) || [];
+    message.denoms = object.denoms?.map(e => Denom.fromAmino(e)) || [];
     if (object.params !== undefined && object.params !== null) {
       message.params = Params.fromAmino(object.params);
     }
-    message.totalEscrowed = object.total_escrowed?.map((e) => Coin.fromAmino(e)) || [];
+    message.totalEscrowed = object.total_escrowed?.map(e => Coin.fromAmino(e)) || [];
     return message;
   },
   toAmino(message: GenesisState): GenesisStateAmino {
     const obj: any = {};
     obj.port_id = message.portId === "" ? undefined : message.portId;
     if (message.denoms) {
-      obj.denoms = message.denoms.map((e) => (e ? Denom.toAmino(e) : undefined));
+      obj.denoms = message.denoms.map(e => e ? Denom.toAmino(e) : undefined);
     } else {
       obj.denoms = message.denoms;
     }
     obj.params = message.params ? Params.toAmino(message.params) : undefined;
     if (message.totalEscrowed) {
-      obj.total_escrowed = message.totalEscrowed.map((e) => (e ? Coin.toAmino(e) : undefined));
+      obj.total_escrowed = message.totalEscrowed.map(e => e ? Coin.toAmino(e) : undefined);
     } else {
       obj.total_escrowed = message.totalEscrowed;
     }
@@ -187,7 +168,7 @@ export const GenesisState = {
   toAminoMsg(message: GenesisState): GenesisStateAminoMsg {
     return {
       type: "cosmos-sdk/GenesisState",
-      value: GenesisState.toAmino(message),
+      value: GenesisState.toAmino(message)
     };
   },
   fromProtoMsg(message: GenesisStateProtoMsg): GenesisState {
@@ -199,9 +180,9 @@ export const GenesisState = {
   toProtoMsg(message: GenesisState): GenesisStateProtoMsg {
     return {
       typeUrl: "/ibc.applications.transfer.v1.GenesisState",
-      value: GenesisState.encode(message).finish(),
+      value: GenesisState.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(GenesisState.typeUrl, GenesisState);
 GlobalDecoderRegistry.registerAminoProtoMapping(GenesisState.aminoType, GenesisState.typeUrl);

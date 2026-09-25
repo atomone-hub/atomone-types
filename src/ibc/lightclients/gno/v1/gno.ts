@@ -7,13 +7,7 @@ import { MerkleRoot, MerkleRootAmino } from "../../../core/commitment/v1/commitm
 import { PublicKey, PublicKeyAmino } from "../../../../tendermint/crypto/keys";
 import { BinaryReader, BinaryWriter } from "../../../../binary";
 import { GlobalDecoderRegistry } from "../../../../registry";
-import {
-  isSet,
-  fromJsonTimestamp,
-  bytesFromBase64,
-  fromTimestamp,
-  base64FromBytes,
-} from "../../../../helpers";
+import { isSet, fromJsonTimestamp, bytesFromBase64, fromTimestamp, base64FromBytes } from "../../../../helpers";
 import { JsonSafe } from "../../../../json-safe";
 export const protobufPackage = "ibc.lightclients.gno.v1";
 /**
@@ -629,51 +623,17 @@ function createBaseClientState(): ClientState {
     upgradePath: [],
     allowUpdateAfterExpiry: false,
     allowUpdateAfterMisbehaviour: false,
-    lcType: "",
+    lcType: ""
   };
 }
 export const ClientState = {
   typeUrl: "/ibc.lightclients.gno.v1.ClientState",
   aminoType: "cosmos-sdk/ClientState",
   is(o: any): o is ClientState {
-    return (
-      o &&
-      (o.$typeUrl === ClientState.typeUrl ||
-        (typeof o.chainId === "string" &&
-          Fraction.is(o.trustLevel) &&
-          Duration.is(o.trustingPeriod) &&
-          Duration.is(o.unbondingPeriod) &&
-          Duration.is(o.maxClockDrift) &&
-          Height.is(o.frozenHeight) &&
-          Height.is(o.latestHeight) &&
-          Array.isArray(o.proofSpecs) &&
-          (!o.proofSpecs.length || ProofSpec.is(o.proofSpecs[0])) &&
-          Array.isArray(o.upgradePath) &&
-          (!o.upgradePath.length || typeof o.upgradePath[0] === "string") &&
-          typeof o.allowUpdateAfterExpiry === "boolean" &&
-          typeof o.allowUpdateAfterMisbehaviour === "boolean" &&
-          typeof o.lcType === "string"))
-    );
+    return o && (o.$typeUrl === ClientState.typeUrl || typeof o.chainId === "string" && Fraction.is(o.trustLevel) && Duration.is(o.trustingPeriod) && Duration.is(o.unbondingPeriod) && Duration.is(o.maxClockDrift) && Height.is(o.frozenHeight) && Height.is(o.latestHeight) && Array.isArray(o.proofSpecs) && (!o.proofSpecs.length || ProofSpec.is(o.proofSpecs[0])) && Array.isArray(o.upgradePath) && (!o.upgradePath.length || typeof o.upgradePath[0] === "string") && typeof o.allowUpdateAfterExpiry === "boolean" && typeof o.allowUpdateAfterMisbehaviour === "boolean" && typeof o.lcType === "string");
   },
   isAmino(o: any): o is ClientStateAmino {
-    return (
-      o &&
-      (o.$typeUrl === ClientState.typeUrl ||
-        (typeof o.chain_id === "string" &&
-          Fraction.isAmino(o.trust_level) &&
-          Duration.isAmino(o.trusting_period) &&
-          Duration.isAmino(o.unbonding_period) &&
-          Duration.isAmino(o.max_clock_drift) &&
-          Height.isAmino(o.frozen_height) &&
-          Height.isAmino(o.latest_height) &&
-          Array.isArray(o.proof_specs) &&
-          (!o.proof_specs.length || ProofSpec.isAmino(o.proof_specs[0])) &&
-          Array.isArray(o.upgrade_path) &&
-          (!o.upgrade_path.length || typeof o.upgrade_path[0] === "string") &&
-          typeof o.allow_update_after_expiry === "boolean" &&
-          typeof o.allow_update_after_misbehaviour === "boolean" &&
-          typeof o.lc_type === "string"))
-    );
+    return o && (o.$typeUrl === ClientState.typeUrl || typeof o.chain_id === "string" && Fraction.isAmino(o.trust_level) && Duration.isAmino(o.trusting_period) && Duration.isAmino(o.unbonding_period) && Duration.isAmino(o.max_clock_drift) && Height.isAmino(o.frozen_height) && Height.isAmino(o.latest_height) && Array.isArray(o.proof_specs) && (!o.proof_specs.length || ProofSpec.isAmino(o.proof_specs[0])) && Array.isArray(o.upgrade_path) && (!o.upgrade_path.length || typeof o.upgrade_path[0] === "string") && typeof o.allow_update_after_expiry === "boolean" && typeof o.allow_update_after_misbehaviour === "boolean" && typeof o.lc_type === "string");
   },
   encode(message: ClientState, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.chainId !== "") {
@@ -773,45 +733,34 @@ export const ClientState = {
     if (isSet(object.maxClockDrift)) obj.maxClockDrift = Duration.fromJSON(object.maxClockDrift);
     if (isSet(object.frozenHeight)) obj.frozenHeight = Height.fromJSON(object.frozenHeight);
     if (isSet(object.latestHeight)) obj.latestHeight = Height.fromJSON(object.latestHeight);
-    if (Array.isArray(object?.proofSpecs))
-      obj.proofSpecs = object.proofSpecs.map((e: any) => ProofSpec.fromJSON(e));
+    if (Array.isArray(object?.proofSpecs)) obj.proofSpecs = object.proofSpecs.map((e: any) => ProofSpec.fromJSON(e));
     if (Array.isArray(object?.upgradePath)) obj.upgradePath = object.upgradePath.map((e: any) => String(e));
-    if (isSet(object.allowUpdateAfterExpiry))
-      obj.allowUpdateAfterExpiry = Boolean(object.allowUpdateAfterExpiry);
-    if (isSet(object.allowUpdateAfterMisbehaviour))
-      obj.allowUpdateAfterMisbehaviour = Boolean(object.allowUpdateAfterMisbehaviour);
+    if (isSet(object.allowUpdateAfterExpiry)) obj.allowUpdateAfterExpiry = Boolean(object.allowUpdateAfterExpiry);
+    if (isSet(object.allowUpdateAfterMisbehaviour)) obj.allowUpdateAfterMisbehaviour = Boolean(object.allowUpdateAfterMisbehaviour);
     if (isSet(object.lcType)) obj.lcType = String(object.lcType);
     return obj;
   },
   toJSON(message: ClientState): JsonSafe<ClientState> {
     const obj: any = {};
     message.chainId !== undefined && (obj.chainId = message.chainId);
-    message.trustLevel !== undefined &&
-      (obj.trustLevel = message.trustLevel ? Fraction.toJSON(message.trustLevel) : undefined);
-    message.trustingPeriod !== undefined &&
-      (obj.trustingPeriod = message.trustingPeriod ? Duration.toJSON(message.trustingPeriod) : undefined);
-    message.unbondingPeriod !== undefined &&
-      (obj.unbondingPeriod = message.unbondingPeriod ? Duration.toJSON(message.unbondingPeriod) : undefined);
-    message.maxClockDrift !== undefined &&
-      (obj.maxClockDrift = message.maxClockDrift ? Duration.toJSON(message.maxClockDrift) : undefined);
-    message.frozenHeight !== undefined &&
-      (obj.frozenHeight = message.frozenHeight ? Height.toJSON(message.frozenHeight) : undefined);
-    message.latestHeight !== undefined &&
-      (obj.latestHeight = message.latestHeight ? Height.toJSON(message.latestHeight) : undefined);
+    message.trustLevel !== undefined && (obj.trustLevel = message.trustLevel ? Fraction.toJSON(message.trustLevel) : undefined);
+    message.trustingPeriod !== undefined && (obj.trustingPeriod = message.trustingPeriod ? Duration.toJSON(message.trustingPeriod) : undefined);
+    message.unbondingPeriod !== undefined && (obj.unbondingPeriod = message.unbondingPeriod ? Duration.toJSON(message.unbondingPeriod) : undefined);
+    message.maxClockDrift !== undefined && (obj.maxClockDrift = message.maxClockDrift ? Duration.toJSON(message.maxClockDrift) : undefined);
+    message.frozenHeight !== undefined && (obj.frozenHeight = message.frozenHeight ? Height.toJSON(message.frozenHeight) : undefined);
+    message.latestHeight !== undefined && (obj.latestHeight = message.latestHeight ? Height.toJSON(message.latestHeight) : undefined);
     if (message.proofSpecs) {
-      obj.proofSpecs = message.proofSpecs.map((e) => (e ? ProofSpec.toJSON(e) : undefined));
+      obj.proofSpecs = message.proofSpecs.map(e => e ? ProofSpec.toJSON(e) : undefined);
     } else {
       obj.proofSpecs = [];
     }
     if (message.upgradePath) {
-      obj.upgradePath = message.upgradePath.map((e) => e);
+      obj.upgradePath = message.upgradePath.map(e => e);
     } else {
       obj.upgradePath = [];
     }
-    message.allowUpdateAfterExpiry !== undefined &&
-      (obj.allowUpdateAfterExpiry = message.allowUpdateAfterExpiry);
-    message.allowUpdateAfterMisbehaviour !== undefined &&
-      (obj.allowUpdateAfterMisbehaviour = message.allowUpdateAfterMisbehaviour);
+    message.allowUpdateAfterExpiry !== undefined && (obj.allowUpdateAfterExpiry = message.allowUpdateAfterExpiry);
+    message.allowUpdateAfterMisbehaviour !== undefined && (obj.allowUpdateAfterMisbehaviour = message.allowUpdateAfterMisbehaviour);
     message.lcType !== undefined && (obj.lcType = message.lcType);
     return obj;
   },
@@ -836,8 +785,8 @@ export const ClientState = {
     if (object.latestHeight !== undefined && object.latestHeight !== null) {
       message.latestHeight = Height.fromPartial(object.latestHeight);
     }
-    message.proofSpecs = object.proofSpecs?.map((e) => ProofSpec.fromPartial(e)) || [];
-    message.upgradePath = object.upgradePath?.map((e) => e) || [];
+    message.proofSpecs = object.proofSpecs?.map(e => ProofSpec.fromPartial(e)) || [];
+    message.upgradePath = object.upgradePath?.map(e => e) || [];
     message.allowUpdateAfterExpiry = object.allowUpdateAfterExpiry ?? false;
     message.allowUpdateAfterMisbehaviour = object.allowUpdateAfterMisbehaviour ?? false;
     message.lcType = object.lcType ?? "";
@@ -866,15 +815,12 @@ export const ClientState = {
     if (object.latest_height !== undefined && object.latest_height !== null) {
       message.latestHeight = Height.fromAmino(object.latest_height);
     }
-    message.proofSpecs = object.proof_specs?.map((e) => ProofSpec.fromAmino(e)) || [];
-    message.upgradePath = object.upgrade_path?.map((e) => e) || [];
+    message.proofSpecs = object.proof_specs?.map(e => ProofSpec.fromAmino(e)) || [];
+    message.upgradePath = object.upgrade_path?.map(e => e) || [];
     if (object.allow_update_after_expiry !== undefined && object.allow_update_after_expiry !== null) {
       message.allowUpdateAfterExpiry = object.allow_update_after_expiry;
     }
-    if (
-      object.allow_update_after_misbehaviour !== undefined &&
-      object.allow_update_after_misbehaviour !== null
-    ) {
+    if (object.allow_update_after_misbehaviour !== undefined && object.allow_update_after_misbehaviour !== null) {
       message.allowUpdateAfterMisbehaviour = object.allow_update_after_misbehaviour;
     }
     if (object.lc_type !== undefined && object.lc_type !== null) {
@@ -892,19 +838,17 @@ export const ClientState = {
     obj.frozen_height = message.frozenHeight ? Height.toAmino(message.frozenHeight) : {};
     obj.latest_height = message.latestHeight ? Height.toAmino(message.latestHeight) : {};
     if (message.proofSpecs) {
-      obj.proof_specs = message.proofSpecs.map((e) => (e ? ProofSpec.toAmino(e) : undefined));
+      obj.proof_specs = message.proofSpecs.map(e => e ? ProofSpec.toAmino(e) : undefined);
     } else {
       obj.proof_specs = message.proofSpecs;
     }
     if (message.upgradePath) {
-      obj.upgrade_path = message.upgradePath.map((e) => e);
+      obj.upgrade_path = message.upgradePath.map(e => e);
     } else {
       obj.upgrade_path = message.upgradePath;
     }
-    obj.allow_update_after_expiry =
-      message.allowUpdateAfterExpiry === false ? undefined : message.allowUpdateAfterExpiry;
-    obj.allow_update_after_misbehaviour =
-      message.allowUpdateAfterMisbehaviour === false ? undefined : message.allowUpdateAfterMisbehaviour;
+    obj.allow_update_after_expiry = message.allowUpdateAfterExpiry === false ? undefined : message.allowUpdateAfterExpiry;
+    obj.allow_update_after_misbehaviour = message.allowUpdateAfterMisbehaviour === false ? undefined : message.allowUpdateAfterMisbehaviour;
     obj.lc_type = message.lcType === "" ? undefined : message.lcType;
     return obj;
   },
@@ -914,7 +858,7 @@ export const ClientState = {
   toAminoMsg(message: ClientState): ClientStateAminoMsg {
     return {
       type: "cosmos-sdk/ClientState",
-      value: ClientState.toAmino(message),
+      value: ClientState.toAmino(message)
     };
   },
   fromProtoMsg(message: ClientStateProtoMsg): ClientState {
@@ -926,9 +870,9 @@ export const ClientState = {
   toProtoMsg(message: ClientState): ClientStateProtoMsg {
     return {
       typeUrl: "/ibc.lightclients.gno.v1.ClientState",
-      value: ClientState.encode(message).finish(),
+      value: ClientState.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(ClientState.typeUrl, ClientState);
 GlobalDecoderRegistry.registerAminoProtoMapping(ClientState.aminoType, ClientState.typeUrl);
@@ -937,31 +881,17 @@ function createBaseConsensusState(): ConsensusState {
     timestamp: undefined,
     root: MerkleRoot.fromPartial({}),
     nextValidatorsHash: new Uint8Array(),
-    lcType: "",
+    lcType: ""
   };
 }
 export const ConsensusState = {
   typeUrl: "/ibc.lightclients.gno.v1.ConsensusState",
   aminoType: "cosmos-sdk/ConsensusState",
   is(o: any): o is ConsensusState {
-    return (
-      o &&
-      (o.$typeUrl === ConsensusState.typeUrl ||
-        (Timestamp.is(o.timestamp) &&
-          MerkleRoot.is(o.root) &&
-          (o.nextValidatorsHash instanceof Uint8Array || typeof o.nextValidatorsHash === "string") &&
-          typeof o.lcType === "string"))
-    );
+    return o && (o.$typeUrl === ConsensusState.typeUrl || Timestamp.is(o.timestamp) && MerkleRoot.is(o.root) && (o.nextValidatorsHash instanceof Uint8Array || typeof o.nextValidatorsHash === "string") && typeof o.lcType === "string");
   },
   isAmino(o: any): o is ConsensusStateAmino {
-    return (
-      o &&
-      (o.$typeUrl === ConsensusState.typeUrl ||
-        (Timestamp.isAmino(o.timestamp) &&
-          MerkleRoot.isAmino(o.root) &&
-          (o.next_validators_hash instanceof Uint8Array || typeof o.next_validators_hash === "string") &&
-          typeof o.lc_type === "string"))
-    );
+    return o && (o.$typeUrl === ConsensusState.typeUrl || Timestamp.isAmino(o.timestamp) && MerkleRoot.isAmino(o.root) && (o.next_validators_hash instanceof Uint8Array || typeof o.next_validators_hash === "string") && typeof o.lc_type === "string");
   },
   encode(message: ConsensusState, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.timestamp !== undefined) {
@@ -1016,10 +946,7 @@ export const ConsensusState = {
     const obj: any = {};
     message.timestamp !== undefined && (obj.timestamp = fromTimestamp(message.timestamp).toISOString());
     message.root !== undefined && (obj.root = message.root ? MerkleRoot.toJSON(message.root) : undefined);
-    message.nextValidatorsHash !== undefined &&
-      (obj.nextValidatorsHash = base64FromBytes(
-        message.nextValidatorsHash !== undefined ? message.nextValidatorsHash : new Uint8Array(),
-      ));
+    message.nextValidatorsHash !== undefined && (obj.nextValidatorsHash = base64FromBytes(message.nextValidatorsHash !== undefined ? message.nextValidatorsHash : new Uint8Array()));
     message.lcType !== undefined && (obj.lcType = message.lcType);
     return obj;
   },
@@ -1055,9 +982,7 @@ export const ConsensusState = {
     const obj: any = {};
     obj.timestamp = message.timestamp ? Timestamp.toAmino(message.timestamp) : undefined;
     obj.root = message.root ? MerkleRoot.toAmino(message.root) : undefined;
-    obj.next_validators_hash = message.nextValidatorsHash
-      ? base64FromBytes(message.nextValidatorsHash)
-      : undefined;
+    obj.next_validators_hash = message.nextValidatorsHash ? base64FromBytes(message.nextValidatorsHash) : undefined;
     obj.lc_type = message.lcType === "" ? undefined : message.lcType;
     return obj;
   },
@@ -1067,7 +992,7 @@ export const ConsensusState = {
   toAminoMsg(message: ConsensusState): ConsensusStateAminoMsg {
     return {
       type: "cosmos-sdk/ConsensusState",
-      value: ConsensusState.toAmino(message),
+      value: ConsensusState.toAmino(message)
     };
   },
   fromProtoMsg(message: ConsensusStateProtoMsg): ConsensusState {
@@ -1079,9 +1004,9 @@ export const ConsensusState = {
   toProtoMsg(message: ConsensusState): ConsensusStateProtoMsg {
     return {
       typeUrl: "/ibc.lightclients.gno.v1.ConsensusState",
-      value: ConsensusState.encode(message).finish(),
+      value: ConsensusState.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(ConsensusState.typeUrl, ConsensusState);
 GlobalDecoderRegistry.registerAminoProtoMapping(ConsensusState.aminoType, ConsensusState.typeUrl);
@@ -1089,7 +1014,7 @@ function createBaseMisbehaviour(): Misbehaviour {
   return {
     clientId: "",
     header1: undefined,
-    header2: undefined,
+    header2: undefined
   };
 }
 export const Misbehaviour = {
@@ -1146,10 +1071,8 @@ export const Misbehaviour = {
   toJSON(message: Misbehaviour): JsonSafe<Misbehaviour> {
     const obj: any = {};
     message.clientId !== undefined && (obj.clientId = message.clientId);
-    message.header1 !== undefined &&
-      (obj.header1 = message.header1 ? Header.toJSON(message.header1) : undefined);
-    message.header2 !== undefined &&
-      (obj.header2 = message.header2 ? Header.toJSON(message.header2) : undefined);
+    message.header1 !== undefined && (obj.header1 = message.header1 ? Header.toJSON(message.header1) : undefined);
+    message.header2 !== undefined && (obj.header2 = message.header2 ? Header.toJSON(message.header2) : undefined);
     return obj;
   },
   fromPartial(object: Partial<Misbehaviour>): Misbehaviour {
@@ -1189,7 +1112,7 @@ export const Misbehaviour = {
   toAminoMsg(message: Misbehaviour): MisbehaviourAminoMsg {
     return {
       type: "cosmos-sdk/Misbehaviour",
-      value: Misbehaviour.toAmino(message),
+      value: Misbehaviour.toAmino(message)
     };
   },
   fromProtoMsg(message: MisbehaviourProtoMsg): Misbehaviour {
@@ -1201,9 +1124,9 @@ export const Misbehaviour = {
   toProtoMsg(message: Misbehaviour): MisbehaviourProtoMsg {
     return {
       typeUrl: "/ibc.lightclients.gno.v1.Misbehaviour",
-      value: Misbehaviour.encode(message).finish(),
+      value: Misbehaviour.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(Misbehaviour.typeUrl, Misbehaviour);
 GlobalDecoderRegistry.registerAminoProtoMapping(Misbehaviour.aminoType, Misbehaviour.typeUrl);
@@ -1212,7 +1135,7 @@ function createBaseHeader(): Header {
     signedHeader: undefined,
     validatorSet: undefined,
     trustedHeight: Height.fromPartial({}),
-    trustedValidators: undefined,
+    trustedValidators: undefined
   };
 }
 export const Header = {
@@ -1270,22 +1193,15 @@ export const Header = {
     if (isSet(object.signedHeader)) obj.signedHeader = SignedHeader.fromJSON(object.signedHeader);
     if (isSet(object.validatorSet)) obj.validatorSet = ValidatorSet.fromJSON(object.validatorSet);
     if (isSet(object.trustedHeight)) obj.trustedHeight = Height.fromJSON(object.trustedHeight);
-    if (isSet(object.trustedValidators))
-      obj.trustedValidators = ValidatorSet.fromJSON(object.trustedValidators);
+    if (isSet(object.trustedValidators)) obj.trustedValidators = ValidatorSet.fromJSON(object.trustedValidators);
     return obj;
   },
   toJSON(message: Header): JsonSafe<Header> {
     const obj: any = {};
-    message.signedHeader !== undefined &&
-      (obj.signedHeader = message.signedHeader ? SignedHeader.toJSON(message.signedHeader) : undefined);
-    message.validatorSet !== undefined &&
-      (obj.validatorSet = message.validatorSet ? ValidatorSet.toJSON(message.validatorSet) : undefined);
-    message.trustedHeight !== undefined &&
-      (obj.trustedHeight = message.trustedHeight ? Height.toJSON(message.trustedHeight) : undefined);
-    message.trustedValidators !== undefined &&
-      (obj.trustedValidators = message.trustedValidators
-        ? ValidatorSet.toJSON(message.trustedValidators)
-        : undefined);
+    message.signedHeader !== undefined && (obj.signedHeader = message.signedHeader ? SignedHeader.toJSON(message.signedHeader) : undefined);
+    message.validatorSet !== undefined && (obj.validatorSet = message.validatorSet ? ValidatorSet.toJSON(message.validatorSet) : undefined);
+    message.trustedHeight !== undefined && (obj.trustedHeight = message.trustedHeight ? Height.toJSON(message.trustedHeight) : undefined);
+    message.trustedValidators !== undefined && (obj.trustedValidators = message.trustedValidators ? ValidatorSet.toJSON(message.trustedValidators) : undefined);
     return obj;
   },
   fromPartial(object: Partial<Header>): Header {
@@ -1325,9 +1241,7 @@ export const Header = {
     obj.signed_header = message.signedHeader ? SignedHeader.toAmino(message.signedHeader) : undefined;
     obj.validator_set = message.validatorSet ? ValidatorSet.toAmino(message.validatorSet) : undefined;
     obj.trusted_height = message.trustedHeight ? Height.toAmino(message.trustedHeight) : {};
-    obj.trusted_validators = message.trustedValidators
-      ? ValidatorSet.toAmino(message.trustedValidators)
-      : undefined;
+    obj.trusted_validators = message.trustedValidators ? ValidatorSet.toAmino(message.trustedValidators) : undefined;
     return obj;
   },
   fromAminoMsg(object: HeaderAminoMsg): Header {
@@ -1336,7 +1250,7 @@ export const Header = {
   toAminoMsg(message: Header): HeaderAminoMsg {
     return {
       type: "cosmos-sdk/Header",
-      value: Header.toAmino(message),
+      value: Header.toAmino(message)
     };
   },
   fromProtoMsg(message: HeaderProtoMsg): Header {
@@ -1348,9 +1262,9 @@ export const Header = {
   toProtoMsg(message: Header): HeaderProtoMsg {
     return {
       typeUrl: "/ibc.lightclients.gno.v1.Header",
-      value: Header.encode(message).finish(),
+      value: Header.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(Header.typeUrl, Header);
 GlobalDecoderRegistry.registerAminoProtoMapping(Header.aminoType, Header.typeUrl);
@@ -1358,7 +1272,7 @@ function createBaseBlock(): Block {
   return {
     header: undefined,
     data: undefined,
-    lastCommit: undefined,
+    lastCommit: undefined
   };
 }
 export const Block = {
@@ -1414,11 +1328,9 @@ export const Block = {
   },
   toJSON(message: Block): JsonSafe<Block> {
     const obj: any = {};
-    message.header !== undefined &&
-      (obj.header = message.header ? GnoHeader.toJSON(message.header) : undefined);
+    message.header !== undefined && (obj.header = message.header ? GnoHeader.toJSON(message.header) : undefined);
     message.data !== undefined && (obj.data = message.data ? Data.toJSON(message.data) : undefined);
-    message.lastCommit !== undefined &&
-      (obj.lastCommit = message.lastCommit ? Commit.toJSON(message.lastCommit) : undefined);
+    message.lastCommit !== undefined && (obj.lastCommit = message.lastCommit ? Commit.toJSON(message.lastCommit) : undefined);
     return obj;
   },
   fromPartial(object: Partial<Block>): Block {
@@ -1460,7 +1372,7 @@ export const Block = {
   toAminoMsg(message: Block): BlockAminoMsg {
     return {
       type: "cosmos-sdk/Block",
-      value: Block.toAmino(message),
+      value: Block.toAmino(message)
     };
   },
   fromProtoMsg(message: BlockProtoMsg): Block {
@@ -1472,9 +1384,9 @@ export const Block = {
   toProtoMsg(message: Block): BlockProtoMsg {
     return {
       typeUrl: "/ibc.lightclients.gno.v1.Block",
-      value: Block.encode(message).finish(),
+      value: Block.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(Block.typeUrl, Block);
 GlobalDecoderRegistry.registerAminoProtoMapping(Block.aminoType, Block.typeUrl);
@@ -1495,53 +1407,17 @@ function createBaseGnoHeader(): GnoHeader {
     consensusHash: new Uint8Array(),
     appHash: new Uint8Array(),
     lastResultsHash: new Uint8Array(),
-    proposerAddress: "",
+    proposerAddress: ""
   };
 }
 export const GnoHeader = {
   typeUrl: "/ibc.lightclients.gno.v1.GnoHeader",
   aminoType: "cosmos-sdk/GnoHeader",
   is(o: any): o is GnoHeader {
-    return (
-      o &&
-      (o.$typeUrl === GnoHeader.typeUrl ||
-        (typeof o.version === "string" &&
-          typeof o.chainId === "string" &&
-          typeof o.height === "bigint" &&
-          Timestamp.is(o.time) &&
-          typeof o.numTxs === "bigint" &&
-          typeof o.totalTxs === "bigint" &&
-          typeof o.appVersion === "string" &&
-          (o.lastCommitHash instanceof Uint8Array || typeof o.lastCommitHash === "string") &&
-          (o.dataHash instanceof Uint8Array || typeof o.dataHash === "string") &&
-          (o.validatorsHash instanceof Uint8Array || typeof o.validatorsHash === "string") &&
-          (o.nextValidatorsHash instanceof Uint8Array || typeof o.nextValidatorsHash === "string") &&
-          (o.consensusHash instanceof Uint8Array || typeof o.consensusHash === "string") &&
-          (o.appHash instanceof Uint8Array || typeof o.appHash === "string") &&
-          (o.lastResultsHash instanceof Uint8Array || typeof o.lastResultsHash === "string") &&
-          typeof o.proposerAddress === "string"))
-    );
+    return o && (o.$typeUrl === GnoHeader.typeUrl || typeof o.version === "string" && typeof o.chainId === "string" && typeof o.height === "bigint" && Timestamp.is(o.time) && typeof o.numTxs === "bigint" && typeof o.totalTxs === "bigint" && typeof o.appVersion === "string" && (o.lastCommitHash instanceof Uint8Array || typeof o.lastCommitHash === "string") && (o.dataHash instanceof Uint8Array || typeof o.dataHash === "string") && (o.validatorsHash instanceof Uint8Array || typeof o.validatorsHash === "string") && (o.nextValidatorsHash instanceof Uint8Array || typeof o.nextValidatorsHash === "string") && (o.consensusHash instanceof Uint8Array || typeof o.consensusHash === "string") && (o.appHash instanceof Uint8Array || typeof o.appHash === "string") && (o.lastResultsHash instanceof Uint8Array || typeof o.lastResultsHash === "string") && typeof o.proposerAddress === "string");
   },
   isAmino(o: any): o is GnoHeaderAmino {
-    return (
-      o &&
-      (o.$typeUrl === GnoHeader.typeUrl ||
-        (typeof o.version === "string" &&
-          typeof o.chain_id === "string" &&
-          typeof o.height === "bigint" &&
-          Timestamp.isAmino(o.time) &&
-          typeof o.num_txs === "bigint" &&
-          typeof o.total_txs === "bigint" &&
-          typeof o.app_version === "string" &&
-          (o.last_commit_hash instanceof Uint8Array || typeof o.last_commit_hash === "string") &&
-          (o.data_hash instanceof Uint8Array || typeof o.data_hash === "string") &&
-          (o.validators_hash instanceof Uint8Array || typeof o.validators_hash === "string") &&
-          (o.next_validators_hash instanceof Uint8Array || typeof o.next_validators_hash === "string") &&
-          (o.consensus_hash instanceof Uint8Array || typeof o.consensus_hash === "string") &&
-          (o.app_hash instanceof Uint8Array || typeof o.app_hash === "string") &&
-          (o.last_results_hash instanceof Uint8Array || typeof o.last_results_hash === "string") &&
-          typeof o.proposer_address === "string"))
-    );
+    return o && (o.$typeUrl === GnoHeader.typeUrl || typeof o.version === "string" && typeof o.chain_id === "string" && typeof o.height === "bigint" && Timestamp.isAmino(o.time) && typeof o.num_txs === "bigint" && typeof o.total_txs === "bigint" && typeof o.app_version === "string" && (o.last_commit_hash instanceof Uint8Array || typeof o.last_commit_hash === "string") && (o.data_hash instanceof Uint8Array || typeof o.data_hash === "string") && (o.validators_hash instanceof Uint8Array || typeof o.validators_hash === "string") && (o.next_validators_hash instanceof Uint8Array || typeof o.next_validators_hash === "string") && (o.consensus_hash instanceof Uint8Array || typeof o.consensus_hash === "string") && (o.app_hash instanceof Uint8Array || typeof o.app_hash === "string") && (o.last_results_hash instanceof Uint8Array || typeof o.last_results_hash === "string") && typeof o.proposer_address === "string");
   },
   encode(message: GnoHeader, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.version !== "") {
@@ -1685,32 +1561,14 @@ export const GnoHeader = {
     message.numTxs !== undefined && (obj.numTxs = (message.numTxs || BigInt(0)).toString());
     message.totalTxs !== undefined && (obj.totalTxs = (message.totalTxs || BigInt(0)).toString());
     message.appVersion !== undefined && (obj.appVersion = message.appVersion);
-    message.lastBlockId !== undefined &&
-      (obj.lastBlockId = message.lastBlockId ? BlockID.toJSON(message.lastBlockId) : undefined);
-    message.lastCommitHash !== undefined &&
-      (obj.lastCommitHash = base64FromBytes(
-        message.lastCommitHash !== undefined ? message.lastCommitHash : new Uint8Array(),
-      ));
-    message.dataHash !== undefined &&
-      (obj.dataHash = base64FromBytes(message.dataHash !== undefined ? message.dataHash : new Uint8Array()));
-    message.validatorsHash !== undefined &&
-      (obj.validatorsHash = base64FromBytes(
-        message.validatorsHash !== undefined ? message.validatorsHash : new Uint8Array(),
-      ));
-    message.nextValidatorsHash !== undefined &&
-      (obj.nextValidatorsHash = base64FromBytes(
-        message.nextValidatorsHash !== undefined ? message.nextValidatorsHash : new Uint8Array(),
-      ));
-    message.consensusHash !== undefined &&
-      (obj.consensusHash = base64FromBytes(
-        message.consensusHash !== undefined ? message.consensusHash : new Uint8Array(),
-      ));
-    message.appHash !== undefined &&
-      (obj.appHash = base64FromBytes(message.appHash !== undefined ? message.appHash : new Uint8Array()));
-    message.lastResultsHash !== undefined &&
-      (obj.lastResultsHash = base64FromBytes(
-        message.lastResultsHash !== undefined ? message.lastResultsHash : new Uint8Array(),
-      ));
+    message.lastBlockId !== undefined && (obj.lastBlockId = message.lastBlockId ? BlockID.toJSON(message.lastBlockId) : undefined);
+    message.lastCommitHash !== undefined && (obj.lastCommitHash = base64FromBytes(message.lastCommitHash !== undefined ? message.lastCommitHash : new Uint8Array()));
+    message.dataHash !== undefined && (obj.dataHash = base64FromBytes(message.dataHash !== undefined ? message.dataHash : new Uint8Array()));
+    message.validatorsHash !== undefined && (obj.validatorsHash = base64FromBytes(message.validatorsHash !== undefined ? message.validatorsHash : new Uint8Array()));
+    message.nextValidatorsHash !== undefined && (obj.nextValidatorsHash = base64FromBytes(message.nextValidatorsHash !== undefined ? message.nextValidatorsHash : new Uint8Array()));
+    message.consensusHash !== undefined && (obj.consensusHash = base64FromBytes(message.consensusHash !== undefined ? message.consensusHash : new Uint8Array()));
+    message.appHash !== undefined && (obj.appHash = base64FromBytes(message.appHash !== undefined ? message.appHash : new Uint8Array()));
+    message.lastResultsHash !== undefined && (obj.lastResultsHash = base64FromBytes(message.lastResultsHash !== undefined ? message.lastResultsHash : new Uint8Array()));
     message.proposerAddress !== undefined && (obj.proposerAddress = message.proposerAddress);
     return obj;
   },
@@ -1809,9 +1667,7 @@ export const GnoHeader = {
     obj.last_commit_hash = message.lastCommitHash ? base64FromBytes(message.lastCommitHash) : undefined;
     obj.data_hash = message.dataHash ? base64FromBytes(message.dataHash) : undefined;
     obj.validators_hash = message.validatorsHash ? base64FromBytes(message.validatorsHash) : undefined;
-    obj.next_validators_hash = message.nextValidatorsHash
-      ? base64FromBytes(message.nextValidatorsHash)
-      : undefined;
+    obj.next_validators_hash = message.nextValidatorsHash ? base64FromBytes(message.nextValidatorsHash) : undefined;
     obj.consensus_hash = message.consensusHash ? base64FromBytes(message.consensusHash) : undefined;
     obj.app_hash = message.appHash ? base64FromBytes(message.appHash) : undefined;
     obj.last_results_hash = message.lastResultsHash ? base64FromBytes(message.lastResultsHash) : undefined;
@@ -1824,7 +1680,7 @@ export const GnoHeader = {
   toAminoMsg(message: GnoHeader): GnoHeaderAminoMsg {
     return {
       type: "cosmos-sdk/GnoHeader",
-      value: GnoHeader.toAmino(message),
+      value: GnoHeader.toAmino(message)
     };
   },
   fromProtoMsg(message: GnoHeaderProtoMsg): GnoHeader {
@@ -1836,35 +1692,25 @@ export const GnoHeader = {
   toProtoMsg(message: GnoHeader): GnoHeaderProtoMsg {
     return {
       typeUrl: "/ibc.lightclients.gno.v1.GnoHeader",
-      value: GnoHeader.encode(message).finish(),
+      value: GnoHeader.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(GnoHeader.typeUrl, GnoHeader);
 GlobalDecoderRegistry.registerAminoProtoMapping(GnoHeader.aminoType, GnoHeader.typeUrl);
 function createBaseData(): Data {
   return {
-    txs: [],
+    txs: []
   };
 }
 export const Data = {
   typeUrl: "/ibc.lightclients.gno.v1.Data",
   aminoType: "cosmos-sdk/Data",
   is(o: any): o is Data {
-    return (
-      o &&
-      (o.$typeUrl === Data.typeUrl ||
-        (Array.isArray(o.txs) &&
-          (!o.txs.length || o.txs[0] instanceof Uint8Array || typeof o.txs[0] === "string")))
-    );
+    return o && (o.$typeUrl === Data.typeUrl || Array.isArray(o.txs) && (!o.txs.length || o.txs[0] instanceof Uint8Array || typeof o.txs[0] === "string"));
   },
   isAmino(o: any): o is DataAmino {
-    return (
-      o &&
-      (o.$typeUrl === Data.typeUrl ||
-        (Array.isArray(o.txs) &&
-          (!o.txs.length || o.txs[0] instanceof Uint8Array || typeof o.txs[0] === "string")))
-    );
+    return o && (o.$typeUrl === Data.typeUrl || Array.isArray(o.txs) && (!o.txs.length || o.txs[0] instanceof Uint8Array || typeof o.txs[0] === "string"));
   },
   encode(message: Data, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.txs) {
@@ -1897,7 +1743,7 @@ export const Data = {
   toJSON(message: Data): JsonSafe<Data> {
     const obj: any = {};
     if (message.txs) {
-      obj.txs = message.txs.map((e) => base64FromBytes(e !== undefined ? e : new Uint8Array()));
+      obj.txs = message.txs.map(e => base64FromBytes(e !== undefined ? e : new Uint8Array()));
     } else {
       obj.txs = [];
     }
@@ -1905,18 +1751,18 @@ export const Data = {
   },
   fromPartial(object: Partial<Data>): Data {
     const message = createBaseData();
-    message.txs = object.txs?.map((e) => e) || [];
+    message.txs = object.txs?.map(e => e) || [];
     return message;
   },
   fromAmino(object: DataAmino): Data {
     const message = createBaseData();
-    message.txs = object.txs?.map((e) => bytesFromBase64(e)) || [];
+    message.txs = object.txs?.map(e => bytesFromBase64(e)) || [];
     return message;
   },
   toAmino(message: Data): DataAmino {
     const obj: any = {};
     if (message.txs) {
-      obj.txs = message.txs.map((e) => base64FromBytes(e));
+      obj.txs = message.txs.map(e => base64FromBytes(e));
     } else {
       obj.txs = message.txs;
     }
@@ -1928,7 +1774,7 @@ export const Data = {
   toAminoMsg(message: Data): DataAminoMsg {
     return {
       type: "cosmos-sdk/Data",
-      value: Data.toAmino(message),
+      value: Data.toAmino(message)
     };
   },
   fromProtoMsg(message: DataProtoMsg): Data {
@@ -1940,34 +1786,26 @@ export const Data = {
   toProtoMsg(message: Data): DataProtoMsg {
     return {
       typeUrl: "/ibc.lightclients.gno.v1.Data",
-      value: Data.encode(message).finish(),
+      value: Data.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(Data.typeUrl, Data);
 GlobalDecoderRegistry.registerAminoProtoMapping(Data.aminoType, Data.typeUrl);
 function createBaseCommit(): Commit {
   return {
     blockId: undefined,
-    precommits: [],
+    precommits: []
   };
 }
 export const Commit = {
   typeUrl: "/ibc.lightclients.gno.v1.Commit",
   aminoType: "cosmos-sdk/Commit",
   is(o: any): o is Commit {
-    return (
-      o &&
-      (o.$typeUrl === Commit.typeUrl ||
-        (Array.isArray(o.precommits) && (!o.precommits.length || CommitSig.is(o.precommits[0]))))
-    );
+    return o && (o.$typeUrl === Commit.typeUrl || Array.isArray(o.precommits) && (!o.precommits.length || CommitSig.is(o.precommits[0])));
   },
   isAmino(o: any): o is CommitAmino {
-    return (
-      o &&
-      (o.$typeUrl === Commit.typeUrl ||
-        (Array.isArray(o.precommits) && (!o.precommits.length || CommitSig.isAmino(o.precommits[0]))))
-    );
+    return o && (o.$typeUrl === Commit.typeUrl || Array.isArray(o.precommits) && (!o.precommits.length || CommitSig.isAmino(o.precommits[0])));
   },
   encode(message: Commit, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.blockId !== undefined) {
@@ -2001,16 +1839,14 @@ export const Commit = {
   fromJSON(object: any): Commit {
     const obj = createBaseCommit();
     if (isSet(object.blockId)) obj.blockId = BlockID.fromJSON(object.blockId);
-    if (Array.isArray(object?.precommits))
-      obj.precommits = object.precommits.map((e: any) => CommitSig.fromJSON(e));
+    if (Array.isArray(object?.precommits)) obj.precommits = object.precommits.map((e: any) => CommitSig.fromJSON(e));
     return obj;
   },
   toJSON(message: Commit): JsonSafe<Commit> {
     const obj: any = {};
-    message.blockId !== undefined &&
-      (obj.blockId = message.blockId ? BlockID.toJSON(message.blockId) : undefined);
+    message.blockId !== undefined && (obj.blockId = message.blockId ? BlockID.toJSON(message.blockId) : undefined);
     if (message.precommits) {
-      obj.precommits = message.precommits.map((e) => (e ? CommitSig.toJSON(e) : undefined));
+      obj.precommits = message.precommits.map(e => e ? CommitSig.toJSON(e) : undefined);
     } else {
       obj.precommits = [];
     }
@@ -2021,7 +1857,7 @@ export const Commit = {
     if (object.blockId !== undefined && object.blockId !== null) {
       message.blockId = BlockID.fromPartial(object.blockId);
     }
-    message.precommits = object.precommits?.map((e) => CommitSig.fromPartial(e)) || [];
+    message.precommits = object.precommits?.map(e => CommitSig.fromPartial(e)) || [];
     return message;
   },
   fromAmino(object: CommitAmino): Commit {
@@ -2029,14 +1865,14 @@ export const Commit = {
     if (object.block_id !== undefined && object.block_id !== null) {
       message.blockId = BlockID.fromAmino(object.block_id);
     }
-    message.precommits = object.precommits?.map((e) => CommitSig.fromAmino(e)) || [];
+    message.precommits = object.precommits?.map(e => CommitSig.fromAmino(e)) || [];
     return message;
   },
   toAmino(message: Commit): CommitAmino {
     const obj: any = {};
     obj.block_id = message.blockId ? BlockID.toAmino(message.blockId) : undefined;
     if (message.precommits) {
-      obj.precommits = message.precommits.map((e) => (e ? CommitSig.toAmino(e) : undefined));
+      obj.precommits = message.precommits.map(e => e ? CommitSig.toAmino(e) : undefined);
     } else {
       obj.precommits = message.precommits;
     }
@@ -2048,7 +1884,7 @@ export const Commit = {
   toAminoMsg(message: Commit): CommitAminoMsg {
     return {
       type: "cosmos-sdk/Commit",
-      value: Commit.toAmino(message),
+      value: Commit.toAmino(message)
     };
   },
   fromProtoMsg(message: CommitProtoMsg): Commit {
@@ -2060,30 +1896,26 @@ export const Commit = {
   toProtoMsg(message: Commit): CommitProtoMsg {
     return {
       typeUrl: "/ibc.lightclients.gno.v1.Commit",
-      value: Commit.encode(message).finish(),
+      value: Commit.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(Commit.typeUrl, Commit);
 GlobalDecoderRegistry.registerAminoProtoMapping(Commit.aminoType, Commit.typeUrl);
 function createBaseBlockID(): BlockID {
   return {
     hash: new Uint8Array(),
-    partsHeader: undefined,
+    partsHeader: undefined
   };
 }
 export const BlockID = {
   typeUrl: "/ibc.lightclients.gno.v1.BlockID",
   aminoType: "cosmos-sdk/BlockID",
   is(o: any): o is BlockID {
-    return (
-      o && (o.$typeUrl === BlockID.typeUrl || o.hash instanceof Uint8Array || typeof o.hash === "string")
-    );
+    return o && (o.$typeUrl === BlockID.typeUrl || o.hash instanceof Uint8Array || typeof o.hash === "string");
   },
   isAmino(o: any): o is BlockIDAmino {
-    return (
-      o && (o.$typeUrl === BlockID.typeUrl || o.hash instanceof Uint8Array || typeof o.hash === "string")
-    );
+    return o && (o.$typeUrl === BlockID.typeUrl || o.hash instanceof Uint8Array || typeof o.hash === "string");
   },
   encode(message: BlockID, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.hash.length !== 0) {
@@ -2122,10 +1954,8 @@ export const BlockID = {
   },
   toJSON(message: BlockID): JsonSafe<BlockID> {
     const obj: any = {};
-    message.hash !== undefined &&
-      (obj.hash = base64FromBytes(message.hash !== undefined ? message.hash : new Uint8Array()));
-    message.partsHeader !== undefined &&
-      (obj.parts = message.partsHeader ? PartSetHeader.toJSON(message.partsHeader) : undefined);
+    message.hash !== undefined && (obj.hash = base64FromBytes(message.hash !== undefined ? message.hash : new Uint8Array()));
+    message.partsHeader !== undefined && (obj.parts = message.partsHeader ? PartSetHeader.toJSON(message.partsHeader) : undefined);
     return obj;
   },
   fromPartial(object: Partial<BlockID>): BlockID {
@@ -2158,7 +1988,7 @@ export const BlockID = {
   toAminoMsg(message: BlockID): BlockIDAminoMsg {
     return {
       type: "cosmos-sdk/BlockID",
-      value: BlockID.toAmino(message),
+      value: BlockID.toAmino(message)
     };
   },
   fromProtoMsg(message: BlockIDProtoMsg): BlockID {
@@ -2170,16 +2000,16 @@ export const BlockID = {
   toProtoMsg(message: BlockID): BlockIDProtoMsg {
     return {
       typeUrl: "/ibc.lightclients.gno.v1.BlockID",
-      value: BlockID.encode(message).finish(),
+      value: BlockID.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(BlockID.typeUrl, BlockID);
 GlobalDecoderRegistry.registerAminoProtoMapping(BlockID.aminoType, BlockID.typeUrl);
 function createBaseSignedHeader(): SignedHeader {
   return {
     header: undefined,
-    commit: undefined,
+    commit: undefined
   };
 }
 export const SignedHeader = {
@@ -2228,8 +2058,7 @@ export const SignedHeader = {
   },
   toJSON(message: SignedHeader): JsonSafe<SignedHeader> {
     const obj: any = {};
-    message.header !== undefined &&
-      (obj.header = message.header ? GnoHeader.toJSON(message.header) : undefined);
+    message.header !== undefined && (obj.header = message.header ? GnoHeader.toJSON(message.header) : undefined);
     message.commit !== undefined && (obj.commit = message.commit ? Commit.toJSON(message.commit) : undefined);
     return obj;
   },
@@ -2265,7 +2094,7 @@ export const SignedHeader = {
   toAminoMsg(message: SignedHeader): SignedHeaderAminoMsg {
     return {
       type: "cosmos-sdk/SignedHeader",
-      value: SignedHeader.toAmino(message),
+      value: SignedHeader.toAmino(message)
     };
   },
   fromProtoMsg(message: SignedHeaderProtoMsg): SignedHeader {
@@ -2277,16 +2106,16 @@ export const SignedHeader = {
   toProtoMsg(message: SignedHeader): SignedHeaderProtoMsg {
     return {
       typeUrl: "/ibc.lightclients.gno.v1.SignedHeader",
-      value: SignedHeader.encode(message).finish(),
+      value: SignedHeader.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(SignedHeader.typeUrl, SignedHeader);
 GlobalDecoderRegistry.registerAminoProtoMapping(SignedHeader.aminoType, SignedHeader.typeUrl);
 function createBaseLightBlock(): LightBlock {
   return {
     signedHeader: undefined,
-    validatorSet: undefined,
+    validatorSet: undefined
   };
 }
 export const LightBlock = {
@@ -2335,10 +2164,8 @@ export const LightBlock = {
   },
   toJSON(message: LightBlock): JsonSafe<LightBlock> {
     const obj: any = {};
-    message.signedHeader !== undefined &&
-      (obj.signedHeader = message.signedHeader ? SignedHeader.toJSON(message.signedHeader) : undefined);
-    message.validatorSet !== undefined &&
-      (obj.validatorSet = message.validatorSet ? ValidatorSet.toJSON(message.validatorSet) : undefined);
+    message.signedHeader !== undefined && (obj.signedHeader = message.signedHeader ? SignedHeader.toJSON(message.signedHeader) : undefined);
+    message.validatorSet !== undefined && (obj.validatorSet = message.validatorSet ? ValidatorSet.toJSON(message.validatorSet) : undefined);
     return obj;
   },
   fromPartial(object: Partial<LightBlock>): LightBlock {
@@ -2373,7 +2200,7 @@ export const LightBlock = {
   toAminoMsg(message: LightBlock): LightBlockAminoMsg {
     return {
       type: "cosmos-sdk/LightBlock",
-      value: LightBlock.toAmino(message),
+      value: LightBlock.toAmino(message)
     };
   },
   fromProtoMsg(message: LightBlockProtoMsg): LightBlock {
@@ -2385,9 +2212,9 @@ export const LightBlock = {
   toProtoMsg(message: LightBlock): LightBlockProtoMsg {
     return {
       typeUrl: "/ibc.lightclients.gno.v1.LightBlock",
-      value: LightBlock.encode(message).finish(),
+      value: LightBlock.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(LightBlock.typeUrl, LightBlock);
 GlobalDecoderRegistry.registerAminoProtoMapping(LightBlock.aminoType, LightBlock.typeUrl);
@@ -2400,37 +2227,17 @@ function createBaseCommitSig(): CommitSig {
     timestamp: undefined,
     validatorAddress: "",
     validatorIndex: BigInt(0),
-    signature: new Uint8Array(),
+    signature: new Uint8Array()
   };
 }
 export const CommitSig = {
   typeUrl: "/ibc.lightclients.gno.v1.CommitSig",
   aminoType: "cosmos-sdk/CommitSig",
   is(o: any): o is CommitSig {
-    return (
-      o &&
-      (o.$typeUrl === CommitSig.typeUrl ||
-        (typeof o.type === "number" &&
-          typeof o.height === "bigint" &&
-          typeof o.round === "bigint" &&
-          Timestamp.is(o.timestamp) &&
-          typeof o.validatorAddress === "string" &&
-          typeof o.validatorIndex === "bigint" &&
-          (o.signature instanceof Uint8Array || typeof o.signature === "string")))
-    );
+    return o && (o.$typeUrl === CommitSig.typeUrl || typeof o.type === "number" && typeof o.height === "bigint" && typeof o.round === "bigint" && Timestamp.is(o.timestamp) && typeof o.validatorAddress === "string" && typeof o.validatorIndex === "bigint" && (o.signature instanceof Uint8Array || typeof o.signature === "string"));
   },
   isAmino(o: any): o is CommitSigAmino {
-    return (
-      o &&
-      (o.$typeUrl === CommitSig.typeUrl ||
-        (typeof o.type === "number" &&
-          typeof o.height === "bigint" &&
-          typeof o.round === "bigint" &&
-          Timestamp.isAmino(o.timestamp) &&
-          typeof o.validator_address === "string" &&
-          typeof o.validator_index === "bigint" &&
-          (o.signature instanceof Uint8Array || typeof o.signature === "string")))
-    );
+    return o && (o.$typeUrl === CommitSig.typeUrl || typeof o.type === "number" && typeof o.height === "bigint" && typeof o.round === "bigint" && Timestamp.isAmino(o.timestamp) && typeof o.validator_address === "string" && typeof o.validator_index === "bigint" && (o.signature instanceof Uint8Array || typeof o.signature === "string"));
   },
   encode(message: CommitSig, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.type !== 0) {
@@ -2514,16 +2321,11 @@ export const CommitSig = {
     message.type !== undefined && (obj.type = Math.round(message.type));
     message.height !== undefined && (obj.height = (message.height || BigInt(0)).toString());
     message.round !== undefined && (obj.round = (message.round || BigInt(0)).toString());
-    message.blockId !== undefined &&
-      (obj.blockId = message.blockId ? BlockID.toJSON(message.blockId) : undefined);
+    message.blockId !== undefined && (obj.blockId = message.blockId ? BlockID.toJSON(message.blockId) : undefined);
     message.timestamp !== undefined && (obj.timestamp = fromTimestamp(message.timestamp).toISOString());
     message.validatorAddress !== undefined && (obj.validatorAddress = message.validatorAddress);
-    message.validatorIndex !== undefined &&
-      (obj.validatorIndex = (message.validatorIndex || BigInt(0)).toString());
-    message.signature !== undefined &&
-      (obj.signature = base64FromBytes(
-        message.signature !== undefined ? message.signature : new Uint8Array(),
-      ));
+    message.validatorIndex !== undefined && (obj.validatorIndex = (message.validatorIndex || BigInt(0)).toString());
+    message.signature !== undefined && (obj.signature = base64FromBytes(message.signature !== undefined ? message.signature : new Uint8Array()));
     return obj;
   },
   fromPartial(object: Partial<CommitSig>): CommitSig {
@@ -2584,8 +2386,7 @@ export const CommitSig = {
     obj.block_id = message.blockId ? BlockID.toAmino(message.blockId) : undefined;
     obj.timestamp = message.timestamp ? Timestamp.toAmino(message.timestamp) : undefined;
     obj.validator_address = message.validatorAddress === "" ? undefined : message.validatorAddress;
-    obj.validator_index =
-      message.validatorIndex !== BigInt(0) ? message.validatorIndex?.toString() : undefined;
+    obj.validator_index = message.validatorIndex !== BigInt(0) ? message.validatorIndex?.toString() : undefined;
     obj.signature = message.signature ? base64FromBytes(message.signature) : undefined;
     return obj;
   },
@@ -2595,7 +2396,7 @@ export const CommitSig = {
   toAminoMsg(message: CommitSig): CommitSigAminoMsg {
     return {
       type: "cosmos-sdk/CommitSig",
-      value: CommitSig.toAmino(message),
+      value: CommitSig.toAmino(message)
     };
   },
   fromProtoMsg(message: CommitSigProtoMsg): CommitSig {
@@ -2607,9 +2408,9 @@ export const CommitSig = {
   toProtoMsg(message: CommitSig): CommitSigProtoMsg {
     return {
       typeUrl: "/ibc.lightclients.gno.v1.CommitSig",
-      value: CommitSig.encode(message).finish(),
+      value: CommitSig.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(CommitSig.typeUrl, CommitSig);
 GlobalDecoderRegistry.registerAminoProtoMapping(CommitSig.aminoType, CommitSig.typeUrl);
@@ -2622,37 +2423,17 @@ function createBaseVote(): Vote {
     timestamp: undefined,
     validatorAddress: "",
     validatorIndex: BigInt(0),
-    signature: new Uint8Array(),
+    signature: new Uint8Array()
   };
 }
 export const Vote = {
   typeUrl: "/ibc.lightclients.gno.v1.Vote",
   aminoType: "cosmos-sdk/Vote",
   is(o: any): o is Vote {
-    return (
-      o &&
-      (o.$typeUrl === Vote.typeUrl ||
-        (typeof o.type === "number" &&
-          typeof o.height === "bigint" &&
-          typeof o.round === "bigint" &&
-          Timestamp.is(o.timestamp) &&
-          typeof o.validatorAddress === "string" &&
-          typeof o.validatorIndex === "bigint" &&
-          (o.signature instanceof Uint8Array || typeof o.signature === "string")))
-    );
+    return o && (o.$typeUrl === Vote.typeUrl || typeof o.type === "number" && typeof o.height === "bigint" && typeof o.round === "bigint" && Timestamp.is(o.timestamp) && typeof o.validatorAddress === "string" && typeof o.validatorIndex === "bigint" && (o.signature instanceof Uint8Array || typeof o.signature === "string"));
   },
   isAmino(o: any): o is VoteAmino {
-    return (
-      o &&
-      (o.$typeUrl === Vote.typeUrl ||
-        (typeof o.type === "number" &&
-          typeof o.height === "bigint" &&
-          typeof o.round === "bigint" &&
-          Timestamp.isAmino(o.timestamp) &&
-          typeof o.validator_address === "string" &&
-          typeof o.validator_index === "bigint" &&
-          (o.signature instanceof Uint8Array || typeof o.signature === "string")))
-    );
+    return o && (o.$typeUrl === Vote.typeUrl || typeof o.type === "number" && typeof o.height === "bigint" && typeof o.round === "bigint" && Timestamp.isAmino(o.timestamp) && typeof o.validator_address === "string" && typeof o.validator_index === "bigint" && (o.signature instanceof Uint8Array || typeof o.signature === "string"));
   },
   encode(message: Vote, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.type !== 0) {
@@ -2736,16 +2517,11 @@ export const Vote = {
     message.type !== undefined && (obj.type = Math.round(message.type));
     message.height !== undefined && (obj.height = (message.height || BigInt(0)).toString());
     message.round !== undefined && (obj.round = (message.round || BigInt(0)).toString());
-    message.blockId !== undefined &&
-      (obj.blockId = message.blockId ? BlockID.toJSON(message.blockId) : undefined);
+    message.blockId !== undefined && (obj.blockId = message.blockId ? BlockID.toJSON(message.blockId) : undefined);
     message.timestamp !== undefined && (obj.timestamp = fromTimestamp(message.timestamp).toISOString());
     message.validatorAddress !== undefined && (obj.validatorAddress = message.validatorAddress);
-    message.validatorIndex !== undefined &&
-      (obj.validatorIndex = (message.validatorIndex || BigInt(0)).toString());
-    message.signature !== undefined &&
-      (obj.signature = base64FromBytes(
-        message.signature !== undefined ? message.signature : new Uint8Array(),
-      ));
+    message.validatorIndex !== undefined && (obj.validatorIndex = (message.validatorIndex || BigInt(0)).toString());
+    message.signature !== undefined && (obj.signature = base64FromBytes(message.signature !== undefined ? message.signature : new Uint8Array()));
     return obj;
   },
   fromPartial(object: Partial<Vote>): Vote {
@@ -2806,8 +2582,7 @@ export const Vote = {
     obj.block_id = message.blockId ? BlockID.toAmino(message.blockId) : undefined;
     obj.timestamp = message.timestamp ? Timestamp.toAmino(message.timestamp) : undefined;
     obj.validator_address = message.validatorAddress === "" ? undefined : message.validatorAddress;
-    obj.validator_index =
-      message.validatorIndex !== BigInt(0) ? message.validatorIndex?.toString() : undefined;
+    obj.validator_index = message.validatorIndex !== BigInt(0) ? message.validatorIndex?.toString() : undefined;
     obj.signature = message.signature ? base64FromBytes(message.signature) : undefined;
     return obj;
   },
@@ -2817,7 +2592,7 @@ export const Vote = {
   toAminoMsg(message: Vote): VoteAminoMsg {
     return {
       type: "cosmos-sdk/Vote",
-      value: Vote.toAmino(message),
+      value: Vote.toAmino(message)
     };
   },
   fromProtoMsg(message: VoteProtoMsg): Vote {
@@ -2829,9 +2604,9 @@ export const Vote = {
   toProtoMsg(message: Vote): VoteProtoMsg {
     return {
       typeUrl: "/ibc.lightclients.gno.v1.Vote",
-      value: Vote.encode(message).finish(),
+      value: Vote.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(Vote.typeUrl, Vote);
 GlobalDecoderRegistry.registerAminoProtoMapping(Vote.aminoType, Vote.typeUrl);
@@ -2890,7 +2665,7 @@ export const PartSet = {
   toAminoMsg(message: PartSet): PartSetAminoMsg {
     return {
       type: "cosmos-sdk/PartSet",
-      value: PartSet.toAmino(message),
+      value: PartSet.toAmino(message)
     };
   },
   fromProtoMsg(message: PartSetProtoMsg): PartSet {
@@ -2902,34 +2677,26 @@ export const PartSet = {
   toProtoMsg(message: PartSet): PartSetProtoMsg {
     return {
       typeUrl: "/ibc.lightclients.gno.v1.PartSet",
-      value: PartSet.encode(message).finish(),
+      value: PartSet.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(PartSet.typeUrl, PartSet);
 GlobalDecoderRegistry.registerAminoProtoMapping(PartSet.aminoType, PartSet.typeUrl);
 function createBasePartSetHeader(): PartSetHeader {
   return {
     total: BigInt(0),
-    hash: new Uint8Array(),
+    hash: new Uint8Array()
   };
 }
 export const PartSetHeader = {
   typeUrl: "/ibc.lightclients.gno.v1.PartSetHeader",
   aminoType: "cosmos-sdk/PartSetHeader",
   is(o: any): o is PartSetHeader {
-    return (
-      o &&
-      (o.$typeUrl === PartSetHeader.typeUrl ||
-        (typeof o.total === "bigint" && (o.hash instanceof Uint8Array || typeof o.hash === "string")))
-    );
+    return o && (o.$typeUrl === PartSetHeader.typeUrl || typeof o.total === "bigint" && (o.hash instanceof Uint8Array || typeof o.hash === "string"));
   },
   isAmino(o: any): o is PartSetHeaderAmino {
-    return (
-      o &&
-      (o.$typeUrl === PartSetHeader.typeUrl ||
-        (typeof o.total === "bigint" && (o.hash instanceof Uint8Array || typeof o.hash === "string")))
-    );
+    return o && (o.$typeUrl === PartSetHeader.typeUrl || typeof o.total === "bigint" && (o.hash instanceof Uint8Array || typeof o.hash === "string"));
   },
   encode(message: PartSetHeader, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.total !== BigInt(0)) {
@@ -2969,8 +2736,7 @@ export const PartSetHeader = {
   toJSON(message: PartSetHeader): JsonSafe<PartSetHeader> {
     const obj: any = {};
     message.total !== undefined && (obj.total = (message.total || BigInt(0)).toString());
-    message.hash !== undefined &&
-      (obj.hash = base64FromBytes(message.hash !== undefined ? message.hash : new Uint8Array()));
+    message.hash !== undefined && (obj.hash = base64FromBytes(message.hash !== undefined ? message.hash : new Uint8Array()));
     return obj;
   },
   fromPartial(object: Partial<PartSetHeader>): PartSetHeader {
@@ -3003,7 +2769,7 @@ export const PartSetHeader = {
   toAminoMsg(message: PartSetHeader): PartSetHeaderAminoMsg {
     return {
       type: "cosmos-sdk/PartSetHeader",
-      value: PartSetHeader.toAmino(message),
+      value: PartSetHeader.toAmino(message)
     };
   },
   fromProtoMsg(message: PartSetHeaderProtoMsg): PartSetHeader {
@@ -3015,9 +2781,9 @@ export const PartSetHeader = {
   toProtoMsg(message: PartSetHeader): PartSetHeaderProtoMsg {
     return {
       typeUrl: "/ibc.lightclients.gno.v1.PartSetHeader",
-      value: PartSetHeader.encode(message).finish(),
+      value: PartSetHeader.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(PartSetHeader.typeUrl, PartSetHeader);
 GlobalDecoderRegistry.registerAminoProtoMapping(PartSetHeader.aminoType, PartSetHeader.typeUrl);
@@ -3026,29 +2792,17 @@ function createBaseValidator(): Validator {
     address: "",
     pubKey: undefined,
     votingPower: BigInt(0),
-    proposerPriority: BigInt(0),
+    proposerPriority: BigInt(0)
   };
 }
 export const Validator = {
   typeUrl: "/ibc.lightclients.gno.v1.Validator",
   aminoType: "cosmos-sdk/Validator",
   is(o: any): o is Validator {
-    return (
-      o &&
-      (o.$typeUrl === Validator.typeUrl ||
-        (typeof o.address === "string" &&
-          typeof o.votingPower === "bigint" &&
-          typeof o.proposerPriority === "bigint"))
-    );
+    return o && (o.$typeUrl === Validator.typeUrl || typeof o.address === "string" && typeof o.votingPower === "bigint" && typeof o.proposerPriority === "bigint");
   },
   isAmino(o: any): o is ValidatorAmino {
-    return (
-      o &&
-      (o.$typeUrl === Validator.typeUrl ||
-        (typeof o.address === "string" &&
-          typeof o.voting_power === "bigint" &&
-          typeof o.proposer_priority === "bigint"))
-    );
+    return o && (o.$typeUrl === Validator.typeUrl || typeof o.address === "string" && typeof o.voting_power === "bigint" && typeof o.proposer_priority === "bigint");
   },
   encode(message: Validator, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.address !== "") {
@@ -3102,11 +2856,9 @@ export const Validator = {
   toJSON(message: Validator): JsonSafe<Validator> {
     const obj: any = {};
     message.address !== undefined && (obj.address = message.address);
-    message.pubKey !== undefined &&
-      (obj.pubKey = message.pubKey ? PublicKey.toJSON(message.pubKey) : undefined);
+    message.pubKey !== undefined && (obj.pubKey = message.pubKey ? PublicKey.toJSON(message.pubKey) : undefined);
     message.votingPower !== undefined && (obj.votingPower = (message.votingPower || BigInt(0)).toString());
-    message.proposerPriority !== undefined &&
-      (obj.proposerPriority = (message.proposerPriority || BigInt(0)).toString());
+    message.proposerPriority !== undefined && (obj.proposerPriority = (message.proposerPriority || BigInt(0)).toString());
     return obj;
   },
   fromPartial(object: Partial<Validator>): Validator {
@@ -3144,8 +2896,7 @@ export const Validator = {
     obj.address = message.address === "" ? undefined : message.address;
     obj.pub_key = message.pubKey ? PublicKey.toAmino(message.pubKey) : undefined;
     obj.voting_power = message.votingPower !== BigInt(0) ? message.votingPower?.toString() : undefined;
-    obj.proposer_priority =
-      message.proposerPriority !== BigInt(0) ? message.proposerPriority?.toString() : undefined;
+    obj.proposer_priority = message.proposerPriority !== BigInt(0) ? message.proposerPriority?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: ValidatorAminoMsg): Validator {
@@ -3154,7 +2905,7 @@ export const Validator = {
   toAminoMsg(message: Validator): ValidatorAminoMsg {
     return {
       type: "cosmos-sdk/Validator",
-      value: Validator.toAmino(message),
+      value: Validator.toAmino(message)
     };
   },
   fromProtoMsg(message: ValidatorProtoMsg): Validator {
@@ -3166,34 +2917,26 @@ export const Validator = {
   toProtoMsg(message: Validator): ValidatorProtoMsg {
     return {
       typeUrl: "/ibc.lightclients.gno.v1.Validator",
-      value: Validator.encode(message).finish(),
+      value: Validator.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(Validator.typeUrl, Validator);
 GlobalDecoderRegistry.registerAminoProtoMapping(Validator.aminoType, Validator.typeUrl);
 function createBaseValidatorSet(): ValidatorSet {
   return {
     validators: [],
-    proposer: undefined,
+    proposer: undefined
   };
 }
 export const ValidatorSet = {
   typeUrl: "/ibc.lightclients.gno.v1.ValidatorSet",
   aminoType: "cosmos-sdk/ValidatorSet",
   is(o: any): o is ValidatorSet {
-    return (
-      o &&
-      (o.$typeUrl === ValidatorSet.typeUrl ||
-        (Array.isArray(o.validators) && (!o.validators.length || Validator.is(o.validators[0]))))
-    );
+    return o && (o.$typeUrl === ValidatorSet.typeUrl || Array.isArray(o.validators) && (!o.validators.length || Validator.is(o.validators[0])));
   },
   isAmino(o: any): o is ValidatorSetAmino {
-    return (
-      o &&
-      (o.$typeUrl === ValidatorSet.typeUrl ||
-        (Array.isArray(o.validators) && (!o.validators.length || Validator.isAmino(o.validators[0]))))
-    );
+    return o && (o.$typeUrl === ValidatorSet.typeUrl || Array.isArray(o.validators) && (!o.validators.length || Validator.isAmino(o.validators[0])));
   },
   encode(message: ValidatorSet, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.validators) {
@@ -3226,25 +2969,23 @@ export const ValidatorSet = {
   },
   fromJSON(object: any): ValidatorSet {
     const obj = createBaseValidatorSet();
-    if (Array.isArray(object?.validators))
-      obj.validators = object.validators.map((e: any) => Validator.fromJSON(e));
+    if (Array.isArray(object?.validators)) obj.validators = object.validators.map((e: any) => Validator.fromJSON(e));
     if (isSet(object.proposer)) obj.proposer = Validator.fromJSON(object.proposer);
     return obj;
   },
   toJSON(message: ValidatorSet): JsonSafe<ValidatorSet> {
     const obj: any = {};
     if (message.validators) {
-      obj.validators = message.validators.map((e) => (e ? Validator.toJSON(e) : undefined));
+      obj.validators = message.validators.map(e => e ? Validator.toJSON(e) : undefined);
     } else {
       obj.validators = [];
     }
-    message.proposer !== undefined &&
-      (obj.proposer = message.proposer ? Validator.toJSON(message.proposer) : undefined);
+    message.proposer !== undefined && (obj.proposer = message.proposer ? Validator.toJSON(message.proposer) : undefined);
     return obj;
   },
   fromPartial(object: Partial<ValidatorSet>): ValidatorSet {
     const message = createBaseValidatorSet();
-    message.validators = object.validators?.map((e) => Validator.fromPartial(e)) || [];
+    message.validators = object.validators?.map(e => Validator.fromPartial(e)) || [];
     if (object.proposer !== undefined && object.proposer !== null) {
       message.proposer = Validator.fromPartial(object.proposer);
     }
@@ -3252,7 +2993,7 @@ export const ValidatorSet = {
   },
   fromAmino(object: ValidatorSetAmino): ValidatorSet {
     const message = createBaseValidatorSet();
-    message.validators = object.validators?.map((e) => Validator.fromAmino(e)) || [];
+    message.validators = object.validators?.map(e => Validator.fromAmino(e)) || [];
     if (object.proposer !== undefined && object.proposer !== null) {
       message.proposer = Validator.fromAmino(object.proposer);
     }
@@ -3261,7 +3002,7 @@ export const ValidatorSet = {
   toAmino(message: ValidatorSet): ValidatorSetAmino {
     const obj: any = {};
     if (message.validators) {
-      obj.validators = message.validators.map((e) => (e ? Validator.toAmino(e) : undefined));
+      obj.validators = message.validators.map(e => e ? Validator.toAmino(e) : undefined);
     } else {
       obj.validators = message.validators;
     }
@@ -3274,7 +3015,7 @@ export const ValidatorSet = {
   toAminoMsg(message: ValidatorSet): ValidatorSetAminoMsg {
     return {
       type: "cosmos-sdk/ValidatorSet",
-      value: ValidatorSet.toAmino(message),
+      value: ValidatorSet.toAmino(message)
     };
   },
   fromProtoMsg(message: ValidatorSetProtoMsg): ValidatorSet {
@@ -3286,34 +3027,26 @@ export const ValidatorSet = {
   toProtoMsg(message: ValidatorSet): ValidatorSetProtoMsg {
     return {
       typeUrl: "/ibc.lightclients.gno.v1.ValidatorSet",
-      value: ValidatorSet.encode(message).finish(),
+      value: ValidatorSet.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(ValidatorSet.typeUrl, ValidatorSet);
 GlobalDecoderRegistry.registerAminoProtoMapping(ValidatorSet.aminoType, ValidatorSet.typeUrl);
 function createBaseFraction(): Fraction {
   return {
     numerator: BigInt(0),
-    denominator: BigInt(0),
+    denominator: BigInt(0)
   };
 }
 export const Fraction = {
   typeUrl: "/ibc.lightclients.gno.v1.Fraction",
   aminoType: "cosmos-sdk/Fraction",
   is(o: any): o is Fraction {
-    return (
-      o &&
-      (o.$typeUrl === Fraction.typeUrl ||
-        (typeof o.numerator === "bigint" && typeof o.denominator === "bigint"))
-    );
+    return o && (o.$typeUrl === Fraction.typeUrl || typeof o.numerator === "bigint" && typeof o.denominator === "bigint");
   },
   isAmino(o: any): o is FractionAmino {
-    return (
-      o &&
-      (o.$typeUrl === Fraction.typeUrl ||
-        (typeof o.numerator === "bigint" && typeof o.denominator === "bigint"))
-    );
+    return o && (o.$typeUrl === Fraction.typeUrl || typeof o.numerator === "bigint" && typeof o.denominator === "bigint");
   },
   encode(message: Fraction, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.numerator !== BigInt(0)) {
@@ -3388,7 +3121,7 @@ export const Fraction = {
   toAminoMsg(message: Fraction): FractionAminoMsg {
     return {
       type: "cosmos-sdk/Fraction",
-      value: Fraction.toAmino(message),
+      value: Fraction.toAmino(message)
     };
   },
   fromProtoMsg(message: FractionProtoMsg): Fraction {
@@ -3400,9 +3133,9 @@ export const Fraction = {
   toProtoMsg(message: Fraction): FractionProtoMsg {
     return {
       typeUrl: "/ibc.lightclients.gno.v1.Fraction",
-      value: Fraction.encode(message).finish(),
+      value: Fraction.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(Fraction.typeUrl, Fraction);
 GlobalDecoderRegistry.registerAminoProtoMapping(Fraction.aminoType, Fraction.typeUrl);

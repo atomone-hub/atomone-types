@@ -39,7 +39,7 @@ export interface EpochInfo {
    * current_epoch_start_time + duration] When the timer ticks, this is set to
    * current_epoch_start_time = last_epoch_start_time + duration only one timer
    * tick for a given identifier can occur per block.
-   *
+   * 
    * NOTE! The current_epoch_start_time may diverge significantly from the
    * wall-clock time the epoch began at. Wall-clock time of epoch start may be
    * >> current_epoch_start_time. Suppose current_epoch_start_time = 10,
@@ -106,7 +106,7 @@ export interface EpochInfoAmino {
    * current_epoch_start_time + duration] When the timer ticks, this is set to
    * current_epoch_start_time = last_epoch_start_time + duration only one timer
    * tick for a given identifier can occur per block.
-   *
+   * 
    * NOTE! The current_epoch_start_time may diverge significantly from the
    * wall-clock time the epoch began at. Wall-clock time of epoch start may be
    * >> current_epoch_start_time. Suppose current_epoch_start_time = 10,
@@ -164,37 +164,17 @@ function createBaseEpochInfo(): EpochInfo {
     currentEpoch: BigInt(0),
     currentEpochStartTime: undefined,
     epochCountingStarted: false,
-    currentEpochStartHeight: BigInt(0),
+    currentEpochStartHeight: BigInt(0)
   };
 }
 export const EpochInfo = {
   typeUrl: "/cosmos.epochs.v1beta1.EpochInfo",
   aminoType: "cosmos-sdk/EpochInfo",
   is(o: any): o is EpochInfo {
-    return (
-      o &&
-      (o.$typeUrl === EpochInfo.typeUrl ||
-        (typeof o.identifier === "string" &&
-          Timestamp.is(o.startTime) &&
-          Duration.is(o.duration) &&
-          typeof o.currentEpoch === "bigint" &&
-          Timestamp.is(o.currentEpochStartTime) &&
-          typeof o.epochCountingStarted === "boolean" &&
-          typeof o.currentEpochStartHeight === "bigint"))
-    );
+    return o && (o.$typeUrl === EpochInfo.typeUrl || typeof o.identifier === "string" && Timestamp.is(o.startTime) && Duration.is(o.duration) && typeof o.currentEpoch === "bigint" && Timestamp.is(o.currentEpochStartTime) && typeof o.epochCountingStarted === "boolean" && typeof o.currentEpochStartHeight === "bigint");
   },
   isAmino(o: any): o is EpochInfoAmino {
-    return (
-      o &&
-      (o.$typeUrl === EpochInfo.typeUrl ||
-        (typeof o.identifier === "string" &&
-          Timestamp.isAmino(o.start_time) &&
-          Duration.isAmino(o.duration) &&
-          typeof o.current_epoch === "bigint" &&
-          Timestamp.isAmino(o.current_epoch_start_time) &&
-          typeof o.epoch_counting_started === "boolean" &&
-          typeof o.current_epoch_start_height === "bigint"))
-    );
+    return o && (o.$typeUrl === EpochInfo.typeUrl || typeof o.identifier === "string" && Timestamp.isAmino(o.start_time) && Duration.isAmino(o.duration) && typeof o.current_epoch === "bigint" && Timestamp.isAmino(o.current_epoch_start_time) && typeof o.epoch_counting_started === "boolean" && typeof o.current_epoch_start_height === "bigint");
   },
   encode(message: EpochInfo, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.identifier !== "") {
@@ -261,25 +241,20 @@ export const EpochInfo = {
     if (isSet(object.startTime)) obj.startTime = fromJsonTimestamp(object.startTime);
     if (isSet(object.duration)) obj.duration = Duration.fromJSON(object.duration);
     if (isSet(object.currentEpoch)) obj.currentEpoch = BigInt(object.currentEpoch.toString());
-    if (isSet(object.currentEpochStartTime))
-      obj.currentEpochStartTime = fromJsonTimestamp(object.currentEpochStartTime);
+    if (isSet(object.currentEpochStartTime)) obj.currentEpochStartTime = fromJsonTimestamp(object.currentEpochStartTime);
     if (isSet(object.epochCountingStarted)) obj.epochCountingStarted = Boolean(object.epochCountingStarted);
-    if (isSet(object.currentEpochStartHeight))
-      obj.currentEpochStartHeight = BigInt(object.currentEpochStartHeight.toString());
+    if (isSet(object.currentEpochStartHeight)) obj.currentEpochStartHeight = BigInt(object.currentEpochStartHeight.toString());
     return obj;
   },
   toJSON(message: EpochInfo): JsonSafe<EpochInfo> {
     const obj: any = {};
     message.identifier !== undefined && (obj.identifier = message.identifier);
     message.startTime !== undefined && (obj.startTime = fromTimestamp(message.startTime).toISOString());
-    message.duration !== undefined &&
-      (obj.duration = message.duration ? Duration.toJSON(message.duration) : undefined);
+    message.duration !== undefined && (obj.duration = message.duration ? Duration.toJSON(message.duration) : undefined);
     message.currentEpoch !== undefined && (obj.currentEpoch = (message.currentEpoch || BigInt(0)).toString());
-    message.currentEpochStartTime !== undefined &&
-      (obj.currentEpochStartTime = fromTimestamp(message.currentEpochStartTime).toISOString());
+    message.currentEpochStartTime !== undefined && (obj.currentEpochStartTime = fromTimestamp(message.currentEpochStartTime).toISOString());
     message.epochCountingStarted !== undefined && (obj.epochCountingStarted = message.epochCountingStarted);
-    message.currentEpochStartHeight !== undefined &&
-      (obj.currentEpochStartHeight = (message.currentEpochStartHeight || BigInt(0)).toString());
+    message.currentEpochStartHeight !== undefined && (obj.currentEpochStartHeight = (message.currentEpochStartHeight || BigInt(0)).toString());
     return obj;
   },
   fromPartial(object: Partial<EpochInfo>): EpochInfo {
@@ -334,13 +309,9 @@ export const EpochInfo = {
     obj.start_time = message.startTime ? Timestamp.toAmino(message.startTime) : undefined;
     obj.duration = message.duration ? Duration.toAmino(message.duration) : undefined;
     obj.current_epoch = message.currentEpoch !== BigInt(0) ? message.currentEpoch?.toString() : undefined;
-    obj.current_epoch_start_time = message.currentEpochStartTime
-      ? Timestamp.toAmino(message.currentEpochStartTime)
-      : undefined;
-    obj.epoch_counting_started =
-      message.epochCountingStarted === false ? undefined : message.epochCountingStarted;
-    obj.current_epoch_start_height =
-      message.currentEpochStartHeight !== BigInt(0) ? message.currentEpochStartHeight?.toString() : undefined;
+    obj.current_epoch_start_time = message.currentEpochStartTime ? Timestamp.toAmino(message.currentEpochStartTime) : undefined;
+    obj.epoch_counting_started = message.epochCountingStarted === false ? undefined : message.epochCountingStarted;
+    obj.current_epoch_start_height = message.currentEpochStartHeight !== BigInt(0) ? message.currentEpochStartHeight?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: EpochInfoAminoMsg): EpochInfo {
@@ -349,7 +320,7 @@ export const EpochInfo = {
   toAminoMsg(message: EpochInfo): EpochInfoAminoMsg {
     return {
       type: "cosmos-sdk/EpochInfo",
-      value: EpochInfo.toAmino(message),
+      value: EpochInfo.toAmino(message)
     };
   },
   fromProtoMsg(message: EpochInfoProtoMsg): EpochInfo {
@@ -361,33 +332,25 @@ export const EpochInfo = {
   toProtoMsg(message: EpochInfo): EpochInfoProtoMsg {
     return {
       typeUrl: "/cosmos.epochs.v1beta1.EpochInfo",
-      value: EpochInfo.encode(message).finish(),
+      value: EpochInfo.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(EpochInfo.typeUrl, EpochInfo);
 GlobalDecoderRegistry.registerAminoProtoMapping(EpochInfo.aminoType, EpochInfo.typeUrl);
 function createBaseGenesisState(): GenesisState {
   return {
-    epochs: [],
+    epochs: []
   };
 }
 export const GenesisState = {
   typeUrl: "/cosmos.epochs.v1beta1.GenesisState",
   aminoType: "cosmos-sdk/GenesisState",
   is(o: any): o is GenesisState {
-    return (
-      o &&
-      (o.$typeUrl === GenesisState.typeUrl ||
-        (Array.isArray(o.epochs) && (!o.epochs.length || EpochInfo.is(o.epochs[0]))))
-    );
+    return o && (o.$typeUrl === GenesisState.typeUrl || Array.isArray(o.epochs) && (!o.epochs.length || EpochInfo.is(o.epochs[0])));
   },
   isAmino(o: any): o is GenesisStateAmino {
-    return (
-      o &&
-      (o.$typeUrl === GenesisState.typeUrl ||
-        (Array.isArray(o.epochs) && (!o.epochs.length || EpochInfo.isAmino(o.epochs[0]))))
-    );
+    return o && (o.$typeUrl === GenesisState.typeUrl || Array.isArray(o.epochs) && (!o.epochs.length || EpochInfo.isAmino(o.epochs[0])));
   },
   encode(message: GenesisState, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.epochs) {
@@ -420,7 +383,7 @@ export const GenesisState = {
   toJSON(message: GenesisState): JsonSafe<GenesisState> {
     const obj: any = {};
     if (message.epochs) {
-      obj.epochs = message.epochs.map((e) => (e ? EpochInfo.toJSON(e) : undefined));
+      obj.epochs = message.epochs.map(e => e ? EpochInfo.toJSON(e) : undefined);
     } else {
       obj.epochs = [];
     }
@@ -428,18 +391,18 @@ export const GenesisState = {
   },
   fromPartial(object: Partial<GenesisState>): GenesisState {
     const message = createBaseGenesisState();
-    message.epochs = object.epochs?.map((e) => EpochInfo.fromPartial(e)) || [];
+    message.epochs = object.epochs?.map(e => EpochInfo.fromPartial(e)) || [];
     return message;
   },
   fromAmino(object: GenesisStateAmino): GenesisState {
     const message = createBaseGenesisState();
-    message.epochs = object.epochs?.map((e) => EpochInfo.fromAmino(e)) || [];
+    message.epochs = object.epochs?.map(e => EpochInfo.fromAmino(e)) || [];
     return message;
   },
   toAmino(message: GenesisState): GenesisStateAmino {
     const obj: any = {};
     if (message.epochs) {
-      obj.epochs = message.epochs.map((e) => (e ? EpochInfo.toAmino(e) : undefined));
+      obj.epochs = message.epochs.map(e => e ? EpochInfo.toAmino(e) : undefined);
     } else {
       obj.epochs = message.epochs;
     }
@@ -451,7 +414,7 @@ export const GenesisState = {
   toAminoMsg(message: GenesisState): GenesisStateAminoMsg {
     return {
       type: "cosmos-sdk/GenesisState",
-      value: GenesisState.toAmino(message),
+      value: GenesisState.toAmino(message)
     };
   },
   fromProtoMsg(message: GenesisStateProtoMsg): GenesisState {
@@ -463,9 +426,9 @@ export const GenesisState = {
   toProtoMsg(message: GenesisState): GenesisStateProtoMsg {
     return {
       typeUrl: "/cosmos.epochs.v1beta1.GenesisState",
-      value: GenesisState.encode(message).finish(),
+      value: GenesisState.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(GenesisState.typeUrl, GenesisState);
 GlobalDecoderRegistry.registerAminoProtoMapping(GenesisState.aminoType, GenesisState.typeUrl);

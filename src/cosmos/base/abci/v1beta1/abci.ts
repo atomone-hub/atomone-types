@@ -48,7 +48,7 @@ export interface TxResponse {
    * these events include those emitted by processing all the messages and those
    * emitted from the ante. Whereas Logs contains the events, with
    * additional metadata, emitted only by processing the messages.
-   *
+   * 
    * Since: cosmos-sdk 0.42.11, 0.44.5, 0.45
    */
   events: Event[];
@@ -121,7 +121,7 @@ export interface TxResponseAmino {
    * these events include those emitted by processing all the messages and those
    * emitted from the ante. Whereas Logs contains the events, with
    * additional metadata, emitted only by processing the messages.
-   *
+   * 
    * Since: cosmos-sdk 0.42.11, 0.44.5, 0.45
    */
   events?: EventAmino[];
@@ -267,7 +267,7 @@ export interface Result {
   events: Event[];
   /**
    * msg_responses contains the Msg handler responses type packed in Anys.
-   *
+   * 
    * Since: cosmos-sdk 0.46
    */
   msgResponses: Any[];
@@ -302,7 +302,7 @@ export interface ResultAmino {
   events?: EventAmino[];
   /**
    * msg_responses contains the Msg handler responses type packed in Anys.
-   *
+   * 
    * Since: cosmos-sdk 0.46
    */
   msg_responses?: AnyAmino[];
@@ -377,7 +377,7 @@ export interface TxMsgData {
   data: MsgData[];
   /**
    * msg_responses contains the Msg handler responses packed into Anys.
-   *
+   * 
    * Since: cosmos-sdk 0.46
    */
   msgResponses: Any[];
@@ -401,7 +401,7 @@ export interface TxMsgDataAmino {
   data?: MsgDataAmino[];
   /**
    * msg_responses contains the Msg handler responses packed into Anys.
-   *
+   * 
    * Since: cosmos-sdk 0.46
    */
   msg_responses?: AnyAmino[];
@@ -534,51 +534,17 @@ function createBaseTxResponse(): TxResponse {
     gasUsed: BigInt(0),
     tx: undefined,
     timestamp: "",
-    events: [],
+    events: []
   };
 }
 export const TxResponse = {
   typeUrl: "/cosmos.base.abci.v1beta1.TxResponse",
   aminoType: "cosmos-sdk/TxResponse",
   is(o: any): o is TxResponse {
-    return (
-      o &&
-      (o.$typeUrl === TxResponse.typeUrl ||
-        (typeof o.height === "bigint" &&
-          typeof o.txhash === "string" &&
-          typeof o.codespace === "string" &&
-          typeof o.code === "number" &&
-          typeof o.data === "string" &&
-          typeof o.rawLog === "string" &&
-          Array.isArray(o.logs) &&
-          (!o.logs.length || ABCIMessageLog.is(o.logs[0])) &&
-          typeof o.info === "string" &&
-          typeof o.gasWanted === "bigint" &&
-          typeof o.gasUsed === "bigint" &&
-          typeof o.timestamp === "string" &&
-          Array.isArray(o.events) &&
-          (!o.events.length || Event.is(o.events[0]))))
-    );
+    return o && (o.$typeUrl === TxResponse.typeUrl || typeof o.height === "bigint" && typeof o.txhash === "string" && typeof o.codespace === "string" && typeof o.code === "number" && typeof o.data === "string" && typeof o.rawLog === "string" && Array.isArray(o.logs) && (!o.logs.length || ABCIMessageLog.is(o.logs[0])) && typeof o.info === "string" && typeof o.gasWanted === "bigint" && typeof o.gasUsed === "bigint" && typeof o.timestamp === "string" && Array.isArray(o.events) && (!o.events.length || Event.is(o.events[0])));
   },
   isAmino(o: any): o is TxResponseAmino {
-    return (
-      o &&
-      (o.$typeUrl === TxResponse.typeUrl ||
-        (typeof o.height === "bigint" &&
-          typeof o.txhash === "string" &&
-          typeof o.codespace === "string" &&
-          typeof o.code === "number" &&
-          typeof o.data === "string" &&
-          typeof o.raw_log === "string" &&
-          Array.isArray(o.logs) &&
-          (!o.logs.length || ABCIMessageLog.isAmino(o.logs[0])) &&
-          typeof o.info === "string" &&
-          typeof o.gas_wanted === "bigint" &&
-          typeof o.gas_used === "bigint" &&
-          typeof o.timestamp === "string" &&
-          Array.isArray(o.events) &&
-          (!o.events.length || Event.isAmino(o.events[0]))))
-    );
+    return o && (o.$typeUrl === TxResponse.typeUrl || typeof o.height === "bigint" && typeof o.txhash === "string" && typeof o.codespace === "string" && typeof o.code === "number" && typeof o.data === "string" && typeof o.raw_log === "string" && Array.isArray(o.logs) && (!o.logs.length || ABCIMessageLog.isAmino(o.logs[0])) && typeof o.info === "string" && typeof o.gas_wanted === "bigint" && typeof o.gas_used === "bigint" && typeof o.timestamp === "string" && Array.isArray(o.events) && (!o.events.length || Event.isAmino(o.events[0])));
   },
   encode(message: TxResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.height !== BigInt(0)) {
@@ -701,7 +667,7 @@ export const TxResponse = {
     message.data !== undefined && (obj.data = message.data);
     message.rawLog !== undefined && (obj.rawLog = message.rawLog);
     if (message.logs) {
-      obj.logs = message.logs.map((e) => (e ? ABCIMessageLog.toJSON(e) : undefined));
+      obj.logs = message.logs.map(e => e ? ABCIMessageLog.toJSON(e) : undefined);
     } else {
       obj.logs = [];
     }
@@ -711,7 +677,7 @@ export const TxResponse = {
     message.tx !== undefined && (obj.tx = message.tx ? Any.toJSON(message.tx) : undefined);
     message.timestamp !== undefined && (obj.timestamp = message.timestamp);
     if (message.events) {
-      obj.events = message.events.map((e) => (e ? Event.toJSON(e) : undefined));
+      obj.events = message.events.map(e => e ? Event.toJSON(e) : undefined);
     } else {
       obj.events = [];
     }
@@ -727,7 +693,7 @@ export const TxResponse = {
     message.code = object.code ?? 0;
     message.data = object.data ?? "";
     message.rawLog = object.rawLog ?? "";
-    message.logs = object.logs?.map((e) => ABCIMessageLog.fromPartial(e)) || [];
+    message.logs = object.logs?.map(e => ABCIMessageLog.fromPartial(e)) || [];
     message.info = object.info ?? "";
     if (object.gasWanted !== undefined && object.gasWanted !== null) {
       message.gasWanted = BigInt(object.gasWanted.toString());
@@ -739,7 +705,7 @@ export const TxResponse = {
       message.tx = Any.fromPartial(object.tx);
     }
     message.timestamp = object.timestamp ?? "";
-    message.events = object.events?.map((e) => Event.fromPartial(e)) || [];
+    message.events = object.events?.map(e => Event.fromPartial(e)) || [];
     return message;
   },
   fromAmino(object: TxResponseAmino): TxResponse {
@@ -762,7 +728,7 @@ export const TxResponse = {
     if (object.raw_log !== undefined && object.raw_log !== null) {
       message.rawLog = object.raw_log;
     }
-    message.logs = object.logs?.map((e) => ABCIMessageLog.fromAmino(e)) || [];
+    message.logs = object.logs?.map(e => ABCIMessageLog.fromAmino(e)) || [];
     if (object.info !== undefined && object.info !== null) {
       message.info = object.info;
     }
@@ -778,7 +744,7 @@ export const TxResponse = {
     if (object.timestamp !== undefined && object.timestamp !== null) {
       message.timestamp = object.timestamp;
     }
-    message.events = object.events?.map((e) => Event.fromAmino(e)) || [];
+    message.events = object.events?.map(e => Event.fromAmino(e)) || [];
     return message;
   },
   toAmino(message: TxResponse): TxResponseAmino {
@@ -790,7 +756,7 @@ export const TxResponse = {
     obj.data = message.data === "" ? undefined : message.data;
     obj.raw_log = message.rawLog === "" ? undefined : message.rawLog;
     if (message.logs) {
-      obj.logs = message.logs.map((e) => (e ? ABCIMessageLog.toAmino(e) : undefined));
+      obj.logs = message.logs.map(e => e ? ABCIMessageLog.toAmino(e) : undefined);
     } else {
       obj.logs = message.logs;
     }
@@ -800,7 +766,7 @@ export const TxResponse = {
     obj.tx = message.tx ? Any.toAmino(message.tx) : undefined;
     obj.timestamp = message.timestamp === "" ? undefined : message.timestamp;
     if (message.events) {
-      obj.events = message.events.map((e) => (e ? Event.toAmino(e) : undefined));
+      obj.events = message.events.map(e => e ? Event.toAmino(e) : undefined);
     } else {
       obj.events = message.events;
     }
@@ -812,7 +778,7 @@ export const TxResponse = {
   toAminoMsg(message: TxResponse): TxResponseAminoMsg {
     return {
       type: "cosmos-sdk/TxResponse",
-      value: TxResponse.toAmino(message),
+      value: TxResponse.toAmino(message)
     };
   },
   fromProtoMsg(message: TxResponseProtoMsg): TxResponse {
@@ -824,9 +790,9 @@ export const TxResponse = {
   toProtoMsg(message: TxResponse): TxResponseProtoMsg {
     return {
       typeUrl: "/cosmos.base.abci.v1beta1.TxResponse",
-      value: TxResponse.encode(message).finish(),
+      value: TxResponse.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(TxResponse.typeUrl, TxResponse);
 GlobalDecoderRegistry.registerAminoProtoMapping(TxResponse.aminoType, TxResponse.typeUrl);
@@ -834,31 +800,17 @@ function createBaseABCIMessageLog(): ABCIMessageLog {
   return {
     msgIndex: 0,
     log: "",
-    events: [],
+    events: []
   };
 }
 export const ABCIMessageLog = {
   typeUrl: "/cosmos.base.abci.v1beta1.ABCIMessageLog",
   aminoType: "cosmos-sdk/ABCIMessageLog",
   is(o: any): o is ABCIMessageLog {
-    return (
-      o &&
-      (o.$typeUrl === ABCIMessageLog.typeUrl ||
-        (typeof o.msgIndex === "number" &&
-          typeof o.log === "string" &&
-          Array.isArray(o.events) &&
-          (!o.events.length || StringEvent.is(o.events[0]))))
-    );
+    return o && (o.$typeUrl === ABCIMessageLog.typeUrl || typeof o.msgIndex === "number" && typeof o.log === "string" && Array.isArray(o.events) && (!o.events.length || StringEvent.is(o.events[0])));
   },
   isAmino(o: any): o is ABCIMessageLogAmino {
-    return (
-      o &&
-      (o.$typeUrl === ABCIMessageLog.typeUrl ||
-        (typeof o.msg_index === "number" &&
-          typeof o.log === "string" &&
-          Array.isArray(o.events) &&
-          (!o.events.length || StringEvent.isAmino(o.events[0]))))
-    );
+    return o && (o.$typeUrl === ABCIMessageLog.typeUrl || typeof o.msg_index === "number" && typeof o.log === "string" && Array.isArray(o.events) && (!o.events.length || StringEvent.isAmino(o.events[0])));
   },
   encode(message: ABCIMessageLog, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.msgIndex !== 0) {
@@ -907,7 +859,7 @@ export const ABCIMessageLog = {
     message.msgIndex !== undefined && (obj.msgIndex = Math.round(message.msgIndex));
     message.log !== undefined && (obj.log = message.log);
     if (message.events) {
-      obj.events = message.events.map((e) => (e ? StringEvent.toJSON(e) : undefined));
+      obj.events = message.events.map(e => e ? StringEvent.toJSON(e) : undefined);
     } else {
       obj.events = [];
     }
@@ -917,7 +869,7 @@ export const ABCIMessageLog = {
     const message = createBaseABCIMessageLog();
     message.msgIndex = object.msgIndex ?? 0;
     message.log = object.log ?? "";
-    message.events = object.events?.map((e) => StringEvent.fromPartial(e)) || [];
+    message.events = object.events?.map(e => StringEvent.fromPartial(e)) || [];
     return message;
   },
   fromAmino(object: ABCIMessageLogAmino): ABCIMessageLog {
@@ -928,7 +880,7 @@ export const ABCIMessageLog = {
     if (object.log !== undefined && object.log !== null) {
       message.log = object.log;
     }
-    message.events = object.events?.map((e) => StringEvent.fromAmino(e)) || [];
+    message.events = object.events?.map(e => StringEvent.fromAmino(e)) || [];
     return message;
   },
   toAmino(message: ABCIMessageLog): ABCIMessageLogAmino {
@@ -936,7 +888,7 @@ export const ABCIMessageLog = {
     obj.msg_index = message.msgIndex ?? 0;
     obj.log = message.log === "" ? undefined : message.log;
     if (message.events) {
-      obj.events = message.events.map((e) => (e ? StringEvent.toAmino(e) : undefined));
+      obj.events = message.events.map(e => e ? StringEvent.toAmino(e) : undefined);
     } else {
       obj.events = message.events;
     }
@@ -948,7 +900,7 @@ export const ABCIMessageLog = {
   toAminoMsg(message: ABCIMessageLog): ABCIMessageLogAminoMsg {
     return {
       type: "cosmos-sdk/ABCIMessageLog",
-      value: ABCIMessageLog.toAmino(message),
+      value: ABCIMessageLog.toAmino(message)
     };
   },
   fromProtoMsg(message: ABCIMessageLogProtoMsg): ABCIMessageLog {
@@ -960,38 +912,26 @@ export const ABCIMessageLog = {
   toProtoMsg(message: ABCIMessageLog): ABCIMessageLogProtoMsg {
     return {
       typeUrl: "/cosmos.base.abci.v1beta1.ABCIMessageLog",
-      value: ABCIMessageLog.encode(message).finish(),
+      value: ABCIMessageLog.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(ABCIMessageLog.typeUrl, ABCIMessageLog);
 GlobalDecoderRegistry.registerAminoProtoMapping(ABCIMessageLog.aminoType, ABCIMessageLog.typeUrl);
 function createBaseStringEvent(): StringEvent {
   return {
     type: "",
-    attributes: [],
+    attributes: []
   };
 }
 export const StringEvent = {
   typeUrl: "/cosmos.base.abci.v1beta1.StringEvent",
   aminoType: "cosmos-sdk/StringEvent",
   is(o: any): o is StringEvent {
-    return (
-      o &&
-      (o.$typeUrl === StringEvent.typeUrl ||
-        (typeof o.type === "string" &&
-          Array.isArray(o.attributes) &&
-          (!o.attributes.length || Attribute.is(o.attributes[0]))))
-    );
+    return o && (o.$typeUrl === StringEvent.typeUrl || typeof o.type === "string" && Array.isArray(o.attributes) && (!o.attributes.length || Attribute.is(o.attributes[0])));
   },
   isAmino(o: any): o is StringEventAmino {
-    return (
-      o &&
-      (o.$typeUrl === StringEvent.typeUrl ||
-        (typeof o.type === "string" &&
-          Array.isArray(o.attributes) &&
-          (!o.attributes.length || Attribute.isAmino(o.attributes[0]))))
-    );
+    return o && (o.$typeUrl === StringEvent.typeUrl || typeof o.type === "string" && Array.isArray(o.attributes) && (!o.attributes.length || Attribute.isAmino(o.attributes[0])));
   },
   encode(message: StringEvent, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.type !== "") {
@@ -1025,15 +965,14 @@ export const StringEvent = {
   fromJSON(object: any): StringEvent {
     const obj = createBaseStringEvent();
     if (isSet(object.type)) obj.type = String(object.type);
-    if (Array.isArray(object?.attributes))
-      obj.attributes = object.attributes.map((e: any) => Attribute.fromJSON(e));
+    if (Array.isArray(object?.attributes)) obj.attributes = object.attributes.map((e: any) => Attribute.fromJSON(e));
     return obj;
   },
   toJSON(message: StringEvent): JsonSafe<StringEvent> {
     const obj: any = {};
     message.type !== undefined && (obj.type = message.type);
     if (message.attributes) {
-      obj.attributes = message.attributes.map((e) => (e ? Attribute.toJSON(e) : undefined));
+      obj.attributes = message.attributes.map(e => e ? Attribute.toJSON(e) : undefined);
     } else {
       obj.attributes = [];
     }
@@ -1042,7 +981,7 @@ export const StringEvent = {
   fromPartial(object: Partial<StringEvent>): StringEvent {
     const message = createBaseStringEvent();
     message.type = object.type ?? "";
-    message.attributes = object.attributes?.map((e) => Attribute.fromPartial(e)) || [];
+    message.attributes = object.attributes?.map(e => Attribute.fromPartial(e)) || [];
     return message;
   },
   fromAmino(object: StringEventAmino): StringEvent {
@@ -1050,14 +989,14 @@ export const StringEvent = {
     if (object.type !== undefined && object.type !== null) {
       message.type = object.type;
     }
-    message.attributes = object.attributes?.map((e) => Attribute.fromAmino(e)) || [];
+    message.attributes = object.attributes?.map(e => Attribute.fromAmino(e)) || [];
     return message;
   },
   toAmino(message: StringEvent): StringEventAmino {
     const obj: any = {};
     obj.type = message.type === "" ? undefined : message.type;
     if (message.attributes) {
-      obj.attributes = message.attributes.map((e) => (e ? Attribute.toAmino(e) : undefined));
+      obj.attributes = message.attributes.map(e => e ? Attribute.toAmino(e) : undefined);
     } else {
       obj.attributes = message.attributes;
     }
@@ -1069,7 +1008,7 @@ export const StringEvent = {
   toAminoMsg(message: StringEvent): StringEventAminoMsg {
     return {
       type: "cosmos-sdk/StringEvent",
-      value: StringEvent.toAmino(message),
+      value: StringEvent.toAmino(message)
     };
   },
   fromProtoMsg(message: StringEventProtoMsg): StringEvent {
@@ -1081,30 +1020,26 @@ export const StringEvent = {
   toProtoMsg(message: StringEvent): StringEventProtoMsg {
     return {
       typeUrl: "/cosmos.base.abci.v1beta1.StringEvent",
-      value: StringEvent.encode(message).finish(),
+      value: StringEvent.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(StringEvent.typeUrl, StringEvent);
 GlobalDecoderRegistry.registerAminoProtoMapping(StringEvent.aminoType, StringEvent.typeUrl);
 function createBaseAttribute(): Attribute {
   return {
     key: "",
-    value: "",
+    value: ""
   };
 }
 export const Attribute = {
   typeUrl: "/cosmos.base.abci.v1beta1.Attribute",
   aminoType: "cosmos-sdk/Attribute",
   is(o: any): o is Attribute {
-    return (
-      o && (o.$typeUrl === Attribute.typeUrl || (typeof o.key === "string" && typeof o.value === "string"))
-    );
+    return o && (o.$typeUrl === Attribute.typeUrl || typeof o.key === "string" && typeof o.value === "string");
   },
   isAmino(o: any): o is AttributeAmino {
-    return (
-      o && (o.$typeUrl === Attribute.typeUrl || (typeof o.key === "string" && typeof o.value === "string"))
-    );
+    return o && (o.$typeUrl === Attribute.typeUrl || typeof o.key === "string" && typeof o.value === "string");
   },
   encode(message: Attribute, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.key !== "") {
@@ -1175,7 +1110,7 @@ export const Attribute = {
   toAminoMsg(message: Attribute): AttributeAminoMsg {
     return {
       type: "cosmos-sdk/Attribute",
-      value: Attribute.toAmino(message),
+      value: Attribute.toAmino(message)
     };
   },
   fromProtoMsg(message: AttributeProtoMsg): Attribute {
@@ -1187,32 +1122,26 @@ export const Attribute = {
   toProtoMsg(message: Attribute): AttributeProtoMsg {
     return {
       typeUrl: "/cosmos.base.abci.v1beta1.Attribute",
-      value: Attribute.encode(message).finish(),
+      value: Attribute.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(Attribute.typeUrl, Attribute);
 GlobalDecoderRegistry.registerAminoProtoMapping(Attribute.aminoType, Attribute.typeUrl);
 function createBaseGasInfo(): GasInfo {
   return {
     gasWanted: BigInt(0),
-    gasUsed: BigInt(0),
+    gasUsed: BigInt(0)
   };
 }
 export const GasInfo = {
   typeUrl: "/cosmos.base.abci.v1beta1.GasInfo",
   aminoType: "cosmos-sdk/GasInfo",
   is(o: any): o is GasInfo {
-    return (
-      o &&
-      (o.$typeUrl === GasInfo.typeUrl || (typeof o.gasWanted === "bigint" && typeof o.gasUsed === "bigint"))
-    );
+    return o && (o.$typeUrl === GasInfo.typeUrl || typeof o.gasWanted === "bigint" && typeof o.gasUsed === "bigint");
   },
   isAmino(o: any): o is GasInfoAmino {
-    return (
-      o &&
-      (o.$typeUrl === GasInfo.typeUrl || (typeof o.gas_wanted === "bigint" && typeof o.gas_used === "bigint"))
-    );
+    return o && (o.$typeUrl === GasInfo.typeUrl || typeof o.gas_wanted === "bigint" && typeof o.gas_used === "bigint");
   },
   encode(message: GasInfo, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.gasWanted !== BigInt(0)) {
@@ -1287,7 +1216,7 @@ export const GasInfo = {
   toAminoMsg(message: GasInfo): GasInfoAminoMsg {
     return {
       type: "cosmos-sdk/GasInfo",
-      value: GasInfo.toAmino(message),
+      value: GasInfo.toAmino(message)
     };
   },
   fromProtoMsg(message: GasInfoProtoMsg): GasInfo {
@@ -1299,9 +1228,9 @@ export const GasInfo = {
   toProtoMsg(message: GasInfo): GasInfoProtoMsg {
     return {
       typeUrl: "/cosmos.base.abci.v1beta1.GasInfo",
-      value: GasInfo.encode(message).finish(),
+      value: GasInfo.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(GasInfo.typeUrl, GasInfo);
 GlobalDecoderRegistry.registerAminoProtoMapping(GasInfo.aminoType, GasInfo.typeUrl);
@@ -1310,35 +1239,17 @@ function createBaseResult(): Result {
     data: new Uint8Array(),
     log: "",
     events: [],
-    msgResponses: [],
+    msgResponses: []
   };
 }
 export const Result = {
   typeUrl: "/cosmos.base.abci.v1beta1.Result",
   aminoType: "cosmos-sdk/Result",
   is(o: any): o is Result {
-    return (
-      o &&
-      (o.$typeUrl === Result.typeUrl ||
-        ((o.data instanceof Uint8Array || typeof o.data === "string") &&
-          typeof o.log === "string" &&
-          Array.isArray(o.events) &&
-          (!o.events.length || Event.is(o.events[0])) &&
-          Array.isArray(o.msgResponses) &&
-          (!o.msgResponses.length || Any.is(o.msgResponses[0]))))
-    );
+    return o && (o.$typeUrl === Result.typeUrl || (o.data instanceof Uint8Array || typeof o.data === "string") && typeof o.log === "string" && Array.isArray(o.events) && (!o.events.length || Event.is(o.events[0])) && Array.isArray(o.msgResponses) && (!o.msgResponses.length || Any.is(o.msgResponses[0])));
   },
   isAmino(o: any): o is ResultAmino {
-    return (
-      o &&
-      (o.$typeUrl === Result.typeUrl ||
-        ((o.data instanceof Uint8Array || typeof o.data === "string") &&
-          typeof o.log === "string" &&
-          Array.isArray(o.events) &&
-          (!o.events.length || Event.isAmino(o.events[0])) &&
-          Array.isArray(o.msg_responses) &&
-          (!o.msg_responses.length || Any.isAmino(o.msg_responses[0]))))
-    );
+    return o && (o.$typeUrl === Result.typeUrl || (o.data instanceof Uint8Array || typeof o.data === "string") && typeof o.log === "string" && Array.isArray(o.events) && (!o.events.length || Event.isAmino(o.events[0])) && Array.isArray(o.msg_responses) && (!o.msg_responses.length || Any.isAmino(o.msg_responses[0])));
   },
   encode(message: Result, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.data.length !== 0) {
@@ -1386,22 +1297,20 @@ export const Result = {
     if (isSet(object.data)) obj.data = bytesFromBase64(object.data);
     if (isSet(object.log)) obj.log = String(object.log);
     if (Array.isArray(object?.events)) obj.events = object.events.map((e: any) => Event.fromJSON(e));
-    if (Array.isArray(object?.msgResponses))
-      obj.msgResponses = object.msgResponses.map((e: any) => Any.fromJSON(e));
+    if (Array.isArray(object?.msgResponses)) obj.msgResponses = object.msgResponses.map((e: any) => Any.fromJSON(e));
     return obj;
   },
   toJSON(message: Result): JsonSafe<Result> {
     const obj: any = {};
-    message.data !== undefined &&
-      (obj.data = base64FromBytes(message.data !== undefined ? message.data : new Uint8Array()));
+    message.data !== undefined && (obj.data = base64FromBytes(message.data !== undefined ? message.data : new Uint8Array()));
     message.log !== undefined && (obj.log = message.log);
     if (message.events) {
-      obj.events = message.events.map((e) => (e ? Event.toJSON(e) : undefined));
+      obj.events = message.events.map(e => e ? Event.toJSON(e) : undefined);
     } else {
       obj.events = [];
     }
     if (message.msgResponses) {
-      obj.msgResponses = message.msgResponses.map((e) => (e ? Any.toJSON(e) : undefined));
+      obj.msgResponses = message.msgResponses.map(e => e ? Any.toJSON(e) : undefined);
     } else {
       obj.msgResponses = [];
     }
@@ -1411,8 +1320,8 @@ export const Result = {
     const message = createBaseResult();
     message.data = object.data ?? new Uint8Array();
     message.log = object.log ?? "";
-    message.events = object.events?.map((e) => Event.fromPartial(e)) || [];
-    message.msgResponses = object.msgResponses?.map((e) => Any.fromPartial(e)) || [];
+    message.events = object.events?.map(e => Event.fromPartial(e)) || [];
+    message.msgResponses = object.msgResponses?.map(e => Any.fromPartial(e)) || [];
     return message;
   },
   fromAmino(object: ResultAmino): Result {
@@ -1423,8 +1332,8 @@ export const Result = {
     if (object.log !== undefined && object.log !== null) {
       message.log = object.log;
     }
-    message.events = object.events?.map((e) => Event.fromAmino(e)) || [];
-    message.msgResponses = object.msg_responses?.map((e) => Any.fromAmino(e)) || [];
+    message.events = object.events?.map(e => Event.fromAmino(e)) || [];
+    message.msgResponses = object.msg_responses?.map(e => Any.fromAmino(e)) || [];
     return message;
   },
   toAmino(message: Result): ResultAmino {
@@ -1432,12 +1341,12 @@ export const Result = {
     obj.data = message.data ? base64FromBytes(message.data) : undefined;
     obj.log = message.log === "" ? undefined : message.log;
     if (message.events) {
-      obj.events = message.events.map((e) => (e ? Event.toAmino(e) : undefined));
+      obj.events = message.events.map(e => e ? Event.toAmino(e) : undefined);
     } else {
       obj.events = message.events;
     }
     if (message.msgResponses) {
-      obj.msg_responses = message.msgResponses.map((e) => (e ? Any.toAmino(e) : undefined));
+      obj.msg_responses = message.msgResponses.map(e => e ? Any.toAmino(e) : undefined);
     } else {
       obj.msg_responses = message.msgResponses;
     }
@@ -1449,7 +1358,7 @@ export const Result = {
   toAminoMsg(message: Result): ResultAminoMsg {
     return {
       type: "cosmos-sdk/Result",
-      value: Result.toAmino(message),
+      value: Result.toAmino(message)
     };
   },
   fromProtoMsg(message: ResultProtoMsg): Result {
@@ -1461,16 +1370,16 @@ export const Result = {
   toProtoMsg(message: Result): ResultProtoMsg {
     return {
       typeUrl: "/cosmos.base.abci.v1beta1.Result",
-      value: Result.encode(message).finish(),
+      value: Result.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(Result.typeUrl, Result);
 GlobalDecoderRegistry.registerAminoProtoMapping(Result.aminoType, Result.typeUrl);
 function createBaseSimulationResponse(): SimulationResponse {
   return {
     gasInfo: GasInfo.fromPartial({}),
-    result: undefined,
+    result: undefined
   };
 }
 export const SimulationResponse = {
@@ -1519,8 +1428,7 @@ export const SimulationResponse = {
   },
   toJSON(message: SimulationResponse): JsonSafe<SimulationResponse> {
     const obj: any = {};
-    message.gasInfo !== undefined &&
-      (obj.gasInfo = message.gasInfo ? GasInfo.toJSON(message.gasInfo) : undefined);
+    message.gasInfo !== undefined && (obj.gasInfo = message.gasInfo ? GasInfo.toJSON(message.gasInfo) : undefined);
     message.result !== undefined && (obj.result = message.result ? Result.toJSON(message.result) : undefined);
     return obj;
   },
@@ -1556,7 +1464,7 @@ export const SimulationResponse = {
   toAminoMsg(message: SimulationResponse): SimulationResponseAminoMsg {
     return {
       type: "cosmos-sdk/SimulationResponse",
-      value: SimulationResponse.toAmino(message),
+      value: SimulationResponse.toAmino(message)
     };
   },
   fromProtoMsg(message: SimulationResponseProtoMsg): SimulationResponse {
@@ -1568,34 +1476,26 @@ export const SimulationResponse = {
   toProtoMsg(message: SimulationResponse): SimulationResponseProtoMsg {
     return {
       typeUrl: "/cosmos.base.abci.v1beta1.SimulationResponse",
-      value: SimulationResponse.encode(message).finish(),
+      value: SimulationResponse.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(SimulationResponse.typeUrl, SimulationResponse);
 GlobalDecoderRegistry.registerAminoProtoMapping(SimulationResponse.aminoType, SimulationResponse.typeUrl);
 function createBaseMsgData(): MsgData {
   return {
     msgType: "",
-    data: new Uint8Array(),
+    data: new Uint8Array()
   };
 }
 export const MsgData = {
   typeUrl: "/cosmos.base.abci.v1beta1.MsgData",
   aminoType: "cosmos-sdk/MsgData",
   is(o: any): o is MsgData {
-    return (
-      o &&
-      (o.$typeUrl === MsgData.typeUrl ||
-        (typeof o.msgType === "string" && (o.data instanceof Uint8Array || typeof o.data === "string")))
-    );
+    return o && (o.$typeUrl === MsgData.typeUrl || typeof o.msgType === "string" && (o.data instanceof Uint8Array || typeof o.data === "string"));
   },
   isAmino(o: any): o is MsgDataAmino {
-    return (
-      o &&
-      (o.$typeUrl === MsgData.typeUrl ||
-        (typeof o.msg_type === "string" && (o.data instanceof Uint8Array || typeof o.data === "string")))
-    );
+    return o && (o.$typeUrl === MsgData.typeUrl || typeof o.msg_type === "string" && (o.data instanceof Uint8Array || typeof o.data === "string"));
   },
   encode(message: MsgData, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.msgType !== "") {
@@ -1635,8 +1535,7 @@ export const MsgData = {
   toJSON(message: MsgData): JsonSafe<MsgData> {
     const obj: any = {};
     message.msgType !== undefined && (obj.msgType = message.msgType);
-    message.data !== undefined &&
-      (obj.data = base64FromBytes(message.data !== undefined ? message.data : new Uint8Array()));
+    message.data !== undefined && (obj.data = base64FromBytes(message.data !== undefined ? message.data : new Uint8Array()));
     return obj;
   },
   fromPartial(object: Partial<MsgData>): MsgData {
@@ -1667,7 +1566,7 @@ export const MsgData = {
   toAminoMsg(message: MsgData): MsgDataAminoMsg {
     return {
       type: "cosmos-sdk/MsgData",
-      value: MsgData.toAmino(message),
+      value: MsgData.toAmino(message)
     };
   },
   fromProtoMsg(message: MsgDataProtoMsg): MsgData {
@@ -1679,40 +1578,26 @@ export const MsgData = {
   toProtoMsg(message: MsgData): MsgDataProtoMsg {
     return {
       typeUrl: "/cosmos.base.abci.v1beta1.MsgData",
-      value: MsgData.encode(message).finish(),
+      value: MsgData.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(MsgData.typeUrl, MsgData);
 GlobalDecoderRegistry.registerAminoProtoMapping(MsgData.aminoType, MsgData.typeUrl);
 function createBaseTxMsgData(): TxMsgData {
   return {
     data: [],
-    msgResponses: [],
+    msgResponses: []
   };
 }
 export const TxMsgData = {
   typeUrl: "/cosmos.base.abci.v1beta1.TxMsgData",
   aminoType: "cosmos-sdk/TxMsgData",
   is(o: any): o is TxMsgData {
-    return (
-      o &&
-      (o.$typeUrl === TxMsgData.typeUrl ||
-        (Array.isArray(o.data) &&
-          (!o.data.length || MsgData.is(o.data[0])) &&
-          Array.isArray(o.msgResponses) &&
-          (!o.msgResponses.length || Any.is(o.msgResponses[0]))))
-    );
+    return o && (o.$typeUrl === TxMsgData.typeUrl || Array.isArray(o.data) && (!o.data.length || MsgData.is(o.data[0])) && Array.isArray(o.msgResponses) && (!o.msgResponses.length || Any.is(o.msgResponses[0])));
   },
   isAmino(o: any): o is TxMsgDataAmino {
-    return (
-      o &&
-      (o.$typeUrl === TxMsgData.typeUrl ||
-        (Array.isArray(o.data) &&
-          (!o.data.length || MsgData.isAmino(o.data[0])) &&
-          Array.isArray(o.msg_responses) &&
-          (!o.msg_responses.length || Any.isAmino(o.msg_responses[0]))))
-    );
+    return o && (o.$typeUrl === TxMsgData.typeUrl || Array.isArray(o.data) && (!o.data.length || MsgData.isAmino(o.data[0])) && Array.isArray(o.msg_responses) && (!o.msg_responses.length || Any.isAmino(o.msg_responses[0])));
   },
   encode(message: TxMsgData, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.data) {
@@ -1746,19 +1631,18 @@ export const TxMsgData = {
   fromJSON(object: any): TxMsgData {
     const obj = createBaseTxMsgData();
     if (Array.isArray(object?.data)) obj.data = object.data.map((e: any) => MsgData.fromJSON(e));
-    if (Array.isArray(object?.msgResponses))
-      obj.msgResponses = object.msgResponses.map((e: any) => Any.fromJSON(e));
+    if (Array.isArray(object?.msgResponses)) obj.msgResponses = object.msgResponses.map((e: any) => Any.fromJSON(e));
     return obj;
   },
   toJSON(message: TxMsgData): JsonSafe<TxMsgData> {
     const obj: any = {};
     if (message.data) {
-      obj.data = message.data.map((e) => (e ? MsgData.toJSON(e) : undefined));
+      obj.data = message.data.map(e => e ? MsgData.toJSON(e) : undefined);
     } else {
       obj.data = [];
     }
     if (message.msgResponses) {
-      obj.msgResponses = message.msgResponses.map((e) => (e ? Any.toJSON(e) : undefined));
+      obj.msgResponses = message.msgResponses.map(e => e ? Any.toJSON(e) : undefined);
     } else {
       obj.msgResponses = [];
     }
@@ -1766,25 +1650,25 @@ export const TxMsgData = {
   },
   fromPartial(object: Partial<TxMsgData>): TxMsgData {
     const message = createBaseTxMsgData();
-    message.data = object.data?.map((e) => MsgData.fromPartial(e)) || [];
-    message.msgResponses = object.msgResponses?.map((e) => Any.fromPartial(e)) || [];
+    message.data = object.data?.map(e => MsgData.fromPartial(e)) || [];
+    message.msgResponses = object.msgResponses?.map(e => Any.fromPartial(e)) || [];
     return message;
   },
   fromAmino(object: TxMsgDataAmino): TxMsgData {
     const message = createBaseTxMsgData();
-    message.data = object.data?.map((e) => MsgData.fromAmino(e)) || [];
-    message.msgResponses = object.msg_responses?.map((e) => Any.fromAmino(e)) || [];
+    message.data = object.data?.map(e => MsgData.fromAmino(e)) || [];
+    message.msgResponses = object.msg_responses?.map(e => Any.fromAmino(e)) || [];
     return message;
   },
   toAmino(message: TxMsgData): TxMsgDataAmino {
     const obj: any = {};
     if (message.data) {
-      obj.data = message.data.map((e) => (e ? MsgData.toAmino(e) : undefined));
+      obj.data = message.data.map(e => e ? MsgData.toAmino(e) : undefined);
     } else {
       obj.data = message.data;
     }
     if (message.msgResponses) {
-      obj.msg_responses = message.msgResponses.map((e) => (e ? Any.toAmino(e) : undefined));
+      obj.msg_responses = message.msgResponses.map(e => e ? Any.toAmino(e) : undefined);
     } else {
       obj.msg_responses = message.msgResponses;
     }
@@ -1796,7 +1680,7 @@ export const TxMsgData = {
   toAminoMsg(message: TxMsgData): TxMsgDataAminoMsg {
     return {
       type: "cosmos-sdk/TxMsgData",
-      value: TxMsgData.toAmino(message),
+      value: TxMsgData.toAmino(message)
     };
   },
   fromProtoMsg(message: TxMsgDataProtoMsg): TxMsgData {
@@ -1808,9 +1692,9 @@ export const TxMsgData = {
   toProtoMsg(message: TxMsgData): TxMsgDataProtoMsg {
     return {
       typeUrl: "/cosmos.base.abci.v1beta1.TxMsgData",
-      value: TxMsgData.encode(message).finish(),
+      value: TxMsgData.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(TxMsgData.typeUrl, TxMsgData);
 GlobalDecoderRegistry.registerAminoProtoMapping(TxMsgData.aminoType, TxMsgData.typeUrl);
@@ -1821,37 +1705,17 @@ function createBaseSearchTxsResult(): SearchTxsResult {
     pageNumber: BigInt(0),
     pageTotal: BigInt(0),
     limit: BigInt(0),
-    txs: [],
+    txs: []
   };
 }
 export const SearchTxsResult = {
   typeUrl: "/cosmos.base.abci.v1beta1.SearchTxsResult",
   aminoType: "cosmos-sdk/SearchTxsResult",
   is(o: any): o is SearchTxsResult {
-    return (
-      o &&
-      (o.$typeUrl === SearchTxsResult.typeUrl ||
-        (typeof o.totalCount === "bigint" &&
-          typeof o.count === "bigint" &&
-          typeof o.pageNumber === "bigint" &&
-          typeof o.pageTotal === "bigint" &&
-          typeof o.limit === "bigint" &&
-          Array.isArray(o.txs) &&
-          (!o.txs.length || TxResponse.is(o.txs[0]))))
-    );
+    return o && (o.$typeUrl === SearchTxsResult.typeUrl || typeof o.totalCount === "bigint" && typeof o.count === "bigint" && typeof o.pageNumber === "bigint" && typeof o.pageTotal === "bigint" && typeof o.limit === "bigint" && Array.isArray(o.txs) && (!o.txs.length || TxResponse.is(o.txs[0])));
   },
   isAmino(o: any): o is SearchTxsResultAmino {
-    return (
-      o &&
-      (o.$typeUrl === SearchTxsResult.typeUrl ||
-        (typeof o.total_count === "bigint" &&
-          typeof o.count === "bigint" &&
-          typeof o.page_number === "bigint" &&
-          typeof o.page_total === "bigint" &&
-          typeof o.limit === "bigint" &&
-          Array.isArray(o.txs) &&
-          (!o.txs.length || TxResponse.isAmino(o.txs[0]))))
-    );
+    return o && (o.$typeUrl === SearchTxsResult.typeUrl || typeof o.total_count === "bigint" && typeof o.count === "bigint" && typeof o.page_number === "bigint" && typeof o.page_total === "bigint" && typeof o.limit === "bigint" && Array.isArray(o.txs) && (!o.txs.length || TxResponse.isAmino(o.txs[0])));
   },
   encode(message: SearchTxsResult, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.totalCount !== BigInt(0)) {
@@ -1924,7 +1788,7 @@ export const SearchTxsResult = {
     message.pageTotal !== undefined && (obj.pageTotal = (message.pageTotal || BigInt(0)).toString());
     message.limit !== undefined && (obj.limit = (message.limit || BigInt(0)).toString());
     if (message.txs) {
-      obj.txs = message.txs.map((e) => (e ? TxResponse.toJSON(e) : undefined));
+      obj.txs = message.txs.map(e => e ? TxResponse.toJSON(e) : undefined);
     } else {
       obj.txs = [];
     }
@@ -1947,7 +1811,7 @@ export const SearchTxsResult = {
     if (object.limit !== undefined && object.limit !== null) {
       message.limit = BigInt(object.limit.toString());
     }
-    message.txs = object.txs?.map((e) => TxResponse.fromPartial(e)) || [];
+    message.txs = object.txs?.map(e => TxResponse.fromPartial(e)) || [];
     return message;
   },
   fromAmino(object: SearchTxsResultAmino): SearchTxsResult {
@@ -1967,7 +1831,7 @@ export const SearchTxsResult = {
     if (object.limit !== undefined && object.limit !== null) {
       message.limit = BigInt(object.limit);
     }
-    message.txs = object.txs?.map((e) => TxResponse.fromAmino(e)) || [];
+    message.txs = object.txs?.map(e => TxResponse.fromAmino(e)) || [];
     return message;
   },
   toAmino(message: SearchTxsResult): SearchTxsResultAmino {
@@ -1978,7 +1842,7 @@ export const SearchTxsResult = {
     obj.page_total = message.pageTotal !== BigInt(0) ? message.pageTotal?.toString() : undefined;
     obj.limit = message.limit !== BigInt(0) ? message.limit?.toString() : undefined;
     if (message.txs) {
-      obj.txs = message.txs.map((e) => (e ? TxResponse.toAmino(e) : undefined));
+      obj.txs = message.txs.map(e => e ? TxResponse.toAmino(e) : undefined);
     } else {
       obj.txs = message.txs;
     }
@@ -1990,7 +1854,7 @@ export const SearchTxsResult = {
   toAminoMsg(message: SearchTxsResult): SearchTxsResultAminoMsg {
     return {
       type: "cosmos-sdk/SearchTxsResult",
-      value: SearchTxsResult.toAmino(message),
+      value: SearchTxsResult.toAmino(message)
     };
   },
   fromProtoMsg(message: SearchTxsResultProtoMsg): SearchTxsResult {
@@ -2002,9 +1866,9 @@ export const SearchTxsResult = {
   toProtoMsg(message: SearchTxsResult): SearchTxsResultProtoMsg {
     return {
       typeUrl: "/cosmos.base.abci.v1beta1.SearchTxsResult",
-      value: SearchTxsResult.encode(message).finish(),
+      value: SearchTxsResult.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(SearchTxsResult.typeUrl, SearchTxsResult);
 GlobalDecoderRegistry.registerAminoProtoMapping(SearchTxsResult.aminoType, SearchTxsResult.typeUrl);
@@ -2015,37 +1879,17 @@ function createBaseSearchBlocksResult(): SearchBlocksResult {
     pageNumber: BigInt(0),
     pageTotal: BigInt(0),
     limit: BigInt(0),
-    blocks: [],
+    blocks: []
   };
 }
 export const SearchBlocksResult = {
   typeUrl: "/cosmos.base.abci.v1beta1.SearchBlocksResult",
   aminoType: "cosmos-sdk/SearchBlocksResult",
   is(o: any): o is SearchBlocksResult {
-    return (
-      o &&
-      (o.$typeUrl === SearchBlocksResult.typeUrl ||
-        (typeof o.totalCount === "bigint" &&
-          typeof o.count === "bigint" &&
-          typeof o.pageNumber === "bigint" &&
-          typeof o.pageTotal === "bigint" &&
-          typeof o.limit === "bigint" &&
-          Array.isArray(o.blocks) &&
-          (!o.blocks.length || Block.is(o.blocks[0]))))
-    );
+    return o && (o.$typeUrl === SearchBlocksResult.typeUrl || typeof o.totalCount === "bigint" && typeof o.count === "bigint" && typeof o.pageNumber === "bigint" && typeof o.pageTotal === "bigint" && typeof o.limit === "bigint" && Array.isArray(o.blocks) && (!o.blocks.length || Block.is(o.blocks[0])));
   },
   isAmino(o: any): o is SearchBlocksResultAmino {
-    return (
-      o &&
-      (o.$typeUrl === SearchBlocksResult.typeUrl ||
-        (typeof o.total_count === "bigint" &&
-          typeof o.count === "bigint" &&
-          typeof o.page_number === "bigint" &&
-          typeof o.page_total === "bigint" &&
-          typeof o.limit === "bigint" &&
-          Array.isArray(o.blocks) &&
-          (!o.blocks.length || Block.isAmino(o.blocks[0]))))
-    );
+    return o && (o.$typeUrl === SearchBlocksResult.typeUrl || typeof o.total_count === "bigint" && typeof o.count === "bigint" && typeof o.page_number === "bigint" && typeof o.page_total === "bigint" && typeof o.limit === "bigint" && Array.isArray(o.blocks) && (!o.blocks.length || Block.isAmino(o.blocks[0])));
   },
   encode(message: SearchBlocksResult, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.totalCount !== BigInt(0)) {
@@ -2118,7 +1962,7 @@ export const SearchBlocksResult = {
     message.pageTotal !== undefined && (obj.pageTotal = (message.pageTotal || BigInt(0)).toString());
     message.limit !== undefined && (obj.limit = (message.limit || BigInt(0)).toString());
     if (message.blocks) {
-      obj.blocks = message.blocks.map((e) => (e ? Block.toJSON(e) : undefined));
+      obj.blocks = message.blocks.map(e => e ? Block.toJSON(e) : undefined);
     } else {
       obj.blocks = [];
     }
@@ -2141,7 +1985,7 @@ export const SearchBlocksResult = {
     if (object.limit !== undefined && object.limit !== null) {
       message.limit = BigInt(object.limit.toString());
     }
-    message.blocks = object.blocks?.map((e) => Block.fromPartial(e)) || [];
+    message.blocks = object.blocks?.map(e => Block.fromPartial(e)) || [];
     return message;
   },
   fromAmino(object: SearchBlocksResultAmino): SearchBlocksResult {
@@ -2161,7 +2005,7 @@ export const SearchBlocksResult = {
     if (object.limit !== undefined && object.limit !== null) {
       message.limit = BigInt(object.limit);
     }
-    message.blocks = object.blocks?.map((e) => Block.fromAmino(e)) || [];
+    message.blocks = object.blocks?.map(e => Block.fromAmino(e)) || [];
     return message;
   },
   toAmino(message: SearchBlocksResult): SearchBlocksResultAmino {
@@ -2172,7 +2016,7 @@ export const SearchBlocksResult = {
     obj.page_total = message.pageTotal !== BigInt(0) ? message.pageTotal?.toString() : undefined;
     obj.limit = message.limit !== BigInt(0) ? message.limit?.toString() : undefined;
     if (message.blocks) {
-      obj.blocks = message.blocks.map((e) => (e ? Block.toAmino(e) : undefined));
+      obj.blocks = message.blocks.map(e => e ? Block.toAmino(e) : undefined);
     } else {
       obj.blocks = message.blocks;
     }
@@ -2184,7 +2028,7 @@ export const SearchBlocksResult = {
   toAminoMsg(message: SearchBlocksResult): SearchBlocksResultAminoMsg {
     return {
       type: "cosmos-sdk/SearchBlocksResult",
-      value: SearchBlocksResult.toAmino(message),
+      value: SearchBlocksResult.toAmino(message)
     };
   },
   fromProtoMsg(message: SearchBlocksResultProtoMsg): SearchBlocksResult {
@@ -2196,9 +2040,9 @@ export const SearchBlocksResult = {
   toProtoMsg(message: SearchBlocksResult): SearchBlocksResultProtoMsg {
     return {
       typeUrl: "/cosmos.base.abci.v1beta1.SearchBlocksResult",
-      value: SearchBlocksResult.encode(message).finish(),
+      value: SearchBlocksResult.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(SearchBlocksResult.typeUrl, SearchBlocksResult);
 GlobalDecoderRegistry.registerAminoProtoMapping(SearchBlocksResult.aminoType, SearchBlocksResult.typeUrl);

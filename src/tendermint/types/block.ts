@@ -36,24 +36,16 @@ function createBaseBlock(): Block {
     header: Header.fromPartial({}),
     data: Data.fromPartial({}),
     evidence: EvidenceList.fromPartial({}),
-    lastCommit: undefined,
+    lastCommit: undefined
   };
 }
 export const Block = {
   typeUrl: "/tendermint.types.Block",
   is(o: any): o is Block {
-    return (
-      o &&
-      (o.$typeUrl === Block.typeUrl ||
-        (Header.is(o.header) && Data.is(o.data) && EvidenceList.is(o.evidence)))
-    );
+    return o && (o.$typeUrl === Block.typeUrl || Header.is(o.header) && Data.is(o.data) && EvidenceList.is(o.evidence));
   },
   isAmino(o: any): o is BlockAmino {
-    return (
-      o &&
-      (o.$typeUrl === Block.typeUrl ||
-        (Header.isAmino(o.header) && Data.isAmino(o.data) && EvidenceList.isAmino(o.evidence)))
-    );
+    return o && (o.$typeUrl === Block.typeUrl || Header.isAmino(o.header) && Data.isAmino(o.data) && EvidenceList.isAmino(o.evidence));
   },
   encode(message: Block, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.header !== undefined) {
@@ -108,10 +100,8 @@ export const Block = {
     const obj: any = {};
     message.header !== undefined && (obj.header = message.header ? Header.toJSON(message.header) : undefined);
     message.data !== undefined && (obj.data = message.data ? Data.toJSON(message.data) : undefined);
-    message.evidence !== undefined &&
-      (obj.evidence = message.evidence ? EvidenceList.toJSON(message.evidence) : undefined);
-    message.lastCommit !== undefined &&
-      (obj.lastCommit = message.lastCommit ? Commit.toJSON(message.lastCommit) : undefined);
+    message.evidence !== undefined && (obj.evidence = message.evidence ? EvidenceList.toJSON(message.evidence) : undefined);
+    message.lastCommit !== undefined && (obj.lastCommit = message.lastCommit ? Commit.toJSON(message.lastCommit) : undefined);
     return obj;
   },
   fromPartial(object: Partial<Block>): Block {
@@ -166,8 +156,8 @@ export const Block = {
   toProtoMsg(message: Block): BlockProtoMsg {
     return {
       typeUrl: "/tendermint.types.Block",
-      value: Block.encode(message).finish(),
+      value: Block.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(Block.typeUrl, Block);

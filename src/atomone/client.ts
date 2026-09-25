@@ -14,16 +14,11 @@ export const atomoneAminoConverters = {
   ...atomoneCoredaosV1TxAmino.AminoConverter,
   ...atomoneGovV1TxAmino.AminoConverter,
   ...atomoneGovV1beta1TxAmino.AminoConverter,
-  ...atomonePhotonV1TxAmino.AminoConverter,
+  ...atomonePhotonV1TxAmino.AminoConverter
 };
-export const atomoneProtoRegistry: ReadonlyArray<[string, GeneratedType]> = [
-  ...atomoneCoredaosV1TxRegistry.registry,
-  ...atomoneGovV1TxRegistry.registry,
-  ...atomoneGovV1beta1TxRegistry.registry,
-  ...atomonePhotonV1TxRegistry.registry,
-];
+export const atomoneProtoRegistry: ReadonlyArray<[string, GeneratedType]> = [...atomoneCoredaosV1TxRegistry.registry, ...atomoneGovV1TxRegistry.registry, ...atomoneGovV1beta1TxRegistry.registry, ...atomonePhotonV1TxRegistry.registry];
 export const getSigningAtomoneClientOptions = ({
-  defaultTypes = defaultRegistryTypes,
+  defaultTypes = defaultRegistryTypes
 }: {
   defaultTypes?: ReadonlyArray<[string, GeneratedType]>;
 } = {}): {
@@ -32,28 +27,31 @@ export const getSigningAtomoneClientOptions = ({
 } => {
   const registry = new Registry([...defaultTypes, ...atomoneProtoRegistry]);
   const aminoTypes = new AminoTypes({
-    ...atomoneAminoConverters,
+    ...atomoneAminoConverters
   });
   return {
     registry,
-    aminoTypes,
+    aminoTypes
   };
 };
 export const getSigningAtomoneClient = async ({
   rpcEndpoint,
   signer,
-  defaultTypes = defaultRegistryTypes,
+  defaultTypes = defaultRegistryTypes
 }: {
   rpcEndpoint: string | HttpEndpoint;
   signer: OfflineSigner;
   defaultTypes?: ReadonlyArray<[string, GeneratedType]>;
 }) => {
-  const { registry, aminoTypes } = getSigningAtomoneClientOptions({
-    defaultTypes,
+  const {
+    registry,
+    aminoTypes
+  } = getSigningAtomoneClientOptions({
+    defaultTypes
   });
   const client = await SigningStargateClient.connectWithSigner(rpcEndpoint, signer, {
     registry: registry as any,
-    aminoTypes,
+    aminoTypes
   });
   return client;
 };

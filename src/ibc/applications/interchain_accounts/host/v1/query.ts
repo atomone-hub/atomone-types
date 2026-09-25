@@ -103,7 +103,7 @@ export const QueryParamsRequest = {
   toAminoMsg(message: QueryParamsRequest): QueryParamsRequestAminoMsg {
     return {
       type: "cosmos-sdk/QueryParamsRequest",
-      value: QueryParamsRequest.toAmino(message),
+      value: QueryParamsRequest.toAmino(message)
     };
   },
   fromProtoMsg(message: QueryParamsRequestProtoMsg): QueryParamsRequest {
@@ -115,15 +115,15 @@ export const QueryParamsRequest = {
   toProtoMsg(message: QueryParamsRequest): QueryParamsRequestProtoMsg {
     return {
       typeUrl: "/ibc.applications.interchain_accounts.host.v1.QueryParamsRequest",
-      value: QueryParamsRequest.encode(message).finish(),
+      value: QueryParamsRequest.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(QueryParamsRequest.typeUrl, QueryParamsRequest);
 GlobalDecoderRegistry.registerAminoProtoMapping(QueryParamsRequest.aminoType, QueryParamsRequest.typeUrl);
 function createBaseQueryParamsResponse(): QueryParamsResponse {
   return {
-    params: undefined,
+    params: undefined
   };
 }
 export const QueryParamsResponse = {
@@ -193,7 +193,7 @@ export const QueryParamsResponse = {
   toAminoMsg(message: QueryParamsResponse): QueryParamsResponseAminoMsg {
     return {
       type: "cosmos-sdk/QueryParamsResponse",
-      value: QueryParamsResponse.toAmino(message),
+      value: QueryParamsResponse.toAmino(message)
     };
   },
   fromProtoMsg(message: QueryParamsResponseProtoMsg): QueryParamsResponse {
@@ -205,9 +205,9 @@ export const QueryParamsResponse = {
   toProtoMsg(message: QueryParamsResponse): QueryParamsResponseProtoMsg {
     return {
       typeUrl: "/ibc.applications.interchain_accounts.host.v1.QueryParamsResponse",
-      value: QueryParamsResponse.encode(message).finish(),
+      value: QueryParamsResponse.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(QueryParamsResponse.typeUrl, QueryParamsResponse);
 GlobalDecoderRegistry.registerAminoProtoMapping(QueryParamsResponse.aminoType, QueryParamsResponse.typeUrl);
@@ -225,6 +225,6 @@ export class QueryClientImpl implements Query {
   Params(request: QueryParamsRequest = {}): Promise<QueryParamsResponse> {
     const data = QueryParamsRequest.encode(request).finish();
     const promise = this.rpc.request("ibc.applications.interchain_accounts.host.v1.Query", "Params", data);
-    return promise.then((data) => QueryParamsResponse.decode(new BinaryReader(data)));
+    return promise.then(data => QueryParamsResponse.decode(new BinaryReader(data)));
   }
 }

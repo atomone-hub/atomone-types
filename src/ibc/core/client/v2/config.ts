@@ -38,27 +38,17 @@ export interface ConfigAminoMsg {
 }
 function createBaseConfig(): Config {
   return {
-    allowedRelayers: [],
+    allowedRelayers: []
   };
 }
 export const Config = {
   typeUrl: "/ibc.core.client.v2.Config",
   aminoType: "cosmos-sdk/Config",
   is(o: any): o is Config {
-    return (
-      o &&
-      (o.$typeUrl === Config.typeUrl ||
-        (Array.isArray(o.allowedRelayers) &&
-          (!o.allowedRelayers.length || typeof o.allowedRelayers[0] === "string")))
-    );
+    return o && (o.$typeUrl === Config.typeUrl || Array.isArray(o.allowedRelayers) && (!o.allowedRelayers.length || typeof o.allowedRelayers[0] === "string"));
   },
   isAmino(o: any): o is ConfigAmino {
-    return (
-      o &&
-      (o.$typeUrl === Config.typeUrl ||
-        (Array.isArray(o.allowed_relayers) &&
-          (!o.allowed_relayers.length || typeof o.allowed_relayers[0] === "string")))
-    );
+    return o && (o.$typeUrl === Config.typeUrl || Array.isArray(o.allowed_relayers) && (!o.allowed_relayers.length || typeof o.allowed_relayers[0] === "string"));
   },
   encode(message: Config, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.allowedRelayers) {
@@ -85,14 +75,13 @@ export const Config = {
   },
   fromJSON(object: any): Config {
     const obj = createBaseConfig();
-    if (Array.isArray(object?.allowedRelayers))
-      obj.allowedRelayers = object.allowedRelayers.map((e: any) => String(e));
+    if (Array.isArray(object?.allowedRelayers)) obj.allowedRelayers = object.allowedRelayers.map((e: any) => String(e));
     return obj;
   },
   toJSON(message: Config): JsonSafe<Config> {
     const obj: any = {};
     if (message.allowedRelayers) {
-      obj.allowedRelayers = message.allowedRelayers.map((e) => e);
+      obj.allowedRelayers = message.allowedRelayers.map(e => e);
     } else {
       obj.allowedRelayers = [];
     }
@@ -100,18 +89,18 @@ export const Config = {
   },
   fromPartial(object: Partial<Config>): Config {
     const message = createBaseConfig();
-    message.allowedRelayers = object.allowedRelayers?.map((e) => e) || [];
+    message.allowedRelayers = object.allowedRelayers?.map(e => e) || [];
     return message;
   },
   fromAmino(object: ConfigAmino): Config {
     const message = createBaseConfig();
-    message.allowedRelayers = object.allowed_relayers?.map((e) => e) || [];
+    message.allowedRelayers = object.allowed_relayers?.map(e => e) || [];
     return message;
   },
   toAmino(message: Config): ConfigAmino {
     const obj: any = {};
     if (message.allowedRelayers) {
-      obj.allowed_relayers = message.allowedRelayers.map((e) => e);
+      obj.allowed_relayers = message.allowedRelayers.map(e => e);
     } else {
       obj.allowed_relayers = message.allowedRelayers;
     }
@@ -123,7 +112,7 @@ export const Config = {
   toAminoMsg(message: Config): ConfigAminoMsg {
     return {
       type: "cosmos-sdk/Config",
-      value: Config.toAmino(message),
+      value: Config.toAmino(message)
     };
   },
   fromProtoMsg(message: ConfigProtoMsg): Config {
@@ -135,9 +124,9 @@ export const Config = {
   toProtoMsg(message: Config): ConfigProtoMsg {
     return {
       typeUrl: "/ibc.core.client.v2.Config",
-      value: Config.encode(message).finish(),
+      value: Config.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(Config.typeUrl, Config);
 GlobalDecoderRegistry.registerAminoProtoMapping(Config.aminoType, Config.typeUrl);

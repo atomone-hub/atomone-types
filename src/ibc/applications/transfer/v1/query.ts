@@ -1,10 +1,5 @@
 /* eslint-disable */
-import {
-  PageRequest,
-  PageRequestAmino,
-  PageResponse,
-  PageResponseAmino,
-} from "../../../../cosmos/base/query/v1beta1/pagination";
+import { PageRequest, PageRequestAmino, PageResponse, PageResponseAmino } from "../../../../cosmos/base/query/v1beta1/pagination";
 import { Params, ParamsAmino } from "./transfer";
 import { Denom, DenomAmino } from "./token";
 import { Coin, CoinAmino } from "../../../../cosmos/base/v1beta1/coin";
@@ -389,7 +384,7 @@ export const QueryParamsRequest = {
   toAminoMsg(message: QueryParamsRequest): QueryParamsRequestAminoMsg {
     return {
       type: "cosmos-sdk/QueryParamsRequest",
-      value: QueryParamsRequest.toAmino(message),
+      value: QueryParamsRequest.toAmino(message)
     };
   },
   fromProtoMsg(message: QueryParamsRequestProtoMsg): QueryParamsRequest {
@@ -401,15 +396,15 @@ export const QueryParamsRequest = {
   toProtoMsg(message: QueryParamsRequest): QueryParamsRequestProtoMsg {
     return {
       typeUrl: "/ibc.applications.transfer.v1.QueryParamsRequest",
-      value: QueryParamsRequest.encode(message).finish(),
+      value: QueryParamsRequest.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(QueryParamsRequest.typeUrl, QueryParamsRequest);
 GlobalDecoderRegistry.registerAminoProtoMapping(QueryParamsRequest.aminoType, QueryParamsRequest.typeUrl);
 function createBaseQueryParamsResponse(): QueryParamsResponse {
   return {
-    params: undefined,
+    params: undefined
   };
 }
 export const QueryParamsResponse = {
@@ -479,7 +474,7 @@ export const QueryParamsResponse = {
   toAminoMsg(message: QueryParamsResponse): QueryParamsResponseAminoMsg {
     return {
       type: "cosmos-sdk/QueryParamsResponse",
-      value: QueryParamsResponse.toAmino(message),
+      value: QueryParamsResponse.toAmino(message)
     };
   },
   fromProtoMsg(message: QueryParamsResponseProtoMsg): QueryParamsResponse {
@@ -491,15 +486,15 @@ export const QueryParamsResponse = {
   toProtoMsg(message: QueryParamsResponse): QueryParamsResponseProtoMsg {
     return {
       typeUrl: "/ibc.applications.transfer.v1.QueryParamsResponse",
-      value: QueryParamsResponse.encode(message).finish(),
+      value: QueryParamsResponse.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(QueryParamsResponse.typeUrl, QueryParamsResponse);
 GlobalDecoderRegistry.registerAminoProtoMapping(QueryParamsResponse.aminoType, QueryParamsResponse.typeUrl);
 function createBaseQueryDenomRequest(): QueryDenomRequest {
   return {
-    hash: "",
+    hash: ""
   };
 }
 export const QueryDenomRequest = {
@@ -567,7 +562,7 @@ export const QueryDenomRequest = {
   toAminoMsg(message: QueryDenomRequest): QueryDenomRequestAminoMsg {
     return {
       type: "cosmos-sdk/QueryDenomRequest",
-      value: QueryDenomRequest.toAmino(message),
+      value: QueryDenomRequest.toAmino(message)
     };
   },
   fromProtoMsg(message: QueryDenomRequestProtoMsg): QueryDenomRequest {
@@ -579,15 +574,15 @@ export const QueryDenomRequest = {
   toProtoMsg(message: QueryDenomRequest): QueryDenomRequestProtoMsg {
     return {
       typeUrl: "/ibc.applications.transfer.v1.QueryDenomRequest",
-      value: QueryDenomRequest.encode(message).finish(),
+      value: QueryDenomRequest.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(QueryDenomRequest.typeUrl, QueryDenomRequest);
 GlobalDecoderRegistry.registerAminoProtoMapping(QueryDenomRequest.aminoType, QueryDenomRequest.typeUrl);
 function createBaseQueryDenomResponse(): QueryDenomResponse {
   return {
-    denom: undefined,
+    denom: undefined
   };
 }
 export const QueryDenomResponse = {
@@ -657,7 +652,7 @@ export const QueryDenomResponse = {
   toAminoMsg(message: QueryDenomResponse): QueryDenomResponseAminoMsg {
     return {
       type: "cosmos-sdk/QueryDenomResponse",
-      value: QueryDenomResponse.toAmino(message),
+      value: QueryDenomResponse.toAmino(message)
     };
   },
   fromProtoMsg(message: QueryDenomResponseProtoMsg): QueryDenomResponse {
@@ -669,15 +664,15 @@ export const QueryDenomResponse = {
   toProtoMsg(message: QueryDenomResponse): QueryDenomResponseProtoMsg {
     return {
       typeUrl: "/ibc.applications.transfer.v1.QueryDenomResponse",
-      value: QueryDenomResponse.encode(message).finish(),
+      value: QueryDenomResponse.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(QueryDenomResponse.typeUrl, QueryDenomResponse);
 GlobalDecoderRegistry.registerAminoProtoMapping(QueryDenomResponse.aminoType, QueryDenomResponse.typeUrl);
 function createBaseQueryDenomsRequest(): QueryDenomsRequest {
   return {
-    pagination: undefined,
+    pagination: undefined
   };
 }
 export const QueryDenomsRequest = {
@@ -719,8 +714,7 @@ export const QueryDenomsRequest = {
   },
   toJSON(message: QueryDenomsRequest): JsonSafe<QueryDenomsRequest> {
     const obj: any = {};
-    message.pagination !== undefined &&
-      (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
+    message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
     return obj;
   },
   fromPartial(object: Partial<QueryDenomsRequest>): QueryDenomsRequest {
@@ -748,7 +742,7 @@ export const QueryDenomsRequest = {
   toAminoMsg(message: QueryDenomsRequest): QueryDenomsRequestAminoMsg {
     return {
       type: "cosmos-sdk/QueryDenomsRequest",
-      value: QueryDenomsRequest.toAmino(message),
+      value: QueryDenomsRequest.toAmino(message)
     };
   },
   fromProtoMsg(message: QueryDenomsRequestProtoMsg): QueryDenomsRequest {
@@ -760,34 +754,26 @@ export const QueryDenomsRequest = {
   toProtoMsg(message: QueryDenomsRequest): QueryDenomsRequestProtoMsg {
     return {
       typeUrl: "/ibc.applications.transfer.v1.QueryDenomsRequest",
-      value: QueryDenomsRequest.encode(message).finish(),
+      value: QueryDenomsRequest.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(QueryDenomsRequest.typeUrl, QueryDenomsRequest);
 GlobalDecoderRegistry.registerAminoProtoMapping(QueryDenomsRequest.aminoType, QueryDenomsRequest.typeUrl);
 function createBaseQueryDenomsResponse(): QueryDenomsResponse {
   return {
     denoms: [],
-    pagination: undefined,
+    pagination: undefined
   };
 }
 export const QueryDenomsResponse = {
   typeUrl: "/ibc.applications.transfer.v1.QueryDenomsResponse",
   aminoType: "cosmos-sdk/QueryDenomsResponse",
   is(o: any): o is QueryDenomsResponse {
-    return (
-      o &&
-      (o.$typeUrl === QueryDenomsResponse.typeUrl ||
-        (Array.isArray(o.denoms) && (!o.denoms.length || Denom.is(o.denoms[0]))))
-    );
+    return o && (o.$typeUrl === QueryDenomsResponse.typeUrl || Array.isArray(o.denoms) && (!o.denoms.length || Denom.is(o.denoms[0])));
   },
   isAmino(o: any): o is QueryDenomsResponseAmino {
-    return (
-      o &&
-      (o.$typeUrl === QueryDenomsResponse.typeUrl ||
-        (Array.isArray(o.denoms) && (!o.denoms.length || Denom.isAmino(o.denoms[0]))))
-    );
+    return o && (o.$typeUrl === QueryDenomsResponse.typeUrl || Array.isArray(o.denoms) && (!o.denoms.length || Denom.isAmino(o.denoms[0])));
   },
   encode(message: QueryDenomsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.denoms) {
@@ -827,17 +813,16 @@ export const QueryDenomsResponse = {
   toJSON(message: QueryDenomsResponse): JsonSafe<QueryDenomsResponse> {
     const obj: any = {};
     if (message.denoms) {
-      obj.denoms = message.denoms.map((e) => (e ? Denom.toJSON(e) : undefined));
+      obj.denoms = message.denoms.map(e => e ? Denom.toJSON(e) : undefined);
     } else {
       obj.denoms = [];
     }
-    message.pagination !== undefined &&
-      (obj.pagination = message.pagination ? PageResponse.toJSON(message.pagination) : undefined);
+    message.pagination !== undefined && (obj.pagination = message.pagination ? PageResponse.toJSON(message.pagination) : undefined);
     return obj;
   },
   fromPartial(object: Partial<QueryDenomsResponse>): QueryDenomsResponse {
     const message = createBaseQueryDenomsResponse();
-    message.denoms = object.denoms?.map((e) => Denom.fromPartial(e)) || [];
+    message.denoms = object.denoms?.map(e => Denom.fromPartial(e)) || [];
     if (object.pagination !== undefined && object.pagination !== null) {
       message.pagination = PageResponse.fromPartial(object.pagination);
     }
@@ -845,7 +830,7 @@ export const QueryDenomsResponse = {
   },
   fromAmino(object: QueryDenomsResponseAmino): QueryDenomsResponse {
     const message = createBaseQueryDenomsResponse();
-    message.denoms = object.denoms?.map((e) => Denom.fromAmino(e)) || [];
+    message.denoms = object.denoms?.map(e => Denom.fromAmino(e)) || [];
     if (object.pagination !== undefined && object.pagination !== null) {
       message.pagination = PageResponse.fromAmino(object.pagination);
     }
@@ -854,7 +839,7 @@ export const QueryDenomsResponse = {
   toAmino(message: QueryDenomsResponse): QueryDenomsResponseAmino {
     const obj: any = {};
     if (message.denoms) {
-      obj.denoms = message.denoms.map((e) => (e ? Denom.toAmino(e) : undefined));
+      obj.denoms = message.denoms.map(e => e ? Denom.toAmino(e) : undefined);
     } else {
       obj.denoms = message.denoms;
     }
@@ -867,7 +852,7 @@ export const QueryDenomsResponse = {
   toAminoMsg(message: QueryDenomsResponse): QueryDenomsResponseAminoMsg {
     return {
       type: "cosmos-sdk/QueryDenomsResponse",
-      value: QueryDenomsResponse.toAmino(message),
+      value: QueryDenomsResponse.toAmino(message)
     };
   },
   fromProtoMsg(message: QueryDenomsResponseProtoMsg): QueryDenomsResponse {
@@ -879,15 +864,15 @@ export const QueryDenomsResponse = {
   toProtoMsg(message: QueryDenomsResponse): QueryDenomsResponseProtoMsg {
     return {
       typeUrl: "/ibc.applications.transfer.v1.QueryDenomsResponse",
-      value: QueryDenomsResponse.encode(message).finish(),
+      value: QueryDenomsResponse.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(QueryDenomsResponse.typeUrl, QueryDenomsResponse);
 GlobalDecoderRegistry.registerAminoProtoMapping(QueryDenomsResponse.aminoType, QueryDenomsResponse.typeUrl);
 function createBaseQueryDenomHashRequest(): QueryDenomHashRequest {
   return {
-    trace: "",
+    trace: ""
   };
 }
 export const QueryDenomHashRequest = {
@@ -955,7 +940,7 @@ export const QueryDenomHashRequest = {
   toAminoMsg(message: QueryDenomHashRequest): QueryDenomHashRequestAminoMsg {
     return {
       type: "cosmos-sdk/QueryDenomHashRequest",
-      value: QueryDenomHashRequest.toAmino(message),
+      value: QueryDenomHashRequest.toAmino(message)
     };
   },
   fromProtoMsg(message: QueryDenomHashRequestProtoMsg): QueryDenomHashRequest {
@@ -967,18 +952,15 @@ export const QueryDenomHashRequest = {
   toProtoMsg(message: QueryDenomHashRequest): QueryDenomHashRequestProtoMsg {
     return {
       typeUrl: "/ibc.applications.transfer.v1.QueryDenomHashRequest",
-      value: QueryDenomHashRequest.encode(message).finish(),
+      value: QueryDenomHashRequest.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(QueryDenomHashRequest.typeUrl, QueryDenomHashRequest);
-GlobalDecoderRegistry.registerAminoProtoMapping(
-  QueryDenomHashRequest.aminoType,
-  QueryDenomHashRequest.typeUrl,
-);
+GlobalDecoderRegistry.registerAminoProtoMapping(QueryDenomHashRequest.aminoType, QueryDenomHashRequest.typeUrl);
 function createBaseQueryDenomHashResponse(): QueryDenomHashResponse {
   return {
-    hash: "",
+    hash: ""
   };
 }
 export const QueryDenomHashResponse = {
@@ -1046,7 +1028,7 @@ export const QueryDenomHashResponse = {
   toAminoMsg(message: QueryDenomHashResponse): QueryDenomHashResponseAminoMsg {
     return {
       type: "cosmos-sdk/QueryDenomHashResponse",
-      value: QueryDenomHashResponse.toAmino(message),
+      value: QueryDenomHashResponse.toAmino(message)
     };
   },
   fromProtoMsg(message: QueryDenomHashResponseProtoMsg): QueryDenomHashResponse {
@@ -1058,37 +1040,26 @@ export const QueryDenomHashResponse = {
   toProtoMsg(message: QueryDenomHashResponse): QueryDenomHashResponseProtoMsg {
     return {
       typeUrl: "/ibc.applications.transfer.v1.QueryDenomHashResponse",
-      value: QueryDenomHashResponse.encode(message).finish(),
+      value: QueryDenomHashResponse.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(QueryDenomHashResponse.typeUrl, QueryDenomHashResponse);
-GlobalDecoderRegistry.registerAminoProtoMapping(
-  QueryDenomHashResponse.aminoType,
-  QueryDenomHashResponse.typeUrl,
-);
+GlobalDecoderRegistry.registerAminoProtoMapping(QueryDenomHashResponse.aminoType, QueryDenomHashResponse.typeUrl);
 function createBaseQueryEscrowAddressRequest(): QueryEscrowAddressRequest {
   return {
     portId: "",
-    channelId: "",
+    channelId: ""
   };
 }
 export const QueryEscrowAddressRequest = {
   typeUrl: "/ibc.applications.transfer.v1.QueryEscrowAddressRequest",
   aminoType: "cosmos-sdk/QueryEscrowAddressRequest",
   is(o: any): o is QueryEscrowAddressRequest {
-    return (
-      o &&
-      (o.$typeUrl === QueryEscrowAddressRequest.typeUrl ||
-        (typeof o.portId === "string" && typeof o.channelId === "string"))
-    );
+    return o && (o.$typeUrl === QueryEscrowAddressRequest.typeUrl || typeof o.portId === "string" && typeof o.channelId === "string");
   },
   isAmino(o: any): o is QueryEscrowAddressRequestAmino {
-    return (
-      o &&
-      (o.$typeUrl === QueryEscrowAddressRequest.typeUrl ||
-        (typeof o.port_id === "string" && typeof o.channel_id === "string"))
-    );
+    return o && (o.$typeUrl === QueryEscrowAddressRequest.typeUrl || typeof o.port_id === "string" && typeof o.channel_id === "string");
   },
   encode(message: QueryEscrowAddressRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.portId !== "") {
@@ -1159,7 +1130,7 @@ export const QueryEscrowAddressRequest = {
   toAminoMsg(message: QueryEscrowAddressRequest): QueryEscrowAddressRequestAminoMsg {
     return {
       type: "cosmos-sdk/QueryEscrowAddressRequest",
-      value: QueryEscrowAddressRequest.toAmino(message),
+      value: QueryEscrowAddressRequest.toAmino(message)
     };
   },
   fromProtoMsg(message: QueryEscrowAddressRequestProtoMsg): QueryEscrowAddressRequest {
@@ -1171,18 +1142,15 @@ export const QueryEscrowAddressRequest = {
   toProtoMsg(message: QueryEscrowAddressRequest): QueryEscrowAddressRequestProtoMsg {
     return {
       typeUrl: "/ibc.applications.transfer.v1.QueryEscrowAddressRequest",
-      value: QueryEscrowAddressRequest.encode(message).finish(),
+      value: QueryEscrowAddressRequest.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(QueryEscrowAddressRequest.typeUrl, QueryEscrowAddressRequest);
-GlobalDecoderRegistry.registerAminoProtoMapping(
-  QueryEscrowAddressRequest.aminoType,
-  QueryEscrowAddressRequest.typeUrl,
-);
+GlobalDecoderRegistry.registerAminoProtoMapping(QueryEscrowAddressRequest.aminoType, QueryEscrowAddressRequest.typeUrl);
 function createBaseQueryEscrowAddressResponse(): QueryEscrowAddressResponse {
   return {
-    escrowAddress: "",
+    escrowAddress: ""
   };
 }
 export const QueryEscrowAddressResponse = {
@@ -1250,7 +1218,7 @@ export const QueryEscrowAddressResponse = {
   toAminoMsg(message: QueryEscrowAddressResponse): QueryEscrowAddressResponseAminoMsg {
     return {
       type: "cosmos-sdk/QueryEscrowAddressResponse",
-      value: QueryEscrowAddressResponse.toAmino(message),
+      value: QueryEscrowAddressResponse.toAmino(message)
     };
   },
   fromProtoMsg(message: QueryEscrowAddressResponseProtoMsg): QueryEscrowAddressResponse {
@@ -1262,18 +1230,15 @@ export const QueryEscrowAddressResponse = {
   toProtoMsg(message: QueryEscrowAddressResponse): QueryEscrowAddressResponseProtoMsg {
     return {
       typeUrl: "/ibc.applications.transfer.v1.QueryEscrowAddressResponse",
-      value: QueryEscrowAddressResponse.encode(message).finish(),
+      value: QueryEscrowAddressResponse.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(QueryEscrowAddressResponse.typeUrl, QueryEscrowAddressResponse);
-GlobalDecoderRegistry.registerAminoProtoMapping(
-  QueryEscrowAddressResponse.aminoType,
-  QueryEscrowAddressResponse.typeUrl,
-);
+GlobalDecoderRegistry.registerAminoProtoMapping(QueryEscrowAddressResponse.aminoType, QueryEscrowAddressResponse.typeUrl);
 function createBaseQueryTotalEscrowForDenomRequest(): QueryTotalEscrowForDenomRequest {
   return {
-    denom: "",
+    denom: ""
   };
 }
 export const QueryTotalEscrowForDenomRequest = {
@@ -1285,10 +1250,7 @@ export const QueryTotalEscrowForDenomRequest = {
   isAmino(o: any): o is QueryTotalEscrowForDenomRequestAmino {
     return o && (o.$typeUrl === QueryTotalEscrowForDenomRequest.typeUrl || typeof o.denom === "string");
   },
-  encode(
-    message: QueryTotalEscrowForDenomRequest,
-    writer: BinaryWriter = BinaryWriter.create(),
-  ): BinaryWriter {
+  encode(message: QueryTotalEscrowForDenomRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.denom !== "") {
       writer.uint32(10).string(message.denom);
     }
@@ -1344,7 +1306,7 @@ export const QueryTotalEscrowForDenomRequest = {
   toAminoMsg(message: QueryTotalEscrowForDenomRequest): QueryTotalEscrowForDenomRequestAminoMsg {
     return {
       type: "cosmos-sdk/QueryTotalEscrowForDenomRequest",
-      value: QueryTotalEscrowForDenomRequest.toAmino(message),
+      value: QueryTotalEscrowForDenomRequest.toAmino(message)
     };
   },
   fromProtoMsg(message: QueryTotalEscrowForDenomRequestProtoMsg): QueryTotalEscrowForDenomRequest {
@@ -1356,18 +1318,15 @@ export const QueryTotalEscrowForDenomRequest = {
   toProtoMsg(message: QueryTotalEscrowForDenomRequest): QueryTotalEscrowForDenomRequestProtoMsg {
     return {
       typeUrl: "/ibc.applications.transfer.v1.QueryTotalEscrowForDenomRequest",
-      value: QueryTotalEscrowForDenomRequest.encode(message).finish(),
+      value: QueryTotalEscrowForDenomRequest.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(QueryTotalEscrowForDenomRequest.typeUrl, QueryTotalEscrowForDenomRequest);
-GlobalDecoderRegistry.registerAminoProtoMapping(
-  QueryTotalEscrowForDenomRequest.aminoType,
-  QueryTotalEscrowForDenomRequest.typeUrl,
-);
+GlobalDecoderRegistry.registerAminoProtoMapping(QueryTotalEscrowForDenomRequest.aminoType, QueryTotalEscrowForDenomRequest.typeUrl);
 function createBaseQueryTotalEscrowForDenomResponse(): QueryTotalEscrowForDenomResponse {
   return {
-    amount: undefined,
+    amount: undefined
   };
 }
 export const QueryTotalEscrowForDenomResponse = {
@@ -1379,10 +1338,7 @@ export const QueryTotalEscrowForDenomResponse = {
   isAmino(o: any): o is QueryTotalEscrowForDenomResponseAmino {
     return o && (o.$typeUrl === QueryTotalEscrowForDenomResponse.typeUrl || Coin.isAmino(o.amount));
   },
-  encode(
-    message: QueryTotalEscrowForDenomResponse,
-    writer: BinaryWriter = BinaryWriter.create(),
-  ): BinaryWriter {
+  encode(message: QueryTotalEscrowForDenomResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.amount !== undefined) {
       Coin.encode(message.amount, writer.uint32(10).fork()).ldelim();
     }
@@ -1440,7 +1396,7 @@ export const QueryTotalEscrowForDenomResponse = {
   toAminoMsg(message: QueryTotalEscrowForDenomResponse): QueryTotalEscrowForDenomResponseAminoMsg {
     return {
       type: "cosmos-sdk/QueryTotalEscrowForDenomResponse",
-      value: QueryTotalEscrowForDenomResponse.toAmino(message),
+      value: QueryTotalEscrowForDenomResponse.toAmino(message)
     };
   },
   fromProtoMsg(message: QueryTotalEscrowForDenomResponseProtoMsg): QueryTotalEscrowForDenomResponse {
@@ -1452,15 +1408,12 @@ export const QueryTotalEscrowForDenomResponse = {
   toProtoMsg(message: QueryTotalEscrowForDenomResponse): QueryTotalEscrowForDenomResponseProtoMsg {
     return {
       typeUrl: "/ibc.applications.transfer.v1.QueryTotalEscrowForDenomResponse",
-      value: QueryTotalEscrowForDenomResponse.encode(message).finish(),
+      value: QueryTotalEscrowForDenomResponse.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(QueryTotalEscrowForDenomResponse.typeUrl, QueryTotalEscrowForDenomResponse);
-GlobalDecoderRegistry.registerAminoProtoMapping(
-  QueryTotalEscrowForDenomResponse.aminoType,
-  QueryTotalEscrowForDenomResponse.typeUrl,
-);
+GlobalDecoderRegistry.registerAminoProtoMapping(QueryTotalEscrowForDenomResponse.aminoType, QueryTotalEscrowForDenomResponse.typeUrl);
 /** Query provides defines the gRPC querier service. */
 export interface Query {
   /** Params queries all parameters of the ibc-transfer module. */
@@ -1490,35 +1443,33 @@ export class QueryClientImpl implements Query {
   Params(request: QueryParamsRequest = {}): Promise<QueryParamsResponse> {
     const data = QueryParamsRequest.encode(request).finish();
     const promise = this.rpc.request("ibc.applications.transfer.v1.Query", "Params", data);
-    return promise.then((data) => QueryParamsResponse.decode(new BinaryReader(data)));
+    return promise.then(data => QueryParamsResponse.decode(new BinaryReader(data)));
   }
-  Denoms(
-    request: QueryDenomsRequest = {
-      pagination: PageRequest.fromPartial({}),
-    },
-  ): Promise<QueryDenomsResponse> {
+  Denoms(request: QueryDenomsRequest = {
+    pagination: PageRequest.fromPartial({})
+  }): Promise<QueryDenomsResponse> {
     const data = QueryDenomsRequest.encode(request).finish();
     const promise = this.rpc.request("ibc.applications.transfer.v1.Query", "Denoms", data);
-    return promise.then((data) => QueryDenomsResponse.decode(new BinaryReader(data)));
+    return promise.then(data => QueryDenomsResponse.decode(new BinaryReader(data)));
   }
   Denom(request: QueryDenomRequest): Promise<QueryDenomResponse> {
     const data = QueryDenomRequest.encode(request).finish();
     const promise = this.rpc.request("ibc.applications.transfer.v1.Query", "Denom", data);
-    return promise.then((data) => QueryDenomResponse.decode(new BinaryReader(data)));
+    return promise.then(data => QueryDenomResponse.decode(new BinaryReader(data)));
   }
   DenomHash(request: QueryDenomHashRequest): Promise<QueryDenomHashResponse> {
     const data = QueryDenomHashRequest.encode(request).finish();
     const promise = this.rpc.request("ibc.applications.transfer.v1.Query", "DenomHash", data);
-    return promise.then((data) => QueryDenomHashResponse.decode(new BinaryReader(data)));
+    return promise.then(data => QueryDenomHashResponse.decode(new BinaryReader(data)));
   }
   EscrowAddress(request: QueryEscrowAddressRequest): Promise<QueryEscrowAddressResponse> {
     const data = QueryEscrowAddressRequest.encode(request).finish();
     const promise = this.rpc.request("ibc.applications.transfer.v1.Query", "EscrowAddress", data);
-    return promise.then((data) => QueryEscrowAddressResponse.decode(new BinaryReader(data)));
+    return promise.then(data => QueryEscrowAddressResponse.decode(new BinaryReader(data)));
   }
   TotalEscrowForDenom(request: QueryTotalEscrowForDenomRequest): Promise<QueryTotalEscrowForDenomResponse> {
     const data = QueryTotalEscrowForDenomRequest.encode(request).finish();
     const promise = this.rpc.request("ibc.applications.transfer.v1.Query", "TotalEscrowForDenom", data);
-    return promise.then((data) => QueryTotalEscrowForDenomResponse.decode(new BinaryReader(data)));
+    return promise.then(data => QueryTotalEscrowForDenomResponse.decode(new BinaryReader(data)));
   }
 }

@@ -150,14 +150,14 @@ export const QueryParamsRequest = {
   toProtoMsg(message: QueryParamsRequest): QueryParamsRequestProtoMsg {
     return {
       typeUrl: "/atomone.photon.v1.QueryParamsRequest",
-      value: QueryParamsRequest.encode(message).finish(),
+      value: QueryParamsRequest.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(QueryParamsRequest.typeUrl, QueryParamsRequest);
 function createBaseQueryParamsResponse(): QueryParamsResponse {
   return {
-    params: Params.fromPartial({}),
+    params: Params.fromPartial({})
   };
 }
 export const QueryParamsResponse = {
@@ -232,9 +232,9 @@ export const QueryParamsResponse = {
   toProtoMsg(message: QueryParamsResponse): QueryParamsResponseProtoMsg {
     return {
       typeUrl: "/atomone.photon.v1.QueryParamsResponse",
-      value: QueryParamsResponse.encode(message).finish(),
+      value: QueryParamsResponse.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(QueryParamsResponse.typeUrl, QueryParamsResponse);
 function createBaseQueryConversionRateRequest(): QueryConversionRateRequest {
@@ -297,14 +297,14 @@ export const QueryConversionRateRequest = {
   toProtoMsg(message: QueryConversionRateRequest): QueryConversionRateRequestProtoMsg {
     return {
       typeUrl: "/atomone.photon.v1.QueryConversionRateRequest",
-      value: QueryConversionRateRequest.encode(message).finish(),
+      value: QueryConversionRateRequest.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(QueryConversionRateRequest.typeUrl, QueryConversionRateRequest);
 function createBaseQueryConversionRateResponse(): QueryConversionRateResponse {
   return {
-    conversionRate: "",
+    conversionRate: ""
   };
 }
 export const QueryConversionRateResponse = {
@@ -377,9 +377,9 @@ export const QueryConversionRateResponse = {
   toProtoMsg(message: QueryConversionRateResponse): QueryConversionRateResponseProtoMsg {
     return {
       typeUrl: "/atomone.photon.v1.QueryConversionRateResponse",
-      value: QueryConversionRateResponse.encode(message).finish(),
+      value: QueryConversionRateResponse.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(QueryConversionRateResponse.typeUrl, QueryConversionRateResponse);
 /** Query defines the gRPC querier service. */
@@ -399,11 +399,11 @@ export class QueryClientImpl implements Query {
   Params(request: QueryParamsRequest = {}): Promise<QueryParamsResponse> {
     const data = QueryParamsRequest.encode(request).finish();
     const promise = this.rpc.request("atomone.photon.v1.Query", "Params", data);
-    return promise.then((data) => QueryParamsResponse.decode(new BinaryReader(data)));
+    return promise.then(data => QueryParamsResponse.decode(new BinaryReader(data)));
   }
   ConversionRate(request: QueryConversionRateRequest = {}): Promise<QueryConversionRateResponse> {
     const data = QueryConversionRateRequest.encode(request).finish();
     const promise = this.rpc.request("atomone.photon.v1.Query", "ConversionRate", data);
-    return promise.then((data) => QueryConversionRateResponse.decode(new BinaryReader(data)));
+    return promise.then(data => QueryConversionRateResponse.decode(new BinaryReader(data)));
   }
 }

@@ -39,19 +39,17 @@ export interface GenesisStateAminoMsg {
 function createBaseGenesisState(): GenesisState {
   return {
     minter: Minter.fromPartial({}),
-    params: Params.fromPartial({}),
+    params: Params.fromPartial({})
   };
 }
 export const GenesisState = {
   typeUrl: "/cosmos.mint.v1beta1.GenesisState",
   aminoType: "cosmos-sdk/GenesisState",
   is(o: any): o is GenesisState {
-    return o && (o.$typeUrl === GenesisState.typeUrl || (Minter.is(o.minter) && Params.is(o.params)));
+    return o && (o.$typeUrl === GenesisState.typeUrl || Minter.is(o.minter) && Params.is(o.params));
   },
   isAmino(o: any): o is GenesisStateAmino {
-    return (
-      o && (o.$typeUrl === GenesisState.typeUrl || (Minter.isAmino(o.minter) && Params.isAmino(o.params)))
-    );
+    return o && (o.$typeUrl === GenesisState.typeUrl || Minter.isAmino(o.minter) && Params.isAmino(o.params));
   },
   encode(message: GenesisState, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.minter !== undefined) {
@@ -126,7 +124,7 @@ export const GenesisState = {
   toAminoMsg(message: GenesisState): GenesisStateAminoMsg {
     return {
       type: "cosmos-sdk/GenesisState",
-      value: GenesisState.toAmino(message),
+      value: GenesisState.toAmino(message)
     };
   },
   fromProtoMsg(message: GenesisStateProtoMsg): GenesisState {
@@ -138,9 +136,9 @@ export const GenesisState = {
   toProtoMsg(message: GenesisState): GenesisStateProtoMsg {
     return {
       typeUrl: "/cosmos.mint.v1beta1.GenesisState",
-      value: GenesisState.encode(message).finish(),
+      value: GenesisState.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(GenesisState.typeUrl, GenesisState);
 GlobalDecoderRegistry.registerAminoProtoMapping(GenesisState.aminoType, GenesisState.typeUrl);

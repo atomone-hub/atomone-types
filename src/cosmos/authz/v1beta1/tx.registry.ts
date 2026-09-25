@@ -2,12 +2,7 @@
 import { TelescopeGeneratedType } from "../../../types";
 import { Registry } from "@cosmjs/proto-signing";
 import { MsgGrant, MsgExec, MsgRevoke, MsgPruneExpiredGrants } from "./tx";
-export const registry: ReadonlyArray<[string, TelescopeGeneratedType<any, any, any>]> = [
-  ["/cosmos.authz.v1beta1.MsgGrant", MsgGrant],
-  ["/cosmos.authz.v1beta1.MsgExec", MsgExec],
-  ["/cosmos.authz.v1beta1.MsgRevoke", MsgRevoke],
-  ["/cosmos.authz.v1beta1.MsgPruneExpiredGrants", MsgPruneExpiredGrants],
-];
+export const registry: ReadonlyArray<[string, TelescopeGeneratedType<any, any, any>]> = [["/cosmos.authz.v1beta1.MsgGrant", MsgGrant], ["/cosmos.authz.v1beta1.MsgExec", MsgExec], ["/cosmos.authz.v1beta1.MsgRevoke", MsgRevoke], ["/cosmos.authz.v1beta1.MsgPruneExpiredGrants", MsgPruneExpiredGrants]];
 export const load = (protoRegistry: Registry) => {
   registry.forEach(([typeUrl, mod]) => {
     protoRegistry.register(typeUrl, mod);
@@ -18,130 +13,130 @@ export const MessageComposer = {
     grant(value: MsgGrant) {
       return {
         typeUrl: "/cosmos.authz.v1beta1.MsgGrant",
-        value: MsgGrant.encode(value).finish(),
+        value: MsgGrant.encode(value).finish()
       };
     },
     exec(value: MsgExec) {
       return {
         typeUrl: "/cosmos.authz.v1beta1.MsgExec",
-        value: MsgExec.encode(value).finish(),
+        value: MsgExec.encode(value).finish()
       };
     },
     revoke(value: MsgRevoke) {
       return {
         typeUrl: "/cosmos.authz.v1beta1.MsgRevoke",
-        value: MsgRevoke.encode(value).finish(),
+        value: MsgRevoke.encode(value).finish()
       };
     },
     pruneExpiredGrants(value: MsgPruneExpiredGrants) {
       return {
         typeUrl: "/cosmos.authz.v1beta1.MsgPruneExpiredGrants",
-        value: MsgPruneExpiredGrants.encode(value).finish(),
+        value: MsgPruneExpiredGrants.encode(value).finish()
       };
-    },
+    }
   },
   withTypeUrl: {
     grant(value: MsgGrant) {
       return {
         typeUrl: "/cosmos.authz.v1beta1.MsgGrant",
-        value,
+        value
       };
     },
     exec(value: MsgExec) {
       return {
         typeUrl: "/cosmos.authz.v1beta1.MsgExec",
-        value,
+        value
       };
     },
     revoke(value: MsgRevoke) {
       return {
         typeUrl: "/cosmos.authz.v1beta1.MsgRevoke",
-        value,
+        value
       };
     },
     pruneExpiredGrants(value: MsgPruneExpiredGrants) {
       return {
         typeUrl: "/cosmos.authz.v1beta1.MsgPruneExpiredGrants",
-        value,
+        value
       };
-    },
+    }
   },
   toJSON: {
     grant(value: MsgGrant) {
       return {
         typeUrl: "/cosmos.authz.v1beta1.MsgGrant",
-        value: MsgGrant.toJSON(value),
+        value: MsgGrant.toJSON(value)
       };
     },
     exec(value: MsgExec) {
       return {
         typeUrl: "/cosmos.authz.v1beta1.MsgExec",
-        value: MsgExec.toJSON(value),
+        value: MsgExec.toJSON(value)
       };
     },
     revoke(value: MsgRevoke) {
       return {
         typeUrl: "/cosmos.authz.v1beta1.MsgRevoke",
-        value: MsgRevoke.toJSON(value),
+        value: MsgRevoke.toJSON(value)
       };
     },
     pruneExpiredGrants(value: MsgPruneExpiredGrants) {
       return {
         typeUrl: "/cosmos.authz.v1beta1.MsgPruneExpiredGrants",
-        value: MsgPruneExpiredGrants.toJSON(value),
+        value: MsgPruneExpiredGrants.toJSON(value)
       };
-    },
+    }
   },
   fromJSON: {
     grant(value: any) {
       return {
         typeUrl: "/cosmos.authz.v1beta1.MsgGrant",
-        value: MsgGrant.fromJSON(value),
+        value: MsgGrant.fromJSON(value)
       };
     },
     exec(value: any) {
       return {
         typeUrl: "/cosmos.authz.v1beta1.MsgExec",
-        value: MsgExec.fromJSON(value),
+        value: MsgExec.fromJSON(value)
       };
     },
     revoke(value: any) {
       return {
         typeUrl: "/cosmos.authz.v1beta1.MsgRevoke",
-        value: MsgRevoke.fromJSON(value),
+        value: MsgRevoke.fromJSON(value)
       };
     },
     pruneExpiredGrants(value: any) {
       return {
         typeUrl: "/cosmos.authz.v1beta1.MsgPruneExpiredGrants",
-        value: MsgPruneExpiredGrants.fromJSON(value),
+        value: MsgPruneExpiredGrants.fromJSON(value)
       };
-    },
+    }
   },
   fromPartial: {
     grant(value: MsgGrant) {
       return {
         typeUrl: "/cosmos.authz.v1beta1.MsgGrant",
-        value: MsgGrant.fromPartial(value),
+        value: MsgGrant.fromPartial(value)
       };
     },
     exec(value: MsgExec) {
       return {
         typeUrl: "/cosmos.authz.v1beta1.MsgExec",
-        value: MsgExec.fromPartial(value),
+        value: MsgExec.fromPartial(value)
       };
     },
     revoke(value: MsgRevoke) {
       return {
         typeUrl: "/cosmos.authz.v1beta1.MsgRevoke",
-        value: MsgRevoke.fromPartial(value),
+        value: MsgRevoke.fromPartial(value)
       };
     },
     pruneExpiredGrants(value: MsgPruneExpiredGrants) {
       return {
         typeUrl: "/cosmos.authz.v1beta1.MsgPruneExpiredGrants",
-        value: MsgPruneExpiredGrants.fromPartial(value),
+        value: MsgPruneExpiredGrants.fromPartial(value)
       };
-    },
-  },
+    }
+  }
 };

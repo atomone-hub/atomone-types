@@ -93,25 +93,17 @@ export interface ParamsAminoMsg {
 function createBaseMinter(): Minter {
   return {
     inflation: "",
-    annualProvisions: "",
+    annualProvisions: ""
   };
 }
 export const Minter = {
   typeUrl: "/cosmos.mint.v1beta1.Minter",
   aminoType: "cosmos-sdk/Minter",
   is(o: any): o is Minter {
-    return (
-      o &&
-      (o.$typeUrl === Minter.typeUrl ||
-        (typeof o.inflation === "string" && typeof o.annualProvisions === "string"))
-    );
+    return o && (o.$typeUrl === Minter.typeUrl || typeof o.inflation === "string" && typeof o.annualProvisions === "string");
   },
   isAmino(o: any): o is MinterAmino {
-    return (
-      o &&
-      (o.$typeUrl === Minter.typeUrl ||
-        (typeof o.inflation === "string" && typeof o.annual_provisions === "string"))
-    );
+    return o && (o.$typeUrl === Minter.typeUrl || typeof o.inflation === "string" && typeof o.annual_provisions === "string");
   },
   encode(message: Minter, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.inflation !== "") {
@@ -182,7 +174,7 @@ export const Minter = {
   toAminoMsg(message: Minter): MinterAminoMsg {
     return {
       type: "cosmos-sdk/Minter",
-      value: Minter.toAmino(message),
+      value: Minter.toAmino(message)
     };
   },
   fromProtoMsg(message: MinterProtoMsg): Minter {
@@ -194,9 +186,9 @@ export const Minter = {
   toProtoMsg(message: Minter): MinterProtoMsg {
     return {
       typeUrl: "/cosmos.mint.v1beta1.Minter",
-      value: Minter.encode(message).finish(),
+      value: Minter.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(Minter.typeUrl, Minter);
 GlobalDecoderRegistry.registerAminoProtoMapping(Minter.aminoType, Minter.typeUrl);
@@ -207,35 +199,17 @@ function createBaseParams(): Params {
     inflationMax: "",
     inflationMin: "",
     goalBonded: "",
-    blocksPerYear: BigInt(0),
+    blocksPerYear: BigInt(0)
   };
 }
 export const Params = {
   typeUrl: "/cosmos.mint.v1beta1.Params",
   aminoType: "cosmos-sdk/x/mint/Params",
   is(o: any): o is Params {
-    return (
-      o &&
-      (o.$typeUrl === Params.typeUrl ||
-        (typeof o.mintDenom === "string" &&
-          typeof o.inflationRateChange === "string" &&
-          typeof o.inflationMax === "string" &&
-          typeof o.inflationMin === "string" &&
-          typeof o.goalBonded === "string" &&
-          typeof o.blocksPerYear === "bigint"))
-    );
+    return o && (o.$typeUrl === Params.typeUrl || typeof o.mintDenom === "string" && typeof o.inflationRateChange === "string" && typeof o.inflationMax === "string" && typeof o.inflationMin === "string" && typeof o.goalBonded === "string" && typeof o.blocksPerYear === "bigint");
   },
   isAmino(o: any): o is ParamsAmino {
-    return (
-      o &&
-      (o.$typeUrl === Params.typeUrl ||
-        (typeof o.mint_denom === "string" &&
-          typeof o.inflation_rate_change === "string" &&
-          typeof o.inflation_max === "string" &&
-          typeof o.inflation_min === "string" &&
-          typeof o.goal_bonded === "string" &&
-          typeof o.blocks_per_year === "bigint"))
-    );
+    return o && (o.$typeUrl === Params.typeUrl || typeof o.mint_denom === "string" && typeof o.inflation_rate_change === "string" && typeof o.inflation_max === "string" && typeof o.inflation_min === "string" && typeof o.goal_bonded === "string" && typeof o.blocks_per_year === "bigint");
   },
   encode(message: Params, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.mintDenom !== "") {
@@ -307,8 +281,7 @@ export const Params = {
     message.inflationMax !== undefined && (obj.inflationMax = message.inflationMax);
     message.inflationMin !== undefined && (obj.inflationMin = message.inflationMin);
     message.goalBonded !== undefined && (obj.goalBonded = message.goalBonded);
-    message.blocksPerYear !== undefined &&
-      (obj.blocksPerYear = (message.blocksPerYear || BigInt(0)).toString());
+    message.blocksPerYear !== undefined && (obj.blocksPerYear = (message.blocksPerYear || BigInt(0)).toString());
     return obj;
   },
   fromPartial(object: Partial<Params>): Params {
@@ -361,7 +334,7 @@ export const Params = {
   toAminoMsg(message: Params): ParamsAminoMsg {
     return {
       type: "cosmos-sdk/x/mint/Params",
-      value: Params.toAmino(message),
+      value: Params.toAmino(message)
     };
   },
   fromProtoMsg(message: ParamsProtoMsg): Params {
@@ -373,9 +346,9 @@ export const Params = {
   toProtoMsg(message: Params): ParamsProtoMsg {
     return {
       typeUrl: "/cosmos.mint.v1beta1.Params",
-      value: Params.encode(message).finish(),
+      value: Params.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(Params.typeUrl, Params);
 GlobalDecoderRegistry.registerAminoProtoMapping(Params.aminoType, Params.typeUrl);

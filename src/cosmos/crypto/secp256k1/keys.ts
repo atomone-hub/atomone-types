@@ -58,7 +58,7 @@ export interface PrivKeyAminoMsg {
 }
 function createBasePubKey(): PubKey {
   return {
-    key: new Uint8Array(),
+    key: new Uint8Array()
   };
 }
 export const PubKey = {
@@ -100,8 +100,7 @@ export const PubKey = {
   },
   toJSON(message: PubKey): JsonSafe<PubKey> {
     const obj: any = {};
-    message.key !== undefined &&
-      (obj.key = base64FromBytes(message.key !== undefined ? message.key : new Uint8Array()));
+    message.key !== undefined && (obj.key = base64FromBytes(message.key !== undefined ? message.key : new Uint8Array()));
     return obj;
   },
   fromPartial(object: Partial<PubKey>): PubKey {
@@ -127,7 +126,7 @@ export const PubKey = {
   toAminoMsg(message: PubKey): PubKeyAminoMsg {
     return {
       type: "tendermint/PubKeySecp256k1",
-      value: PubKey.toAmino(message),
+      value: PubKey.toAmino(message)
     };
   },
   fromProtoMsg(message: PubKeyProtoMsg): PubKey {
@@ -139,15 +138,15 @@ export const PubKey = {
   toProtoMsg(message: PubKey): PubKeyProtoMsg {
     return {
       typeUrl: "/cosmos.crypto.secp256k1.PubKey",
-      value: PubKey.encode(message).finish(),
+      value: PubKey.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(PubKey.typeUrl, PubKey);
 GlobalDecoderRegistry.registerAminoProtoMapping(PubKey.aminoType, PubKey.typeUrl);
 function createBasePrivKey(): PrivKey {
   return {
-    key: new Uint8Array(),
+    key: new Uint8Array()
   };
 }
 export const PrivKey = {
@@ -189,8 +188,7 @@ export const PrivKey = {
   },
   toJSON(message: PrivKey): JsonSafe<PrivKey> {
     const obj: any = {};
-    message.key !== undefined &&
-      (obj.key = base64FromBytes(message.key !== undefined ? message.key : new Uint8Array()));
+    message.key !== undefined && (obj.key = base64FromBytes(message.key !== undefined ? message.key : new Uint8Array()));
     return obj;
   },
   fromPartial(object: Partial<PrivKey>): PrivKey {
@@ -216,7 +214,7 @@ export const PrivKey = {
   toAminoMsg(message: PrivKey): PrivKeyAminoMsg {
     return {
       type: "tendermint/PrivKeySecp256k1",
-      value: PrivKey.toAmino(message),
+      value: PrivKey.toAmino(message)
     };
   },
   fromProtoMsg(message: PrivKeyProtoMsg): PrivKey {
@@ -228,9 +226,9 @@ export const PrivKey = {
   toProtoMsg(message: PrivKey): PrivKeyProtoMsg {
     return {
       typeUrl: "/cosmos.crypto.secp256k1.PrivKey",
-      value: PrivKey.encode(message).finish(),
+      value: PrivKey.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(PrivKey.typeUrl, PrivKey);
 GlobalDecoderRegistry.registerAminoProtoMapping(PrivKey.aminoType, PrivKey.typeUrl);

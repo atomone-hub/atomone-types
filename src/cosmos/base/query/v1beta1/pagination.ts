@@ -7,7 +7,7 @@ export const protobufPackage = "cosmos.base.query.v1beta1";
 /**
  * PageRequest is to be embedded in gRPC request messages for efficient
  * pagination. Ex:
- *
+ * 
  *  message SomeRequest {
  *          Foo some_parameter = 1;
  *          PageRequest pagination = 2;
@@ -40,7 +40,7 @@ export interface PageRequest {
   countTotal: boolean;
   /**
    * reverse is set to true if results are to be returned in the descending order.
-   *
+   * 
    * Since: cosmos-sdk 0.43
    */
   reverse: boolean;
@@ -52,7 +52,7 @@ export interface PageRequestProtoMsg {
 /**
  * PageRequest is to be embedded in gRPC request messages for efficient
  * pagination. Ex:
- *
+ * 
  *  message SomeRequest {
  *          Foo some_parameter = 1;
  *          PageRequest pagination = 2;
@@ -88,7 +88,7 @@ export interface PageRequestAmino {
   count_total?: boolean;
   /**
    * reverse is set to true if results are to be returned in the descending order.
-   *
+   * 
    * Since: cosmos-sdk 0.43
    */
   reverse?: boolean;
@@ -100,7 +100,7 @@ export interface PageRequestAminoMsg {
 /**
  * PageResponse is to be embedded in gRPC response messages where the
  * corresponding request message has used PageRequest.
- *
+ * 
  *  message SomeResponse {
  *          repeated Bar results = 1;
  *          PageResponse page = 2;
@@ -126,7 +126,7 @@ export interface PageResponseProtoMsg {
 /**
  * PageResponse is to be embedded in gRPC response messages where the
  * corresponding request message has used PageRequest.
- *
+ * 
  *  message SomeResponse {
  *          repeated Bar results = 1;
  *          PageResponse page = 2;
@@ -158,33 +158,17 @@ function createBasePageRequest(): PageRequest {
     offset: BigInt(0),
     limit: BigInt(0),
     countTotal: false,
-    reverse: false,
+    reverse: false
   };
 }
 export const PageRequest = {
   typeUrl: "/cosmos.base.query.v1beta1.PageRequest",
   aminoType: "cosmos-sdk/PageRequest",
   is(o: any): o is PageRequest {
-    return (
-      o &&
-      (o.$typeUrl === PageRequest.typeUrl ||
-        ((o.key instanceof Uint8Array || typeof o.key === "string") &&
-          typeof o.offset === "bigint" &&
-          typeof o.limit === "bigint" &&
-          typeof o.countTotal === "boolean" &&
-          typeof o.reverse === "boolean"))
-    );
+    return o && (o.$typeUrl === PageRequest.typeUrl || (o.key instanceof Uint8Array || typeof o.key === "string") && typeof o.offset === "bigint" && typeof o.limit === "bigint" && typeof o.countTotal === "boolean" && typeof o.reverse === "boolean");
   },
   isAmino(o: any): o is PageRequestAmino {
-    return (
-      o &&
-      (o.$typeUrl === PageRequest.typeUrl ||
-        ((o.key instanceof Uint8Array || typeof o.key === "string") &&
-          typeof o.offset === "bigint" &&
-          typeof o.limit === "bigint" &&
-          typeof o.count_total === "boolean" &&
-          typeof o.reverse === "boolean"))
-    );
+    return o && (o.$typeUrl === PageRequest.typeUrl || (o.key instanceof Uint8Array || typeof o.key === "string") && typeof o.offset === "bigint" && typeof o.limit === "bigint" && typeof o.count_total === "boolean" && typeof o.reverse === "boolean");
   },
   encode(message: PageRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.key.length !== 0) {
@@ -244,8 +228,7 @@ export const PageRequest = {
   },
   toJSON(message: PageRequest): JsonSafe<PageRequest> {
     const obj: any = {};
-    message.key !== undefined &&
-      (obj.key = base64FromBytes(message.key !== undefined ? message.key : new Uint8Array()));
+    message.key !== undefined && (obj.key = base64FromBytes(message.key !== undefined ? message.key : new Uint8Array()));
     message.offset !== undefined && (obj.offset = (message.offset || BigInt(0)).toString());
     message.limit !== undefined && (obj.limit = (message.limit || BigInt(0)).toString());
     message.countTotal !== undefined && (obj.countTotal = message.countTotal);
@@ -299,7 +282,7 @@ export const PageRequest = {
   toAminoMsg(message: PageRequest): PageRequestAminoMsg {
     return {
       type: "cosmos-sdk/PageRequest",
-      value: PageRequest.toAmino(message),
+      value: PageRequest.toAmino(message)
     };
   },
   fromProtoMsg(message: PageRequestProtoMsg): PageRequest {
@@ -311,34 +294,26 @@ export const PageRequest = {
   toProtoMsg(message: PageRequest): PageRequestProtoMsg {
     return {
       typeUrl: "/cosmos.base.query.v1beta1.PageRequest",
-      value: PageRequest.encode(message).finish(),
+      value: PageRequest.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(PageRequest.typeUrl, PageRequest);
 GlobalDecoderRegistry.registerAminoProtoMapping(PageRequest.aminoType, PageRequest.typeUrl);
 function createBasePageResponse(): PageResponse {
   return {
     nextKey: new Uint8Array(),
-    total: BigInt(0),
+    total: BigInt(0)
   };
 }
 export const PageResponse = {
   typeUrl: "/cosmos.base.query.v1beta1.PageResponse",
   aminoType: "cosmos-sdk/PageResponse",
   is(o: any): o is PageResponse {
-    return (
-      o &&
-      (o.$typeUrl === PageResponse.typeUrl ||
-        ((o.nextKey instanceof Uint8Array || typeof o.nextKey === "string") && typeof o.total === "bigint"))
-    );
+    return o && (o.$typeUrl === PageResponse.typeUrl || (o.nextKey instanceof Uint8Array || typeof o.nextKey === "string") && typeof o.total === "bigint");
   },
   isAmino(o: any): o is PageResponseAmino {
-    return (
-      o &&
-      (o.$typeUrl === PageResponse.typeUrl ||
-        ((o.next_key instanceof Uint8Array || typeof o.next_key === "string") && typeof o.total === "bigint"))
-    );
+    return o && (o.$typeUrl === PageResponse.typeUrl || (o.next_key instanceof Uint8Array || typeof o.next_key === "string") && typeof o.total === "bigint");
   },
   encode(message: PageResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.nextKey.length !== 0) {
@@ -377,8 +352,7 @@ export const PageResponse = {
   },
   toJSON(message: PageResponse): JsonSafe<PageResponse> {
     const obj: any = {};
-    message.nextKey !== undefined &&
-      (obj.nextKey = base64FromBytes(message.nextKey !== undefined ? message.nextKey : new Uint8Array()));
+    message.nextKey !== undefined && (obj.nextKey = base64FromBytes(message.nextKey !== undefined ? message.nextKey : new Uint8Array()));
     message.total !== undefined && (obj.total = (message.total || BigInt(0)).toString());
     return obj;
   },
@@ -412,7 +386,7 @@ export const PageResponse = {
   toAminoMsg(message: PageResponse): PageResponseAminoMsg {
     return {
       type: "cosmos-sdk/PageResponse",
-      value: PageResponse.toAmino(message),
+      value: PageResponse.toAmino(message)
     };
   },
   fromProtoMsg(message: PageResponseProtoMsg): PageResponse {
@@ -424,9 +398,9 @@ export const PageResponse = {
   toProtoMsg(message: PageResponse): PageResponseProtoMsg {
     return {
       typeUrl: "/cosmos.base.query.v1beta1.PageResponse",
-      value: PageResponse.encode(message).finish(),
+      value: PageResponse.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(PageResponse.typeUrl, PageResponse);
 GlobalDecoderRegistry.registerAminoProtoMapping(PageResponse.aminoType, PageResponse.typeUrl);

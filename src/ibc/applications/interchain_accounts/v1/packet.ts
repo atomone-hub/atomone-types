@@ -92,29 +92,17 @@ function createBaseInterchainAccountPacketData(): InterchainAccountPacketData {
   return {
     type: 0,
     data: new Uint8Array(),
-    memo: "",
+    memo: ""
   };
 }
 export const InterchainAccountPacketData = {
   typeUrl: "/ibc.applications.interchain_accounts.v1.InterchainAccountPacketData",
   aminoType: "cosmos-sdk/InterchainAccountPacketData",
   is(o: any): o is InterchainAccountPacketData {
-    return (
-      o &&
-      (o.$typeUrl === InterchainAccountPacketData.typeUrl ||
-        (isSet(o.type) &&
-          (o.data instanceof Uint8Array || typeof o.data === "string") &&
-          typeof o.memo === "string"))
-    );
+    return o && (o.$typeUrl === InterchainAccountPacketData.typeUrl || isSet(o.type) && (o.data instanceof Uint8Array || typeof o.data === "string") && typeof o.memo === "string");
   },
   isAmino(o: any): o is InterchainAccountPacketDataAmino {
-    return (
-      o &&
-      (o.$typeUrl === InterchainAccountPacketData.typeUrl ||
-        (isSet(o.type) &&
-          (o.data instanceof Uint8Array || typeof o.data === "string") &&
-          typeof o.memo === "string"))
-    );
+    return o && (o.$typeUrl === InterchainAccountPacketData.typeUrl || isSet(o.type) && (o.data instanceof Uint8Array || typeof o.data === "string") && typeof o.memo === "string");
   },
   encode(message: InterchainAccountPacketData, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.type !== 0) {
@@ -161,8 +149,7 @@ export const InterchainAccountPacketData = {
   toJSON(message: InterchainAccountPacketData): JsonSafe<InterchainAccountPacketData> {
     const obj: any = {};
     message.type !== undefined && (obj.type = typeToJSON(message.type));
-    message.data !== undefined &&
-      (obj.data = base64FromBytes(message.data !== undefined ? message.data : new Uint8Array()));
+    message.data !== undefined && (obj.data = base64FromBytes(message.data !== undefined ? message.data : new Uint8Array()));
     message.memo !== undefined && (obj.memo = message.memo);
     return obj;
   },
@@ -199,7 +186,7 @@ export const InterchainAccountPacketData = {
   toAminoMsg(message: InterchainAccountPacketData): InterchainAccountPacketDataAminoMsg {
     return {
       type: "cosmos-sdk/InterchainAccountPacketData",
-      value: InterchainAccountPacketData.toAmino(message),
+      value: InterchainAccountPacketData.toAmino(message)
     };
   },
   fromProtoMsg(message: InterchainAccountPacketDataProtoMsg): InterchainAccountPacketData {
@@ -211,36 +198,25 @@ export const InterchainAccountPacketData = {
   toProtoMsg(message: InterchainAccountPacketData): InterchainAccountPacketDataProtoMsg {
     return {
       typeUrl: "/ibc.applications.interchain_accounts.v1.InterchainAccountPacketData",
-      value: InterchainAccountPacketData.encode(message).finish(),
+      value: InterchainAccountPacketData.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(InterchainAccountPacketData.typeUrl, InterchainAccountPacketData);
-GlobalDecoderRegistry.registerAminoProtoMapping(
-  InterchainAccountPacketData.aminoType,
-  InterchainAccountPacketData.typeUrl,
-);
+GlobalDecoderRegistry.registerAminoProtoMapping(InterchainAccountPacketData.aminoType, InterchainAccountPacketData.typeUrl);
 function createBaseCosmosTx(): CosmosTx {
   return {
-    messages: [],
+    messages: []
   };
 }
 export const CosmosTx = {
   typeUrl: "/ibc.applications.interchain_accounts.v1.CosmosTx",
   aminoType: "cosmos-sdk/CosmosTx",
   is(o: any): o is CosmosTx {
-    return (
-      o &&
-      (o.$typeUrl === CosmosTx.typeUrl ||
-        (Array.isArray(o.messages) && (!o.messages.length || Any.is(o.messages[0]))))
-    );
+    return o && (o.$typeUrl === CosmosTx.typeUrl || Array.isArray(o.messages) && (!o.messages.length || Any.is(o.messages[0])));
   },
   isAmino(o: any): o is CosmosTxAmino {
-    return (
-      o &&
-      (o.$typeUrl === CosmosTx.typeUrl ||
-        (Array.isArray(o.messages) && (!o.messages.length || Any.isAmino(o.messages[0]))))
-    );
+    return o && (o.$typeUrl === CosmosTx.typeUrl || Array.isArray(o.messages) && (!o.messages.length || Any.isAmino(o.messages[0])));
   },
   encode(message: CosmosTx, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.messages) {
@@ -273,7 +249,7 @@ export const CosmosTx = {
   toJSON(message: CosmosTx): JsonSafe<CosmosTx> {
     const obj: any = {};
     if (message.messages) {
-      obj.messages = message.messages.map((e) => (e ? Any.toJSON(e) : undefined));
+      obj.messages = message.messages.map(e => e ? Any.toJSON(e) : undefined);
     } else {
       obj.messages = [];
     }
@@ -281,18 +257,18 @@ export const CosmosTx = {
   },
   fromPartial(object: Partial<CosmosTx>): CosmosTx {
     const message = createBaseCosmosTx();
-    message.messages = object.messages?.map((e) => Any.fromPartial(e)) || [];
+    message.messages = object.messages?.map(e => Any.fromPartial(e)) || [];
     return message;
   },
   fromAmino(object: CosmosTxAmino): CosmosTx {
     const message = createBaseCosmosTx();
-    message.messages = object.messages?.map((e) => Any.fromAmino(e)) || [];
+    message.messages = object.messages?.map(e => Any.fromAmino(e)) || [];
     return message;
   },
   toAmino(message: CosmosTx): CosmosTxAmino {
     const obj: any = {};
     if (message.messages) {
-      obj.messages = message.messages.map((e) => (e ? Any.toAmino(e) : undefined));
+      obj.messages = message.messages.map(e => e ? Any.toAmino(e) : undefined);
     } else {
       obj.messages = message.messages;
     }
@@ -304,7 +280,7 @@ export const CosmosTx = {
   toAminoMsg(message: CosmosTx): CosmosTxAminoMsg {
     return {
       type: "cosmos-sdk/CosmosTx",
-      value: CosmosTx.toAmino(message),
+      value: CosmosTx.toAmino(message)
     };
   },
   fromProtoMsg(message: CosmosTxProtoMsg): CosmosTx {
@@ -316,9 +292,9 @@ export const CosmosTx = {
   toProtoMsg(message: CosmosTx): CosmosTxProtoMsg {
     return {
       typeUrl: "/ibc.applications.interchain_accounts.v1.CosmosTx",
-      value: CosmosTx.encode(message).finish(),
+      value: CosmosTx.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(CosmosTx.typeUrl, CosmosTx);
 GlobalDecoderRegistry.registerAminoProtoMapping(CosmosTx.aminoType, CosmosTx.typeUrl);

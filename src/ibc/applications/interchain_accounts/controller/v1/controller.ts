@@ -35,7 +35,7 @@ export interface ParamsAminoMsg {
 }
 function createBaseParams(): Params {
   return {
-    controllerEnabled: false,
+    controllerEnabled: false
   };
 }
 export const Params = {
@@ -103,7 +103,7 @@ export const Params = {
   toAminoMsg(message: Params): ParamsAminoMsg {
     return {
       type: "cosmos-sdk/Params",
-      value: Params.toAmino(message),
+      value: Params.toAmino(message)
     };
   },
   fromProtoMsg(message: ParamsProtoMsg): Params {
@@ -115,9 +115,9 @@ export const Params = {
   toProtoMsg(message: Params): ParamsProtoMsg {
     return {
       typeUrl: "/ibc.applications.interchain_accounts.controller.v1.Params",
-      value: Params.encode(message).finish(),
+      value: Params.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(Params.typeUrl, Params);
 GlobalDecoderRegistry.registerAminoProtoMapping(Params.aminoType, Params.typeUrl);

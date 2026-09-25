@@ -1,26 +1,8 @@
 /* eslint-disable */
 import { TelescopeGeneratedType } from "../../../../types";
 import { Registry } from "@cosmjs/proto-signing";
-import {
-  MsgCreateClient,
-  MsgUpdateClient,
-  MsgUpgradeClient,
-  MsgSubmitMisbehaviour,
-  MsgRecoverClient,
-  MsgIBCSoftwareUpgrade,
-  MsgUpdateParams,
-  MsgDeleteClientCreator,
-} from "./tx";
-export const registry: ReadonlyArray<[string, TelescopeGeneratedType<any, any, any>]> = [
-  ["/ibc.core.client.v1.MsgCreateClient", MsgCreateClient],
-  ["/ibc.core.client.v1.MsgUpdateClient", MsgUpdateClient],
-  ["/ibc.core.client.v1.MsgUpgradeClient", MsgUpgradeClient],
-  ["/ibc.core.client.v1.MsgSubmitMisbehaviour", MsgSubmitMisbehaviour],
-  ["/ibc.core.client.v1.MsgRecoverClient", MsgRecoverClient],
-  ["/ibc.core.client.v1.MsgIBCSoftwareUpgrade", MsgIBCSoftwareUpgrade],
-  ["/ibc.core.client.v1.MsgUpdateParams", MsgUpdateParams],
-  ["/ibc.core.client.v1.MsgDeleteClientCreator", MsgDeleteClientCreator],
-];
+import { MsgCreateClient, MsgUpdateClient, MsgUpgradeClient, MsgSubmitMisbehaviour, MsgRecoverClient, MsgIBCSoftwareUpgrade, MsgUpdateParams, MsgDeleteClientCreator } from "./tx";
+export const registry: ReadonlyArray<[string, TelescopeGeneratedType<any, any, any>]> = [["/ibc.core.client.v1.MsgCreateClient", MsgCreateClient], ["/ibc.core.client.v1.MsgUpdateClient", MsgUpdateClient], ["/ibc.core.client.v1.MsgUpgradeClient", MsgUpgradeClient], ["/ibc.core.client.v1.MsgSubmitMisbehaviour", MsgSubmitMisbehaviour], ["/ibc.core.client.v1.MsgRecoverClient", MsgRecoverClient], ["/ibc.core.client.v1.MsgIBCSoftwareUpgrade", MsgIBCSoftwareUpgrade], ["/ibc.core.client.v1.MsgUpdateParams", MsgUpdateParams], ["/ibc.core.client.v1.MsgDeleteClientCreator", MsgDeleteClientCreator]];
 export const load = (protoRegistry: Registry) => {
   registry.forEach(([typeUrl, mod]) => {
     protoRegistry.register(typeUrl, mod);
@@ -31,250 +13,250 @@ export const MessageComposer = {
     createClient(value: MsgCreateClient) {
       return {
         typeUrl: "/ibc.core.client.v1.MsgCreateClient",
-        value: MsgCreateClient.encode(value).finish(),
+        value: MsgCreateClient.encode(value).finish()
       };
     },
     updateClient(value: MsgUpdateClient) {
       return {
         typeUrl: "/ibc.core.client.v1.MsgUpdateClient",
-        value: MsgUpdateClient.encode(value).finish(),
+        value: MsgUpdateClient.encode(value).finish()
       };
     },
     upgradeClient(value: MsgUpgradeClient) {
       return {
         typeUrl: "/ibc.core.client.v1.MsgUpgradeClient",
-        value: MsgUpgradeClient.encode(value).finish(),
+        value: MsgUpgradeClient.encode(value).finish()
       };
     },
     submitMisbehaviour(value: MsgSubmitMisbehaviour) {
       return {
         typeUrl: "/ibc.core.client.v1.MsgSubmitMisbehaviour",
-        value: MsgSubmitMisbehaviour.encode(value).finish(),
+        value: MsgSubmitMisbehaviour.encode(value).finish()
       };
     },
     recoverClient(value: MsgRecoverClient) {
       return {
         typeUrl: "/ibc.core.client.v1.MsgRecoverClient",
-        value: MsgRecoverClient.encode(value).finish(),
+        value: MsgRecoverClient.encode(value).finish()
       };
     },
     iBCSoftwareUpgrade(value: MsgIBCSoftwareUpgrade) {
       return {
         typeUrl: "/ibc.core.client.v1.MsgIBCSoftwareUpgrade",
-        value: MsgIBCSoftwareUpgrade.encode(value).finish(),
+        value: MsgIBCSoftwareUpgrade.encode(value).finish()
       };
     },
     updateClientParams(value: MsgUpdateParams) {
       return {
         typeUrl: "/ibc.core.client.v1.MsgUpdateParams",
-        value: MsgUpdateParams.encode(value).finish(),
+        value: MsgUpdateParams.encode(value).finish()
       };
     },
     deleteClientCreator(value: MsgDeleteClientCreator) {
       return {
         typeUrl: "/ibc.core.client.v1.MsgDeleteClientCreator",
-        value: MsgDeleteClientCreator.encode(value).finish(),
+        value: MsgDeleteClientCreator.encode(value).finish()
       };
-    },
+    }
   },
   withTypeUrl: {
     createClient(value: MsgCreateClient) {
       return {
         typeUrl: "/ibc.core.client.v1.MsgCreateClient",
-        value,
+        value
       };
     },
     updateClient(value: MsgUpdateClient) {
       return {
         typeUrl: "/ibc.core.client.v1.MsgUpdateClient",
-        value,
+        value
       };
     },
     upgradeClient(value: MsgUpgradeClient) {
       return {
         typeUrl: "/ibc.core.client.v1.MsgUpgradeClient",
-        value,
+        value
       };
     },
     submitMisbehaviour(value: MsgSubmitMisbehaviour) {
       return {
         typeUrl: "/ibc.core.client.v1.MsgSubmitMisbehaviour",
-        value,
+        value
       };
     },
     recoverClient(value: MsgRecoverClient) {
       return {
         typeUrl: "/ibc.core.client.v1.MsgRecoverClient",
-        value,
+        value
       };
     },
     iBCSoftwareUpgrade(value: MsgIBCSoftwareUpgrade) {
       return {
         typeUrl: "/ibc.core.client.v1.MsgIBCSoftwareUpgrade",
-        value,
+        value
       };
     },
     updateClientParams(value: MsgUpdateParams) {
       return {
         typeUrl: "/ibc.core.client.v1.MsgUpdateParams",
-        value,
+        value
       };
     },
     deleteClientCreator(value: MsgDeleteClientCreator) {
       return {
         typeUrl: "/ibc.core.client.v1.MsgDeleteClientCreator",
-        value,
+        value
       };
-    },
+    }
   },
   toJSON: {
     createClient(value: MsgCreateClient) {
       return {
         typeUrl: "/ibc.core.client.v1.MsgCreateClient",
-        value: MsgCreateClient.toJSON(value),
+        value: MsgCreateClient.toJSON(value)
       };
     },
     updateClient(value: MsgUpdateClient) {
       return {
         typeUrl: "/ibc.core.client.v1.MsgUpdateClient",
-        value: MsgUpdateClient.toJSON(value),
+        value: MsgUpdateClient.toJSON(value)
       };
     },
     upgradeClient(value: MsgUpgradeClient) {
       return {
         typeUrl: "/ibc.core.client.v1.MsgUpgradeClient",
-        value: MsgUpgradeClient.toJSON(value),
+        value: MsgUpgradeClient.toJSON(value)
       };
     },
     submitMisbehaviour(value: MsgSubmitMisbehaviour) {
       return {
         typeUrl: "/ibc.core.client.v1.MsgSubmitMisbehaviour",
-        value: MsgSubmitMisbehaviour.toJSON(value),
+        value: MsgSubmitMisbehaviour.toJSON(value)
       };
     },
     recoverClient(value: MsgRecoverClient) {
       return {
         typeUrl: "/ibc.core.client.v1.MsgRecoverClient",
-        value: MsgRecoverClient.toJSON(value),
+        value: MsgRecoverClient.toJSON(value)
       };
     },
     iBCSoftwareUpgrade(value: MsgIBCSoftwareUpgrade) {
       return {
         typeUrl: "/ibc.core.client.v1.MsgIBCSoftwareUpgrade",
-        value: MsgIBCSoftwareUpgrade.toJSON(value),
+        value: MsgIBCSoftwareUpgrade.toJSON(value)
       };
     },
     updateClientParams(value: MsgUpdateParams) {
       return {
         typeUrl: "/ibc.core.client.v1.MsgUpdateParams",
-        value: MsgUpdateParams.toJSON(value),
+        value: MsgUpdateParams.toJSON(value)
       };
     },
     deleteClientCreator(value: MsgDeleteClientCreator) {
       return {
         typeUrl: "/ibc.core.client.v1.MsgDeleteClientCreator",
-        value: MsgDeleteClientCreator.toJSON(value),
+        value: MsgDeleteClientCreator.toJSON(value)
       };
-    },
+    }
   },
   fromJSON: {
     createClient(value: any) {
       return {
         typeUrl: "/ibc.core.client.v1.MsgCreateClient",
-        value: MsgCreateClient.fromJSON(value),
+        value: MsgCreateClient.fromJSON(value)
       };
     },
     updateClient(value: any) {
       return {
         typeUrl: "/ibc.core.client.v1.MsgUpdateClient",
-        value: MsgUpdateClient.fromJSON(value),
+        value: MsgUpdateClient.fromJSON(value)
       };
     },
     upgradeClient(value: any) {
       return {
         typeUrl: "/ibc.core.client.v1.MsgUpgradeClient",
-        value: MsgUpgradeClient.fromJSON(value),
+        value: MsgUpgradeClient.fromJSON(value)
       };
     },
     submitMisbehaviour(value: any) {
       return {
         typeUrl: "/ibc.core.client.v1.MsgSubmitMisbehaviour",
-        value: MsgSubmitMisbehaviour.fromJSON(value),
+        value: MsgSubmitMisbehaviour.fromJSON(value)
       };
     },
     recoverClient(value: any) {
       return {
         typeUrl: "/ibc.core.client.v1.MsgRecoverClient",
-        value: MsgRecoverClient.fromJSON(value),
+        value: MsgRecoverClient.fromJSON(value)
       };
     },
     iBCSoftwareUpgrade(value: any) {
       return {
         typeUrl: "/ibc.core.client.v1.MsgIBCSoftwareUpgrade",
-        value: MsgIBCSoftwareUpgrade.fromJSON(value),
+        value: MsgIBCSoftwareUpgrade.fromJSON(value)
       };
     },
     updateClientParams(value: any) {
       return {
         typeUrl: "/ibc.core.client.v1.MsgUpdateParams",
-        value: MsgUpdateParams.fromJSON(value),
+        value: MsgUpdateParams.fromJSON(value)
       };
     },
     deleteClientCreator(value: any) {
       return {
         typeUrl: "/ibc.core.client.v1.MsgDeleteClientCreator",
-        value: MsgDeleteClientCreator.fromJSON(value),
+        value: MsgDeleteClientCreator.fromJSON(value)
       };
-    },
+    }
   },
   fromPartial: {
     createClient(value: MsgCreateClient) {
       return {
         typeUrl: "/ibc.core.client.v1.MsgCreateClient",
-        value: MsgCreateClient.fromPartial(value),
+        value: MsgCreateClient.fromPartial(value)
       };
     },
     updateClient(value: MsgUpdateClient) {
       return {
         typeUrl: "/ibc.core.client.v1.MsgUpdateClient",
-        value: MsgUpdateClient.fromPartial(value),
+        value: MsgUpdateClient.fromPartial(value)
       };
     },
     upgradeClient(value: MsgUpgradeClient) {
       return {
         typeUrl: "/ibc.core.client.v1.MsgUpgradeClient",
-        value: MsgUpgradeClient.fromPartial(value),
+        value: MsgUpgradeClient.fromPartial(value)
       };
     },
     submitMisbehaviour(value: MsgSubmitMisbehaviour) {
       return {
         typeUrl: "/ibc.core.client.v1.MsgSubmitMisbehaviour",
-        value: MsgSubmitMisbehaviour.fromPartial(value),
+        value: MsgSubmitMisbehaviour.fromPartial(value)
       };
     },
     recoverClient(value: MsgRecoverClient) {
       return {
         typeUrl: "/ibc.core.client.v1.MsgRecoverClient",
-        value: MsgRecoverClient.fromPartial(value),
+        value: MsgRecoverClient.fromPartial(value)
       };
     },
     iBCSoftwareUpgrade(value: MsgIBCSoftwareUpgrade) {
       return {
         typeUrl: "/ibc.core.client.v1.MsgIBCSoftwareUpgrade",
-        value: MsgIBCSoftwareUpgrade.fromPartial(value),
+        value: MsgIBCSoftwareUpgrade.fromPartial(value)
       };
     },
     updateClientParams(value: MsgUpdateParams) {
       return {
         typeUrl: "/ibc.core.client.v1.MsgUpdateParams",
-        value: MsgUpdateParams.fromPartial(value),
+        value: MsgUpdateParams.fromPartial(value)
       };
     },
     deleteClientCreator(value: MsgDeleteClientCreator) {
       return {
         typeUrl: "/ibc.core.client.v1.MsgDeleteClientCreator",
-        value: MsgDeleteClientCreator.fromPartial(value),
+        value: MsgDeleteClientCreator.fromPartial(value)
       };
-    },
-  },
+    }
+  }
 };

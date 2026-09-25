@@ -34,25 +34,17 @@ export interface ModuleAminoMsg {
 function createBaseModule(): Module {
   return {
     feeCollectorName: "",
-    authority: "",
+    authority: ""
   };
 }
 export const Module = {
   typeUrl: "/cosmos.distribution.module.v1.Module",
   aminoType: "cosmos-sdk/Module",
   is(o: any): o is Module {
-    return (
-      o &&
-      (o.$typeUrl === Module.typeUrl ||
-        (typeof o.feeCollectorName === "string" && typeof o.authority === "string"))
-    );
+    return o && (o.$typeUrl === Module.typeUrl || typeof o.feeCollectorName === "string" && typeof o.authority === "string");
   },
   isAmino(o: any): o is ModuleAmino {
-    return (
-      o &&
-      (o.$typeUrl === Module.typeUrl ||
-        (typeof o.fee_collector_name === "string" && typeof o.authority === "string"))
-    );
+    return o && (o.$typeUrl === Module.typeUrl || typeof o.fee_collector_name === "string" && typeof o.authority === "string");
   },
   encode(message: Module, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.feeCollectorName !== "") {
@@ -123,7 +115,7 @@ export const Module = {
   toAminoMsg(message: Module): ModuleAminoMsg {
     return {
       type: "cosmos-sdk/Module",
-      value: Module.toAmino(message),
+      value: Module.toAmino(message)
     };
   },
   fromProtoMsg(message: ModuleProtoMsg): Module {
@@ -135,9 +127,9 @@ export const Module = {
   toProtoMsg(message: Module): ModuleProtoMsg {
     return {
       typeUrl: "/cosmos.distribution.module.v1.Module",
-      value: Module.encode(message).finish(),
+      value: Module.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(Module.typeUrl, Module);
 GlobalDecoderRegistry.registerAminoProtoMapping(Module.aminoType, Module.typeUrl);

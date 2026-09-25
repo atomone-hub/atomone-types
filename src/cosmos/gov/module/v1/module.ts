@@ -42,25 +42,17 @@ export interface ModuleAminoMsg {
 function createBaseModule(): Module {
   return {
     maxMetadataLen: BigInt(0),
-    authority: "",
+    authority: ""
   };
 }
 export const Module = {
   typeUrl: "/cosmos.gov.module.v1.Module",
   aminoType: "cosmos-sdk/Module",
   is(o: any): o is Module {
-    return (
-      o &&
-      (o.$typeUrl === Module.typeUrl ||
-        (typeof o.maxMetadataLen === "bigint" && typeof o.authority === "string"))
-    );
+    return o && (o.$typeUrl === Module.typeUrl || typeof o.maxMetadataLen === "bigint" && typeof o.authority === "string");
   },
   isAmino(o: any): o is ModuleAmino {
-    return (
-      o &&
-      (o.$typeUrl === Module.typeUrl ||
-        (typeof o.max_metadata_len === "bigint" && typeof o.authority === "string"))
-    );
+    return o && (o.$typeUrl === Module.typeUrl || typeof o.max_metadata_len === "bigint" && typeof o.authority === "string");
   },
   encode(message: Module, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.maxMetadataLen !== BigInt(0)) {
@@ -99,8 +91,7 @@ export const Module = {
   },
   toJSON(message: Module): JsonSafe<Module> {
     const obj: any = {};
-    message.maxMetadataLen !== undefined &&
-      (obj.maxMetadataLen = (message.maxMetadataLen || BigInt(0)).toString());
+    message.maxMetadataLen !== undefined && (obj.maxMetadataLen = (message.maxMetadataLen || BigInt(0)).toString());
     message.authority !== undefined && (obj.authority = message.authority);
     return obj;
   },
@@ -124,8 +115,7 @@ export const Module = {
   },
   toAmino(message: Module): ModuleAmino {
     const obj: any = {};
-    obj.max_metadata_len =
-      message.maxMetadataLen !== BigInt(0) ? message.maxMetadataLen?.toString() : undefined;
+    obj.max_metadata_len = message.maxMetadataLen !== BigInt(0) ? message.maxMetadataLen?.toString() : undefined;
     obj.authority = message.authority === "" ? undefined : message.authority;
     return obj;
   },
@@ -135,7 +125,7 @@ export const Module = {
   toAminoMsg(message: Module): ModuleAminoMsg {
     return {
       type: "cosmos-sdk/Module",
-      value: Module.toAmino(message),
+      value: Module.toAmino(message)
     };
   },
   fromProtoMsg(message: ModuleProtoMsg): Module {
@@ -147,9 +137,9 @@ export const Module = {
   toProtoMsg(message: Module): ModuleProtoMsg {
     return {
       typeUrl: "/cosmos.gov.module.v1.Module",
-      value: Module.encode(message).finish(),
+      value: Module.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(Module.typeUrl, Module);
 GlobalDecoderRegistry.registerAminoProtoMapping(Module.aminoType, Module.typeUrl);

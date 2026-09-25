@@ -2,10 +2,7 @@
 import { TelescopeGeneratedType } from "../../../../types";
 import { Registry } from "@cosmjs/proto-signing";
 import { MsgTransfer, MsgUpdateParams } from "./tx";
-export const registry: ReadonlyArray<[string, TelescopeGeneratedType<any, any, any>]> = [
-  ["/ibc.applications.transfer.v1.MsgTransfer", MsgTransfer],
-  ["/ibc.applications.transfer.v1.MsgUpdateParams", MsgUpdateParams],
-];
+export const registry: ReadonlyArray<[string, TelescopeGeneratedType<any, any, any>]> = [["/ibc.applications.transfer.v1.MsgTransfer", MsgTransfer], ["/ibc.applications.transfer.v1.MsgUpdateParams", MsgUpdateParams]];
 export const load = (protoRegistry: Registry) => {
   registry.forEach(([typeUrl, mod]) => {
     protoRegistry.register(typeUrl, mod);
@@ -16,70 +13,70 @@ export const MessageComposer = {
     transfer(value: MsgTransfer) {
       return {
         typeUrl: "/ibc.applications.transfer.v1.MsgTransfer",
-        value: MsgTransfer.encode(value).finish(),
+        value: MsgTransfer.encode(value).finish()
       };
     },
     updateParams(value: MsgUpdateParams) {
       return {
         typeUrl: "/ibc.applications.transfer.v1.MsgUpdateParams",
-        value: MsgUpdateParams.encode(value).finish(),
+        value: MsgUpdateParams.encode(value).finish()
       };
-    },
+    }
   },
   withTypeUrl: {
     transfer(value: MsgTransfer) {
       return {
         typeUrl: "/ibc.applications.transfer.v1.MsgTransfer",
-        value,
+        value
       };
     },
     updateParams(value: MsgUpdateParams) {
       return {
         typeUrl: "/ibc.applications.transfer.v1.MsgUpdateParams",
-        value,
+        value
       };
-    },
+    }
   },
   toJSON: {
     transfer(value: MsgTransfer) {
       return {
         typeUrl: "/ibc.applications.transfer.v1.MsgTransfer",
-        value: MsgTransfer.toJSON(value),
+        value: MsgTransfer.toJSON(value)
       };
     },
     updateParams(value: MsgUpdateParams) {
       return {
         typeUrl: "/ibc.applications.transfer.v1.MsgUpdateParams",
-        value: MsgUpdateParams.toJSON(value),
+        value: MsgUpdateParams.toJSON(value)
       };
-    },
+    }
   },
   fromJSON: {
     transfer(value: any) {
       return {
         typeUrl: "/ibc.applications.transfer.v1.MsgTransfer",
-        value: MsgTransfer.fromJSON(value),
+        value: MsgTransfer.fromJSON(value)
       };
     },
     updateParams(value: any) {
       return {
         typeUrl: "/ibc.applications.transfer.v1.MsgUpdateParams",
-        value: MsgUpdateParams.fromJSON(value),
+        value: MsgUpdateParams.fromJSON(value)
       };
-    },
+    }
   },
   fromPartial: {
     transfer(value: MsgTransfer) {
       return {
         typeUrl: "/ibc.applications.transfer.v1.MsgTransfer",
-        value: MsgTransfer.fromPartial(value),
+        value: MsgTransfer.fromPartial(value)
       };
     },
     updateParams(value: MsgUpdateParams) {
       return {
         typeUrl: "/ibc.applications.transfer.v1.MsgUpdateParams",
-        value: MsgUpdateParams.fromPartial(value),
+        value: MsgUpdateParams.fromPartial(value)
       };
-    },
-  },
+    }
+  }
 };

@@ -92,17 +92,17 @@ export interface HopAminoMsg {
 function createBaseToken(): Token {
   return {
     denom: Denom.fromPartial({}),
-    amount: "",
+    amount: ""
   };
 }
 export const Token = {
   typeUrl: "/ibc.applications.transfer.v1.Token",
   aminoType: "cosmos-sdk/Token",
   is(o: any): o is Token {
-    return o && (o.$typeUrl === Token.typeUrl || (Denom.is(o.denom) && typeof o.amount === "string"));
+    return o && (o.$typeUrl === Token.typeUrl || Denom.is(o.denom) && typeof o.amount === "string");
   },
   isAmino(o: any): o is TokenAmino {
-    return o && (o.$typeUrl === Token.typeUrl || (Denom.isAmino(o.denom) && typeof o.amount === "string"));
+    return o && (o.$typeUrl === Token.typeUrl || Denom.isAmino(o.denom) && typeof o.amount === "string");
   },
   encode(message: Token, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.denom !== undefined) {
@@ -175,7 +175,7 @@ export const Token = {
   toAminoMsg(message: Token): TokenAminoMsg {
     return {
       type: "cosmos-sdk/Token",
-      value: Token.toAmino(message),
+      value: Token.toAmino(message)
     };
   },
   fromProtoMsg(message: TokenProtoMsg): Token {
@@ -187,36 +187,26 @@ export const Token = {
   toProtoMsg(message: Token): TokenProtoMsg {
     return {
       typeUrl: "/ibc.applications.transfer.v1.Token",
-      value: Token.encode(message).finish(),
+      value: Token.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(Token.typeUrl, Token);
 GlobalDecoderRegistry.registerAminoProtoMapping(Token.aminoType, Token.typeUrl);
 function createBaseDenom(): Denom {
   return {
     base: "",
-    trace: [],
+    trace: []
   };
 }
 export const Denom = {
   typeUrl: "/ibc.applications.transfer.v1.Denom",
   aminoType: "cosmos-sdk/Denom",
   is(o: any): o is Denom {
-    return (
-      o &&
-      (o.$typeUrl === Denom.typeUrl ||
-        (typeof o.base === "string" && Array.isArray(o.trace) && (!o.trace.length || Hop.is(o.trace[0]))))
-    );
+    return o && (o.$typeUrl === Denom.typeUrl || typeof o.base === "string" && Array.isArray(o.trace) && (!o.trace.length || Hop.is(o.trace[0])));
   },
   isAmino(o: any): o is DenomAmino {
-    return (
-      o &&
-      (o.$typeUrl === Denom.typeUrl ||
-        (typeof o.base === "string" &&
-          Array.isArray(o.trace) &&
-          (!o.trace.length || Hop.isAmino(o.trace[0]))))
-    );
+    return o && (o.$typeUrl === Denom.typeUrl || typeof o.base === "string" && Array.isArray(o.trace) && (!o.trace.length || Hop.isAmino(o.trace[0])));
   },
   encode(message: Denom, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.base !== "") {
@@ -257,7 +247,7 @@ export const Denom = {
     const obj: any = {};
     message.base !== undefined && (obj.base = message.base);
     if (message.trace) {
-      obj.trace = message.trace.map((e) => (e ? Hop.toJSON(e) : undefined));
+      obj.trace = message.trace.map(e => e ? Hop.toJSON(e) : undefined);
     } else {
       obj.trace = [];
     }
@@ -266,7 +256,7 @@ export const Denom = {
   fromPartial(object: Partial<Denom>): Denom {
     const message = createBaseDenom();
     message.base = object.base ?? "";
-    message.trace = object.trace?.map((e) => Hop.fromPartial(e)) || [];
+    message.trace = object.trace?.map(e => Hop.fromPartial(e)) || [];
     return message;
   },
   fromAmino(object: DenomAmino): Denom {
@@ -274,14 +264,14 @@ export const Denom = {
     if (object.base !== undefined && object.base !== null) {
       message.base = object.base;
     }
-    message.trace = object.trace?.map((e) => Hop.fromAmino(e)) || [];
+    message.trace = object.trace?.map(e => Hop.fromAmino(e)) || [];
     return message;
   },
   toAmino(message: Denom): DenomAmino {
     const obj: any = {};
     obj.base = message.base === "" ? undefined : message.base;
     if (message.trace) {
-      obj.trace = message.trace.map((e) => (e ? Hop.toAmino(e) : undefined));
+      obj.trace = message.trace.map(e => e ? Hop.toAmino(e) : undefined);
     } else {
       obj.trace = message.trace;
     }
@@ -293,7 +283,7 @@ export const Denom = {
   toAminoMsg(message: Denom): DenomAminoMsg {
     return {
       type: "cosmos-sdk/Denom",
-      value: Denom.toAmino(message),
+      value: Denom.toAmino(message)
     };
   },
   fromProtoMsg(message: DenomProtoMsg): Denom {
@@ -305,30 +295,26 @@ export const Denom = {
   toProtoMsg(message: Denom): DenomProtoMsg {
     return {
       typeUrl: "/ibc.applications.transfer.v1.Denom",
-      value: Denom.encode(message).finish(),
+      value: Denom.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(Denom.typeUrl, Denom);
 GlobalDecoderRegistry.registerAminoProtoMapping(Denom.aminoType, Denom.typeUrl);
 function createBaseHop(): Hop {
   return {
     portId: "",
-    channelId: "",
+    channelId: ""
   };
 }
 export const Hop = {
   typeUrl: "/ibc.applications.transfer.v1.Hop",
   aminoType: "cosmos-sdk/Hop",
   is(o: any): o is Hop {
-    return (
-      o && (o.$typeUrl === Hop.typeUrl || (typeof o.portId === "string" && typeof o.channelId === "string"))
-    );
+    return o && (o.$typeUrl === Hop.typeUrl || typeof o.portId === "string" && typeof o.channelId === "string");
   },
   isAmino(o: any): o is HopAmino {
-    return (
-      o && (o.$typeUrl === Hop.typeUrl || (typeof o.port_id === "string" && typeof o.channel_id === "string"))
-    );
+    return o && (o.$typeUrl === Hop.typeUrl || typeof o.port_id === "string" && typeof o.channel_id === "string");
   },
   encode(message: Hop, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.portId !== "") {
@@ -399,7 +385,7 @@ export const Hop = {
   toAminoMsg(message: Hop): HopAminoMsg {
     return {
       type: "cosmos-sdk/Hop",
-      value: Hop.toAmino(message),
+      value: Hop.toAmino(message)
     };
   },
   fromProtoMsg(message: HopProtoMsg): Hop {
@@ -411,9 +397,9 @@ export const Hop = {
   toProtoMsg(message: Hop): HopProtoMsg {
     return {
       typeUrl: "/ibc.applications.transfer.v1.Hop",
-      value: Hop.encode(message).finish(),
+      value: Hop.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(Hop.typeUrl, Hop);
 GlobalDecoderRegistry.registerAminoProtoMapping(Hop.aminoType, Hop.typeUrl);

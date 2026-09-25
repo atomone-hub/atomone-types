@@ -5,21 +5,21 @@ export const AminoConverter = {
   "/cosmos.authz.v1beta1.MsgGrant": {
     aminoType: "cosmos-sdk/MsgGrant",
     toAmino: MsgGrant.toAmino,
-    fromAmino: MsgGrant.fromAmino,
+    fromAmino: MsgGrant.fromAmino
   },
   "/cosmos.authz.v1beta1.MsgExec": {
     aminoType: "cosmos-sdk/MsgExec",
     toAmino: MsgExec.toAmino,
-    fromAmino: MsgExec.fromAmino,
+    fromAmino: MsgExec.fromAmino
   },
   "/cosmos.authz.v1beta1.MsgRevoke": {
     aminoType: "cosmos-sdk/MsgRevoke",
     toAmino: MsgRevoke.toAmino,
-    fromAmino: MsgRevoke.fromAmino,
+    fromAmino: MsgRevoke.fromAmino
   },
   "/cosmos.authz.v1beta1.MsgPruneExpiredGrants": {
     aminoType: "cosmos-sdk/MsgPruneExpiredGrants",
     toAmino: MsgPruneExpiredGrants.toAmino,
-    fromAmino: MsgPruneExpiredGrants.fromAmino,
-  },
+    fromAmino: MsgPruneExpiredGrants.fromAmino
+  }
 };

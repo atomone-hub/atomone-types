@@ -9,40 +9,40 @@ export const protobufPackage = "google.api";
  * Message that represents an arbitrary HTTP body. It should only be used for
  * payload formats that can't be represented as JSON, such as raw binary or
  * an HTML page.
- *
- *
+ * 
+ * 
  * This message can be used both in streaming and non-streaming API methods in
  * the request as well as the response.
- *
+ * 
  * It can be used as a top-level request field, which is convenient if one
  * wants to extract parameters from either the URL or HTTP template into the
  * request fields and also want access to the raw HTTP body.
- *
+ * 
  * Example:
- *
+ * 
  *     message GetResourceRequest {
  *       // A unique request id.
  *       string request_id = 1;
- *
+ * 
  *       // The raw HTTP body is bound to this field.
  *       google.api.HttpBody http_body = 2;
  *     }
- *
+ * 
  *     service ResourceService {
  *       rpc GetResource(GetResourceRequest) returns (google.api.HttpBody);
  *       rpc UpdateResource(google.api.HttpBody) returns
  *       (google.protobuf.Empty);
  *     }
- *
+ * 
  * Example with streaming methods:
- *
+ * 
  *     service CaldavService {
  *       rpc GetCalendar(stream google.api.HttpBody)
  *         returns (stream google.api.HttpBody);
  *       rpc UpdateCalendar(stream google.api.HttpBody)
  *         returns (stream google.api.HttpBody);
  *     }
- *
+ * 
  * Use of this type only changes how the request and response bodies are
  * handled, all other features will continue to work unchanged.
  */
@@ -65,40 +65,40 @@ export interface HttpBodyProtoMsg {
  * Message that represents an arbitrary HTTP body. It should only be used for
  * payload formats that can't be represented as JSON, such as raw binary or
  * an HTML page.
- *
- *
+ * 
+ * 
  * This message can be used both in streaming and non-streaming API methods in
  * the request as well as the response.
- *
+ * 
  * It can be used as a top-level request field, which is convenient if one
  * wants to extract parameters from either the URL or HTTP template into the
  * request fields and also want access to the raw HTTP body.
- *
+ * 
  * Example:
- *
+ * 
  *     message GetResourceRequest {
  *       // A unique request id.
  *       string request_id = 1;
- *
+ * 
  *       // The raw HTTP body is bound to this field.
  *       google.api.HttpBody http_body = 2;
  *     }
- *
+ * 
  *     service ResourceService {
  *       rpc GetResource(GetResourceRequest) returns (google.api.HttpBody);
  *       rpc UpdateResource(google.api.HttpBody) returns
  *       (google.protobuf.Empty);
  *     }
- *
+ * 
  * Example with streaming methods:
- *
+ * 
  *     service CaldavService {
  *       rpc GetCalendar(stream google.api.HttpBody)
  *         returns (stream google.api.HttpBody);
  *       rpc UpdateCalendar(stream google.api.HttpBody)
  *         returns (stream google.api.HttpBody);
  *     }
- *
+ * 
  * Use of this type only changes how the request and response bodies are
  * handled, all other features will continue to work unchanged.
  * @name HttpBodyAmino
@@ -128,30 +128,16 @@ function createBaseHttpBody(): HttpBody {
   return {
     contentType: "",
     data: new Uint8Array(),
-    extensions: [],
+    extensions: []
   };
 }
 export const HttpBody = {
   typeUrl: "/google.api.HttpBody",
   is(o: any): o is HttpBody {
-    return (
-      o &&
-      (o.$typeUrl === HttpBody.typeUrl ||
-        (typeof o.contentType === "string" &&
-          (o.data instanceof Uint8Array || typeof o.data === "string") &&
-          Array.isArray(o.extensions) &&
-          (!o.extensions.length || Any.is(o.extensions[0]))))
-    );
+    return o && (o.$typeUrl === HttpBody.typeUrl || typeof o.contentType === "string" && (o.data instanceof Uint8Array || typeof o.data === "string") && Array.isArray(o.extensions) && (!o.extensions.length || Any.is(o.extensions[0])));
   },
   isAmino(o: any): o is HttpBodyAmino {
-    return (
-      o &&
-      (o.$typeUrl === HttpBody.typeUrl ||
-        (typeof o.content_type === "string" &&
-          (o.data instanceof Uint8Array || typeof o.data === "string") &&
-          Array.isArray(o.extensions) &&
-          (!o.extensions.length || Any.isAmino(o.extensions[0]))))
-    );
+    return o && (o.$typeUrl === HttpBody.typeUrl || typeof o.content_type === "string" && (o.data instanceof Uint8Array || typeof o.data === "string") && Array.isArray(o.extensions) && (!o.extensions.length || Any.isAmino(o.extensions[0])));
   },
   encode(message: HttpBody, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.contentType !== "") {
@@ -192,17 +178,15 @@ export const HttpBody = {
     const obj = createBaseHttpBody();
     if (isSet(object.contentType)) obj.contentType = String(object.contentType);
     if (isSet(object.data)) obj.data = bytesFromBase64(object.data);
-    if (Array.isArray(object?.extensions))
-      obj.extensions = object.extensions.map((e: any) => Any.fromJSON(e));
+    if (Array.isArray(object?.extensions)) obj.extensions = object.extensions.map((e: any) => Any.fromJSON(e));
     return obj;
   },
   toJSON(message: HttpBody): JsonSafe<HttpBody> {
     const obj: any = {};
     message.contentType !== undefined && (obj.contentType = message.contentType);
-    message.data !== undefined &&
-      (obj.data = base64FromBytes(message.data !== undefined ? message.data : new Uint8Array()));
+    message.data !== undefined && (obj.data = base64FromBytes(message.data !== undefined ? message.data : new Uint8Array()));
     if (message.extensions) {
-      obj.extensions = message.extensions.map((e) => (e ? Any.toJSON(e) : undefined));
+      obj.extensions = message.extensions.map(e => e ? Any.toJSON(e) : undefined);
     } else {
       obj.extensions = [];
     }
@@ -212,7 +196,7 @@ export const HttpBody = {
     const message = createBaseHttpBody();
     message.contentType = object.contentType ?? "";
     message.data = object.data ?? new Uint8Array();
-    message.extensions = object.extensions?.map((e) => Any.fromPartial(e)) || [];
+    message.extensions = object.extensions?.map(e => Any.fromPartial(e)) || [];
     return message;
   },
   fromAmino(object: HttpBodyAmino): HttpBody {
@@ -223,7 +207,7 @@ export const HttpBody = {
     if (object.data !== undefined && object.data !== null) {
       message.data = bytesFromBase64(object.data);
     }
-    message.extensions = object.extensions?.map((e) => Any.fromAmino(e)) || [];
+    message.extensions = object.extensions?.map(e => Any.fromAmino(e)) || [];
     return message;
   },
   toAmino(message: HttpBody): HttpBodyAmino {
@@ -231,7 +215,7 @@ export const HttpBody = {
     obj.content_type = message.contentType === "" ? undefined : message.contentType;
     obj.data = message.data ? base64FromBytes(message.data) : undefined;
     if (message.extensions) {
-      obj.extensions = message.extensions.map((e) => (e ? Any.toAmino(e) : undefined));
+      obj.extensions = message.extensions.map(e => e ? Any.toAmino(e) : undefined);
     } else {
       obj.extensions = message.extensions;
     }
@@ -249,8 +233,8 @@ export const HttpBody = {
   toProtoMsg(message: HttpBody): HttpBodyProtoMsg {
     return {
       typeUrl: "/google.api.HttpBody",
-      value: HttpBody.encode(message).finish(),
+      value: HttpBody.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(HttpBody.typeUrl, HttpBody);

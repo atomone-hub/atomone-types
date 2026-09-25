@@ -89,27 +89,17 @@ export interface MerklePathAminoMsg {
 }
 function createBaseMerklePath(): MerklePath {
   return {
-    keyPath: [],
+    keyPath: []
   };
 }
 export const MerklePath = {
   typeUrl: "/ibc.core.commitment.v2.MerklePath",
   aminoType: "cosmos-sdk/MerklePath",
   is(o: any): o is MerklePath {
-    return (
-      o &&
-      (o.$typeUrl === MerklePath.typeUrl ||
-        (Array.isArray(o.keyPath) &&
-          (!o.keyPath.length || o.keyPath[0] instanceof Uint8Array || typeof o.keyPath[0] === "string")))
-    );
+    return o && (o.$typeUrl === MerklePath.typeUrl || Array.isArray(o.keyPath) && (!o.keyPath.length || o.keyPath[0] instanceof Uint8Array || typeof o.keyPath[0] === "string"));
   },
   isAmino(o: any): o is MerklePathAmino {
-    return (
-      o &&
-      (o.$typeUrl === MerklePath.typeUrl ||
-        (Array.isArray(o.key_path) &&
-          (!o.key_path.length || o.key_path[0] instanceof Uint8Array || typeof o.key_path[0] === "string")))
-    );
+    return o && (o.$typeUrl === MerklePath.typeUrl || Array.isArray(o.key_path) && (!o.key_path.length || o.key_path[0] instanceof Uint8Array || typeof o.key_path[0] === "string"));
   },
   encode(message: MerklePath, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.keyPath) {
@@ -142,7 +132,7 @@ export const MerklePath = {
   toJSON(message: MerklePath): JsonSafe<MerklePath> {
     const obj: any = {};
     if (message.keyPath) {
-      obj.keyPath = message.keyPath.map((e) => base64FromBytes(e !== undefined ? e : new Uint8Array()));
+      obj.keyPath = message.keyPath.map(e => base64FromBytes(e !== undefined ? e : new Uint8Array()));
     } else {
       obj.keyPath = [];
     }
@@ -150,18 +140,18 @@ export const MerklePath = {
   },
   fromPartial(object: Partial<MerklePath>): MerklePath {
     const message = createBaseMerklePath();
-    message.keyPath = object.keyPath?.map((e) => e) || [];
+    message.keyPath = object.keyPath?.map(e => e) || [];
     return message;
   },
   fromAmino(object: MerklePathAmino): MerklePath {
     const message = createBaseMerklePath();
-    message.keyPath = object.key_path?.map((e) => bytesFromBase64(e)) || [];
+    message.keyPath = object.key_path?.map(e => bytesFromBase64(e)) || [];
     return message;
   },
   toAmino(message: MerklePath): MerklePathAmino {
     const obj: any = {};
     if (message.keyPath) {
-      obj.key_path = message.keyPath.map((e) => base64FromBytes(e));
+      obj.key_path = message.keyPath.map(e => base64FromBytes(e));
     } else {
       obj.key_path = message.keyPath;
     }
@@ -173,7 +163,7 @@ export const MerklePath = {
   toAminoMsg(message: MerklePath): MerklePathAminoMsg {
     return {
       type: "cosmos-sdk/MerklePath",
-      value: MerklePath.toAmino(message),
+      value: MerklePath.toAmino(message)
     };
   },
   fromProtoMsg(message: MerklePathProtoMsg): MerklePath {
@@ -185,9 +175,9 @@ export const MerklePath = {
   toProtoMsg(message: MerklePath): MerklePathProtoMsg {
     return {
       typeUrl: "/ibc.core.commitment.v2.MerklePath",
-      value: MerklePath.encode(message).finish(),
+      value: MerklePath.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(MerklePath.typeUrl, MerklePath);
 GlobalDecoderRegistry.registerAminoProtoMapping(MerklePath.aminoType, MerklePath.typeUrl);

@@ -65,20 +65,16 @@ export interface ConsensusAminoMsg {
 function createBaseApp(): App {
   return {
     protocol: BigInt(0),
-    software: "",
+    software: ""
   };
 }
 export const App = {
   typeUrl: "/tendermint.version.App",
   is(o: any): o is App {
-    return (
-      o && (o.$typeUrl === App.typeUrl || (typeof o.protocol === "bigint" && typeof o.software === "string"))
-    );
+    return o && (o.$typeUrl === App.typeUrl || typeof o.protocol === "bigint" && typeof o.software === "string");
   },
   isAmino(o: any): o is AppAmino {
-    return (
-      o && (o.$typeUrl === App.typeUrl || (typeof o.protocol === "bigint" && typeof o.software === "string"))
-    );
+    return o && (o.$typeUrl === App.typeUrl || typeof o.protocol === "bigint" && typeof o.software === "string");
   },
   encode(message: App, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.protocol !== BigInt(0)) {
@@ -157,28 +153,24 @@ export const App = {
   toProtoMsg(message: App): AppProtoMsg {
     return {
       typeUrl: "/tendermint.version.App",
-      value: App.encode(message).finish(),
+      value: App.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(App.typeUrl, App);
 function createBaseConsensus(): Consensus {
   return {
     block: BigInt(0),
-    app: BigInt(0),
+    app: BigInt(0)
   };
 }
 export const Consensus = {
   typeUrl: "/tendermint.version.Consensus",
   is(o: any): o is Consensus {
-    return (
-      o && (o.$typeUrl === Consensus.typeUrl || (typeof o.block === "bigint" && typeof o.app === "bigint"))
-    );
+    return o && (o.$typeUrl === Consensus.typeUrl || typeof o.block === "bigint" && typeof o.app === "bigint");
   },
   isAmino(o: any): o is ConsensusAmino {
-    return (
-      o && (o.$typeUrl === Consensus.typeUrl || (typeof o.block === "bigint" && typeof o.app === "bigint"))
-    );
+    return o && (o.$typeUrl === Consensus.typeUrl || typeof o.block === "bigint" && typeof o.app === "bigint");
   },
   encode(message: Consensus, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.block !== BigInt(0)) {
@@ -259,8 +251,8 @@ export const Consensus = {
   toProtoMsg(message: Consensus): ConsensusProtoMsg {
     return {
       typeUrl: "/tendermint.version.Consensus",
-      value: Consensus.encode(message).finish(),
+      value: Consensus.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(Consensus.typeUrl, Consensus);

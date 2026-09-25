@@ -30,7 +30,7 @@ export interface PublicKeyAminoMsg {
 function createBasePublicKey(): PublicKey {
   return {
     ed25519: undefined,
-    secp256k1: undefined,
+    secp256k1: undefined
   };
 }
 export const PublicKey = {
@@ -78,10 +78,8 @@ export const PublicKey = {
   },
   toJSON(message: PublicKey): JsonSafe<PublicKey> {
     const obj: any = {};
-    message.ed25519 !== undefined &&
-      (obj.ed25519 = message.ed25519 !== undefined ? base64FromBytes(message.ed25519) : undefined);
-    message.secp256k1 !== undefined &&
-      (obj.secp256k1 = message.secp256k1 !== undefined ? base64FromBytes(message.secp256k1) : undefined);
+    message.ed25519 !== undefined && (obj.ed25519 = message.ed25519 !== undefined ? base64FromBytes(message.ed25519) : undefined);
+    message.secp256k1 !== undefined && (obj.secp256k1 = message.secp256k1 !== undefined ? base64FromBytes(message.secp256k1) : undefined);
     return obj;
   },
   fromPartial(object: Partial<PublicKey>): PublicKey {
@@ -118,8 +116,8 @@ export const PublicKey = {
   toProtoMsg(message: PublicKey): PublicKeyProtoMsg {
     return {
       typeUrl: "/tendermint.crypto.PublicKey",
-      value: PublicKey.encode(message).finish(),
+      value: PublicKey.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(PublicKey.typeUrl, PublicKey);

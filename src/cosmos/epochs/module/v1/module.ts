@@ -75,7 +75,7 @@ export const Module = {
   toAminoMsg(message: Module): ModuleAminoMsg {
     return {
       type: "cosmos-sdk/Module",
-      value: Module.toAmino(message),
+      value: Module.toAmino(message)
     };
   },
   fromProtoMsg(message: ModuleProtoMsg): Module {
@@ -87,9 +87,9 @@ export const Module = {
   toProtoMsg(message: Module): ModuleProtoMsg {
     return {
       typeUrl: "/cosmos.epochs.module.v1.Module",
-      value: Module.encode(message).finish(),
+      value: Module.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(Module.typeUrl, Module);
 GlobalDecoderRegistry.registerAminoProtoMapping(Module.aminoType, Module.typeUrl);

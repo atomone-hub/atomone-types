@@ -31,7 +31,7 @@ export interface InterchainAccountAminoMsg {
 function createBaseInterchainAccount(): InterchainAccount {
   return {
     baseAccount: undefined,
-    accountOwner: "",
+    accountOwner: ""
   };
 }
 export const InterchainAccount = {
@@ -80,8 +80,7 @@ export const InterchainAccount = {
   },
   toJSON(message: InterchainAccount): JsonSafe<InterchainAccount> {
     const obj: any = {};
-    message.baseAccount !== undefined &&
-      (obj.baseAccount = message.baseAccount ? BaseAccount.toJSON(message.baseAccount) : undefined);
+    message.baseAccount !== undefined && (obj.baseAccount = message.baseAccount ? BaseAccount.toJSON(message.baseAccount) : undefined);
     message.accountOwner !== undefined && (obj.accountOwner = message.accountOwner);
     return obj;
   },
@@ -115,7 +114,7 @@ export const InterchainAccount = {
   toAminoMsg(message: InterchainAccount): InterchainAccountAminoMsg {
     return {
       type: "cosmos-sdk/InterchainAccount",
-      value: InterchainAccount.toAmino(message),
+      value: InterchainAccount.toAmino(message)
     };
   },
   fromProtoMsg(message: InterchainAccountProtoMsg): InterchainAccount {
@@ -127,9 +126,9 @@ export const InterchainAccount = {
   toProtoMsg(message: InterchainAccount): InterchainAccountProtoMsg {
     return {
       typeUrl: "/ibc.applications.interchain_accounts.v1.InterchainAccount",
-      value: InterchainAccount.encode(message).finish(),
+      value: InterchainAccount.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(InterchainAccount.typeUrl, InterchainAccount);
 GlobalDecoderRegistry.registerAminoProtoMapping(InterchainAccount.aminoType, InterchainAccount.typeUrl);

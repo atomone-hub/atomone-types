@@ -16,9 +16,8 @@ pnpm build
 
 `pnpm build` does everything in one step:
 
-1. regenerates `src/` from the `.proto` files under `protos/` with [`ts-proto`'s cousin, telescope](https://github.com/hyperweb-io/telescope), through `scripts/codegen.js`
-2. formats the result with Prettier
-3. compiles `src/` into `dist/` with `tsc`
+1. regenerates `src/` from the `.proto` files under `protos/` with [telescope](https://github.com/hyperweb-io/telescope), through `scripts/codegen.js`
+2. compiles `src/` into `dist/` with `tsc`
 
 `src/` is generated. Do not edit it by hand — a build overwrites it, and CI fails when the committed sources differ from what the protos produce.
 

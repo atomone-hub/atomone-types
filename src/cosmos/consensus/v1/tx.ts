@@ -1,14 +1,5 @@
 /* eslint-disable */
-import {
-  BlockParams,
-  BlockParamsAmino,
-  EvidenceParams,
-  EvidenceParamsAmino,
-  ValidatorParams,
-  ValidatorParamsAmino,
-  ABCIParams,
-  ABCIParamsAmino,
-} from "../../../tendermint/types/params";
+import { BlockParams, BlockParamsAmino, EvidenceParams, EvidenceParamsAmino, ValidatorParams, ValidatorParamsAmino, ABCIParams, ABCIParamsAmino } from "../../../tendermint/types/params";
 import { BinaryReader, BinaryWriter } from "../../../binary";
 import { GlobalDecoderRegistry } from "../../../registry";
 import { isSet } from "../../../helpers";
@@ -23,7 +14,7 @@ export interface MsgUpdateParams {
    * params defines the x/consensus parameters to update.
    * VersionsParams is not included in this Msg because it is tracked
    * separarately in x/upgrade.
-   *
+   * 
    * NOTE: All parameters must be supplied.
    */
   block?: BlockParams | undefined;
@@ -51,7 +42,7 @@ export interface MsgUpdateParamsAmino {
    * params defines the x/consensus parameters to update.
    * VersionsParams is not included in this Msg because it is tracked
    * separarately in x/upgrade.
-   *
+   * 
    * NOTE: All parameters must be supplied.
    */
   block?: BlockParamsAmino | undefined;
@@ -93,7 +84,7 @@ function createBaseMsgUpdateParams(): MsgUpdateParams {
     block: undefined,
     evidence: undefined,
     validator: undefined,
-    abci: undefined,
+    abci: undefined
   };
 }
 export const MsgUpdateParams = {
@@ -164,12 +155,9 @@ export const MsgUpdateParams = {
   toJSON(message: MsgUpdateParams): JsonSafe<MsgUpdateParams> {
     const obj: any = {};
     message.authority !== undefined && (obj.authority = message.authority);
-    message.block !== undefined &&
-      (obj.block = message.block ? BlockParams.toJSON(message.block) : undefined);
-    message.evidence !== undefined &&
-      (obj.evidence = message.evidence ? EvidenceParams.toJSON(message.evidence) : undefined);
-    message.validator !== undefined &&
-      (obj.validator = message.validator ? ValidatorParams.toJSON(message.validator) : undefined);
+    message.block !== undefined && (obj.block = message.block ? BlockParams.toJSON(message.block) : undefined);
+    message.evidence !== undefined && (obj.evidence = message.evidence ? EvidenceParams.toJSON(message.evidence) : undefined);
+    message.validator !== undefined && (obj.validator = message.validator ? ValidatorParams.toJSON(message.validator) : undefined);
     message.abci !== undefined && (obj.abci = message.abci ? ABCIParams.toJSON(message.abci) : undefined);
     return obj;
   },
@@ -224,7 +212,7 @@ export const MsgUpdateParams = {
   toAminoMsg(message: MsgUpdateParams): MsgUpdateParamsAminoMsg {
     return {
       type: "cosmos-sdk/x/consensus/MsgUpdateParams",
-      value: MsgUpdateParams.toAmino(message),
+      value: MsgUpdateParams.toAmino(message)
     };
   },
   fromProtoMsg(message: MsgUpdateParamsProtoMsg): MsgUpdateParams {
@@ -236,9 +224,9 @@ export const MsgUpdateParams = {
   toProtoMsg(message: MsgUpdateParams): MsgUpdateParamsProtoMsg {
     return {
       typeUrl: "/cosmos.consensus.v1.MsgUpdateParams",
-      value: MsgUpdateParams.encode(message).finish(),
+      value: MsgUpdateParams.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(MsgUpdateParams.typeUrl, MsgUpdateParams);
 GlobalDecoderRegistry.registerAminoProtoMapping(MsgUpdateParams.aminoType, MsgUpdateParams.typeUrl);
@@ -297,7 +285,7 @@ export const MsgUpdateParamsResponse = {
   toAminoMsg(message: MsgUpdateParamsResponse): MsgUpdateParamsResponseAminoMsg {
     return {
       type: "cosmos-sdk/MsgUpdateParamsResponse",
-      value: MsgUpdateParamsResponse.toAmino(message),
+      value: MsgUpdateParamsResponse.toAmino(message)
     };
   },
   fromProtoMsg(message: MsgUpdateParamsResponseProtoMsg): MsgUpdateParamsResponse {
@@ -309,21 +297,18 @@ export const MsgUpdateParamsResponse = {
   toProtoMsg(message: MsgUpdateParamsResponse): MsgUpdateParamsResponseProtoMsg {
     return {
       typeUrl: "/cosmos.consensus.v1.MsgUpdateParamsResponse",
-      value: MsgUpdateParamsResponse.encode(message).finish(),
+      value: MsgUpdateParamsResponse.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(MsgUpdateParamsResponse.typeUrl, MsgUpdateParamsResponse);
-GlobalDecoderRegistry.registerAminoProtoMapping(
-  MsgUpdateParamsResponse.aminoType,
-  MsgUpdateParamsResponse.typeUrl,
-);
+GlobalDecoderRegistry.registerAminoProtoMapping(MsgUpdateParamsResponse.aminoType, MsgUpdateParamsResponse.typeUrl);
 /** Msg defines the consensus Msg service. */
 export interface Msg {
   /**
    * UpdateParams defines a governance operation for updating the x/consensus module parameters.
    * The authority is defined in the keeper.
-   *
+   * 
    * Since: cosmos-sdk 0.47
    */
   UpdateParams(request: MsgUpdateParams): Promise<MsgUpdateParamsResponse>;
@@ -337,6 +322,6 @@ export class MsgClientImpl implements Msg {
   UpdateParams(request: MsgUpdateParams): Promise<MsgUpdateParamsResponse> {
     const data = MsgUpdateParams.encode(request).finish();
     const promise = this.rpc.request("cosmos.consensus.v1.Msg", "UpdateParams", data);
-    return promise.then((data) => MsgUpdateParamsResponse.decode(new BinaryReader(data)));
+    return promise.then(data => MsgUpdateParamsResponse.decode(new BinaryReader(data)));
   }
 }

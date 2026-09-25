@@ -179,7 +179,7 @@ export interface CancelSoftwareUpgradeProposalAminoMsg {
 }
 /**
  * ModuleVersion specifies a module and its consensus version.
- *
+ * 
  * Since: cosmos-sdk 0.43
  */
 export interface ModuleVersion {
@@ -194,7 +194,7 @@ export interface ModuleVersionProtoMsg {
 }
 /**
  * ModuleVersion specifies a module and its consensus version.
- *
+ * 
  * Since: cosmos-sdk 0.43
  * @name ModuleVersionAmino
  * @package cosmos.upgrade.v1beta1
@@ -220,31 +220,17 @@ function createBasePlan(): Plan {
     time: undefined,
     height: BigInt(0),
     info: "",
-    upgradedClientState: undefined,
+    upgradedClientState: undefined
   };
 }
 export const Plan = {
   typeUrl: "/cosmos.upgrade.v1beta1.Plan",
   aminoType: "cosmos-sdk/Plan",
   is(o: any): o is Plan {
-    return (
-      o &&
-      (o.$typeUrl === Plan.typeUrl ||
-        (typeof o.name === "string" &&
-          Timestamp.is(o.time) &&
-          typeof o.height === "bigint" &&
-          typeof o.info === "string"))
-    );
+    return o && (o.$typeUrl === Plan.typeUrl || typeof o.name === "string" && Timestamp.is(o.time) && typeof o.height === "bigint" && typeof o.info === "string");
   },
   isAmino(o: any): o is PlanAmino {
-    return (
-      o &&
-      (o.$typeUrl === Plan.typeUrl ||
-        (typeof o.name === "string" &&
-          Timestamp.isAmino(o.time) &&
-          typeof o.height === "bigint" &&
-          typeof o.info === "string"))
-    );
+    return o && (o.$typeUrl === Plan.typeUrl || typeof o.name === "string" && Timestamp.isAmino(o.time) && typeof o.height === "bigint" && typeof o.info === "string");
   },
   encode(message: Plan, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.name !== "") {
@@ -308,10 +294,7 @@ export const Plan = {
     message.time !== undefined && (obj.time = fromTimestamp(message.time).toISOString());
     message.height !== undefined && (obj.height = (message.height || BigInt(0)).toString());
     message.info !== undefined && (obj.info = message.info);
-    message.upgradedClientState !== undefined &&
-      (obj.upgradedClientState = message.upgradedClientState
-        ? Any.toJSON(message.upgradedClientState)
-        : undefined);
+    message.upgradedClientState !== undefined && (obj.upgradedClientState = message.upgradedClientState ? Any.toJSON(message.upgradedClientState) : undefined);
     return obj;
   },
   fromPartial(object: Partial<Plan>): Plan {
@@ -354,9 +337,7 @@ export const Plan = {
     obj.time = message.time ? Timestamp.toAmino(message.time) : Timestamp.toAmino(Timestamp.fromPartial({}));
     obj.height = message.height !== BigInt(0) ? message.height?.toString() : undefined;
     obj.info = message.info === "" ? undefined : message.info;
-    obj.upgraded_client_state = message.upgradedClientState
-      ? Any.toAmino(message.upgradedClientState)
-      : undefined;
+    obj.upgraded_client_state = message.upgradedClientState ? Any.toAmino(message.upgradedClientState) : undefined;
     return obj;
   },
   fromAminoMsg(object: PlanAminoMsg): Plan {
@@ -365,7 +346,7 @@ export const Plan = {
   toAminoMsg(message: Plan): PlanAminoMsg {
     return {
       type: "cosmos-sdk/Plan",
-      value: Plan.toAmino(message),
+      value: Plan.toAmino(message)
     };
   },
   fromProtoMsg(message: PlanProtoMsg): Plan {
@@ -377,9 +358,9 @@ export const Plan = {
   toProtoMsg(message: Plan): PlanProtoMsg {
     return {
       typeUrl: "/cosmos.upgrade.v1beta1.Plan",
-      value: Plan.encode(message).finish(),
+      value: Plan.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(Plan.typeUrl, Plan);
 GlobalDecoderRegistry.registerAminoProtoMapping(Plan.aminoType, Plan.typeUrl);
@@ -387,25 +368,17 @@ function createBaseSoftwareUpgradeProposal(): SoftwareUpgradeProposal {
   return {
     title: "",
     description: "",
-    plan: Plan.fromPartial({}),
+    plan: Plan.fromPartial({})
   };
 }
 export const SoftwareUpgradeProposal = {
   typeUrl: "/cosmos.upgrade.v1beta1.SoftwareUpgradeProposal",
   aminoType: "cosmos-sdk/SoftwareUpgradeProposal",
   is(o: any): o is SoftwareUpgradeProposal {
-    return (
-      o &&
-      (o.$typeUrl === SoftwareUpgradeProposal.typeUrl ||
-        (typeof o.title === "string" && typeof o.description === "string" && Plan.is(o.plan)))
-    );
+    return o && (o.$typeUrl === SoftwareUpgradeProposal.typeUrl || typeof o.title === "string" && typeof o.description === "string" && Plan.is(o.plan));
   },
   isAmino(o: any): o is SoftwareUpgradeProposalAmino {
-    return (
-      o &&
-      (o.$typeUrl === SoftwareUpgradeProposal.typeUrl ||
-        (typeof o.title === "string" && typeof o.description === "string" && Plan.isAmino(o.plan)))
-    );
+    return o && (o.$typeUrl === SoftwareUpgradeProposal.typeUrl || typeof o.title === "string" && typeof o.description === "string" && Plan.isAmino(o.plan));
   },
   encode(message: SoftwareUpgradeProposal, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.title !== "") {
@@ -491,7 +464,7 @@ export const SoftwareUpgradeProposal = {
   toAminoMsg(message: SoftwareUpgradeProposal): SoftwareUpgradeProposalAminoMsg {
     return {
       type: "cosmos-sdk/SoftwareUpgradeProposal",
-      value: SoftwareUpgradeProposal.toAmino(message),
+      value: SoftwareUpgradeProposal.toAmino(message)
     };
   },
   fromProtoMsg(message: SoftwareUpgradeProposalProtoMsg): SoftwareUpgradeProposal {
@@ -503,37 +476,26 @@ export const SoftwareUpgradeProposal = {
   toProtoMsg(message: SoftwareUpgradeProposal): SoftwareUpgradeProposalProtoMsg {
     return {
       typeUrl: "/cosmos.upgrade.v1beta1.SoftwareUpgradeProposal",
-      value: SoftwareUpgradeProposal.encode(message).finish(),
+      value: SoftwareUpgradeProposal.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(SoftwareUpgradeProposal.typeUrl, SoftwareUpgradeProposal);
-GlobalDecoderRegistry.registerAminoProtoMapping(
-  SoftwareUpgradeProposal.aminoType,
-  SoftwareUpgradeProposal.typeUrl,
-);
+GlobalDecoderRegistry.registerAminoProtoMapping(SoftwareUpgradeProposal.aminoType, SoftwareUpgradeProposal.typeUrl);
 function createBaseCancelSoftwareUpgradeProposal(): CancelSoftwareUpgradeProposal {
   return {
     title: "",
-    description: "",
+    description: ""
   };
 }
 export const CancelSoftwareUpgradeProposal = {
   typeUrl: "/cosmos.upgrade.v1beta1.CancelSoftwareUpgradeProposal",
   aminoType: "cosmos-sdk/CancelSoftwareUpgradeProposal",
   is(o: any): o is CancelSoftwareUpgradeProposal {
-    return (
-      o &&
-      (o.$typeUrl === CancelSoftwareUpgradeProposal.typeUrl ||
-        (typeof o.title === "string" && typeof o.description === "string"))
-    );
+    return o && (o.$typeUrl === CancelSoftwareUpgradeProposal.typeUrl || typeof o.title === "string" && typeof o.description === "string");
   },
   isAmino(o: any): o is CancelSoftwareUpgradeProposalAmino {
-    return (
-      o &&
-      (o.$typeUrl === CancelSoftwareUpgradeProposal.typeUrl ||
-        (typeof o.title === "string" && typeof o.description === "string"))
-    );
+    return o && (o.$typeUrl === CancelSoftwareUpgradeProposal.typeUrl || typeof o.title === "string" && typeof o.description === "string");
   },
   encode(message: CancelSoftwareUpgradeProposal, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.title !== "") {
@@ -604,7 +566,7 @@ export const CancelSoftwareUpgradeProposal = {
   toAminoMsg(message: CancelSoftwareUpgradeProposal): CancelSoftwareUpgradeProposalAminoMsg {
     return {
       type: "cosmos-sdk/CancelSoftwareUpgradeProposal",
-      value: CancelSoftwareUpgradeProposal.toAmino(message),
+      value: CancelSoftwareUpgradeProposal.toAmino(message)
     };
   },
   fromProtoMsg(message: CancelSoftwareUpgradeProposalProtoMsg): CancelSoftwareUpgradeProposal {
@@ -616,35 +578,26 @@ export const CancelSoftwareUpgradeProposal = {
   toProtoMsg(message: CancelSoftwareUpgradeProposal): CancelSoftwareUpgradeProposalProtoMsg {
     return {
       typeUrl: "/cosmos.upgrade.v1beta1.CancelSoftwareUpgradeProposal",
-      value: CancelSoftwareUpgradeProposal.encode(message).finish(),
+      value: CancelSoftwareUpgradeProposal.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(CancelSoftwareUpgradeProposal.typeUrl, CancelSoftwareUpgradeProposal);
-GlobalDecoderRegistry.registerAminoProtoMapping(
-  CancelSoftwareUpgradeProposal.aminoType,
-  CancelSoftwareUpgradeProposal.typeUrl,
-);
+GlobalDecoderRegistry.registerAminoProtoMapping(CancelSoftwareUpgradeProposal.aminoType, CancelSoftwareUpgradeProposal.typeUrl);
 function createBaseModuleVersion(): ModuleVersion {
   return {
     name: "",
-    version: BigInt(0),
+    version: BigInt(0)
   };
 }
 export const ModuleVersion = {
   typeUrl: "/cosmos.upgrade.v1beta1.ModuleVersion",
   aminoType: "cosmos-sdk/ModuleVersion",
   is(o: any): o is ModuleVersion {
-    return (
-      o &&
-      (o.$typeUrl === ModuleVersion.typeUrl || (typeof o.name === "string" && typeof o.version === "bigint"))
-    );
+    return o && (o.$typeUrl === ModuleVersion.typeUrl || typeof o.name === "string" && typeof o.version === "bigint");
   },
   isAmino(o: any): o is ModuleVersionAmino {
-    return (
-      o &&
-      (o.$typeUrl === ModuleVersion.typeUrl || (typeof o.name === "string" && typeof o.version === "bigint"))
-    );
+    return o && (o.$typeUrl === ModuleVersion.typeUrl || typeof o.name === "string" && typeof o.version === "bigint");
   },
   encode(message: ModuleVersion, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.name !== "") {
@@ -717,7 +670,7 @@ export const ModuleVersion = {
   toAminoMsg(message: ModuleVersion): ModuleVersionAminoMsg {
     return {
       type: "cosmos-sdk/ModuleVersion",
-      value: ModuleVersion.toAmino(message),
+      value: ModuleVersion.toAmino(message)
     };
   },
   fromProtoMsg(message: ModuleVersionProtoMsg): ModuleVersion {
@@ -729,9 +682,9 @@ export const ModuleVersion = {
   toProtoMsg(message: ModuleVersion): ModuleVersionProtoMsg {
     return {
       typeUrl: "/cosmos.upgrade.v1beta1.ModuleVersion",
-      value: ModuleVersion.encode(message).finish(),
+      value: ModuleVersion.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(ModuleVersion.typeUrl, ModuleVersion);
 GlobalDecoderRegistry.registerAminoProtoMapping(ModuleVersion.aminoType, ModuleVersion.typeUrl);

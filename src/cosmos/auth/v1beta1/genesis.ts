@@ -40,27 +40,17 @@ export interface GenesisStateAminoMsg {
 function createBaseGenesisState(): GenesisState {
   return {
     params: Params.fromPartial({}),
-    accounts: [],
+    accounts: []
   };
 }
 export const GenesisState = {
   typeUrl: "/cosmos.auth.v1beta1.GenesisState",
   aminoType: "cosmos-sdk/GenesisState",
   is(o: any): o is GenesisState {
-    return (
-      o &&
-      (o.$typeUrl === GenesisState.typeUrl ||
-        (Params.is(o.params) && Array.isArray(o.accounts) && (!o.accounts.length || Any.is(o.accounts[0]))))
-    );
+    return o && (o.$typeUrl === GenesisState.typeUrl || Params.is(o.params) && Array.isArray(o.accounts) && (!o.accounts.length || Any.is(o.accounts[0])));
   },
   isAmino(o: any): o is GenesisStateAmino {
-    return (
-      o &&
-      (o.$typeUrl === GenesisState.typeUrl ||
-        (Params.isAmino(o.params) &&
-          Array.isArray(o.accounts) &&
-          (!o.accounts.length || Any.isAmino(o.accounts[0]))))
-    );
+    return o && (o.$typeUrl === GenesisState.typeUrl || Params.isAmino(o.params) && Array.isArray(o.accounts) && (!o.accounts.length || Any.isAmino(o.accounts[0])));
   },
   encode(message: GenesisState, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.params !== undefined) {
@@ -101,7 +91,7 @@ export const GenesisState = {
     const obj: any = {};
     message.params !== undefined && (obj.params = message.params ? Params.toJSON(message.params) : undefined);
     if (message.accounts) {
-      obj.accounts = message.accounts.map((e) => (e ? Any.toJSON(e) : undefined));
+      obj.accounts = message.accounts.map(e => e ? Any.toJSON(e) : undefined);
     } else {
       obj.accounts = [];
     }
@@ -112,7 +102,7 @@ export const GenesisState = {
     if (object.params !== undefined && object.params !== null) {
       message.params = Params.fromPartial(object.params);
     }
-    message.accounts = object.accounts?.map((e) => Any.fromPartial(e)) || [];
+    message.accounts = object.accounts?.map(e => Any.fromPartial(e)) || [];
     return message;
   },
   fromAmino(object: GenesisStateAmino): GenesisState {
@@ -120,14 +110,14 @@ export const GenesisState = {
     if (object.params !== undefined && object.params !== null) {
       message.params = Params.fromAmino(object.params);
     }
-    message.accounts = object.accounts?.map((e) => Any.fromAmino(e)) || [];
+    message.accounts = object.accounts?.map(e => Any.fromAmino(e)) || [];
     return message;
   },
   toAmino(message: GenesisState): GenesisStateAmino {
     const obj: any = {};
     obj.params = message.params ? Params.toAmino(message.params) : Params.toAmino(Params.fromPartial({}));
     if (message.accounts) {
-      obj.accounts = message.accounts.map((e) => (e ? Any.toAmino(e) : undefined));
+      obj.accounts = message.accounts.map(e => e ? Any.toAmino(e) : undefined);
     } else {
       obj.accounts = message.accounts;
     }
@@ -139,7 +129,7 @@ export const GenesisState = {
   toAminoMsg(message: GenesisState): GenesisStateAminoMsg {
     return {
       type: "cosmos-sdk/GenesisState",
-      value: GenesisState.toAmino(message),
+      value: GenesisState.toAmino(message)
     };
   },
   fromProtoMsg(message: GenesisStateProtoMsg): GenesisState {
@@ -151,9 +141,9 @@ export const GenesisState = {
   toProtoMsg(message: GenesisState): GenesisStateProtoMsg {
     return {
       typeUrl: "/cosmos.auth.v1beta1.GenesisState",
-      value: GenesisState.encode(message).finish(),
+      value: GenesisState.encode(message).finish()
     };
-  },
+  }
 };
 GlobalDecoderRegistry.register(GenesisState.typeUrl, GenesisState);
 GlobalDecoderRegistry.registerAminoProtoMapping(GenesisState.aminoType, GenesisState.typeUrl);
