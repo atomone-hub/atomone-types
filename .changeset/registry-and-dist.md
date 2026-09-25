@@ -8,4 +8,4 @@ Restore the decoder registry, and publish the compiled output from `dist/`.
 
 The compiled output now ships from `dist/` instead of being copied file by file into the package root. Import paths are unchanged: `main`, `types` and an `exports` map keep `@atomone/atomone-types/atomone/gov/v1/gov` and the rest resolving as before, with or without a `.js` suffix.
 
-Regenerated with `@cosmology/telescope` 1.12.21, built with TypeScript 7, and the `@cosmjs/*` peers used for development moved to 0.39.0.
+Regenerated with `@cosmology/telescope` 1.12.21, built with TypeScript 7, and the `@cosmjs/*` peers used for development moved to 0.39.0. The generated sources are no longer run through Prettier afterwards, so comments and line wrapping in the compiled output differ cosmetically; the exported API is unchanged.
