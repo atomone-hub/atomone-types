@@ -3,6 +3,8 @@ import { Payload, PayloadAmino, Packet, PacketAmino, Acknowledgement, Acknowledg
 import { Height, HeightAmino } from "../../client/v1/client";
 import { BinaryReader, BinaryWriter } from "../../../../binary";
 import { isSet, bytesFromBase64, base64FromBytes } from "../../../../helpers";
+import { JsonSafe } from "../../../../json-safe";
+import { GlobalDecoderRegistry } from "../../../../registry";
 import { TxRpc } from "../../../../types";
 export const protobufPackage = "ibc.core.channel.v2";
 /** ResponseResultType defines the possible outcomes of the execution of a message */
@@ -64,7 +66,12 @@ export interface MsgSendPacketProtoMsg {
   typeUrl: "/ibc.core.channel.v2.MsgSendPacket";
   value: Uint8Array;
 }
-/** MsgSendPacket sends an outgoing IBC packet. */
+/**
+ * MsgSendPacket sends an outgoing IBC packet.
+ * @name MsgSendPacketAmino
+ * @package ibc.core.channel.v2
+ * @see proto type: ibc.core.channel.v2.MsgSendPacket
+ */
 export interface MsgSendPacketAmino {
   source_client?: string;
   timeout_timestamp?: string;
@@ -83,7 +90,12 @@ export interface MsgSendPacketResponseProtoMsg {
   typeUrl: "/ibc.core.channel.v2.MsgSendPacketResponse";
   value: Uint8Array;
 }
-/** MsgSendPacketResponse defines the Msg/SendPacket response type. */
+/**
+ * MsgSendPacketResponse defines the Msg/SendPacket response type.
+ * @name MsgSendPacketResponseAmino
+ * @package ibc.core.channel.v2
+ * @see proto type: ibc.core.channel.v2.MsgSendPacketResponse
+ */
 export interface MsgSendPacketResponseAmino {
   sequence?: string;
 }
@@ -102,7 +114,12 @@ export interface MsgRecvPacketProtoMsg {
   typeUrl: "/ibc.core.channel.v2.MsgRecvPacket";
   value: Uint8Array;
 }
-/** MsgRecvPacket receives an incoming IBC packet. */
+/**
+ * MsgRecvPacket receives an incoming IBC packet.
+ * @name MsgRecvPacketAmino
+ * @package ibc.core.channel.v2
+ * @see proto type: ibc.core.channel.v2.MsgRecvPacket
+ */
 export interface MsgRecvPacketAmino {
   packet?: PacketAmino | undefined;
   proof_commitment?: string;
@@ -121,7 +138,12 @@ export interface MsgRecvPacketResponseProtoMsg {
   typeUrl: "/ibc.core.channel.v2.MsgRecvPacketResponse";
   value: Uint8Array;
 }
-/** MsgRecvPacketResponse defines the Msg/RecvPacket response type. */
+/**
+ * MsgRecvPacketResponse defines the Msg/RecvPacket response type.
+ * @name MsgRecvPacketResponseAmino
+ * @package ibc.core.channel.v2
+ * @see proto type: ibc.core.channel.v2.MsgRecvPacketResponse
+ */
 export interface MsgRecvPacketResponseAmino {
   result?: ResponseResultType;
 }
@@ -140,7 +162,12 @@ export interface MsgTimeoutProtoMsg {
   typeUrl: "/ibc.core.channel.v2.MsgTimeout";
   value: Uint8Array;
 }
-/** MsgTimeout receives timed-out packet */
+/**
+ * MsgTimeout receives timed-out packet
+ * @name MsgTimeoutAmino
+ * @package ibc.core.channel.v2
+ * @see proto type: ibc.core.channel.v2.MsgTimeout
+ */
 export interface MsgTimeoutAmino {
   packet?: PacketAmino | undefined;
   proof_unreceived?: string;
@@ -159,7 +186,12 @@ export interface MsgTimeoutResponseProtoMsg {
   typeUrl: "/ibc.core.channel.v2.MsgTimeoutResponse";
   value: Uint8Array;
 }
-/** MsgTimeoutResponse defines the Msg/Timeout response type. */
+/**
+ * MsgTimeoutResponse defines the Msg/Timeout response type.
+ * @name MsgTimeoutResponseAmino
+ * @package ibc.core.channel.v2
+ * @see proto type: ibc.core.channel.v2.MsgTimeoutResponse
+ */
 export interface MsgTimeoutResponseAmino {
   result?: ResponseResultType;
 }
@@ -179,7 +211,12 @@ export interface MsgAcknowledgementProtoMsg {
   typeUrl: "/ibc.core.channel.v2.MsgAcknowledgement";
   value: Uint8Array;
 }
-/** MsgAcknowledgement receives incoming IBC acknowledgement. */
+/**
+ * MsgAcknowledgement receives incoming IBC acknowledgement.
+ * @name MsgAcknowledgementAmino
+ * @package ibc.core.channel.v2
+ * @see proto type: ibc.core.channel.v2.MsgAcknowledgement
+ */
 export interface MsgAcknowledgementAmino {
   packet?: PacketAmino | undefined;
   acknowledgement?: AcknowledgementAmino | undefined;
@@ -199,7 +236,12 @@ export interface MsgAcknowledgementResponseProtoMsg {
   typeUrl: "/ibc.core.channel.v2.MsgAcknowledgementResponse";
   value: Uint8Array;
 }
-/** MsgAcknowledgementResponse defines the Msg/Acknowledgement response type. */
+/**
+ * MsgAcknowledgementResponse defines the Msg/Acknowledgement response type.
+ * @name MsgAcknowledgementResponseAmino
+ * @package ibc.core.channel.v2
+ * @see proto type: ibc.core.channel.v2.MsgAcknowledgementResponse
+ */
 export interface MsgAcknowledgementResponseAmino {
   result?: ResponseResultType;
 }
@@ -212,11 +254,18 @@ function createBaseMsgSendPacket(): MsgSendPacket {
     sourceClient: "",
     timeoutTimestamp: BigInt(0),
     payloads: [],
-    signer: "",
+    signer: ""
   };
 }
 export const MsgSendPacket = {
   typeUrl: "/ibc.core.channel.v2.MsgSendPacket",
+  aminoType: "cosmos-sdk/MsgSendPacket",
+  is(o: any): o is MsgSendPacket {
+    return o && (o.$typeUrl === MsgSendPacket.typeUrl || typeof o.sourceClient === "string" && typeof o.timeoutTimestamp === "bigint" && Array.isArray(o.payloads) && (!o.payloads.length || Payload.is(o.payloads[0])) && typeof o.signer === "string");
+  },
+  isAmino(o: any): o is MsgSendPacketAmino {
+    return o && (o.$typeUrl === MsgSendPacket.typeUrl || typeof o.source_client === "string" && typeof o.timeout_timestamp === "bigint" && Array.isArray(o.payloads) && (!o.payloads.length || Payload.isAmino(o.payloads[0])) && typeof o.signer === "string");
+  },
   encode(message: MsgSendPacket, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.sourceClient !== "") {
       writer.uint32(10).string(message.sourceClient);
@@ -266,13 +315,12 @@ export const MsgSendPacket = {
     if (isSet(object.signer)) obj.signer = String(object.signer);
     return obj;
   },
-  toJSON(message: MsgSendPacket): unknown {
+  toJSON(message: MsgSendPacket): JsonSafe<MsgSendPacket> {
     const obj: any = {};
     message.sourceClient !== undefined && (obj.sourceClient = message.sourceClient);
-    message.timeoutTimestamp !== undefined &&
-      (obj.timeoutTimestamp = (message.timeoutTimestamp || BigInt(0)).toString());
+    message.timeoutTimestamp !== undefined && (obj.timeoutTimestamp = (message.timeoutTimestamp || BigInt(0)).toString());
     if (message.payloads) {
-      obj.payloads = message.payloads.map((e) => (e ? Payload.toJSON(e) : undefined));
+      obj.payloads = message.payloads.map(e => e ? Payload.toJSON(e) : undefined);
     } else {
       obj.payloads = [];
     }
@@ -285,7 +333,7 @@ export const MsgSendPacket = {
     if (object.timeoutTimestamp !== undefined && object.timeoutTimestamp !== null) {
       message.timeoutTimestamp = BigInt(object.timeoutTimestamp.toString());
     }
-    message.payloads = object.payloads?.map((e) => Payload.fromPartial(e)) || [];
+    message.payloads = object.payloads?.map(e => Payload.fromPartial(e)) || [];
     message.signer = object.signer ?? "";
     return message;
   },
@@ -297,7 +345,7 @@ export const MsgSendPacket = {
     if (object.timeout_timestamp !== undefined && object.timeout_timestamp !== null) {
       message.timeoutTimestamp = BigInt(object.timeout_timestamp);
     }
-    message.payloads = object.payloads?.map((e) => Payload.fromAmino(e)) || [];
+    message.payloads = object.payloads?.map(e => Payload.fromAmino(e)) || [];
     if (object.signer !== undefined && object.signer !== null) {
       message.signer = object.signer;
     }
@@ -305,14 +353,14 @@ export const MsgSendPacket = {
   },
   toAmino(message: MsgSendPacket): MsgSendPacketAmino {
     const obj: any = {};
-    obj.source_client = message.sourceClient;
-    obj.timeout_timestamp = message.timeoutTimestamp ? message.timeoutTimestamp.toString() : undefined;
+    obj.source_client = message.sourceClient === "" ? undefined : message.sourceClient;
+    obj.timeout_timestamp = message.timeoutTimestamp !== BigInt(0) ? message.timeoutTimestamp?.toString() : undefined;
     if (message.payloads) {
-      obj.payloads = message.payloads.map((e) => (e ? Payload.toAmino(e) : undefined));
+      obj.payloads = message.payloads.map(e => e ? Payload.toAmino(e) : undefined);
     } else {
-      obj.payloads = [];
+      obj.payloads = message.payloads;
     }
-    obj.signer = message.signer;
+    obj.signer = message.signer === "" ? undefined : message.signer;
     return obj;
   },
   fromAminoMsg(object: MsgSendPacketAminoMsg): MsgSendPacket {
@@ -321,7 +369,7 @@ export const MsgSendPacket = {
   toAminoMsg(message: MsgSendPacket): MsgSendPacketAminoMsg {
     return {
       type: "cosmos-sdk/MsgSendPacket",
-      value: MsgSendPacket.toAmino(message),
+      value: MsgSendPacket.toAmino(message)
     };
   },
   fromProtoMsg(message: MsgSendPacketProtoMsg): MsgSendPacket {
@@ -333,17 +381,26 @@ export const MsgSendPacket = {
   toProtoMsg(message: MsgSendPacket): MsgSendPacketProtoMsg {
     return {
       typeUrl: "/ibc.core.channel.v2.MsgSendPacket",
-      value: MsgSendPacket.encode(message).finish(),
+      value: MsgSendPacket.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(MsgSendPacket.typeUrl, MsgSendPacket);
+GlobalDecoderRegistry.registerAminoProtoMapping(MsgSendPacket.aminoType, MsgSendPacket.typeUrl);
 function createBaseMsgSendPacketResponse(): MsgSendPacketResponse {
   return {
-    sequence: BigInt(0),
+    sequence: BigInt(0)
   };
 }
 export const MsgSendPacketResponse = {
   typeUrl: "/ibc.core.channel.v2.MsgSendPacketResponse",
+  aminoType: "cosmos-sdk/MsgSendPacketResponse",
+  is(o: any): o is MsgSendPacketResponse {
+    return o && (o.$typeUrl === MsgSendPacketResponse.typeUrl || typeof o.sequence === "bigint");
+  },
+  isAmino(o: any): o is MsgSendPacketResponseAmino {
+    return o && (o.$typeUrl === MsgSendPacketResponse.typeUrl || typeof o.sequence === "bigint");
+  },
   encode(message: MsgSendPacketResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.sequence !== BigInt(0)) {
       writer.uint32(8).uint64(message.sequence);
@@ -372,7 +429,7 @@ export const MsgSendPacketResponse = {
     if (isSet(object.sequence)) obj.sequence = BigInt(object.sequence.toString());
     return obj;
   },
-  toJSON(message: MsgSendPacketResponse): unknown {
+  toJSON(message: MsgSendPacketResponse): JsonSafe<MsgSendPacketResponse> {
     const obj: any = {};
     message.sequence !== undefined && (obj.sequence = (message.sequence || BigInt(0)).toString());
     return obj;
@@ -393,7 +450,7 @@ export const MsgSendPacketResponse = {
   },
   toAmino(message: MsgSendPacketResponse): MsgSendPacketResponseAmino {
     const obj: any = {};
-    obj.sequence = message.sequence ? message.sequence.toString() : undefined;
+    obj.sequence = message.sequence !== BigInt(0) ? message.sequence?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: MsgSendPacketResponseAminoMsg): MsgSendPacketResponse {
@@ -402,7 +459,7 @@ export const MsgSendPacketResponse = {
   toAminoMsg(message: MsgSendPacketResponse): MsgSendPacketResponseAminoMsg {
     return {
       type: "cosmos-sdk/MsgSendPacketResponse",
-      value: MsgSendPacketResponse.toAmino(message),
+      value: MsgSendPacketResponse.toAmino(message)
     };
   },
   fromProtoMsg(message: MsgSendPacketResponseProtoMsg): MsgSendPacketResponse {
@@ -414,20 +471,29 @@ export const MsgSendPacketResponse = {
   toProtoMsg(message: MsgSendPacketResponse): MsgSendPacketResponseProtoMsg {
     return {
       typeUrl: "/ibc.core.channel.v2.MsgSendPacketResponse",
-      value: MsgSendPacketResponse.encode(message).finish(),
+      value: MsgSendPacketResponse.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(MsgSendPacketResponse.typeUrl, MsgSendPacketResponse);
+GlobalDecoderRegistry.registerAminoProtoMapping(MsgSendPacketResponse.aminoType, MsgSendPacketResponse.typeUrl);
 function createBaseMsgRecvPacket(): MsgRecvPacket {
   return {
     packet: Packet.fromPartial({}),
     proofCommitment: new Uint8Array(),
     proofHeight: Height.fromPartial({}),
-    signer: "",
+    signer: ""
   };
 }
 export const MsgRecvPacket = {
   typeUrl: "/ibc.core.channel.v2.MsgRecvPacket",
+  aminoType: "cosmos-sdk/MsgRecvPacket",
+  is(o: any): o is MsgRecvPacket {
+    return o && (o.$typeUrl === MsgRecvPacket.typeUrl || Packet.is(o.packet) && (o.proofCommitment instanceof Uint8Array || typeof o.proofCommitment === "string") && Height.is(o.proofHeight) && typeof o.signer === "string");
+  },
+  isAmino(o: any): o is MsgRecvPacketAmino {
+    return o && (o.$typeUrl === MsgRecvPacket.typeUrl || Packet.isAmino(o.packet) && (o.proof_commitment instanceof Uint8Array || typeof o.proof_commitment === "string") && Height.isAmino(o.proof_height) && typeof o.signer === "string");
+  },
   encode(message: MsgRecvPacket, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.packet !== undefined) {
       Packet.encode(message.packet, writer.uint32(10).fork()).ldelim();
@@ -477,15 +543,11 @@ export const MsgRecvPacket = {
     if (isSet(object.signer)) obj.signer = String(object.signer);
     return obj;
   },
-  toJSON(message: MsgRecvPacket): unknown {
+  toJSON(message: MsgRecvPacket): JsonSafe<MsgRecvPacket> {
     const obj: any = {};
     message.packet !== undefined && (obj.packet = message.packet ? Packet.toJSON(message.packet) : undefined);
-    message.proofCommitment !== undefined &&
-      (obj.proofCommitment = base64FromBytes(
-        message.proofCommitment !== undefined ? message.proofCommitment : new Uint8Array(),
-      ));
-    message.proofHeight !== undefined &&
-      (obj.proofHeight = message.proofHeight ? Height.toJSON(message.proofHeight) : undefined);
+    message.proofCommitment !== undefined && (obj.proofCommitment = base64FromBytes(message.proofCommitment !== undefined ? message.proofCommitment : new Uint8Array()));
+    message.proofHeight !== undefined && (obj.proofHeight = message.proofHeight ? Height.toJSON(message.proofHeight) : undefined);
     message.signer !== undefined && (obj.signer = message.signer);
     return obj;
   },
@@ -522,7 +584,7 @@ export const MsgRecvPacket = {
     obj.packet = message.packet ? Packet.toAmino(message.packet) : undefined;
     obj.proof_commitment = message.proofCommitment ? base64FromBytes(message.proofCommitment) : undefined;
     obj.proof_height = message.proofHeight ? Height.toAmino(message.proofHeight) : {};
-    obj.signer = message.signer;
+    obj.signer = message.signer === "" ? undefined : message.signer;
     return obj;
   },
   fromAminoMsg(object: MsgRecvPacketAminoMsg): MsgRecvPacket {
@@ -531,7 +593,7 @@ export const MsgRecvPacket = {
   toAminoMsg(message: MsgRecvPacket): MsgRecvPacketAminoMsg {
     return {
       type: "cosmos-sdk/MsgRecvPacket",
-      value: MsgRecvPacket.toAmino(message),
+      value: MsgRecvPacket.toAmino(message)
     };
   },
   fromProtoMsg(message: MsgRecvPacketProtoMsg): MsgRecvPacket {
@@ -543,17 +605,26 @@ export const MsgRecvPacket = {
   toProtoMsg(message: MsgRecvPacket): MsgRecvPacketProtoMsg {
     return {
       typeUrl: "/ibc.core.channel.v2.MsgRecvPacket",
-      value: MsgRecvPacket.encode(message).finish(),
+      value: MsgRecvPacket.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(MsgRecvPacket.typeUrl, MsgRecvPacket);
+GlobalDecoderRegistry.registerAminoProtoMapping(MsgRecvPacket.aminoType, MsgRecvPacket.typeUrl);
 function createBaseMsgRecvPacketResponse(): MsgRecvPacketResponse {
   return {
-    result: 0,
+    result: 0
   };
 }
 export const MsgRecvPacketResponse = {
   typeUrl: "/ibc.core.channel.v2.MsgRecvPacketResponse",
+  aminoType: "cosmos-sdk/MsgRecvPacketResponse",
+  is(o: any): o is MsgRecvPacketResponse {
+    return o && (o.$typeUrl === MsgRecvPacketResponse.typeUrl || isSet(o.result));
+  },
+  isAmino(o: any): o is MsgRecvPacketResponseAmino {
+    return o && (o.$typeUrl === MsgRecvPacketResponse.typeUrl || isSet(o.result));
+  },
   encode(message: MsgRecvPacketResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.result !== 0) {
       writer.uint32(8).int32(message.result);
@@ -582,7 +653,7 @@ export const MsgRecvPacketResponse = {
     if (isSet(object.result)) obj.result = responseResultTypeFromJSON(object.result);
     return obj;
   },
-  toJSON(message: MsgRecvPacketResponse): unknown {
+  toJSON(message: MsgRecvPacketResponse): JsonSafe<MsgRecvPacketResponse> {
     const obj: any = {};
     message.result !== undefined && (obj.result = responseResultTypeToJSON(message.result));
     return obj;
@@ -595,13 +666,13 @@ export const MsgRecvPacketResponse = {
   fromAmino(object: MsgRecvPacketResponseAmino): MsgRecvPacketResponse {
     const message = createBaseMsgRecvPacketResponse();
     if (object.result !== undefined && object.result !== null) {
-      message.result = responseResultTypeFromJSON(object.result);
+      message.result = object.result;
     }
     return message;
   },
   toAmino(message: MsgRecvPacketResponse): MsgRecvPacketResponseAmino {
     const obj: any = {};
-    obj.result = message.result;
+    obj.result = message.result === 0 ? undefined : message.result;
     return obj;
   },
   fromAminoMsg(object: MsgRecvPacketResponseAminoMsg): MsgRecvPacketResponse {
@@ -610,7 +681,7 @@ export const MsgRecvPacketResponse = {
   toAminoMsg(message: MsgRecvPacketResponse): MsgRecvPacketResponseAminoMsg {
     return {
       type: "cosmos-sdk/MsgRecvPacketResponse",
-      value: MsgRecvPacketResponse.toAmino(message),
+      value: MsgRecvPacketResponse.toAmino(message)
     };
   },
   fromProtoMsg(message: MsgRecvPacketResponseProtoMsg): MsgRecvPacketResponse {
@@ -622,20 +693,29 @@ export const MsgRecvPacketResponse = {
   toProtoMsg(message: MsgRecvPacketResponse): MsgRecvPacketResponseProtoMsg {
     return {
       typeUrl: "/ibc.core.channel.v2.MsgRecvPacketResponse",
-      value: MsgRecvPacketResponse.encode(message).finish(),
+      value: MsgRecvPacketResponse.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(MsgRecvPacketResponse.typeUrl, MsgRecvPacketResponse);
+GlobalDecoderRegistry.registerAminoProtoMapping(MsgRecvPacketResponse.aminoType, MsgRecvPacketResponse.typeUrl);
 function createBaseMsgTimeout(): MsgTimeout {
   return {
     packet: Packet.fromPartial({}),
     proofUnreceived: new Uint8Array(),
     proofHeight: Height.fromPartial({}),
-    signer: "",
+    signer: ""
   };
 }
 export const MsgTimeout = {
   typeUrl: "/ibc.core.channel.v2.MsgTimeout",
+  aminoType: "cosmos-sdk/MsgTimeout",
+  is(o: any): o is MsgTimeout {
+    return o && (o.$typeUrl === MsgTimeout.typeUrl || Packet.is(o.packet) && (o.proofUnreceived instanceof Uint8Array || typeof o.proofUnreceived === "string") && Height.is(o.proofHeight) && typeof o.signer === "string");
+  },
+  isAmino(o: any): o is MsgTimeoutAmino {
+    return o && (o.$typeUrl === MsgTimeout.typeUrl || Packet.isAmino(o.packet) && (o.proof_unreceived instanceof Uint8Array || typeof o.proof_unreceived === "string") && Height.isAmino(o.proof_height) && typeof o.signer === "string");
+  },
   encode(message: MsgTimeout, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.packet !== undefined) {
       Packet.encode(message.packet, writer.uint32(10).fork()).ldelim();
@@ -685,15 +765,11 @@ export const MsgTimeout = {
     if (isSet(object.signer)) obj.signer = String(object.signer);
     return obj;
   },
-  toJSON(message: MsgTimeout): unknown {
+  toJSON(message: MsgTimeout): JsonSafe<MsgTimeout> {
     const obj: any = {};
     message.packet !== undefined && (obj.packet = message.packet ? Packet.toJSON(message.packet) : undefined);
-    message.proofUnreceived !== undefined &&
-      (obj.proofUnreceived = base64FromBytes(
-        message.proofUnreceived !== undefined ? message.proofUnreceived : new Uint8Array(),
-      ));
-    message.proofHeight !== undefined &&
-      (obj.proofHeight = message.proofHeight ? Height.toJSON(message.proofHeight) : undefined);
+    message.proofUnreceived !== undefined && (obj.proofUnreceived = base64FromBytes(message.proofUnreceived !== undefined ? message.proofUnreceived : new Uint8Array()));
+    message.proofHeight !== undefined && (obj.proofHeight = message.proofHeight ? Height.toJSON(message.proofHeight) : undefined);
     message.signer !== undefined && (obj.signer = message.signer);
     return obj;
   },
@@ -730,7 +806,7 @@ export const MsgTimeout = {
     obj.packet = message.packet ? Packet.toAmino(message.packet) : undefined;
     obj.proof_unreceived = message.proofUnreceived ? base64FromBytes(message.proofUnreceived) : undefined;
     obj.proof_height = message.proofHeight ? Height.toAmino(message.proofHeight) : {};
-    obj.signer = message.signer;
+    obj.signer = message.signer === "" ? undefined : message.signer;
     return obj;
   },
   fromAminoMsg(object: MsgTimeoutAminoMsg): MsgTimeout {
@@ -739,7 +815,7 @@ export const MsgTimeout = {
   toAminoMsg(message: MsgTimeout): MsgTimeoutAminoMsg {
     return {
       type: "cosmos-sdk/MsgTimeout",
-      value: MsgTimeout.toAmino(message),
+      value: MsgTimeout.toAmino(message)
     };
   },
   fromProtoMsg(message: MsgTimeoutProtoMsg): MsgTimeout {
@@ -751,17 +827,26 @@ export const MsgTimeout = {
   toProtoMsg(message: MsgTimeout): MsgTimeoutProtoMsg {
     return {
       typeUrl: "/ibc.core.channel.v2.MsgTimeout",
-      value: MsgTimeout.encode(message).finish(),
+      value: MsgTimeout.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(MsgTimeout.typeUrl, MsgTimeout);
+GlobalDecoderRegistry.registerAminoProtoMapping(MsgTimeout.aminoType, MsgTimeout.typeUrl);
 function createBaseMsgTimeoutResponse(): MsgTimeoutResponse {
   return {
-    result: 0,
+    result: 0
   };
 }
 export const MsgTimeoutResponse = {
   typeUrl: "/ibc.core.channel.v2.MsgTimeoutResponse",
+  aminoType: "cosmos-sdk/MsgTimeoutResponse",
+  is(o: any): o is MsgTimeoutResponse {
+    return o && (o.$typeUrl === MsgTimeoutResponse.typeUrl || isSet(o.result));
+  },
+  isAmino(o: any): o is MsgTimeoutResponseAmino {
+    return o && (o.$typeUrl === MsgTimeoutResponse.typeUrl || isSet(o.result));
+  },
   encode(message: MsgTimeoutResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.result !== 0) {
       writer.uint32(8).int32(message.result);
@@ -790,7 +875,7 @@ export const MsgTimeoutResponse = {
     if (isSet(object.result)) obj.result = responseResultTypeFromJSON(object.result);
     return obj;
   },
-  toJSON(message: MsgTimeoutResponse): unknown {
+  toJSON(message: MsgTimeoutResponse): JsonSafe<MsgTimeoutResponse> {
     const obj: any = {};
     message.result !== undefined && (obj.result = responseResultTypeToJSON(message.result));
     return obj;
@@ -803,13 +888,13 @@ export const MsgTimeoutResponse = {
   fromAmino(object: MsgTimeoutResponseAmino): MsgTimeoutResponse {
     const message = createBaseMsgTimeoutResponse();
     if (object.result !== undefined && object.result !== null) {
-      message.result = responseResultTypeFromJSON(object.result);
+      message.result = object.result;
     }
     return message;
   },
   toAmino(message: MsgTimeoutResponse): MsgTimeoutResponseAmino {
     const obj: any = {};
-    obj.result = message.result;
+    obj.result = message.result === 0 ? undefined : message.result;
     return obj;
   },
   fromAminoMsg(object: MsgTimeoutResponseAminoMsg): MsgTimeoutResponse {
@@ -818,7 +903,7 @@ export const MsgTimeoutResponse = {
   toAminoMsg(message: MsgTimeoutResponse): MsgTimeoutResponseAminoMsg {
     return {
       type: "cosmos-sdk/MsgTimeoutResponse",
-      value: MsgTimeoutResponse.toAmino(message),
+      value: MsgTimeoutResponse.toAmino(message)
     };
   },
   fromProtoMsg(message: MsgTimeoutResponseProtoMsg): MsgTimeoutResponse {
@@ -830,21 +915,30 @@ export const MsgTimeoutResponse = {
   toProtoMsg(message: MsgTimeoutResponse): MsgTimeoutResponseProtoMsg {
     return {
       typeUrl: "/ibc.core.channel.v2.MsgTimeoutResponse",
-      value: MsgTimeoutResponse.encode(message).finish(),
+      value: MsgTimeoutResponse.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(MsgTimeoutResponse.typeUrl, MsgTimeoutResponse);
+GlobalDecoderRegistry.registerAminoProtoMapping(MsgTimeoutResponse.aminoType, MsgTimeoutResponse.typeUrl);
 function createBaseMsgAcknowledgement(): MsgAcknowledgement {
   return {
     packet: Packet.fromPartial({}),
     acknowledgement: Acknowledgement.fromPartial({}),
     proofAcked: new Uint8Array(),
     proofHeight: Height.fromPartial({}),
-    signer: "",
+    signer: ""
   };
 }
 export const MsgAcknowledgement = {
   typeUrl: "/ibc.core.channel.v2.MsgAcknowledgement",
+  aminoType: "cosmos-sdk/MsgAcknowledgement",
+  is(o: any): o is MsgAcknowledgement {
+    return o && (o.$typeUrl === MsgAcknowledgement.typeUrl || Packet.is(o.packet) && Acknowledgement.is(o.acknowledgement) && (o.proofAcked instanceof Uint8Array || typeof o.proofAcked === "string") && Height.is(o.proofHeight) && typeof o.signer === "string");
+  },
+  isAmino(o: any): o is MsgAcknowledgementAmino {
+    return o && (o.$typeUrl === MsgAcknowledgement.typeUrl || Packet.isAmino(o.packet) && Acknowledgement.isAmino(o.acknowledgement) && (o.proof_acked instanceof Uint8Array || typeof o.proof_acked === "string") && Height.isAmino(o.proof_height) && typeof o.signer === "string");
+  },
   encode(message: MsgAcknowledgement, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.packet !== undefined) {
       Packet.encode(message.packet, writer.uint32(10).fork()).ldelim();
@@ -901,19 +995,12 @@ export const MsgAcknowledgement = {
     if (isSet(object.signer)) obj.signer = String(object.signer);
     return obj;
   },
-  toJSON(message: MsgAcknowledgement): unknown {
+  toJSON(message: MsgAcknowledgement): JsonSafe<MsgAcknowledgement> {
     const obj: any = {};
     message.packet !== undefined && (obj.packet = message.packet ? Packet.toJSON(message.packet) : undefined);
-    message.acknowledgement !== undefined &&
-      (obj.acknowledgement = message.acknowledgement
-        ? Acknowledgement.toJSON(message.acknowledgement)
-        : undefined);
-    message.proofAcked !== undefined &&
-      (obj.proofAcked = base64FromBytes(
-        message.proofAcked !== undefined ? message.proofAcked : new Uint8Array(),
-      ));
-    message.proofHeight !== undefined &&
-      (obj.proofHeight = message.proofHeight ? Height.toJSON(message.proofHeight) : undefined);
+    message.acknowledgement !== undefined && (obj.acknowledgement = message.acknowledgement ? Acknowledgement.toJSON(message.acknowledgement) : undefined);
+    message.proofAcked !== undefined && (obj.proofAcked = base64FromBytes(message.proofAcked !== undefined ? message.proofAcked : new Uint8Array()));
+    message.proofHeight !== undefined && (obj.proofHeight = message.proofHeight ? Height.toJSON(message.proofHeight) : undefined);
     message.signer !== undefined && (obj.signer = message.signer);
     return obj;
   },
@@ -954,12 +1041,10 @@ export const MsgAcknowledgement = {
   toAmino(message: MsgAcknowledgement): MsgAcknowledgementAmino {
     const obj: any = {};
     obj.packet = message.packet ? Packet.toAmino(message.packet) : undefined;
-    obj.acknowledgement = message.acknowledgement
-      ? Acknowledgement.toAmino(message.acknowledgement)
-      : undefined;
+    obj.acknowledgement = message.acknowledgement ? Acknowledgement.toAmino(message.acknowledgement) : undefined;
     obj.proof_acked = message.proofAcked ? base64FromBytes(message.proofAcked) : undefined;
     obj.proof_height = message.proofHeight ? Height.toAmino(message.proofHeight) : {};
-    obj.signer = message.signer;
+    obj.signer = message.signer === "" ? undefined : message.signer;
     return obj;
   },
   fromAminoMsg(object: MsgAcknowledgementAminoMsg): MsgAcknowledgement {
@@ -968,7 +1053,7 @@ export const MsgAcknowledgement = {
   toAminoMsg(message: MsgAcknowledgement): MsgAcknowledgementAminoMsg {
     return {
       type: "cosmos-sdk/MsgAcknowledgement",
-      value: MsgAcknowledgement.toAmino(message),
+      value: MsgAcknowledgement.toAmino(message)
     };
   },
   fromProtoMsg(message: MsgAcknowledgementProtoMsg): MsgAcknowledgement {
@@ -980,17 +1065,26 @@ export const MsgAcknowledgement = {
   toProtoMsg(message: MsgAcknowledgement): MsgAcknowledgementProtoMsg {
     return {
       typeUrl: "/ibc.core.channel.v2.MsgAcknowledgement",
-      value: MsgAcknowledgement.encode(message).finish(),
+      value: MsgAcknowledgement.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(MsgAcknowledgement.typeUrl, MsgAcknowledgement);
+GlobalDecoderRegistry.registerAminoProtoMapping(MsgAcknowledgement.aminoType, MsgAcknowledgement.typeUrl);
 function createBaseMsgAcknowledgementResponse(): MsgAcknowledgementResponse {
   return {
-    result: 0,
+    result: 0
   };
 }
 export const MsgAcknowledgementResponse = {
   typeUrl: "/ibc.core.channel.v2.MsgAcknowledgementResponse",
+  aminoType: "cosmos-sdk/MsgAcknowledgementResponse",
+  is(o: any): o is MsgAcknowledgementResponse {
+    return o && (o.$typeUrl === MsgAcknowledgementResponse.typeUrl || isSet(o.result));
+  },
+  isAmino(o: any): o is MsgAcknowledgementResponseAmino {
+    return o && (o.$typeUrl === MsgAcknowledgementResponse.typeUrl || isSet(o.result));
+  },
   encode(message: MsgAcknowledgementResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.result !== 0) {
       writer.uint32(8).int32(message.result);
@@ -1019,7 +1113,7 @@ export const MsgAcknowledgementResponse = {
     if (isSet(object.result)) obj.result = responseResultTypeFromJSON(object.result);
     return obj;
   },
-  toJSON(message: MsgAcknowledgementResponse): unknown {
+  toJSON(message: MsgAcknowledgementResponse): JsonSafe<MsgAcknowledgementResponse> {
     const obj: any = {};
     message.result !== undefined && (obj.result = responseResultTypeToJSON(message.result));
     return obj;
@@ -1032,13 +1126,13 @@ export const MsgAcknowledgementResponse = {
   fromAmino(object: MsgAcknowledgementResponseAmino): MsgAcknowledgementResponse {
     const message = createBaseMsgAcknowledgementResponse();
     if (object.result !== undefined && object.result !== null) {
-      message.result = responseResultTypeFromJSON(object.result);
+      message.result = object.result;
     }
     return message;
   },
   toAmino(message: MsgAcknowledgementResponse): MsgAcknowledgementResponseAmino {
     const obj: any = {};
-    obj.result = message.result;
+    obj.result = message.result === 0 ? undefined : message.result;
     return obj;
   },
   fromAminoMsg(object: MsgAcknowledgementResponseAminoMsg): MsgAcknowledgementResponse {
@@ -1047,7 +1141,7 @@ export const MsgAcknowledgementResponse = {
   toAminoMsg(message: MsgAcknowledgementResponse): MsgAcknowledgementResponseAminoMsg {
     return {
       type: "cosmos-sdk/MsgAcknowledgementResponse",
-      value: MsgAcknowledgementResponse.toAmino(message),
+      value: MsgAcknowledgementResponse.toAmino(message)
     };
   },
   fromProtoMsg(message: MsgAcknowledgementResponseProtoMsg): MsgAcknowledgementResponse {
@@ -1059,10 +1153,12 @@ export const MsgAcknowledgementResponse = {
   toProtoMsg(message: MsgAcknowledgementResponse): MsgAcknowledgementResponseProtoMsg {
     return {
       typeUrl: "/ibc.core.channel.v2.MsgAcknowledgementResponse",
-      value: MsgAcknowledgementResponse.encode(message).finish(),
+      value: MsgAcknowledgementResponse.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(MsgAcknowledgementResponse.typeUrl, MsgAcknowledgementResponse);
+GlobalDecoderRegistry.registerAminoProtoMapping(MsgAcknowledgementResponse.aminoType, MsgAcknowledgementResponse.typeUrl);
 /** Msg defines the ibc/channel/v2 Msg service. */
 export interface Msg {
   /** SendPacket defines a rpc handler method for MsgSendPacket. */
@@ -1086,21 +1182,21 @@ export class MsgClientImpl implements Msg {
   SendPacket(request: MsgSendPacket): Promise<MsgSendPacketResponse> {
     const data = MsgSendPacket.encode(request).finish();
     const promise = this.rpc.request("ibc.core.channel.v2.Msg", "SendPacket", data);
-    return promise.then((data) => MsgSendPacketResponse.decode(new BinaryReader(data)));
+    return promise.then(data => MsgSendPacketResponse.decode(new BinaryReader(data)));
   }
   RecvPacket(request: MsgRecvPacket): Promise<MsgRecvPacketResponse> {
     const data = MsgRecvPacket.encode(request).finish();
     const promise = this.rpc.request("ibc.core.channel.v2.Msg", "RecvPacket", data);
-    return promise.then((data) => MsgRecvPacketResponse.decode(new BinaryReader(data)));
+    return promise.then(data => MsgRecvPacketResponse.decode(new BinaryReader(data)));
   }
   Timeout(request: MsgTimeout): Promise<MsgTimeoutResponse> {
     const data = MsgTimeout.encode(request).finish();
     const promise = this.rpc.request("ibc.core.channel.v2.Msg", "Timeout", data);
-    return promise.then((data) => MsgTimeoutResponse.decode(new BinaryReader(data)));
+    return promise.then(data => MsgTimeoutResponse.decode(new BinaryReader(data)));
   }
   Acknowledgement(request: MsgAcknowledgement): Promise<MsgAcknowledgementResponse> {
     const data = MsgAcknowledgement.encode(request).finish();
     const promise = this.rpc.request("ibc.core.channel.v2.Msg", "Acknowledgement", data);
-    return promise.then((data) => MsgAcknowledgementResponse.decode(new BinaryReader(data)));
+    return promise.then(data => MsgAcknowledgementResponse.decode(new BinaryReader(data)));
   }
 }

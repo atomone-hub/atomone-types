@@ -1,11 +1,13 @@
 /* eslint-disable */
 import { Coin, CoinAmino } from "../../base/v1beta1/coin";
-import { BinaryReader, BinaryWriter } from "../../../binary";
 import { isSet } from "../../../helpers";
+import { BinaryReader, BinaryWriter } from "../../../binary";
+import { GlobalDecoderRegistry } from "../../../registry";
+import { JsonSafe } from "../../../json-safe";
 export const protobufPackage = "cosmos.staking.v1beta1";
 /**
  * AuthorizationType defines the type of staking module authorization type
- *
+ * 
  * Since: cosmos-sdk 0.43
  */
 export enum AuthorizationType {
@@ -64,7 +66,7 @@ export function authorizationTypeToJSON(object: AuthorizationType): string {
 }
 /**
  * StakeAuthorization defines authorization for delegate/undelegate/redelegate.
- *
+ * 
  * Since: cosmos-sdk 0.43
  */
 export interface StakeAuthorization {
@@ -89,8 +91,11 @@ export interface StakeAuthorizationProtoMsg {
 }
 /**
  * StakeAuthorization defines authorization for delegate/undelegate/redelegate.
- *
+ * 
  * Since: cosmos-sdk 0.43
+ * @name StakeAuthorizationAmino
+ * @package cosmos.staking.v1beta1
+ * @see proto type: cosmos.staking.v1beta1.StakeAuthorization
  */
 export interface StakeAuthorizationAmino {
   /**
@@ -103,9 +108,13 @@ export interface StakeAuthorizationAmino {
    * account.
    */
   allow_list?: StakeAuthorization_ValidatorsAmino | undefined;
-  /** deny_list specifies list of validator addresses to whom grantee can not delegate tokens. */
+  /**
+   * deny_list specifies list of validator addresses to whom grantee can not delegate tokens.
+   */
   deny_list?: StakeAuthorization_ValidatorsAmino | undefined;
-  /** authorization_type defines one of AuthorizationType. */
+  /**
+   * authorization_type defines one of AuthorizationType.
+   */
   authorization_type?: AuthorizationType;
 }
 export interface StakeAuthorizationAminoMsg {
@@ -120,7 +129,12 @@ export interface StakeAuthorization_ValidatorsProtoMsg {
   typeUrl: "/cosmos.staking.v1beta1.Validators";
   value: Uint8Array;
 }
-/** Validators defines list of validator addresses. */
+/**
+ * Validators defines list of validator addresses.
+ * @name StakeAuthorization_ValidatorsAmino
+ * @package cosmos.staking.v1beta1
+ * @see proto type: cosmos.staking.v1beta1.StakeAuthorization_Validators
+ */
 export interface StakeAuthorization_ValidatorsAmino {
   address?: string[];
 }
@@ -133,11 +147,18 @@ function createBaseStakeAuthorization(): StakeAuthorization {
     maxTokens: undefined,
     allowList: undefined,
     denyList: undefined,
-    authorizationType: 0,
+    authorizationType: 0
   };
 }
 export const StakeAuthorization = {
   typeUrl: "/cosmos.staking.v1beta1.StakeAuthorization",
+  aminoType: "cosmos-sdk/StakeAuthorization",
+  is(o: any): o is StakeAuthorization {
+    return o && (o.$typeUrl === StakeAuthorization.typeUrl || isSet(o.authorizationType));
+  },
+  isAmino(o: any): o is StakeAuthorizationAmino {
+    return o && (o.$typeUrl === StakeAuthorization.typeUrl || isSet(o.authorization_type));
+  },
   encode(message: StakeAuthorization, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.maxTokens !== undefined) {
       Coin.encode(message.maxTokens, writer.uint32(10).fork()).ldelim();
@@ -184,22 +205,15 @@ export const StakeAuthorization = {
     if (isSet(object.maxTokens)) obj.maxTokens = Coin.fromJSON(object.maxTokens);
     if (isSet(object.allowList)) obj.allowList = StakeAuthorization_Validators.fromJSON(object.allowList);
     if (isSet(object.denyList)) obj.denyList = StakeAuthorization_Validators.fromJSON(object.denyList);
-    if (isSet(object.authorizationType))
-      obj.authorizationType = authorizationTypeFromJSON(object.authorizationType);
+    if (isSet(object.authorizationType)) obj.authorizationType = authorizationTypeFromJSON(object.authorizationType);
     return obj;
   },
-  toJSON(message: StakeAuthorization): unknown {
+  toJSON(message: StakeAuthorization): JsonSafe<StakeAuthorization> {
     const obj: any = {};
-    message.maxTokens !== undefined &&
-      (obj.maxTokens = message.maxTokens ? Coin.toJSON(message.maxTokens) : undefined);
-    message.allowList !== undefined &&
-      (obj.allowList = message.allowList
-        ? StakeAuthorization_Validators.toJSON(message.allowList)
-        : undefined);
-    message.denyList !== undefined &&
-      (obj.denyList = message.denyList ? StakeAuthorization_Validators.toJSON(message.denyList) : undefined);
-    message.authorizationType !== undefined &&
-      (obj.authorizationType = authorizationTypeToJSON(message.authorizationType));
+    message.maxTokens !== undefined && (obj.maxTokens = message.maxTokens ? Coin.toJSON(message.maxTokens) : undefined);
+    message.allowList !== undefined && (obj.allowList = message.allowList ? StakeAuthorization_Validators.toJSON(message.allowList) : undefined);
+    message.denyList !== undefined && (obj.denyList = message.denyList ? StakeAuthorization_Validators.toJSON(message.denyList) : undefined);
+    message.authorizationType !== undefined && (obj.authorizationType = authorizationTypeToJSON(message.authorizationType));
     return obj;
   },
   fromPartial(object: Partial<StakeAuthorization>): StakeAuthorization {
@@ -228,7 +242,7 @@ export const StakeAuthorization = {
       message.denyList = StakeAuthorization_Validators.fromAmino(object.deny_list);
     }
     if (object.authorization_type !== undefined && object.authorization_type !== null) {
-      message.authorizationType = authorizationTypeFromJSON(object.authorization_type);
+      message.authorizationType = object.authorization_type;
     }
     return message;
   },
@@ -237,7 +251,7 @@ export const StakeAuthorization = {
     obj.max_tokens = message.maxTokens ? Coin.toAmino(message.maxTokens) : undefined;
     obj.allow_list = message.allowList ? StakeAuthorization_Validators.toAmino(message.allowList) : undefined;
     obj.deny_list = message.denyList ? StakeAuthorization_Validators.toAmino(message.denyList) : undefined;
-    obj.authorization_type = message.authorizationType;
+    obj.authorization_type = message.authorizationType === 0 ? undefined : message.authorizationType;
     return obj;
   },
   fromAminoMsg(object: StakeAuthorizationAminoMsg): StakeAuthorization {
@@ -246,7 +260,7 @@ export const StakeAuthorization = {
   toAminoMsg(message: StakeAuthorization): StakeAuthorizationAminoMsg {
     return {
       type: "cosmos-sdk/StakeAuthorization",
-      value: StakeAuthorization.toAmino(message),
+      value: StakeAuthorization.toAmino(message)
     };
   },
   fromProtoMsg(message: StakeAuthorizationProtoMsg): StakeAuthorization {
@@ -258,17 +272,26 @@ export const StakeAuthorization = {
   toProtoMsg(message: StakeAuthorization): StakeAuthorizationProtoMsg {
     return {
       typeUrl: "/cosmos.staking.v1beta1.StakeAuthorization",
-      value: StakeAuthorization.encode(message).finish(),
+      value: StakeAuthorization.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(StakeAuthorization.typeUrl, StakeAuthorization);
+GlobalDecoderRegistry.registerAminoProtoMapping(StakeAuthorization.aminoType, StakeAuthorization.typeUrl);
 function createBaseStakeAuthorization_Validators(): StakeAuthorization_Validators {
   return {
-    address: [],
+    address: []
   };
 }
 export const StakeAuthorization_Validators = {
   typeUrl: "/cosmos.staking.v1beta1.Validators",
+  aminoType: "cosmos-sdk/Validators",
+  is(o: any): o is StakeAuthorization_Validators {
+    return o && (o.$typeUrl === StakeAuthorization_Validators.typeUrl || Array.isArray(o.address) && (!o.address.length || typeof o.address[0] === "string"));
+  },
+  isAmino(o: any): o is StakeAuthorization_ValidatorsAmino {
+    return o && (o.$typeUrl === StakeAuthorization_Validators.typeUrl || Array.isArray(o.address) && (!o.address.length || typeof o.address[0] === "string"));
+  },
   encode(message: StakeAuthorization_Validators, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.address) {
       writer.uint32(10).string(v!);
@@ -297,10 +320,10 @@ export const StakeAuthorization_Validators = {
     if (Array.isArray(object?.address)) obj.address = object.address.map((e: any) => String(e));
     return obj;
   },
-  toJSON(message: StakeAuthorization_Validators): unknown {
+  toJSON(message: StakeAuthorization_Validators): JsonSafe<StakeAuthorization_Validators> {
     const obj: any = {};
     if (message.address) {
-      obj.address = message.address.map((e) => e);
+      obj.address = message.address.map(e => e);
     } else {
       obj.address = [];
     }
@@ -308,20 +331,20 @@ export const StakeAuthorization_Validators = {
   },
   fromPartial(object: Partial<StakeAuthorization_Validators>): StakeAuthorization_Validators {
     const message = createBaseStakeAuthorization_Validators();
-    message.address = object.address?.map((e) => e) || [];
+    message.address = object.address?.map(e => e) || [];
     return message;
   },
   fromAmino(object: StakeAuthorization_ValidatorsAmino): StakeAuthorization_Validators {
     const message = createBaseStakeAuthorization_Validators();
-    message.address = object.address?.map((e) => e) || [];
+    message.address = object.address?.map(e => e) || [];
     return message;
   },
   toAmino(message: StakeAuthorization_Validators): StakeAuthorization_ValidatorsAmino {
     const obj: any = {};
     if (message.address) {
-      obj.address = message.address.map((e) => e);
+      obj.address = message.address.map(e => e);
     } else {
-      obj.address = [];
+      obj.address = message.address;
     }
     return obj;
   },
@@ -331,7 +354,7 @@ export const StakeAuthorization_Validators = {
   toAminoMsg(message: StakeAuthorization_Validators): StakeAuthorization_ValidatorsAminoMsg {
     return {
       type: "cosmos-sdk/Validators",
-      value: StakeAuthorization_Validators.toAmino(message),
+      value: StakeAuthorization_Validators.toAmino(message)
     };
   },
   fromProtoMsg(message: StakeAuthorization_ValidatorsProtoMsg): StakeAuthorization_Validators {
@@ -343,7 +366,9 @@ export const StakeAuthorization_Validators = {
   toProtoMsg(message: StakeAuthorization_Validators): StakeAuthorization_ValidatorsProtoMsg {
     return {
       typeUrl: "/cosmos.staking.v1beta1.Validators",
-      value: StakeAuthorization_Validators.encode(message).finish(),
+      value: StakeAuthorization_Validators.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(StakeAuthorization_Validators.typeUrl, StakeAuthorization_Validators);
+GlobalDecoderRegistry.registerAminoProtoMapping(StakeAuthorization_Validators.aminoType, StakeAuthorization_Validators.typeUrl);

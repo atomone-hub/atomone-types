@@ -1,6 +1,8 @@
 /* eslint-disable */
 import { Config, ConfigAmino } from "./config";
 import { BinaryReader, BinaryWriter } from "../../../binary";
+import { JsonSafe } from "../../../json-safe";
+import { GlobalDecoderRegistry } from "../../../registry";
 import { isSet } from "../../../helpers";
 import { TxRpc } from "../../../types";
 export const protobufPackage = "cosmos.app.v1alpha1";
@@ -10,7 +12,12 @@ export interface QueryConfigRequestProtoMsg {
   typeUrl: "/cosmos.app.v1alpha1.QueryConfigRequest";
   value: Uint8Array;
 }
-/** QueryConfigRequest is the Query/Config request type. */
+/**
+ * QueryConfigRequest is the Query/Config request type.
+ * @name QueryConfigRequestAmino
+ * @package cosmos.app.v1alpha1
+ * @see proto type: cosmos.app.v1alpha1.QueryConfigRequest
+ */
 export interface QueryConfigRequestAmino {}
 export interface QueryConfigRequestAminoMsg {
   type: "cosmos-sdk/QueryConfigRequest";
@@ -25,9 +32,16 @@ export interface QueryConfigResponseProtoMsg {
   typeUrl: "/cosmos.app.v1alpha1.QueryConfigResponse";
   value: Uint8Array;
 }
-/** QueryConfigRequest is the Query/Config response type. */
+/**
+ * QueryConfigRequest is the Query/Config response type.
+ * @name QueryConfigResponseAmino
+ * @package cosmos.app.v1alpha1
+ * @see proto type: cosmos.app.v1alpha1.QueryConfigResponse
+ */
 export interface QueryConfigResponseAmino {
-  /** config is the current app config. */
+  /**
+   * config is the current app config.
+   */
   config?: ConfigAmino | undefined;
 }
 export interface QueryConfigResponseAminoMsg {
@@ -39,6 +53,13 @@ function createBaseQueryConfigRequest(): QueryConfigRequest {
 }
 export const QueryConfigRequest = {
   typeUrl: "/cosmos.app.v1alpha1.QueryConfigRequest",
+  aminoType: "cosmos-sdk/QueryConfigRequest",
+  is(o: any): o is QueryConfigRequest {
+    return o && o.$typeUrl === QueryConfigRequest.typeUrl;
+  },
+  isAmino(o: any): o is QueryConfigRequestAmino {
+    return o && o.$typeUrl === QueryConfigRequest.typeUrl;
+  },
   encode(_: QueryConfigRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
@@ -60,7 +81,7 @@ export const QueryConfigRequest = {
     const obj = createBaseQueryConfigRequest();
     return obj;
   },
-  toJSON(_: QueryConfigRequest): unknown {
+  toJSON(_: QueryConfigRequest): JsonSafe<QueryConfigRequest> {
     const obj: any = {};
     return obj;
   },
@@ -82,7 +103,7 @@ export const QueryConfigRequest = {
   toAminoMsg(message: QueryConfigRequest): QueryConfigRequestAminoMsg {
     return {
       type: "cosmos-sdk/QueryConfigRequest",
-      value: QueryConfigRequest.toAmino(message),
+      value: QueryConfigRequest.toAmino(message)
     };
   },
   fromProtoMsg(message: QueryConfigRequestProtoMsg): QueryConfigRequest {
@@ -94,17 +115,26 @@ export const QueryConfigRequest = {
   toProtoMsg(message: QueryConfigRequest): QueryConfigRequestProtoMsg {
     return {
       typeUrl: "/cosmos.app.v1alpha1.QueryConfigRequest",
-      value: QueryConfigRequest.encode(message).finish(),
+      value: QueryConfigRequest.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(QueryConfigRequest.typeUrl, QueryConfigRequest);
+GlobalDecoderRegistry.registerAminoProtoMapping(QueryConfigRequest.aminoType, QueryConfigRequest.typeUrl);
 function createBaseQueryConfigResponse(): QueryConfigResponse {
   return {
-    config: undefined,
+    config: undefined
   };
 }
 export const QueryConfigResponse = {
   typeUrl: "/cosmos.app.v1alpha1.QueryConfigResponse",
+  aminoType: "cosmos-sdk/QueryConfigResponse",
+  is(o: any): o is QueryConfigResponse {
+    return o && o.$typeUrl === QueryConfigResponse.typeUrl;
+  },
+  isAmino(o: any): o is QueryConfigResponseAmino {
+    return o && o.$typeUrl === QueryConfigResponse.typeUrl;
+  },
   encode(message: QueryConfigResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.config !== undefined) {
       Config.encode(message.config, writer.uint32(10).fork()).ldelim();
@@ -133,7 +163,7 @@ export const QueryConfigResponse = {
     if (isSet(object.config)) obj.config = Config.fromJSON(object.config);
     return obj;
   },
-  toJSON(message: QueryConfigResponse): unknown {
+  toJSON(message: QueryConfigResponse): JsonSafe<QueryConfigResponse> {
     const obj: any = {};
     message.config !== undefined && (obj.config = message.config ? Config.toJSON(message.config) : undefined);
     return obj;
@@ -163,7 +193,7 @@ export const QueryConfigResponse = {
   toAminoMsg(message: QueryConfigResponse): QueryConfigResponseAminoMsg {
     return {
       type: "cosmos-sdk/QueryConfigResponse",
-      value: QueryConfigResponse.toAmino(message),
+      value: QueryConfigResponse.toAmino(message)
     };
   },
   fromProtoMsg(message: QueryConfigResponseProtoMsg): QueryConfigResponse {
@@ -175,10 +205,12 @@ export const QueryConfigResponse = {
   toProtoMsg(message: QueryConfigResponse): QueryConfigResponseProtoMsg {
     return {
       typeUrl: "/cosmos.app.v1alpha1.QueryConfigResponse",
-      value: QueryConfigResponse.encode(message).finish(),
+      value: QueryConfigResponse.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(QueryConfigResponse.typeUrl, QueryConfigResponse);
+GlobalDecoderRegistry.registerAminoProtoMapping(QueryConfigResponse.aminoType, QueryConfigResponse.typeUrl);
 /** Query is the app module query service. */
 export interface Query {
   /** Config returns the current app config. */
@@ -193,6 +225,6 @@ export class QueryClientImpl implements Query {
   Config(request: QueryConfigRequest = {}): Promise<QueryConfigResponse> {
     const data = QueryConfigRequest.encode(request).finish();
     const promise = this.rpc.request("cosmos.app.v1alpha1.Query", "Config", data);
-    return promise.then((data) => QueryConfigResponse.decode(new BinaryReader(data)));
+    return promise.then(data => QueryConfigResponse.decode(new BinaryReader(data)));
   }
 }

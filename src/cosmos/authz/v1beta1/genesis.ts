@@ -1,6 +1,8 @@
 /* eslint-disable */
 import { GrantAuthorization, GrantAuthorizationAmino } from "./authz";
 import { BinaryReader, BinaryWriter } from "../../../binary";
+import { JsonSafe } from "../../../json-safe";
+import { GlobalDecoderRegistry } from "../../../registry";
 export const protobufPackage = "cosmos.authz.v1beta1";
 /** GenesisState defines the authz module's genesis state. */
 export interface GenesisState {
@@ -10,7 +12,12 @@ export interface GenesisStateProtoMsg {
   typeUrl: "/cosmos.authz.v1beta1.GenesisState";
   value: Uint8Array;
 }
-/** GenesisState defines the authz module's genesis state. */
+/**
+ * GenesisState defines the authz module's genesis state.
+ * @name GenesisStateAmino
+ * @package cosmos.authz.v1beta1
+ * @see proto type: cosmos.authz.v1beta1.GenesisState
+ */
 export interface GenesisStateAmino {
   authorization: GrantAuthorizationAmino[];
 }
@@ -20,11 +27,18 @@ export interface GenesisStateAminoMsg {
 }
 function createBaseGenesisState(): GenesisState {
   return {
-    authorization: [],
+    authorization: []
   };
 }
 export const GenesisState = {
   typeUrl: "/cosmos.authz.v1beta1.GenesisState",
+  aminoType: "cosmos-sdk/GenesisState",
+  is(o: any): o is GenesisState {
+    return o && (o.$typeUrl === GenesisState.typeUrl || Array.isArray(o.authorization) && (!o.authorization.length || GrantAuthorization.is(o.authorization[0])));
+  },
+  isAmino(o: any): o is GenesisStateAmino {
+    return o && (o.$typeUrl === GenesisState.typeUrl || Array.isArray(o.authorization) && (!o.authorization.length || GrantAuthorization.isAmino(o.authorization[0])));
+  },
   encode(message: GenesisState, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.authorization) {
       GrantAuthorization.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -50,14 +64,13 @@ export const GenesisState = {
   },
   fromJSON(object: any): GenesisState {
     const obj = createBaseGenesisState();
-    if (Array.isArray(object?.authorization))
-      obj.authorization = object.authorization.map((e: any) => GrantAuthorization.fromJSON(e));
+    if (Array.isArray(object?.authorization)) obj.authorization = object.authorization.map((e: any) => GrantAuthorization.fromJSON(e));
     return obj;
   },
-  toJSON(message: GenesisState): unknown {
+  toJSON(message: GenesisState): JsonSafe<GenesisState> {
     const obj: any = {};
     if (message.authorization) {
-      obj.authorization = message.authorization.map((e) => (e ? GrantAuthorization.toJSON(e) : undefined));
+      obj.authorization = message.authorization.map(e => e ? GrantAuthorization.toJSON(e) : undefined);
     } else {
       obj.authorization = [];
     }
@@ -65,20 +78,20 @@ export const GenesisState = {
   },
   fromPartial(object: Partial<GenesisState>): GenesisState {
     const message = createBaseGenesisState();
-    message.authorization = object.authorization?.map((e) => GrantAuthorization.fromPartial(e)) || [];
+    message.authorization = object.authorization?.map(e => GrantAuthorization.fromPartial(e)) || [];
     return message;
   },
   fromAmino(object: GenesisStateAmino): GenesisState {
     const message = createBaseGenesisState();
-    message.authorization = object.authorization?.map((e) => GrantAuthorization.fromAmino(e)) || [];
+    message.authorization = object.authorization?.map(e => GrantAuthorization.fromAmino(e)) || [];
     return message;
   },
   toAmino(message: GenesisState): GenesisStateAmino {
     const obj: any = {};
     if (message.authorization) {
-      obj.authorization = message.authorization.map((e) => (e ? GrantAuthorization.toAmino(e) : undefined));
+      obj.authorization = message.authorization.map(e => e ? GrantAuthorization.toAmino(e) : undefined);
     } else {
-      obj.authorization = [];
+      obj.authorization = message.authorization;
     }
     return obj;
   },
@@ -88,7 +101,7 @@ export const GenesisState = {
   toAminoMsg(message: GenesisState): GenesisStateAminoMsg {
     return {
       type: "cosmos-sdk/GenesisState",
-      value: GenesisState.toAmino(message),
+      value: GenesisState.toAmino(message)
     };
   },
   fromProtoMsg(message: GenesisStateProtoMsg): GenesisState {
@@ -100,7 +113,9 @@ export const GenesisState = {
   toProtoMsg(message: GenesisState): GenesisStateProtoMsg {
     return {
       typeUrl: "/cosmos.authz.v1beta1.GenesisState",
-      value: GenesisState.encode(message).finish(),
+      value: GenesisState.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(GenesisState.typeUrl, GenesisState);
+GlobalDecoderRegistry.registerAminoProtoMapping(GenesisState.aminoType, GenesisState.typeUrl);

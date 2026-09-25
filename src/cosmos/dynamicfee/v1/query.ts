@@ -3,6 +3,8 @@ import { Params, ParamsAmino } from "./params";
 import { State, StateAmino } from "./genesis";
 import { DecCoin, DecCoinAmino } from "../../base/v1beta1/coin";
 import { BinaryReader, BinaryWriter } from "../../../binary";
+import { JsonSafe } from "../../../json-safe";
+import { GlobalDecoderRegistry } from "../../../registry";
 import { isSet } from "../../../helpers";
 import { TxRpc } from "../../../types";
 export const protobufPackage = "cosmos.dynamicfee.v1";
@@ -12,7 +14,12 @@ export interface ParamsRequestProtoMsg {
   typeUrl: "/cosmos.dynamicfee.v1.ParamsRequest";
   value: Uint8Array;
 }
-/** ParamsRequest is the request type for the Query/Params RPC method. */
+/**
+ * ParamsRequest is the request type for the Query/Params RPC method.
+ * @name ParamsRequestAmino
+ * @package cosmos.dynamicfee.v1
+ * @see proto type: cosmos.dynamicfee.v1.ParamsRequest
+ */
 export interface ParamsRequestAmino {}
 export interface ParamsRequestAminoMsg {
   type: "cosmos-sdk/ParamsRequest";
@@ -26,7 +33,12 @@ export interface ParamsResponseProtoMsg {
   typeUrl: "/cosmos.dynamicfee.v1.ParamsResponse";
   value: Uint8Array;
 }
-/** ParamsResponse is the response type for the Query/Params RPC method. */
+/**
+ * ParamsResponse is the response type for the Query/Params RPC method.
+ * @name ParamsResponseAmino
+ * @package cosmos.dynamicfee.v1
+ * @see proto type: cosmos.dynamicfee.v1.ParamsResponse
+ */
 export interface ParamsResponseAmino {
   params?: ParamsAmino | undefined;
 }
@@ -40,7 +52,12 @@ export interface StateRequestProtoMsg {
   typeUrl: "/cosmos.dynamicfee.v1.StateRequest";
   value: Uint8Array;
 }
-/** StateRequest is the request type for the Query/State RPC method. */
+/**
+ * StateRequest is the request type for the Query/State RPC method.
+ * @name StateRequestAmino
+ * @package cosmos.dynamicfee.v1
+ * @see proto type: cosmos.dynamicfee.v1.StateRequest
+ */
 export interface StateRequestAmino {}
 export interface StateRequestAminoMsg {
   type: "cosmos-sdk/StateRequest";
@@ -54,7 +71,12 @@ export interface StateResponseProtoMsg {
   typeUrl: "/cosmos.dynamicfee.v1.StateResponse";
   value: Uint8Array;
 }
-/** StateResponse is the response type for the Query/State RPC method. */
+/**
+ * StateResponse is the response type for the Query/State RPC method.
+ * @name StateResponseAmino
+ * @package cosmos.dynamicfee.v1
+ * @see proto type: cosmos.dynamicfee.v1.StateResponse
+ */
 export interface StateResponseAmino {
   state?: StateAmino | undefined;
 }
@@ -71,9 +93,16 @@ export interface GasPriceRequestProtoMsg {
   typeUrl: "/cosmos.dynamicfee.v1.GasPriceRequest";
   value: Uint8Array;
 }
-/** GasPriceRequest is the request type for the Query/GasPrice RPC method. */
+/**
+ * GasPriceRequest is the request type for the Query/GasPrice RPC method.
+ * @name GasPriceRequestAmino
+ * @package cosmos.dynamicfee.v1
+ * @see proto type: cosmos.dynamicfee.v1.GasPriceRequest
+ */
 export interface GasPriceRequestAmino {
-  /** denom we are querying gas price in */
+  /**
+   * denom we are querying gas price in
+   */
   denom?: string;
 }
 export interface GasPriceRequestAminoMsg {
@@ -94,6 +123,9 @@ export interface GasPriceResponseProtoMsg {
 /**
  * GasPriceResponse is the response type for the Query/GasPrice RPC method.
  * Returns a gas price in specified denom.
+ * @name GasPriceResponseAmino
+ * @package cosmos.dynamicfee.v1
+ * @see proto type: cosmos.dynamicfee.v1.GasPriceResponse
  */
 export interface GasPriceResponseAmino {
   price: DecCoinAmino | undefined;
@@ -108,7 +140,12 @@ export interface GasPricesRequestProtoMsg {
   typeUrl: "/cosmos.dynamicfee.v1.GasPricesRequest";
   value: Uint8Array;
 }
-/** GasPriceRequest is the request type for the Query/GasPrices RPC method. */
+/**
+ * GasPriceRequest is the request type for the Query/GasPrices RPC method.
+ * @name GasPricesRequestAmino
+ * @package cosmos.dynamicfee.v1
+ * @see proto type: cosmos.dynamicfee.v1.GasPricesRequest
+ */
 export interface GasPricesRequestAmino {}
 export interface GasPricesRequestAminoMsg {
   type: "cosmos-sdk/GasPricesRequest";
@@ -128,6 +165,9 @@ export interface GasPricesResponseProtoMsg {
 /**
  * GasPricesResponse is the response type for the Query/GasPrices RPC method.
  * Returns a gas price in all available denoms.
+ * @name GasPricesResponseAmino
+ * @package cosmos.dynamicfee.v1
+ * @see proto type: cosmos.dynamicfee.v1.GasPricesResponse
  */
 export interface GasPricesResponseAmino {
   prices: DecCoinAmino[];
@@ -141,6 +181,13 @@ function createBaseParamsRequest(): ParamsRequest {
 }
 export const ParamsRequest = {
   typeUrl: "/cosmos.dynamicfee.v1.ParamsRequest",
+  aminoType: "cosmos-sdk/ParamsRequest",
+  is(o: any): o is ParamsRequest {
+    return o && o.$typeUrl === ParamsRequest.typeUrl;
+  },
+  isAmino(o: any): o is ParamsRequestAmino {
+    return o && o.$typeUrl === ParamsRequest.typeUrl;
+  },
   encode(_: ParamsRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
@@ -162,7 +209,7 @@ export const ParamsRequest = {
     const obj = createBaseParamsRequest();
     return obj;
   },
-  toJSON(_: ParamsRequest): unknown {
+  toJSON(_: ParamsRequest): JsonSafe<ParamsRequest> {
     const obj: any = {};
     return obj;
   },
@@ -184,7 +231,7 @@ export const ParamsRequest = {
   toAminoMsg(message: ParamsRequest): ParamsRequestAminoMsg {
     return {
       type: "cosmos-sdk/ParamsRequest",
-      value: ParamsRequest.toAmino(message),
+      value: ParamsRequest.toAmino(message)
     };
   },
   fromProtoMsg(message: ParamsRequestProtoMsg): ParamsRequest {
@@ -196,17 +243,26 @@ export const ParamsRequest = {
   toProtoMsg(message: ParamsRequest): ParamsRequestProtoMsg {
     return {
       typeUrl: "/cosmos.dynamicfee.v1.ParamsRequest",
-      value: ParamsRequest.encode(message).finish(),
+      value: ParamsRequest.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(ParamsRequest.typeUrl, ParamsRequest);
+GlobalDecoderRegistry.registerAminoProtoMapping(ParamsRequest.aminoType, ParamsRequest.typeUrl);
 function createBaseParamsResponse(): ParamsResponse {
   return {
-    params: Params.fromPartial({}),
+    params: Params.fromPartial({})
   };
 }
 export const ParamsResponse = {
   typeUrl: "/cosmos.dynamicfee.v1.ParamsResponse",
+  aminoType: "cosmos-sdk/ParamsResponse",
+  is(o: any): o is ParamsResponse {
+    return o && (o.$typeUrl === ParamsResponse.typeUrl || Params.is(o.params));
+  },
+  isAmino(o: any): o is ParamsResponseAmino {
+    return o && (o.$typeUrl === ParamsResponse.typeUrl || Params.isAmino(o.params));
+  },
   encode(message: ParamsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.params !== undefined) {
       Params.encode(message.params, writer.uint32(10).fork()).ldelim();
@@ -235,7 +291,7 @@ export const ParamsResponse = {
     if (isSet(object.params)) obj.params = Params.fromJSON(object.params);
     return obj;
   },
-  toJSON(message: ParamsResponse): unknown {
+  toJSON(message: ParamsResponse): JsonSafe<ParamsResponse> {
     const obj: any = {};
     message.params !== undefined && (obj.params = message.params ? Params.toJSON(message.params) : undefined);
     return obj;
@@ -265,7 +321,7 @@ export const ParamsResponse = {
   toAminoMsg(message: ParamsResponse): ParamsResponseAminoMsg {
     return {
       type: "cosmos-sdk/ParamsResponse",
-      value: ParamsResponse.toAmino(message),
+      value: ParamsResponse.toAmino(message)
     };
   },
   fromProtoMsg(message: ParamsResponseProtoMsg): ParamsResponse {
@@ -277,15 +333,24 @@ export const ParamsResponse = {
   toProtoMsg(message: ParamsResponse): ParamsResponseProtoMsg {
     return {
       typeUrl: "/cosmos.dynamicfee.v1.ParamsResponse",
-      value: ParamsResponse.encode(message).finish(),
+      value: ParamsResponse.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(ParamsResponse.typeUrl, ParamsResponse);
+GlobalDecoderRegistry.registerAminoProtoMapping(ParamsResponse.aminoType, ParamsResponse.typeUrl);
 function createBaseStateRequest(): StateRequest {
   return {};
 }
 export const StateRequest = {
   typeUrl: "/cosmos.dynamicfee.v1.StateRequest",
+  aminoType: "cosmos-sdk/StateRequest",
+  is(o: any): o is StateRequest {
+    return o && o.$typeUrl === StateRequest.typeUrl;
+  },
+  isAmino(o: any): o is StateRequestAmino {
+    return o && o.$typeUrl === StateRequest.typeUrl;
+  },
   encode(_: StateRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
@@ -307,7 +372,7 @@ export const StateRequest = {
     const obj = createBaseStateRequest();
     return obj;
   },
-  toJSON(_: StateRequest): unknown {
+  toJSON(_: StateRequest): JsonSafe<StateRequest> {
     const obj: any = {};
     return obj;
   },
@@ -329,7 +394,7 @@ export const StateRequest = {
   toAminoMsg(message: StateRequest): StateRequestAminoMsg {
     return {
       type: "cosmos-sdk/StateRequest",
-      value: StateRequest.toAmino(message),
+      value: StateRequest.toAmino(message)
     };
   },
   fromProtoMsg(message: StateRequestProtoMsg): StateRequest {
@@ -341,17 +406,26 @@ export const StateRequest = {
   toProtoMsg(message: StateRequest): StateRequestProtoMsg {
     return {
       typeUrl: "/cosmos.dynamicfee.v1.StateRequest",
-      value: StateRequest.encode(message).finish(),
+      value: StateRequest.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(StateRequest.typeUrl, StateRequest);
+GlobalDecoderRegistry.registerAminoProtoMapping(StateRequest.aminoType, StateRequest.typeUrl);
 function createBaseStateResponse(): StateResponse {
   return {
-    state: State.fromPartial({}),
+    state: State.fromPartial({})
   };
 }
 export const StateResponse = {
   typeUrl: "/cosmos.dynamicfee.v1.StateResponse",
+  aminoType: "cosmos-sdk/StateResponse",
+  is(o: any): o is StateResponse {
+    return o && (o.$typeUrl === StateResponse.typeUrl || State.is(o.state));
+  },
+  isAmino(o: any): o is StateResponseAmino {
+    return o && (o.$typeUrl === StateResponse.typeUrl || State.isAmino(o.state));
+  },
   encode(message: StateResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.state !== undefined) {
       State.encode(message.state, writer.uint32(10).fork()).ldelim();
@@ -380,7 +454,7 @@ export const StateResponse = {
     if (isSet(object.state)) obj.state = State.fromJSON(object.state);
     return obj;
   },
-  toJSON(message: StateResponse): unknown {
+  toJSON(message: StateResponse): JsonSafe<StateResponse> {
     const obj: any = {};
     message.state !== undefined && (obj.state = message.state ? State.toJSON(message.state) : undefined);
     return obj;
@@ -410,7 +484,7 @@ export const StateResponse = {
   toAminoMsg(message: StateResponse): StateResponseAminoMsg {
     return {
       type: "cosmos-sdk/StateResponse",
-      value: StateResponse.toAmino(message),
+      value: StateResponse.toAmino(message)
     };
   },
   fromProtoMsg(message: StateResponseProtoMsg): StateResponse {
@@ -422,17 +496,26 @@ export const StateResponse = {
   toProtoMsg(message: StateResponse): StateResponseProtoMsg {
     return {
       typeUrl: "/cosmos.dynamicfee.v1.StateResponse",
-      value: StateResponse.encode(message).finish(),
+      value: StateResponse.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(StateResponse.typeUrl, StateResponse);
+GlobalDecoderRegistry.registerAminoProtoMapping(StateResponse.aminoType, StateResponse.typeUrl);
 function createBaseGasPriceRequest(): GasPriceRequest {
   return {
-    denom: "",
+    denom: ""
   };
 }
 export const GasPriceRequest = {
   typeUrl: "/cosmos.dynamicfee.v1.GasPriceRequest",
+  aminoType: "cosmos-sdk/GasPriceRequest",
+  is(o: any): o is GasPriceRequest {
+    return o && (o.$typeUrl === GasPriceRequest.typeUrl || typeof o.denom === "string");
+  },
+  isAmino(o: any): o is GasPriceRequestAmino {
+    return o && (o.$typeUrl === GasPriceRequest.typeUrl || typeof o.denom === "string");
+  },
   encode(message: GasPriceRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.denom !== "") {
       writer.uint32(10).string(message.denom);
@@ -461,7 +544,7 @@ export const GasPriceRequest = {
     if (isSet(object.denom)) obj.denom = String(object.denom);
     return obj;
   },
-  toJSON(message: GasPriceRequest): unknown {
+  toJSON(message: GasPriceRequest): JsonSafe<GasPriceRequest> {
     const obj: any = {};
     message.denom !== undefined && (obj.denom = message.denom);
     return obj;
@@ -480,7 +563,7 @@ export const GasPriceRequest = {
   },
   toAmino(message: GasPriceRequest): GasPriceRequestAmino {
     const obj: any = {};
-    obj.denom = message.denom;
+    obj.denom = message.denom === "" ? undefined : message.denom;
     return obj;
   },
   fromAminoMsg(object: GasPriceRequestAminoMsg): GasPriceRequest {
@@ -489,7 +572,7 @@ export const GasPriceRequest = {
   toAminoMsg(message: GasPriceRequest): GasPriceRequestAminoMsg {
     return {
       type: "cosmos-sdk/GasPriceRequest",
-      value: GasPriceRequest.toAmino(message),
+      value: GasPriceRequest.toAmino(message)
     };
   },
   fromProtoMsg(message: GasPriceRequestProtoMsg): GasPriceRequest {
@@ -501,17 +584,26 @@ export const GasPriceRequest = {
   toProtoMsg(message: GasPriceRequest): GasPriceRequestProtoMsg {
     return {
       typeUrl: "/cosmos.dynamicfee.v1.GasPriceRequest",
-      value: GasPriceRequest.encode(message).finish(),
+      value: GasPriceRequest.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(GasPriceRequest.typeUrl, GasPriceRequest);
+GlobalDecoderRegistry.registerAminoProtoMapping(GasPriceRequest.aminoType, GasPriceRequest.typeUrl);
 function createBaseGasPriceResponse(): GasPriceResponse {
   return {
-    price: DecCoin.fromPartial({}),
+    price: DecCoin.fromPartial({})
   };
 }
 export const GasPriceResponse = {
   typeUrl: "/cosmos.dynamicfee.v1.GasPriceResponse",
+  aminoType: "cosmos-sdk/GasPriceResponse",
+  is(o: any): o is GasPriceResponse {
+    return o && (o.$typeUrl === GasPriceResponse.typeUrl || DecCoin.is(o.price));
+  },
+  isAmino(o: any): o is GasPriceResponseAmino {
+    return o && (o.$typeUrl === GasPriceResponse.typeUrl || DecCoin.isAmino(o.price));
+  },
   encode(message: GasPriceResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.price !== undefined) {
       DecCoin.encode(message.price, writer.uint32(10).fork()).ldelim();
@@ -540,7 +632,7 @@ export const GasPriceResponse = {
     if (isSet(object.price)) obj.price = DecCoin.fromJSON(object.price);
     return obj;
   },
-  toJSON(message: GasPriceResponse): unknown {
+  toJSON(message: GasPriceResponse): JsonSafe<GasPriceResponse> {
     const obj: any = {};
     message.price !== undefined && (obj.price = message.price ? DecCoin.toJSON(message.price) : undefined);
     return obj;
@@ -561,7 +653,7 @@ export const GasPriceResponse = {
   },
   toAmino(message: GasPriceResponse): GasPriceResponseAmino {
     const obj: any = {};
-    obj.price = message.price ? DecCoin.toAmino(message.price) : DecCoin.fromPartial({});
+    obj.price = message.price ? DecCoin.toAmino(message.price) : DecCoin.toAmino(DecCoin.fromPartial({}));
     return obj;
   },
   fromAminoMsg(object: GasPriceResponseAminoMsg): GasPriceResponse {
@@ -570,7 +662,7 @@ export const GasPriceResponse = {
   toAminoMsg(message: GasPriceResponse): GasPriceResponseAminoMsg {
     return {
       type: "cosmos-sdk/GasPriceResponse",
-      value: GasPriceResponse.toAmino(message),
+      value: GasPriceResponse.toAmino(message)
     };
   },
   fromProtoMsg(message: GasPriceResponseProtoMsg): GasPriceResponse {
@@ -582,15 +674,24 @@ export const GasPriceResponse = {
   toProtoMsg(message: GasPriceResponse): GasPriceResponseProtoMsg {
     return {
       typeUrl: "/cosmos.dynamicfee.v1.GasPriceResponse",
-      value: GasPriceResponse.encode(message).finish(),
+      value: GasPriceResponse.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(GasPriceResponse.typeUrl, GasPriceResponse);
+GlobalDecoderRegistry.registerAminoProtoMapping(GasPriceResponse.aminoType, GasPriceResponse.typeUrl);
 function createBaseGasPricesRequest(): GasPricesRequest {
   return {};
 }
 export const GasPricesRequest = {
   typeUrl: "/cosmos.dynamicfee.v1.GasPricesRequest",
+  aminoType: "cosmos-sdk/GasPricesRequest",
+  is(o: any): o is GasPricesRequest {
+    return o && o.$typeUrl === GasPricesRequest.typeUrl;
+  },
+  isAmino(o: any): o is GasPricesRequestAmino {
+    return o && o.$typeUrl === GasPricesRequest.typeUrl;
+  },
   encode(_: GasPricesRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
@@ -612,7 +713,7 @@ export const GasPricesRequest = {
     const obj = createBaseGasPricesRequest();
     return obj;
   },
-  toJSON(_: GasPricesRequest): unknown {
+  toJSON(_: GasPricesRequest): JsonSafe<GasPricesRequest> {
     const obj: any = {};
     return obj;
   },
@@ -634,7 +735,7 @@ export const GasPricesRequest = {
   toAminoMsg(message: GasPricesRequest): GasPricesRequestAminoMsg {
     return {
       type: "cosmos-sdk/GasPricesRequest",
-      value: GasPricesRequest.toAmino(message),
+      value: GasPricesRequest.toAmino(message)
     };
   },
   fromProtoMsg(message: GasPricesRequestProtoMsg): GasPricesRequest {
@@ -646,17 +747,26 @@ export const GasPricesRequest = {
   toProtoMsg(message: GasPricesRequest): GasPricesRequestProtoMsg {
     return {
       typeUrl: "/cosmos.dynamicfee.v1.GasPricesRequest",
-      value: GasPricesRequest.encode(message).finish(),
+      value: GasPricesRequest.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(GasPricesRequest.typeUrl, GasPricesRequest);
+GlobalDecoderRegistry.registerAminoProtoMapping(GasPricesRequest.aminoType, GasPricesRequest.typeUrl);
 function createBaseGasPricesResponse(): GasPricesResponse {
   return {
-    prices: [],
+    prices: []
   };
 }
 export const GasPricesResponse = {
   typeUrl: "/cosmos.dynamicfee.v1.GasPricesResponse",
+  aminoType: "cosmos-sdk/GasPricesResponse",
+  is(o: any): o is GasPricesResponse {
+    return o && (o.$typeUrl === GasPricesResponse.typeUrl || Array.isArray(o.prices) && (!o.prices.length || DecCoin.is(o.prices[0])));
+  },
+  isAmino(o: any): o is GasPricesResponseAmino {
+    return o && (o.$typeUrl === GasPricesResponse.typeUrl || Array.isArray(o.prices) && (!o.prices.length || DecCoin.isAmino(o.prices[0])));
+  },
   encode(message: GasPricesResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.prices) {
       DecCoin.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -685,10 +795,10 @@ export const GasPricesResponse = {
     if (Array.isArray(object?.prices)) obj.prices = object.prices.map((e: any) => DecCoin.fromJSON(e));
     return obj;
   },
-  toJSON(message: GasPricesResponse): unknown {
+  toJSON(message: GasPricesResponse): JsonSafe<GasPricesResponse> {
     const obj: any = {};
     if (message.prices) {
-      obj.prices = message.prices.map((e) => (e ? DecCoin.toJSON(e) : undefined));
+      obj.prices = message.prices.map(e => e ? DecCoin.toJSON(e) : undefined);
     } else {
       obj.prices = [];
     }
@@ -696,20 +806,20 @@ export const GasPricesResponse = {
   },
   fromPartial(object: Partial<GasPricesResponse>): GasPricesResponse {
     const message = createBaseGasPricesResponse();
-    message.prices = object.prices?.map((e) => DecCoin.fromPartial(e)) || [];
+    message.prices = object.prices?.map(e => DecCoin.fromPartial(e)) || [];
     return message;
   },
   fromAmino(object: GasPricesResponseAmino): GasPricesResponse {
     const message = createBaseGasPricesResponse();
-    message.prices = object.prices?.map((e) => DecCoin.fromAmino(e)) || [];
+    message.prices = object.prices?.map(e => DecCoin.fromAmino(e)) || [];
     return message;
   },
   toAmino(message: GasPricesResponse): GasPricesResponseAmino {
     const obj: any = {};
     if (message.prices) {
-      obj.prices = message.prices.map((e) => (e ? DecCoin.toAmino(e) : undefined));
+      obj.prices = message.prices.map(e => e ? DecCoin.toAmino(e) : undefined);
     } else {
-      obj.prices = [];
+      obj.prices = message.prices;
     }
     return obj;
   },
@@ -719,7 +829,7 @@ export const GasPricesResponse = {
   toAminoMsg(message: GasPricesResponse): GasPricesResponseAminoMsg {
     return {
       type: "cosmos-sdk/GasPricesResponse",
-      value: GasPricesResponse.toAmino(message),
+      value: GasPricesResponse.toAmino(message)
     };
   },
   fromProtoMsg(message: GasPricesResponseProtoMsg): GasPricesResponse {
@@ -731,10 +841,12 @@ export const GasPricesResponse = {
   toProtoMsg(message: GasPricesResponse): GasPricesResponseProtoMsg {
     return {
       typeUrl: "/cosmos.dynamicfee.v1.GasPricesResponse",
-      value: GasPricesResponse.encode(message).finish(),
+      value: GasPricesResponse.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(GasPricesResponse.typeUrl, GasPricesResponse);
+GlobalDecoderRegistry.registerAminoProtoMapping(GasPricesResponse.aminoType, GasPricesResponse.typeUrl);
 /** Query Service for the dynamicfee module. */
 export interface Query {
   /** Params returns the current dynamicfee module parameters. */
@@ -764,21 +876,21 @@ export class QueryClientImpl implements Query {
   Params(request: ParamsRequest = {}): Promise<ParamsResponse> {
     const data = ParamsRequest.encode(request).finish();
     const promise = this.rpc.request("cosmos.dynamicfee.v1.Query", "Params", data);
-    return promise.then((data) => ParamsResponse.decode(new BinaryReader(data)));
+    return promise.then(data => ParamsResponse.decode(new BinaryReader(data)));
   }
   State(request: StateRequest = {}): Promise<StateResponse> {
     const data = StateRequest.encode(request).finish();
     const promise = this.rpc.request("cosmos.dynamicfee.v1.Query", "State", data);
-    return promise.then((data) => StateResponse.decode(new BinaryReader(data)));
+    return promise.then(data => StateResponse.decode(new BinaryReader(data)));
   }
   GasPrice(request: GasPriceRequest): Promise<GasPriceResponse> {
     const data = GasPriceRequest.encode(request).finish();
     const promise = this.rpc.request("cosmos.dynamicfee.v1.Query", "GasPrice", data);
-    return promise.then((data) => GasPriceResponse.decode(new BinaryReader(data)));
+    return promise.then(data => GasPriceResponse.decode(new BinaryReader(data)));
   }
   GasPrices(request: GasPricesRequest = {}): Promise<GasPricesResponse> {
     const data = GasPricesRequest.encode(request).finish();
     const promise = this.rpc.request("cosmos.dynamicfee.v1.Query", "GasPrices", data);
-    return promise.then((data) => GasPricesResponse.decode(new BinaryReader(data)));
+    return promise.then(data => GasPricesResponse.decode(new BinaryReader(data)));
   }
 }

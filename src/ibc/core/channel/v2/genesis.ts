@@ -1,5 +1,7 @@
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "../../../../binary";
+import { JsonSafe } from "../../../../json-safe";
+import { GlobalDecoderRegistry } from "../../../../registry";
 import { isSet, bytesFromBase64, base64FromBytes } from "../../../../helpers";
 export const protobufPackage = "ibc.core.channel.v2";
 /** GenesisState defines the ibc channel/v2 submodule's genesis state. */
@@ -14,7 +16,12 @@ export interface GenesisStateProtoMsg {
   typeUrl: "/ibc.core.channel.v2.GenesisState";
   value: Uint8Array;
 }
-/** GenesisState defines the ibc channel/v2 submodule's genesis state. */
+/**
+ * GenesisState defines the ibc channel/v2 submodule's genesis state.
+ * @name GenesisStateAmino
+ * @package ibc.core.channel.v2
+ * @see proto type: ibc.core.channel.v2.GenesisState
+ */
 export interface GenesisStateAmino {
   acknowledgements?: PacketStateAmino[];
   commitments?: PacketStateAmino[];
@@ -49,13 +56,22 @@ export interface PacketStateProtoMsg {
  * packet commitments, acknowledgements, and receipts.
  * Caller is responsible for knowing the context necessary to interpret this
  * state as a commitment, acknowledgement, or a receipt.
+ * @name PacketStateAmino
+ * @package ibc.core.channel.v2
+ * @see proto type: ibc.core.channel.v2.PacketState
  */
 export interface PacketStateAmino {
-  /** client unique identifier. */
+  /**
+   * client unique identifier.
+   */
   client_id?: string;
-  /** packet sequence. */
+  /**
+   * packet sequence.
+   */
   sequence?: string;
-  /** embedded data that represents packet state. */
+  /**
+   * embedded data that represents packet state.
+   */
   data?: string;
 }
 export interface PacketStateAminoMsg {
@@ -73,11 +89,20 @@ export interface PacketSequenceProtoMsg {
   typeUrl: "/ibc.core.channel.v2.PacketSequence";
   value: Uint8Array;
 }
-/** PacketSequence defines the genesis type necessary to retrieve and store next send sequences. */
+/**
+ * PacketSequence defines the genesis type necessary to retrieve and store next send sequences.
+ * @name PacketSequenceAmino
+ * @package ibc.core.channel.v2
+ * @see proto type: ibc.core.channel.v2.PacketSequence
+ */
 export interface PacketSequenceAmino {
-  /** client unique identifier. */
+  /**
+   * client unique identifier.
+   */
   client_id?: string;
-  /** packet sequence */
+  /**
+   * packet sequence
+   */
   sequence?: string;
 }
 export interface PacketSequenceAminoMsg {
@@ -90,11 +115,18 @@ function createBaseGenesisState(): GenesisState {
     commitments: [],
     receipts: [],
     asyncPackets: [],
-    sendSequences: [],
+    sendSequences: []
   };
 }
 export const GenesisState = {
   typeUrl: "/ibc.core.channel.v2.GenesisState",
+  aminoType: "cosmos-sdk/GenesisState",
+  is(o: any): o is GenesisState {
+    return o && (o.$typeUrl === GenesisState.typeUrl || Array.isArray(o.acknowledgements) && (!o.acknowledgements.length || PacketState.is(o.acknowledgements[0])) && Array.isArray(o.commitments) && (!o.commitments.length || PacketState.is(o.commitments[0])) && Array.isArray(o.receipts) && (!o.receipts.length || PacketState.is(o.receipts[0])) && Array.isArray(o.asyncPackets) && (!o.asyncPackets.length || PacketState.is(o.asyncPackets[0])) && Array.isArray(o.sendSequences) && (!o.sendSequences.length || PacketSequence.is(o.sendSequences[0])));
+  },
+  isAmino(o: any): o is GenesisStateAmino {
+    return o && (o.$typeUrl === GenesisState.typeUrl || Array.isArray(o.acknowledgements) && (!o.acknowledgements.length || PacketState.isAmino(o.acknowledgements[0])) && Array.isArray(o.commitments) && (!o.commitments.length || PacketState.isAmino(o.commitments[0])) && Array.isArray(o.receipts) && (!o.receipts.length || PacketState.isAmino(o.receipts[0])) && Array.isArray(o.async_packets) && (!o.async_packets.length || PacketState.isAmino(o.async_packets[0])) && Array.isArray(o.send_sequences) && (!o.send_sequences.length || PacketSequence.isAmino(o.send_sequences[0])));
+  },
   encode(message: GenesisState, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.acknowledgements) {
       PacketState.encode(v!, writer.uint32(18).fork()).ldelim();
@@ -144,42 +176,37 @@ export const GenesisState = {
   },
   fromJSON(object: any): GenesisState {
     const obj = createBaseGenesisState();
-    if (Array.isArray(object?.acknowledgements))
-      obj.acknowledgements = object.acknowledgements.map((e: any) => PacketState.fromJSON(e));
-    if (Array.isArray(object?.commitments))
-      obj.commitments = object.commitments.map((e: any) => PacketState.fromJSON(e));
-    if (Array.isArray(object?.receipts))
-      obj.receipts = object.receipts.map((e: any) => PacketState.fromJSON(e));
-    if (Array.isArray(object?.asyncPackets))
-      obj.asyncPackets = object.asyncPackets.map((e: any) => PacketState.fromJSON(e));
-    if (Array.isArray(object?.sendSequences))
-      obj.sendSequences = object.sendSequences.map((e: any) => PacketSequence.fromJSON(e));
+    if (Array.isArray(object?.acknowledgements)) obj.acknowledgements = object.acknowledgements.map((e: any) => PacketState.fromJSON(e));
+    if (Array.isArray(object?.commitments)) obj.commitments = object.commitments.map((e: any) => PacketState.fromJSON(e));
+    if (Array.isArray(object?.receipts)) obj.receipts = object.receipts.map((e: any) => PacketState.fromJSON(e));
+    if (Array.isArray(object?.asyncPackets)) obj.asyncPackets = object.asyncPackets.map((e: any) => PacketState.fromJSON(e));
+    if (Array.isArray(object?.sendSequences)) obj.sendSequences = object.sendSequences.map((e: any) => PacketSequence.fromJSON(e));
     return obj;
   },
-  toJSON(message: GenesisState): unknown {
+  toJSON(message: GenesisState): JsonSafe<GenesisState> {
     const obj: any = {};
     if (message.acknowledgements) {
-      obj.acknowledgements = message.acknowledgements.map((e) => (e ? PacketState.toJSON(e) : undefined));
+      obj.acknowledgements = message.acknowledgements.map(e => e ? PacketState.toJSON(e) : undefined);
     } else {
       obj.acknowledgements = [];
     }
     if (message.commitments) {
-      obj.commitments = message.commitments.map((e) => (e ? PacketState.toJSON(e) : undefined));
+      obj.commitments = message.commitments.map(e => e ? PacketState.toJSON(e) : undefined);
     } else {
       obj.commitments = [];
     }
     if (message.receipts) {
-      obj.receipts = message.receipts.map((e) => (e ? PacketState.toJSON(e) : undefined));
+      obj.receipts = message.receipts.map(e => e ? PacketState.toJSON(e) : undefined);
     } else {
       obj.receipts = [];
     }
     if (message.asyncPackets) {
-      obj.asyncPackets = message.asyncPackets.map((e) => (e ? PacketState.toJSON(e) : undefined));
+      obj.asyncPackets = message.asyncPackets.map(e => e ? PacketState.toJSON(e) : undefined);
     } else {
       obj.asyncPackets = [];
     }
     if (message.sendSequences) {
-      obj.sendSequences = message.sendSequences.map((e) => (e ? PacketSequence.toJSON(e) : undefined));
+      obj.sendSequences = message.sendSequences.map(e => e ? PacketSequence.toJSON(e) : undefined);
     } else {
       obj.sendSequences = [];
     }
@@ -187,48 +214,48 @@ export const GenesisState = {
   },
   fromPartial(object: Partial<GenesisState>): GenesisState {
     const message = createBaseGenesisState();
-    message.acknowledgements = object.acknowledgements?.map((e) => PacketState.fromPartial(e)) || [];
-    message.commitments = object.commitments?.map((e) => PacketState.fromPartial(e)) || [];
-    message.receipts = object.receipts?.map((e) => PacketState.fromPartial(e)) || [];
-    message.asyncPackets = object.asyncPackets?.map((e) => PacketState.fromPartial(e)) || [];
-    message.sendSequences = object.sendSequences?.map((e) => PacketSequence.fromPartial(e)) || [];
+    message.acknowledgements = object.acknowledgements?.map(e => PacketState.fromPartial(e)) || [];
+    message.commitments = object.commitments?.map(e => PacketState.fromPartial(e)) || [];
+    message.receipts = object.receipts?.map(e => PacketState.fromPartial(e)) || [];
+    message.asyncPackets = object.asyncPackets?.map(e => PacketState.fromPartial(e)) || [];
+    message.sendSequences = object.sendSequences?.map(e => PacketSequence.fromPartial(e)) || [];
     return message;
   },
   fromAmino(object: GenesisStateAmino): GenesisState {
     const message = createBaseGenesisState();
-    message.acknowledgements = object.acknowledgements?.map((e) => PacketState.fromAmino(e)) || [];
-    message.commitments = object.commitments?.map((e) => PacketState.fromAmino(e)) || [];
-    message.receipts = object.receipts?.map((e) => PacketState.fromAmino(e)) || [];
-    message.asyncPackets = object.async_packets?.map((e) => PacketState.fromAmino(e)) || [];
-    message.sendSequences = object.send_sequences?.map((e) => PacketSequence.fromAmino(e)) || [];
+    message.acknowledgements = object.acknowledgements?.map(e => PacketState.fromAmino(e)) || [];
+    message.commitments = object.commitments?.map(e => PacketState.fromAmino(e)) || [];
+    message.receipts = object.receipts?.map(e => PacketState.fromAmino(e)) || [];
+    message.asyncPackets = object.async_packets?.map(e => PacketState.fromAmino(e)) || [];
+    message.sendSequences = object.send_sequences?.map(e => PacketSequence.fromAmino(e)) || [];
     return message;
   },
   toAmino(message: GenesisState): GenesisStateAmino {
     const obj: any = {};
     if (message.acknowledgements) {
-      obj.acknowledgements = message.acknowledgements.map((e) => (e ? PacketState.toAmino(e) : undefined));
+      obj.acknowledgements = message.acknowledgements.map(e => e ? PacketState.toAmino(e) : undefined);
     } else {
-      obj.acknowledgements = [];
+      obj.acknowledgements = message.acknowledgements;
     }
     if (message.commitments) {
-      obj.commitments = message.commitments.map((e) => (e ? PacketState.toAmino(e) : undefined));
+      obj.commitments = message.commitments.map(e => e ? PacketState.toAmino(e) : undefined);
     } else {
-      obj.commitments = [];
+      obj.commitments = message.commitments;
     }
     if (message.receipts) {
-      obj.receipts = message.receipts.map((e) => (e ? PacketState.toAmino(e) : undefined));
+      obj.receipts = message.receipts.map(e => e ? PacketState.toAmino(e) : undefined);
     } else {
-      obj.receipts = [];
+      obj.receipts = message.receipts;
     }
     if (message.asyncPackets) {
-      obj.async_packets = message.asyncPackets.map((e) => (e ? PacketState.toAmino(e) : undefined));
+      obj.async_packets = message.asyncPackets.map(e => e ? PacketState.toAmino(e) : undefined);
     } else {
-      obj.async_packets = [];
+      obj.async_packets = message.asyncPackets;
     }
     if (message.sendSequences) {
-      obj.send_sequences = message.sendSequences.map((e) => (e ? PacketSequence.toAmino(e) : undefined));
+      obj.send_sequences = message.sendSequences.map(e => e ? PacketSequence.toAmino(e) : undefined);
     } else {
-      obj.send_sequences = [];
+      obj.send_sequences = message.sendSequences;
     }
     return obj;
   },
@@ -238,7 +265,7 @@ export const GenesisState = {
   toAminoMsg(message: GenesisState): GenesisStateAminoMsg {
     return {
       type: "cosmos-sdk/GenesisState",
-      value: GenesisState.toAmino(message),
+      value: GenesisState.toAmino(message)
     };
   },
   fromProtoMsg(message: GenesisStateProtoMsg): GenesisState {
@@ -250,19 +277,28 @@ export const GenesisState = {
   toProtoMsg(message: GenesisState): GenesisStateProtoMsg {
     return {
       typeUrl: "/ibc.core.channel.v2.GenesisState",
-      value: GenesisState.encode(message).finish(),
+      value: GenesisState.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(GenesisState.typeUrl, GenesisState);
+GlobalDecoderRegistry.registerAminoProtoMapping(GenesisState.aminoType, GenesisState.typeUrl);
 function createBasePacketState(): PacketState {
   return {
     clientId: "",
     sequence: BigInt(0),
-    data: new Uint8Array(),
+    data: new Uint8Array()
   };
 }
 export const PacketState = {
   typeUrl: "/ibc.core.channel.v2.PacketState",
+  aminoType: "cosmos-sdk/PacketState",
+  is(o: any): o is PacketState {
+    return o && (o.$typeUrl === PacketState.typeUrl || typeof o.clientId === "string" && typeof o.sequence === "bigint" && (o.data instanceof Uint8Array || typeof o.data === "string"));
+  },
+  isAmino(o: any): o is PacketStateAmino {
+    return o && (o.$typeUrl === PacketState.typeUrl || typeof o.client_id === "string" && typeof o.sequence === "bigint" && (o.data instanceof Uint8Array || typeof o.data === "string"));
+  },
   encode(message: PacketState, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.clientId !== "") {
       writer.uint32(10).string(message.clientId);
@@ -305,12 +341,11 @@ export const PacketState = {
     if (isSet(object.data)) obj.data = bytesFromBase64(object.data);
     return obj;
   },
-  toJSON(message: PacketState): unknown {
+  toJSON(message: PacketState): JsonSafe<PacketState> {
     const obj: any = {};
     message.clientId !== undefined && (obj.clientId = message.clientId);
     message.sequence !== undefined && (obj.sequence = (message.sequence || BigInt(0)).toString());
-    message.data !== undefined &&
-      (obj.data = base64FromBytes(message.data !== undefined ? message.data : new Uint8Array()));
+    message.data !== undefined && (obj.data = base64FromBytes(message.data !== undefined ? message.data : new Uint8Array()));
     return obj;
   },
   fromPartial(object: Partial<PacketState>): PacketState {
@@ -337,8 +372,8 @@ export const PacketState = {
   },
   toAmino(message: PacketState): PacketStateAmino {
     const obj: any = {};
-    obj.client_id = message.clientId;
-    obj.sequence = message.sequence ? message.sequence.toString() : undefined;
+    obj.client_id = message.clientId === "" ? undefined : message.clientId;
+    obj.sequence = message.sequence !== BigInt(0) ? message.sequence?.toString() : undefined;
     obj.data = message.data ? base64FromBytes(message.data) : undefined;
     return obj;
   },
@@ -348,7 +383,7 @@ export const PacketState = {
   toAminoMsg(message: PacketState): PacketStateAminoMsg {
     return {
       type: "cosmos-sdk/PacketState",
-      value: PacketState.toAmino(message),
+      value: PacketState.toAmino(message)
     };
   },
   fromProtoMsg(message: PacketStateProtoMsg): PacketState {
@@ -360,18 +395,27 @@ export const PacketState = {
   toProtoMsg(message: PacketState): PacketStateProtoMsg {
     return {
       typeUrl: "/ibc.core.channel.v2.PacketState",
-      value: PacketState.encode(message).finish(),
+      value: PacketState.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(PacketState.typeUrl, PacketState);
+GlobalDecoderRegistry.registerAminoProtoMapping(PacketState.aminoType, PacketState.typeUrl);
 function createBasePacketSequence(): PacketSequence {
   return {
     clientId: "",
-    sequence: BigInt(0),
+    sequence: BigInt(0)
   };
 }
 export const PacketSequence = {
   typeUrl: "/ibc.core.channel.v2.PacketSequence",
+  aminoType: "cosmos-sdk/PacketSequence",
+  is(o: any): o is PacketSequence {
+    return o && (o.$typeUrl === PacketSequence.typeUrl || typeof o.clientId === "string" && typeof o.sequence === "bigint");
+  },
+  isAmino(o: any): o is PacketSequenceAmino {
+    return o && (o.$typeUrl === PacketSequence.typeUrl || typeof o.client_id === "string" && typeof o.sequence === "bigint");
+  },
   encode(message: PacketSequence, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.clientId !== "") {
       writer.uint32(10).string(message.clientId);
@@ -407,7 +451,7 @@ export const PacketSequence = {
     if (isSet(object.sequence)) obj.sequence = BigInt(object.sequence.toString());
     return obj;
   },
-  toJSON(message: PacketSequence): unknown {
+  toJSON(message: PacketSequence): JsonSafe<PacketSequence> {
     const obj: any = {};
     message.clientId !== undefined && (obj.clientId = message.clientId);
     message.sequence !== undefined && (obj.sequence = (message.sequence || BigInt(0)).toString());
@@ -433,8 +477,8 @@ export const PacketSequence = {
   },
   toAmino(message: PacketSequence): PacketSequenceAmino {
     const obj: any = {};
-    obj.client_id = message.clientId;
-    obj.sequence = message.sequence ? message.sequence.toString() : undefined;
+    obj.client_id = message.clientId === "" ? undefined : message.clientId;
+    obj.sequence = message.sequence !== BigInt(0) ? message.sequence?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: PacketSequenceAminoMsg): PacketSequence {
@@ -443,7 +487,7 @@ export const PacketSequence = {
   toAminoMsg(message: PacketSequence): PacketSequenceAminoMsg {
     return {
       type: "cosmos-sdk/PacketSequence",
-      value: PacketSequence.toAmino(message),
+      value: PacketSequence.toAmino(message)
     };
   },
   fromProtoMsg(message: PacketSequenceProtoMsg): PacketSequence {
@@ -455,7 +499,9 @@ export const PacketSequence = {
   toProtoMsg(message: PacketSequence): PacketSequenceProtoMsg {
     return {
       typeUrl: "/ibc.core.channel.v2.PacketSequence",
-      value: PacketSequence.encode(message).finish(),
+      value: PacketSequence.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(PacketSequence.typeUrl, PacketSequence);
+GlobalDecoderRegistry.registerAminoProtoMapping(PacketSequence.aminoType, PacketSequence.typeUrl);

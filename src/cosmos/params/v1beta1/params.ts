@@ -1,6 +1,8 @@
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "../../../binary";
 import { isSet } from "../../../helpers";
+import { JsonSafe } from "../../../json-safe";
+import { GlobalDecoderRegistry } from "../../../registry";
 export const protobufPackage = "cosmos.params.v1beta1";
 /** ParameterChangeProposal defines a proposal to change one or more parameters. */
 export interface ParameterChangeProposal {
@@ -12,7 +14,12 @@ export interface ParameterChangeProposalProtoMsg {
   typeUrl: "/cosmos.params.v1beta1.ParameterChangeProposal";
   value: Uint8Array;
 }
-/** ParameterChangeProposal defines a proposal to change one or more parameters. */
+/**
+ * ParameterChangeProposal defines a proposal to change one or more parameters.
+ * @name ParameterChangeProposalAmino
+ * @package cosmos.params.v1beta1
+ * @see proto type: cosmos.params.v1beta1.ParameterChangeProposal
+ */
 export interface ParameterChangeProposalAmino {
   title?: string;
   description?: string;
@@ -38,6 +45,9 @@ export interface ParamChangeProtoMsg {
 /**
  * ParamChange defines an individual parameter change, for use in
  * ParameterChangeProposal.
+ * @name ParamChangeAmino
+ * @package cosmos.params.v1beta1
+ * @see proto type: cosmos.params.v1beta1.ParamChange
  */
 export interface ParamChangeAmino {
   subspace?: string;
@@ -52,11 +62,18 @@ function createBaseParameterChangeProposal(): ParameterChangeProposal {
   return {
     title: "",
     description: "",
-    changes: [],
+    changes: []
   };
 }
 export const ParameterChangeProposal = {
   typeUrl: "/cosmos.params.v1beta1.ParameterChangeProposal",
+  aminoType: "cosmos-sdk/ParameterChangeProposal",
+  is(o: any): o is ParameterChangeProposal {
+    return o && (o.$typeUrl === ParameterChangeProposal.typeUrl || typeof o.title === "string" && typeof o.description === "string" && Array.isArray(o.changes) && (!o.changes.length || ParamChange.is(o.changes[0])));
+  },
+  isAmino(o: any): o is ParameterChangeProposalAmino {
+    return o && (o.$typeUrl === ParameterChangeProposal.typeUrl || typeof o.title === "string" && typeof o.description === "string" && Array.isArray(o.changes) && (!o.changes.length || ParamChange.isAmino(o.changes[0])));
+  },
   encode(message: ParameterChangeProposal, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.title !== "") {
       writer.uint32(10).string(message.title);
@@ -99,12 +116,12 @@ export const ParameterChangeProposal = {
     if (Array.isArray(object?.changes)) obj.changes = object.changes.map((e: any) => ParamChange.fromJSON(e));
     return obj;
   },
-  toJSON(message: ParameterChangeProposal): unknown {
+  toJSON(message: ParameterChangeProposal): JsonSafe<ParameterChangeProposal> {
     const obj: any = {};
     message.title !== undefined && (obj.title = message.title);
     message.description !== undefined && (obj.description = message.description);
     if (message.changes) {
-      obj.changes = message.changes.map((e) => (e ? ParamChange.toJSON(e) : undefined));
+      obj.changes = message.changes.map(e => e ? ParamChange.toJSON(e) : undefined);
     } else {
       obj.changes = [];
     }
@@ -114,7 +131,7 @@ export const ParameterChangeProposal = {
     const message = createBaseParameterChangeProposal();
     message.title = object.title ?? "";
     message.description = object.description ?? "";
-    message.changes = object.changes?.map((e) => ParamChange.fromPartial(e)) || [];
+    message.changes = object.changes?.map(e => ParamChange.fromPartial(e)) || [];
     return message;
   },
   fromAmino(object: ParameterChangeProposalAmino): ParameterChangeProposal {
@@ -125,17 +142,17 @@ export const ParameterChangeProposal = {
     if (object.description !== undefined && object.description !== null) {
       message.description = object.description;
     }
-    message.changes = object.changes?.map((e) => ParamChange.fromAmino(e)) || [];
+    message.changes = object.changes?.map(e => ParamChange.fromAmino(e)) || [];
     return message;
   },
   toAmino(message: ParameterChangeProposal): ParameterChangeProposalAmino {
     const obj: any = {};
-    obj.title = message.title;
-    obj.description = message.description;
+    obj.title = message.title === "" ? undefined : message.title;
+    obj.description = message.description === "" ? undefined : message.description;
     if (message.changes) {
-      obj.changes = message.changes.map((e) => (e ? ParamChange.toAmino(e) : undefined));
+      obj.changes = message.changes.map(e => e ? ParamChange.toAmino(e) : undefined);
     } else {
-      obj.changes = [];
+      obj.changes = message.changes;
     }
     return obj;
   },
@@ -145,7 +162,7 @@ export const ParameterChangeProposal = {
   toAminoMsg(message: ParameterChangeProposal): ParameterChangeProposalAminoMsg {
     return {
       type: "cosmos-sdk/ParameterChangeProposal",
-      value: ParameterChangeProposal.toAmino(message),
+      value: ParameterChangeProposal.toAmino(message)
     };
   },
   fromProtoMsg(message: ParameterChangeProposalProtoMsg): ParameterChangeProposal {
@@ -157,19 +174,28 @@ export const ParameterChangeProposal = {
   toProtoMsg(message: ParameterChangeProposal): ParameterChangeProposalProtoMsg {
     return {
       typeUrl: "/cosmos.params.v1beta1.ParameterChangeProposal",
-      value: ParameterChangeProposal.encode(message).finish(),
+      value: ParameterChangeProposal.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(ParameterChangeProposal.typeUrl, ParameterChangeProposal);
+GlobalDecoderRegistry.registerAminoProtoMapping(ParameterChangeProposal.aminoType, ParameterChangeProposal.typeUrl);
 function createBaseParamChange(): ParamChange {
   return {
     subspace: "",
     key: "",
-    value: "",
+    value: ""
   };
 }
 export const ParamChange = {
   typeUrl: "/cosmos.params.v1beta1.ParamChange",
+  aminoType: "cosmos-sdk/ParamChange",
+  is(o: any): o is ParamChange {
+    return o && (o.$typeUrl === ParamChange.typeUrl || typeof o.subspace === "string" && typeof o.key === "string" && typeof o.value === "string");
+  },
+  isAmino(o: any): o is ParamChangeAmino {
+    return o && (o.$typeUrl === ParamChange.typeUrl || typeof o.subspace === "string" && typeof o.key === "string" && typeof o.value === "string");
+  },
   encode(message: ParamChange, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.subspace !== "") {
       writer.uint32(10).string(message.subspace);
@@ -212,7 +238,7 @@ export const ParamChange = {
     if (isSet(object.value)) obj.value = String(object.value);
     return obj;
   },
-  toJSON(message: ParamChange): unknown {
+  toJSON(message: ParamChange): JsonSafe<ParamChange> {
     const obj: any = {};
     message.subspace !== undefined && (obj.subspace = message.subspace);
     message.key !== undefined && (obj.key = message.key);
@@ -241,9 +267,9 @@ export const ParamChange = {
   },
   toAmino(message: ParamChange): ParamChangeAmino {
     const obj: any = {};
-    obj.subspace = message.subspace;
-    obj.key = message.key;
-    obj.value = message.value;
+    obj.subspace = message.subspace === "" ? undefined : message.subspace;
+    obj.key = message.key === "" ? undefined : message.key;
+    obj.value = message.value === "" ? undefined : message.value;
     return obj;
   },
   fromAminoMsg(object: ParamChangeAminoMsg): ParamChange {
@@ -252,7 +278,7 @@ export const ParamChange = {
   toAminoMsg(message: ParamChange): ParamChangeAminoMsg {
     return {
       type: "cosmos-sdk/ParamChange",
-      value: ParamChange.toAmino(message),
+      value: ParamChange.toAmino(message)
     };
   },
   fromProtoMsg(message: ParamChangeProtoMsg): ParamChange {
@@ -264,7 +290,9 @@ export const ParamChange = {
   toProtoMsg(message: ParamChange): ParamChangeProtoMsg {
     return {
       typeUrl: "/cosmos.params.v1beta1.ParamChange",
-      value: ParamChange.encode(message).finish(),
+      value: ParamChange.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(ParamChange.typeUrl, ParamChange);
+GlobalDecoderRegistry.registerAminoProtoMapping(ParamChange.aminoType, ParamChange.typeUrl);

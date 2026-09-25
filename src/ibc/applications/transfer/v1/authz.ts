@@ -2,6 +2,8 @@
 import { Coin, CoinAmino } from "../../../../cosmos/base/v1beta1/coin";
 import { BinaryReader, BinaryWriter } from "../../../../binary";
 import { isSet } from "../../../../helpers";
+import { JsonSafe } from "../../../../json-safe";
+import { GlobalDecoderRegistry } from "../../../../registry";
 export const protobufPackage = "ibc.applications.transfer.v1";
 /** Allocation defines the spend limit for a particular port and channel */
 export interface Allocation {
@@ -23,15 +25,28 @@ export interface AllocationProtoMsg {
   typeUrl: "/ibc.applications.transfer.v1.Allocation";
   value: Uint8Array;
 }
-/** Allocation defines the spend limit for a particular port and channel */
+/**
+ * Allocation defines the spend limit for a particular port and channel
+ * @name AllocationAmino
+ * @package ibc.applications.transfer.v1
+ * @see proto type: ibc.applications.transfer.v1.Allocation
+ */
 export interface AllocationAmino {
-  /** the port on which the packet will be sent */
+  /**
+   * the port on which the packet will be sent
+   */
   source_port?: string;
-  /** the channel by which the packet will be sent */
+  /**
+   * the channel by which the packet will be sent
+   */
   source_channel?: string;
-  /** spend limitation on the channel */
+  /**
+   * spend limitation on the channel
+   */
   spend_limit?: CoinAmino[];
-  /** allow list of receivers, an empty allow list permits any receiver address */
+  /**
+   * allow list of receivers, an empty allow list permits any receiver address
+   */
   allow_list?: string[];
   /**
    * allow list of memo strings, an empty list prohibits all memo strings;
@@ -58,9 +73,14 @@ export interface TransferAuthorizationProtoMsg {
 /**
  * TransferAuthorization allows the grantee to spend up to spend_limit coins from
  * the granter's account for ibc transfer on a specific channel
+ * @name TransferAuthorizationAmino
+ * @package ibc.applications.transfer.v1
+ * @see proto type: ibc.applications.transfer.v1.TransferAuthorization
  */
 export interface TransferAuthorizationAmino {
-  /** port and channel amounts */
+  /**
+   * port and channel amounts
+   */
   allocations?: AllocationAmino[];
 }
 export interface TransferAuthorizationAminoMsg {
@@ -73,11 +93,18 @@ function createBaseAllocation(): Allocation {
     sourceChannel: "",
     spendLimit: [],
     allowList: [],
-    allowedPacketData: [],
+    allowedPacketData: []
   };
 }
 export const Allocation = {
   typeUrl: "/ibc.applications.transfer.v1.Allocation",
+  aminoType: "cosmos-sdk/Allocation",
+  is(o: any): o is Allocation {
+    return o && (o.$typeUrl === Allocation.typeUrl || typeof o.sourcePort === "string" && typeof o.sourceChannel === "string" && Array.isArray(o.spendLimit) && (!o.spendLimit.length || Coin.is(o.spendLimit[0])) && Array.isArray(o.allowList) && (!o.allowList.length || typeof o.allowList[0] === "string") && Array.isArray(o.allowedPacketData) && (!o.allowedPacketData.length || typeof o.allowedPacketData[0] === "string"));
+  },
+  isAmino(o: any): o is AllocationAmino {
+    return o && (o.$typeUrl === Allocation.typeUrl || typeof o.source_port === "string" && typeof o.source_channel === "string" && Array.isArray(o.spend_limit) && (!o.spend_limit.length || Coin.isAmino(o.spend_limit[0])) && Array.isArray(o.allow_list) && (!o.allow_list.length || typeof o.allow_list[0] === "string") && Array.isArray(o.allowed_packet_data) && (!o.allowed_packet_data.length || typeof o.allowed_packet_data[0] === "string"));
+  },
   encode(message: Allocation, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.sourcePort !== "") {
       writer.uint32(10).string(message.sourcePort);
@@ -129,29 +156,27 @@ export const Allocation = {
     const obj = createBaseAllocation();
     if (isSet(object.sourcePort)) obj.sourcePort = String(object.sourcePort);
     if (isSet(object.sourceChannel)) obj.sourceChannel = String(object.sourceChannel);
-    if (Array.isArray(object?.spendLimit))
-      obj.spendLimit = object.spendLimit.map((e: any) => Coin.fromJSON(e));
+    if (Array.isArray(object?.spendLimit)) obj.spendLimit = object.spendLimit.map((e: any) => Coin.fromJSON(e));
     if (Array.isArray(object?.allowList)) obj.allowList = object.allowList.map((e: any) => String(e));
-    if (Array.isArray(object?.allowedPacketData))
-      obj.allowedPacketData = object.allowedPacketData.map((e: any) => String(e));
+    if (Array.isArray(object?.allowedPacketData)) obj.allowedPacketData = object.allowedPacketData.map((e: any) => String(e));
     return obj;
   },
-  toJSON(message: Allocation): unknown {
+  toJSON(message: Allocation): JsonSafe<Allocation> {
     const obj: any = {};
     message.sourcePort !== undefined && (obj.sourcePort = message.sourcePort);
     message.sourceChannel !== undefined && (obj.sourceChannel = message.sourceChannel);
     if (message.spendLimit) {
-      obj.spendLimit = message.spendLimit.map((e) => (e ? Coin.toJSON(e) : undefined));
+      obj.spendLimit = message.spendLimit.map(e => e ? Coin.toJSON(e) : undefined);
     } else {
       obj.spendLimit = [];
     }
     if (message.allowList) {
-      obj.allowList = message.allowList.map((e) => e);
+      obj.allowList = message.allowList.map(e => e);
     } else {
       obj.allowList = [];
     }
     if (message.allowedPacketData) {
-      obj.allowedPacketData = message.allowedPacketData.map((e) => e);
+      obj.allowedPacketData = message.allowedPacketData.map(e => e);
     } else {
       obj.allowedPacketData = [];
     }
@@ -161,9 +186,9 @@ export const Allocation = {
     const message = createBaseAllocation();
     message.sourcePort = object.sourcePort ?? "";
     message.sourceChannel = object.sourceChannel ?? "";
-    message.spendLimit = object.spendLimit?.map((e) => Coin.fromPartial(e)) || [];
-    message.allowList = object.allowList?.map((e) => e) || [];
-    message.allowedPacketData = object.allowedPacketData?.map((e) => e) || [];
+    message.spendLimit = object.spendLimit?.map(e => Coin.fromPartial(e)) || [];
+    message.allowList = object.allowList?.map(e => e) || [];
+    message.allowedPacketData = object.allowedPacketData?.map(e => e) || [];
     return message;
   },
   fromAmino(object: AllocationAmino): Allocation {
@@ -174,29 +199,29 @@ export const Allocation = {
     if (object.source_channel !== undefined && object.source_channel !== null) {
       message.sourceChannel = object.source_channel;
     }
-    message.spendLimit = object.spend_limit?.map((e) => Coin.fromAmino(e)) || [];
-    message.allowList = object.allow_list?.map((e) => e) || [];
-    message.allowedPacketData = object.allowed_packet_data?.map((e) => e) || [];
+    message.spendLimit = object.spend_limit?.map(e => Coin.fromAmino(e)) || [];
+    message.allowList = object.allow_list?.map(e => e) || [];
+    message.allowedPacketData = object.allowed_packet_data?.map(e => e) || [];
     return message;
   },
   toAmino(message: Allocation): AllocationAmino {
     const obj: any = {};
-    obj.source_port = message.sourcePort;
-    obj.source_channel = message.sourceChannel;
+    obj.source_port = message.sourcePort === "" ? undefined : message.sourcePort;
+    obj.source_channel = message.sourceChannel === "" ? undefined : message.sourceChannel;
     if (message.spendLimit) {
-      obj.spend_limit = message.spendLimit.map((e) => (e ? Coin.toAmino(e) : undefined));
+      obj.spend_limit = message.spendLimit.map(e => e ? Coin.toAmino(e) : undefined);
     } else {
-      obj.spend_limit = [];
+      obj.spend_limit = message.spendLimit;
     }
     if (message.allowList) {
-      obj.allow_list = message.allowList.map((e) => e);
+      obj.allow_list = message.allowList.map(e => e);
     } else {
-      obj.allow_list = [];
+      obj.allow_list = message.allowList;
     }
     if (message.allowedPacketData) {
-      obj.allowed_packet_data = message.allowedPacketData.map((e) => e);
+      obj.allowed_packet_data = message.allowedPacketData.map(e => e);
     } else {
-      obj.allowed_packet_data = [];
+      obj.allowed_packet_data = message.allowedPacketData;
     }
     return obj;
   },
@@ -206,7 +231,7 @@ export const Allocation = {
   toAminoMsg(message: Allocation): AllocationAminoMsg {
     return {
       type: "cosmos-sdk/Allocation",
-      value: Allocation.toAmino(message),
+      value: Allocation.toAmino(message)
     };
   },
   fromProtoMsg(message: AllocationProtoMsg): Allocation {
@@ -218,17 +243,26 @@ export const Allocation = {
   toProtoMsg(message: Allocation): AllocationProtoMsg {
     return {
       typeUrl: "/ibc.applications.transfer.v1.Allocation",
-      value: Allocation.encode(message).finish(),
+      value: Allocation.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(Allocation.typeUrl, Allocation);
+GlobalDecoderRegistry.registerAminoProtoMapping(Allocation.aminoType, Allocation.typeUrl);
 function createBaseTransferAuthorization(): TransferAuthorization {
   return {
-    allocations: [],
+    allocations: []
   };
 }
 export const TransferAuthorization = {
   typeUrl: "/ibc.applications.transfer.v1.TransferAuthorization",
+  aminoType: "cosmos-sdk/TransferAuthorization",
+  is(o: any): o is TransferAuthorization {
+    return o && (o.$typeUrl === TransferAuthorization.typeUrl || Array.isArray(o.allocations) && (!o.allocations.length || Allocation.is(o.allocations[0])));
+  },
+  isAmino(o: any): o is TransferAuthorizationAmino {
+    return o && (o.$typeUrl === TransferAuthorization.typeUrl || Array.isArray(o.allocations) && (!o.allocations.length || Allocation.isAmino(o.allocations[0])));
+  },
   encode(message: TransferAuthorization, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.allocations) {
       Allocation.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -254,14 +288,13 @@ export const TransferAuthorization = {
   },
   fromJSON(object: any): TransferAuthorization {
     const obj = createBaseTransferAuthorization();
-    if (Array.isArray(object?.allocations))
-      obj.allocations = object.allocations.map((e: any) => Allocation.fromJSON(e));
+    if (Array.isArray(object?.allocations)) obj.allocations = object.allocations.map((e: any) => Allocation.fromJSON(e));
     return obj;
   },
-  toJSON(message: TransferAuthorization): unknown {
+  toJSON(message: TransferAuthorization): JsonSafe<TransferAuthorization> {
     const obj: any = {};
     if (message.allocations) {
-      obj.allocations = message.allocations.map((e) => (e ? Allocation.toJSON(e) : undefined));
+      obj.allocations = message.allocations.map(e => e ? Allocation.toJSON(e) : undefined);
     } else {
       obj.allocations = [];
     }
@@ -269,20 +302,20 @@ export const TransferAuthorization = {
   },
   fromPartial(object: Partial<TransferAuthorization>): TransferAuthorization {
     const message = createBaseTransferAuthorization();
-    message.allocations = object.allocations?.map((e) => Allocation.fromPartial(e)) || [];
+    message.allocations = object.allocations?.map(e => Allocation.fromPartial(e)) || [];
     return message;
   },
   fromAmino(object: TransferAuthorizationAmino): TransferAuthorization {
     const message = createBaseTransferAuthorization();
-    message.allocations = object.allocations?.map((e) => Allocation.fromAmino(e)) || [];
+    message.allocations = object.allocations?.map(e => Allocation.fromAmino(e)) || [];
     return message;
   },
   toAmino(message: TransferAuthorization): TransferAuthorizationAmino {
     const obj: any = {};
     if (message.allocations) {
-      obj.allocations = message.allocations.map((e) => (e ? Allocation.toAmino(e) : undefined));
+      obj.allocations = message.allocations.map(e => e ? Allocation.toAmino(e) : undefined);
     } else {
-      obj.allocations = [];
+      obj.allocations = message.allocations;
     }
     return obj;
   },
@@ -292,7 +325,7 @@ export const TransferAuthorization = {
   toAminoMsg(message: TransferAuthorization): TransferAuthorizationAminoMsg {
     return {
       type: "cosmos-sdk/TransferAuthorization",
-      value: TransferAuthorization.toAmino(message),
+      value: TransferAuthorization.toAmino(message)
     };
   },
   fromProtoMsg(message: TransferAuthorizationProtoMsg): TransferAuthorization {
@@ -304,7 +337,9 @@ export const TransferAuthorization = {
   toProtoMsg(message: TransferAuthorization): TransferAuthorizationProtoMsg {
     return {
       typeUrl: "/ibc.applications.transfer.v1.TransferAuthorization",
-      value: TransferAuthorization.encode(message).finish(),
+      value: TransferAuthorization.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(TransferAuthorization.typeUrl, TransferAuthorization);
+GlobalDecoderRegistry.registerAminoProtoMapping(TransferAuthorization.aminoType, TransferAuthorization.typeUrl);

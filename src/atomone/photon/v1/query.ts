@@ -1,6 +1,8 @@
 /* eslint-disable */
 import { Params, ParamsAmino } from "./photon";
 import { BinaryReader, BinaryWriter } from "../../../binary";
+import { JsonSafe } from "../../../json-safe";
+import { GlobalDecoderRegistry } from "../../../registry";
 import { isSet } from "../../../helpers";
 import { TxRpc } from "../../../types";
 export const protobufPackage = "atomone.photon.v1";
@@ -10,7 +12,12 @@ export interface QueryParamsRequestProtoMsg {
   typeUrl: "/atomone.photon.v1.QueryParamsRequest";
   value: Uint8Array;
 }
-/** QueryParamsRequest is request type for the Query/Params RPC method. */
+/**
+ * QueryParamsRequest is request type for the Query/Params RPC method.
+ * @name QueryParamsRequestAmino
+ * @package atomone.photon.v1
+ * @see proto type: atomone.photon.v1.QueryParamsRequest
+ */
 export interface QueryParamsRequestAmino {}
 export interface QueryParamsRequestAminoMsg {
   type: "/atomone.photon.v1.QueryParamsRequest";
@@ -25,9 +32,16 @@ export interface QueryParamsResponseProtoMsg {
   typeUrl: "/atomone.photon.v1.QueryParamsResponse";
   value: Uint8Array;
 }
-/** QueryParamsResponse is response type for the Query/Params RPC method. */
+/**
+ * QueryParamsResponse is response type for the Query/Params RPC method.
+ * @name QueryParamsResponseAmino
+ * @package atomone.photon.v1
+ * @see proto type: atomone.photon.v1.QueryParamsResponse
+ */
 export interface QueryParamsResponseAmino {
-  /** params holds all the parameters of this module. */
+  /**
+   * params holds all the parameters of this module.
+   */
   params?: ParamsAmino | undefined;
 }
 export interface QueryParamsResponseAminoMsg {
@@ -40,7 +54,12 @@ export interface QueryConversionRateRequestProtoMsg {
   typeUrl: "/atomone.photon.v1.QueryConversionRateRequest";
   value: Uint8Array;
 }
-/** QueryConversionRateRequest is request type for the Query/ConversionRate RPC method. */
+/**
+ * QueryConversionRateRequest is request type for the Query/ConversionRate RPC method.
+ * @name QueryConversionRateRequestAmino
+ * @package atomone.photon.v1
+ * @see proto type: atomone.photon.v1.QueryConversionRateRequest
+ */
 export interface QueryConversionRateRequestAmino {}
 export interface QueryConversionRateRequestAminoMsg {
   type: "/atomone.photon.v1.QueryConversionRateRequest";
@@ -55,9 +74,16 @@ export interface QueryConversionRateResponseProtoMsg {
   typeUrl: "/atomone.photon.v1.QueryConversionRateResponse";
   value: Uint8Array;
 }
-/** QueryConversionRateResponse is response type for the Query/ConversionRate RPC method. */
+/**
+ * QueryConversionRateResponse is response type for the Query/ConversionRate RPC method.
+ * @name QueryConversionRateResponseAmino
+ * @package atomone.photon.v1
+ * @see proto type: atomone.photon.v1.QueryConversionRateResponse
+ */
 export interface QueryConversionRateResponseAmino {
-  /** conversion_rate represents the factor used to convert atone to photon. */
+  /**
+   * conversion_rate represents the factor used to convert atone to photon.
+   */
   conversion_rate?: string;
 }
 export interface QueryConversionRateResponseAminoMsg {
@@ -69,6 +95,12 @@ function createBaseQueryParamsRequest(): QueryParamsRequest {
 }
 export const QueryParamsRequest = {
   typeUrl: "/atomone.photon.v1.QueryParamsRequest",
+  is(o: any): o is QueryParamsRequest {
+    return o && o.$typeUrl === QueryParamsRequest.typeUrl;
+  },
+  isAmino(o: any): o is QueryParamsRequestAmino {
+    return o && o.$typeUrl === QueryParamsRequest.typeUrl;
+  },
   encode(_: QueryParamsRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
@@ -90,7 +122,7 @@ export const QueryParamsRequest = {
     const obj = createBaseQueryParamsRequest();
     return obj;
   },
-  toJSON(_: QueryParamsRequest): unknown {
+  toJSON(_: QueryParamsRequest): JsonSafe<QueryParamsRequest> {
     const obj: any = {};
     return obj;
   },
@@ -118,17 +150,24 @@ export const QueryParamsRequest = {
   toProtoMsg(message: QueryParamsRequest): QueryParamsRequestProtoMsg {
     return {
       typeUrl: "/atomone.photon.v1.QueryParamsRequest",
-      value: QueryParamsRequest.encode(message).finish(),
+      value: QueryParamsRequest.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(QueryParamsRequest.typeUrl, QueryParamsRequest);
 function createBaseQueryParamsResponse(): QueryParamsResponse {
   return {
-    params: Params.fromPartial({}),
+    params: Params.fromPartial({})
   };
 }
 export const QueryParamsResponse = {
   typeUrl: "/atomone.photon.v1.QueryParamsResponse",
+  is(o: any): o is QueryParamsResponse {
+    return o && (o.$typeUrl === QueryParamsResponse.typeUrl || Params.is(o.params));
+  },
+  isAmino(o: any): o is QueryParamsResponseAmino {
+    return o && (o.$typeUrl === QueryParamsResponse.typeUrl || Params.isAmino(o.params));
+  },
   encode(message: QueryParamsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.params !== undefined) {
       Params.encode(message.params, writer.uint32(10).fork()).ldelim();
@@ -157,7 +196,7 @@ export const QueryParamsResponse = {
     if (isSet(object.params)) obj.params = Params.fromJSON(object.params);
     return obj;
   },
-  toJSON(message: QueryParamsResponse): unknown {
+  toJSON(message: QueryParamsResponse): JsonSafe<QueryParamsResponse> {
     const obj: any = {};
     message.params !== undefined && (obj.params = message.params ? Params.toJSON(message.params) : undefined);
     return obj;
@@ -193,15 +232,22 @@ export const QueryParamsResponse = {
   toProtoMsg(message: QueryParamsResponse): QueryParamsResponseProtoMsg {
     return {
       typeUrl: "/atomone.photon.v1.QueryParamsResponse",
-      value: QueryParamsResponse.encode(message).finish(),
+      value: QueryParamsResponse.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(QueryParamsResponse.typeUrl, QueryParamsResponse);
 function createBaseQueryConversionRateRequest(): QueryConversionRateRequest {
   return {};
 }
 export const QueryConversionRateRequest = {
   typeUrl: "/atomone.photon.v1.QueryConversionRateRequest",
+  is(o: any): o is QueryConversionRateRequest {
+    return o && o.$typeUrl === QueryConversionRateRequest.typeUrl;
+  },
+  isAmino(o: any): o is QueryConversionRateRequestAmino {
+    return o && o.$typeUrl === QueryConversionRateRequest.typeUrl;
+  },
   encode(_: QueryConversionRateRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
@@ -223,7 +269,7 @@ export const QueryConversionRateRequest = {
     const obj = createBaseQueryConversionRateRequest();
     return obj;
   },
-  toJSON(_: QueryConversionRateRequest): unknown {
+  toJSON(_: QueryConversionRateRequest): JsonSafe<QueryConversionRateRequest> {
     const obj: any = {};
     return obj;
   },
@@ -251,17 +297,24 @@ export const QueryConversionRateRequest = {
   toProtoMsg(message: QueryConversionRateRequest): QueryConversionRateRequestProtoMsg {
     return {
       typeUrl: "/atomone.photon.v1.QueryConversionRateRequest",
-      value: QueryConversionRateRequest.encode(message).finish(),
+      value: QueryConversionRateRequest.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(QueryConversionRateRequest.typeUrl, QueryConversionRateRequest);
 function createBaseQueryConversionRateResponse(): QueryConversionRateResponse {
   return {
-    conversionRate: "",
+    conversionRate: ""
   };
 }
 export const QueryConversionRateResponse = {
   typeUrl: "/atomone.photon.v1.QueryConversionRateResponse",
+  is(o: any): o is QueryConversionRateResponse {
+    return o && (o.$typeUrl === QueryConversionRateResponse.typeUrl || typeof o.conversionRate === "string");
+  },
+  isAmino(o: any): o is QueryConversionRateResponseAmino {
+    return o && (o.$typeUrl === QueryConversionRateResponse.typeUrl || typeof o.conversion_rate === "string");
+  },
   encode(message: QueryConversionRateResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.conversionRate !== "") {
       writer.uint32(10).string(message.conversionRate);
@@ -290,7 +343,7 @@ export const QueryConversionRateResponse = {
     if (isSet(object.conversionRate)) obj.conversionRate = String(object.conversionRate);
     return obj;
   },
-  toJSON(message: QueryConversionRateResponse): unknown {
+  toJSON(message: QueryConversionRateResponse): JsonSafe<QueryConversionRateResponse> {
     const obj: any = {};
     message.conversionRate !== undefined && (obj.conversionRate = message.conversionRate);
     return obj;
@@ -309,7 +362,7 @@ export const QueryConversionRateResponse = {
   },
   toAmino(message: QueryConversionRateResponse): QueryConversionRateResponseAmino {
     const obj: any = {};
-    obj.conversion_rate = message.conversionRate;
+    obj.conversion_rate = message.conversionRate === "" ? undefined : message.conversionRate;
     return obj;
   },
   fromAminoMsg(object: QueryConversionRateResponseAminoMsg): QueryConversionRateResponse {
@@ -324,10 +377,11 @@ export const QueryConversionRateResponse = {
   toProtoMsg(message: QueryConversionRateResponse): QueryConversionRateResponseProtoMsg {
     return {
       typeUrl: "/atomone.photon.v1.QueryConversionRateResponse",
-      value: QueryConversionRateResponse.encode(message).finish(),
+      value: QueryConversionRateResponse.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(QueryConversionRateResponse.typeUrl, QueryConversionRateResponse);
 /** Query defines the gRPC querier service. */
 export interface Query {
   /** Parameters queries the parameters of the module. */
@@ -345,11 +399,11 @@ export class QueryClientImpl implements Query {
   Params(request: QueryParamsRequest = {}): Promise<QueryParamsResponse> {
     const data = QueryParamsRequest.encode(request).finish();
     const promise = this.rpc.request("atomone.photon.v1.Query", "Params", data);
-    return promise.then((data) => QueryParamsResponse.decode(new BinaryReader(data)));
+    return promise.then(data => QueryParamsResponse.decode(new BinaryReader(data)));
   }
   ConversionRate(request: QueryConversionRateRequest = {}): Promise<QueryConversionRateResponse> {
     const data = QueryConversionRateRequest.encode(request).finish();
     const promise = this.rpc.request("atomone.photon.v1.Query", "ConversionRate", data);
-    return promise.then((data) => QueryConversionRateResponse.decode(new BinaryReader(data)));
+    return promise.then(data => QueryConversionRateResponse.decode(new BinaryReader(data)));
   }
 }

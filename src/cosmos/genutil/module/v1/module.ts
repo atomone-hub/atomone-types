@@ -1,5 +1,7 @@
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "../../../../binary";
+import { JsonSafe } from "../../../../json-safe";
+import { GlobalDecoderRegistry } from "../../../../registry";
 export const protobufPackage = "cosmos.genutil.module.v1";
 /** Module is the config object for the genutil module. */
 export interface Module {}
@@ -7,7 +9,12 @@ export interface ModuleProtoMsg {
   typeUrl: "/cosmos.genutil.module.v1.Module";
   value: Uint8Array;
 }
-/** Module is the config object for the genutil module. */
+/**
+ * Module is the config object for the genutil module.
+ * @name ModuleAmino
+ * @package cosmos.genutil.module.v1
+ * @see proto type: cosmos.genutil.module.v1.Module
+ */
 export interface ModuleAmino {}
 export interface ModuleAminoMsg {
   type: "cosmos-sdk/Module";
@@ -18,6 +25,13 @@ function createBaseModule(): Module {
 }
 export const Module = {
   typeUrl: "/cosmos.genutil.module.v1.Module",
+  aminoType: "cosmos-sdk/Module",
+  is(o: any): o is Module {
+    return o && o.$typeUrl === Module.typeUrl;
+  },
+  isAmino(o: any): o is ModuleAmino {
+    return o && o.$typeUrl === Module.typeUrl;
+  },
   encode(_: Module, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
@@ -39,7 +53,7 @@ export const Module = {
     const obj = createBaseModule();
     return obj;
   },
-  toJSON(_: Module): unknown {
+  toJSON(_: Module): JsonSafe<Module> {
     const obj: any = {};
     return obj;
   },
@@ -61,7 +75,7 @@ export const Module = {
   toAminoMsg(message: Module): ModuleAminoMsg {
     return {
       type: "cosmos-sdk/Module",
-      value: Module.toAmino(message),
+      value: Module.toAmino(message)
     };
   },
   fromProtoMsg(message: ModuleProtoMsg): Module {
@@ -73,7 +87,9 @@ export const Module = {
   toProtoMsg(message: Module): ModuleProtoMsg {
     return {
       typeUrl: "/cosmos.genutil.module.v1.Module",
-      value: Module.encode(message).finish(),
+      value: Module.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(Module.typeUrl, Module);
+GlobalDecoderRegistry.registerAminoProtoMapping(Module.aminoType, Module.typeUrl);

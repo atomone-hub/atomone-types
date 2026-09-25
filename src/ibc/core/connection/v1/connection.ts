@@ -1,7 +1,9 @@
 /* eslint-disable */
 import { MerklePrefix, MerklePrefixAmino } from "../../commitment/v1/commitment";
-import { BinaryReader, BinaryWriter } from "../../../../binary";
 import { isSet } from "../../../../helpers";
+import { BinaryReader, BinaryWriter } from "../../../../binary";
+import { GlobalDecoderRegistry } from "../../../../registry";
+import { JsonSafe } from "../../../../json-safe";
 export const protobufPackage = "ibc.core.connection.v1";
 /**
  * State defines if a connection is in one of the following states:
@@ -91,18 +93,27 @@ export interface ConnectionEndProtoMsg {
  * separate one.
  * NOTE: there must only be 2 defined ConnectionEnds to establish
  * a connection between two chains.
+ * @name ConnectionEndAmino
+ * @package ibc.core.connection.v1
+ * @see proto type: ibc.core.connection.v1.ConnectionEnd
  */
 export interface ConnectionEndAmino {
-  /** client associated with this connection. */
+  /**
+   * client associated with this connection.
+   */
   client_id?: string;
   /**
    * IBC version which can be utilised to determine encodings or protocols for
    * channels or packets utilising this connection.
    */
   versions?: VersionAmino[];
-  /** current state of the connection end. */
+  /**
+   * current state of the connection end.
+   */
   state?: State;
-  /** counterparty chain associated with this connection. */
+  /**
+   * counterparty chain associated with this connection.
+   */
   counterparty?: CounterpartyAmino | undefined;
   /**
    * delay period that must pass before a consensus state can be used for
@@ -143,22 +154,35 @@ export interface IdentifiedConnectionProtoMsg {
 /**
  * IdentifiedConnection defines a connection with additional connection
  * identifier field.
+ * @name IdentifiedConnectionAmino
+ * @package ibc.core.connection.v1
+ * @see proto type: ibc.core.connection.v1.IdentifiedConnection
  */
 export interface IdentifiedConnectionAmino {
-  /** connection identifier. */
+  /**
+   * connection identifier.
+   */
   id?: string;
-  /** client associated with this connection. */
+  /**
+   * client associated with this connection.
+   */
   client_id?: string;
   /**
    * IBC version which can be utilised to determine encodings or protocols for
    * channels or packets utilising this connection
    */
   versions?: VersionAmino[];
-  /** current state of the connection end. */
+  /**
+   * current state of the connection end.
+   */
   state?: State;
-  /** counterparty chain associated with this connection. */
+  /**
+   * counterparty chain associated with this connection.
+   */
   counterparty?: CounterpartyAmino | undefined;
-  /** delay period associated with this connection. */
+  /**
+   * delay period associated with this connection.
+   */
   delay_period?: string;
 }
 export interface IdentifiedConnectionAminoMsg {
@@ -184,7 +208,12 @@ export interface CounterpartyProtoMsg {
   typeUrl: "/ibc.core.connection.v1.Counterparty";
   value: Uint8Array;
 }
-/** Counterparty defines the counterparty chain associated with a connection end. */
+/**
+ * Counterparty defines the counterparty chain associated with a connection end.
+ * @name CounterpartyAmino
+ * @package ibc.core.connection.v1
+ * @see proto type: ibc.core.connection.v1.Counterparty
+ */
 export interface CounterpartyAmino {
   /**
    * identifies the client on the counterparty chain associated with a given
@@ -196,7 +225,9 @@ export interface CounterpartyAmino {
    * given connection.
    */
   connection_id?: string;
-  /** commitment merkle prefix of the counterparty chain. */
+  /**
+   * commitment merkle prefix of the counterparty chain.
+   */
   prefix?: MerklePrefixAmino | undefined;
 }
 export interface CounterpartyAminoMsg {
@@ -212,9 +243,16 @@ export interface ClientPathsProtoMsg {
   typeUrl: "/ibc.core.connection.v1.ClientPaths";
   value: Uint8Array;
 }
-/** ClientPaths define all the connection paths for a client state. */
+/**
+ * ClientPaths define all the connection paths for a client state.
+ * @name ClientPathsAmino
+ * @package ibc.core.connection.v1
+ * @see proto type: ibc.core.connection.v1.ClientPaths
+ */
 export interface ClientPathsAmino {
-  /** list of connection paths */
+  /**
+   * list of connection paths
+   */
   paths?: string[];
 }
 export interface ClientPathsAminoMsg {
@@ -232,11 +270,20 @@ export interface ConnectionPathsProtoMsg {
   typeUrl: "/ibc.core.connection.v1.ConnectionPaths";
   value: Uint8Array;
 }
-/** ConnectionPaths define all the connection paths for a given client state. */
+/**
+ * ConnectionPaths define all the connection paths for a given client state.
+ * @name ConnectionPathsAmino
+ * @package ibc.core.connection.v1
+ * @see proto type: ibc.core.connection.v1.ConnectionPaths
+ */
 export interface ConnectionPathsAmino {
-  /** client state unique identifier */
+  /**
+   * client state unique identifier
+   */
   client_id?: string;
-  /** list of connection paths */
+  /**
+   * list of connection paths
+   */
   paths?: string[];
 }
 export interface ConnectionPathsAminoMsg {
@@ -260,11 +307,18 @@ export interface VersionProtoMsg {
 /**
  * Version defines the versioning scheme used to negotiate the IBC version in
  * the connection handshake.
+ * @name VersionAmino
+ * @package ibc.core.connection.v1
+ * @see proto type: ibc.core.connection.v1.Version
  */
 export interface VersionAmino {
-  /** unique version identifier */
+  /**
+   * unique version identifier
+   */
   identifier?: string;
-  /** list of features compatible with the specified identifier */
+  /**
+   * list of features compatible with the specified identifier
+   */
   features?: string[];
 }
 export interface VersionAminoMsg {
@@ -284,7 +338,12 @@ export interface ParamsProtoMsg {
   typeUrl: "/ibc.core.connection.v1.Params";
   value: Uint8Array;
 }
-/** Params defines the set of Connection parameters. */
+/**
+ * Params defines the set of Connection parameters.
+ * @name ParamsAmino
+ * @package ibc.core.connection.v1
+ * @see proto type: ibc.core.connection.v1.Params
+ */
 export interface ParamsAmino {
   /**
    * maximum expected time per block (in nanoseconds), used to enforce block delay. This parameter should reflect the
@@ -303,11 +362,18 @@ function createBaseConnectionEnd(): ConnectionEnd {
     versions: [],
     state: 0,
     counterparty: Counterparty.fromPartial({}),
-    delayPeriod: BigInt(0),
+    delayPeriod: BigInt(0)
   };
 }
 export const ConnectionEnd = {
   typeUrl: "/ibc.core.connection.v1.ConnectionEnd",
+  aminoType: "cosmos-sdk/ConnectionEnd",
+  is(o: any): o is ConnectionEnd {
+    return o && (o.$typeUrl === ConnectionEnd.typeUrl || typeof o.clientId === "string" && Array.isArray(o.versions) && (!o.versions.length || Version.is(o.versions[0])) && isSet(o.state) && Counterparty.is(o.counterparty) && typeof o.delayPeriod === "bigint");
+  },
+  isAmino(o: any): o is ConnectionEndAmino {
+    return o && (o.$typeUrl === ConnectionEnd.typeUrl || typeof o.client_id === "string" && Array.isArray(o.versions) && (!o.versions.length || Version.isAmino(o.versions[0])) && isSet(o.state) && Counterparty.isAmino(o.counterparty) && typeof o.delay_period === "bigint");
+  },
   encode(message: ConnectionEnd, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.clientId !== "") {
       writer.uint32(10).string(message.clientId);
@@ -364,24 +430,23 @@ export const ConnectionEnd = {
     if (isSet(object.delayPeriod)) obj.delayPeriod = BigInt(object.delayPeriod.toString());
     return obj;
   },
-  toJSON(message: ConnectionEnd): unknown {
+  toJSON(message: ConnectionEnd): JsonSafe<ConnectionEnd> {
     const obj: any = {};
     message.clientId !== undefined && (obj.clientId = message.clientId);
     if (message.versions) {
-      obj.versions = message.versions.map((e) => (e ? Version.toJSON(e) : undefined));
+      obj.versions = message.versions.map(e => e ? Version.toJSON(e) : undefined);
     } else {
       obj.versions = [];
     }
     message.state !== undefined && (obj.state = stateToJSON(message.state));
-    message.counterparty !== undefined &&
-      (obj.counterparty = message.counterparty ? Counterparty.toJSON(message.counterparty) : undefined);
+    message.counterparty !== undefined && (obj.counterparty = message.counterparty ? Counterparty.toJSON(message.counterparty) : undefined);
     message.delayPeriod !== undefined && (obj.delayPeriod = (message.delayPeriod || BigInt(0)).toString());
     return obj;
   },
   fromPartial(object: Partial<ConnectionEnd>): ConnectionEnd {
     const message = createBaseConnectionEnd();
     message.clientId = object.clientId ?? "";
-    message.versions = object.versions?.map((e) => Version.fromPartial(e)) || [];
+    message.versions = object.versions?.map(e => Version.fromPartial(e)) || [];
     message.state = object.state ?? 0;
     if (object.counterparty !== undefined && object.counterparty !== null) {
       message.counterparty = Counterparty.fromPartial(object.counterparty);
@@ -396,9 +461,9 @@ export const ConnectionEnd = {
     if (object.client_id !== undefined && object.client_id !== null) {
       message.clientId = object.client_id;
     }
-    message.versions = object.versions?.map((e) => Version.fromAmino(e)) || [];
+    message.versions = object.versions?.map(e => Version.fromAmino(e)) || [];
     if (object.state !== undefined && object.state !== null) {
-      message.state = stateFromJSON(object.state);
+      message.state = object.state;
     }
     if (object.counterparty !== undefined && object.counterparty !== null) {
       message.counterparty = Counterparty.fromAmino(object.counterparty);
@@ -410,15 +475,15 @@ export const ConnectionEnd = {
   },
   toAmino(message: ConnectionEnd): ConnectionEndAmino {
     const obj: any = {};
-    obj.client_id = message.clientId;
+    obj.client_id = message.clientId === "" ? undefined : message.clientId;
     if (message.versions) {
-      obj.versions = message.versions.map((e) => (e ? Version.toAmino(e) : undefined));
+      obj.versions = message.versions.map(e => e ? Version.toAmino(e) : undefined);
     } else {
-      obj.versions = [];
+      obj.versions = message.versions;
     }
-    obj.state = message.state;
+    obj.state = message.state === 0 ? undefined : message.state;
     obj.counterparty = message.counterparty ? Counterparty.toAmino(message.counterparty) : undefined;
-    obj.delay_period = message.delayPeriod ? message.delayPeriod.toString() : undefined;
+    obj.delay_period = message.delayPeriod !== BigInt(0) ? message.delayPeriod?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: ConnectionEndAminoMsg): ConnectionEnd {
@@ -427,7 +492,7 @@ export const ConnectionEnd = {
   toAminoMsg(message: ConnectionEnd): ConnectionEndAminoMsg {
     return {
       type: "cosmos-sdk/ConnectionEnd",
-      value: ConnectionEnd.toAmino(message),
+      value: ConnectionEnd.toAmino(message)
     };
   },
   fromProtoMsg(message: ConnectionEndProtoMsg): ConnectionEnd {
@@ -439,10 +504,12 @@ export const ConnectionEnd = {
   toProtoMsg(message: ConnectionEnd): ConnectionEndProtoMsg {
     return {
       typeUrl: "/ibc.core.connection.v1.ConnectionEnd",
-      value: ConnectionEnd.encode(message).finish(),
+      value: ConnectionEnd.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(ConnectionEnd.typeUrl, ConnectionEnd);
+GlobalDecoderRegistry.registerAminoProtoMapping(ConnectionEnd.aminoType, ConnectionEnd.typeUrl);
 function createBaseIdentifiedConnection(): IdentifiedConnection {
   return {
     id: "",
@@ -450,11 +517,18 @@ function createBaseIdentifiedConnection(): IdentifiedConnection {
     versions: [],
     state: 0,
     counterparty: Counterparty.fromPartial({}),
-    delayPeriod: BigInt(0),
+    delayPeriod: BigInt(0)
   };
 }
 export const IdentifiedConnection = {
   typeUrl: "/ibc.core.connection.v1.IdentifiedConnection",
+  aminoType: "cosmos-sdk/IdentifiedConnection",
+  is(o: any): o is IdentifiedConnection {
+    return o && (o.$typeUrl === IdentifiedConnection.typeUrl || typeof o.id === "string" && typeof o.clientId === "string" && Array.isArray(o.versions) && (!o.versions.length || Version.is(o.versions[0])) && isSet(o.state) && Counterparty.is(o.counterparty) && typeof o.delayPeriod === "bigint");
+  },
+  isAmino(o: any): o is IdentifiedConnectionAmino {
+    return o && (o.$typeUrl === IdentifiedConnection.typeUrl || typeof o.id === "string" && typeof o.client_id === "string" && Array.isArray(o.versions) && (!o.versions.length || Version.isAmino(o.versions[0])) && isSet(o.state) && Counterparty.isAmino(o.counterparty) && typeof o.delay_period === "bigint");
+  },
   encode(message: IdentifiedConnection, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.id !== "") {
       writer.uint32(10).string(message.id);
@@ -518,18 +592,17 @@ export const IdentifiedConnection = {
     if (isSet(object.delayPeriod)) obj.delayPeriod = BigInt(object.delayPeriod.toString());
     return obj;
   },
-  toJSON(message: IdentifiedConnection): unknown {
+  toJSON(message: IdentifiedConnection): JsonSafe<IdentifiedConnection> {
     const obj: any = {};
     message.id !== undefined && (obj.id = message.id);
     message.clientId !== undefined && (obj.clientId = message.clientId);
     if (message.versions) {
-      obj.versions = message.versions.map((e) => (e ? Version.toJSON(e) : undefined));
+      obj.versions = message.versions.map(e => e ? Version.toJSON(e) : undefined);
     } else {
       obj.versions = [];
     }
     message.state !== undefined && (obj.state = stateToJSON(message.state));
-    message.counterparty !== undefined &&
-      (obj.counterparty = message.counterparty ? Counterparty.toJSON(message.counterparty) : undefined);
+    message.counterparty !== undefined && (obj.counterparty = message.counterparty ? Counterparty.toJSON(message.counterparty) : undefined);
     message.delayPeriod !== undefined && (obj.delayPeriod = (message.delayPeriod || BigInt(0)).toString());
     return obj;
   },
@@ -537,7 +610,7 @@ export const IdentifiedConnection = {
     const message = createBaseIdentifiedConnection();
     message.id = object.id ?? "";
     message.clientId = object.clientId ?? "";
-    message.versions = object.versions?.map((e) => Version.fromPartial(e)) || [];
+    message.versions = object.versions?.map(e => Version.fromPartial(e)) || [];
     message.state = object.state ?? 0;
     if (object.counterparty !== undefined && object.counterparty !== null) {
       message.counterparty = Counterparty.fromPartial(object.counterparty);
@@ -555,9 +628,9 @@ export const IdentifiedConnection = {
     if (object.client_id !== undefined && object.client_id !== null) {
       message.clientId = object.client_id;
     }
-    message.versions = object.versions?.map((e) => Version.fromAmino(e)) || [];
+    message.versions = object.versions?.map(e => Version.fromAmino(e)) || [];
     if (object.state !== undefined && object.state !== null) {
-      message.state = stateFromJSON(object.state);
+      message.state = object.state;
     }
     if (object.counterparty !== undefined && object.counterparty !== null) {
       message.counterparty = Counterparty.fromAmino(object.counterparty);
@@ -569,16 +642,16 @@ export const IdentifiedConnection = {
   },
   toAmino(message: IdentifiedConnection): IdentifiedConnectionAmino {
     const obj: any = {};
-    obj.id = message.id;
-    obj.client_id = message.clientId;
+    obj.id = message.id === "" ? undefined : message.id;
+    obj.client_id = message.clientId === "" ? undefined : message.clientId;
     if (message.versions) {
-      obj.versions = message.versions.map((e) => (e ? Version.toAmino(e) : undefined));
+      obj.versions = message.versions.map(e => e ? Version.toAmino(e) : undefined);
     } else {
-      obj.versions = [];
+      obj.versions = message.versions;
     }
-    obj.state = message.state;
+    obj.state = message.state === 0 ? undefined : message.state;
     obj.counterparty = message.counterparty ? Counterparty.toAmino(message.counterparty) : undefined;
-    obj.delay_period = message.delayPeriod ? message.delayPeriod.toString() : undefined;
+    obj.delay_period = message.delayPeriod !== BigInt(0) ? message.delayPeriod?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: IdentifiedConnectionAminoMsg): IdentifiedConnection {
@@ -587,7 +660,7 @@ export const IdentifiedConnection = {
   toAminoMsg(message: IdentifiedConnection): IdentifiedConnectionAminoMsg {
     return {
       type: "cosmos-sdk/IdentifiedConnection",
-      value: IdentifiedConnection.toAmino(message),
+      value: IdentifiedConnection.toAmino(message)
     };
   },
   fromProtoMsg(message: IdentifiedConnectionProtoMsg): IdentifiedConnection {
@@ -599,19 +672,28 @@ export const IdentifiedConnection = {
   toProtoMsg(message: IdentifiedConnection): IdentifiedConnectionProtoMsg {
     return {
       typeUrl: "/ibc.core.connection.v1.IdentifiedConnection",
-      value: IdentifiedConnection.encode(message).finish(),
+      value: IdentifiedConnection.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(IdentifiedConnection.typeUrl, IdentifiedConnection);
+GlobalDecoderRegistry.registerAminoProtoMapping(IdentifiedConnection.aminoType, IdentifiedConnection.typeUrl);
 function createBaseCounterparty(): Counterparty {
   return {
     clientId: "",
     connectionId: "",
-    prefix: MerklePrefix.fromPartial({}),
+    prefix: MerklePrefix.fromPartial({})
   };
 }
 export const Counterparty = {
   typeUrl: "/ibc.core.connection.v1.Counterparty",
+  aminoType: "cosmos-sdk/Counterparty",
+  is(o: any): o is Counterparty {
+    return o && (o.$typeUrl === Counterparty.typeUrl || typeof o.clientId === "string" && typeof o.connectionId === "string" && MerklePrefix.is(o.prefix));
+  },
+  isAmino(o: any): o is CounterpartyAmino {
+    return o && (o.$typeUrl === Counterparty.typeUrl || typeof o.client_id === "string" && typeof o.connection_id === "string" && MerklePrefix.isAmino(o.prefix));
+  },
   encode(message: Counterparty, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.clientId !== "") {
       writer.uint32(10).string(message.clientId);
@@ -654,12 +736,11 @@ export const Counterparty = {
     if (isSet(object.prefix)) obj.prefix = MerklePrefix.fromJSON(object.prefix);
     return obj;
   },
-  toJSON(message: Counterparty): unknown {
+  toJSON(message: Counterparty): JsonSafe<Counterparty> {
     const obj: any = {};
     message.clientId !== undefined && (obj.clientId = message.clientId);
     message.connectionId !== undefined && (obj.connectionId = message.connectionId);
-    message.prefix !== undefined &&
-      (obj.prefix = message.prefix ? MerklePrefix.toJSON(message.prefix) : undefined);
+    message.prefix !== undefined && (obj.prefix = message.prefix ? MerklePrefix.toJSON(message.prefix) : undefined);
     return obj;
   },
   fromPartial(object: Partial<Counterparty>): Counterparty {
@@ -686,8 +767,8 @@ export const Counterparty = {
   },
   toAmino(message: Counterparty): CounterpartyAmino {
     const obj: any = {};
-    obj.client_id = message.clientId;
-    obj.connection_id = message.connectionId;
+    obj.client_id = message.clientId === "" ? undefined : message.clientId;
+    obj.connection_id = message.connectionId === "" ? undefined : message.connectionId;
     obj.prefix = message.prefix ? MerklePrefix.toAmino(message.prefix) : undefined;
     return obj;
   },
@@ -697,7 +778,7 @@ export const Counterparty = {
   toAminoMsg(message: Counterparty): CounterpartyAminoMsg {
     return {
       type: "cosmos-sdk/Counterparty",
-      value: Counterparty.toAmino(message),
+      value: Counterparty.toAmino(message)
     };
   },
   fromProtoMsg(message: CounterpartyProtoMsg): Counterparty {
@@ -709,17 +790,26 @@ export const Counterparty = {
   toProtoMsg(message: Counterparty): CounterpartyProtoMsg {
     return {
       typeUrl: "/ibc.core.connection.v1.Counterparty",
-      value: Counterparty.encode(message).finish(),
+      value: Counterparty.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(Counterparty.typeUrl, Counterparty);
+GlobalDecoderRegistry.registerAminoProtoMapping(Counterparty.aminoType, Counterparty.typeUrl);
 function createBaseClientPaths(): ClientPaths {
   return {
-    paths: [],
+    paths: []
   };
 }
 export const ClientPaths = {
   typeUrl: "/ibc.core.connection.v1.ClientPaths",
+  aminoType: "cosmos-sdk/ClientPaths",
+  is(o: any): o is ClientPaths {
+    return o && (o.$typeUrl === ClientPaths.typeUrl || Array.isArray(o.paths) && (!o.paths.length || typeof o.paths[0] === "string"));
+  },
+  isAmino(o: any): o is ClientPathsAmino {
+    return o && (o.$typeUrl === ClientPaths.typeUrl || Array.isArray(o.paths) && (!o.paths.length || typeof o.paths[0] === "string"));
+  },
   encode(message: ClientPaths, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.paths) {
       writer.uint32(10).string(v!);
@@ -748,10 +838,10 @@ export const ClientPaths = {
     if (Array.isArray(object?.paths)) obj.paths = object.paths.map((e: any) => String(e));
     return obj;
   },
-  toJSON(message: ClientPaths): unknown {
+  toJSON(message: ClientPaths): JsonSafe<ClientPaths> {
     const obj: any = {};
     if (message.paths) {
-      obj.paths = message.paths.map((e) => e);
+      obj.paths = message.paths.map(e => e);
     } else {
       obj.paths = [];
     }
@@ -759,20 +849,20 @@ export const ClientPaths = {
   },
   fromPartial(object: Partial<ClientPaths>): ClientPaths {
     const message = createBaseClientPaths();
-    message.paths = object.paths?.map((e) => e) || [];
+    message.paths = object.paths?.map(e => e) || [];
     return message;
   },
   fromAmino(object: ClientPathsAmino): ClientPaths {
     const message = createBaseClientPaths();
-    message.paths = object.paths?.map((e) => e) || [];
+    message.paths = object.paths?.map(e => e) || [];
     return message;
   },
   toAmino(message: ClientPaths): ClientPathsAmino {
     const obj: any = {};
     if (message.paths) {
-      obj.paths = message.paths.map((e) => e);
+      obj.paths = message.paths.map(e => e);
     } else {
-      obj.paths = [];
+      obj.paths = message.paths;
     }
     return obj;
   },
@@ -782,7 +872,7 @@ export const ClientPaths = {
   toAminoMsg(message: ClientPaths): ClientPathsAminoMsg {
     return {
       type: "cosmos-sdk/ClientPaths",
-      value: ClientPaths.toAmino(message),
+      value: ClientPaths.toAmino(message)
     };
   },
   fromProtoMsg(message: ClientPathsProtoMsg): ClientPaths {
@@ -794,18 +884,27 @@ export const ClientPaths = {
   toProtoMsg(message: ClientPaths): ClientPathsProtoMsg {
     return {
       typeUrl: "/ibc.core.connection.v1.ClientPaths",
-      value: ClientPaths.encode(message).finish(),
+      value: ClientPaths.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(ClientPaths.typeUrl, ClientPaths);
+GlobalDecoderRegistry.registerAminoProtoMapping(ClientPaths.aminoType, ClientPaths.typeUrl);
 function createBaseConnectionPaths(): ConnectionPaths {
   return {
     clientId: "",
-    paths: [],
+    paths: []
   };
 }
 export const ConnectionPaths = {
   typeUrl: "/ibc.core.connection.v1.ConnectionPaths",
+  aminoType: "cosmos-sdk/ConnectionPaths",
+  is(o: any): o is ConnectionPaths {
+    return o && (o.$typeUrl === ConnectionPaths.typeUrl || typeof o.clientId === "string" && Array.isArray(o.paths) && (!o.paths.length || typeof o.paths[0] === "string"));
+  },
+  isAmino(o: any): o is ConnectionPathsAmino {
+    return o && (o.$typeUrl === ConnectionPaths.typeUrl || typeof o.client_id === "string" && Array.isArray(o.paths) && (!o.paths.length || typeof o.paths[0] === "string"));
+  },
   encode(message: ConnectionPaths, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.clientId !== "") {
       writer.uint32(10).string(message.clientId);
@@ -841,11 +940,11 @@ export const ConnectionPaths = {
     if (Array.isArray(object?.paths)) obj.paths = object.paths.map((e: any) => String(e));
     return obj;
   },
-  toJSON(message: ConnectionPaths): unknown {
+  toJSON(message: ConnectionPaths): JsonSafe<ConnectionPaths> {
     const obj: any = {};
     message.clientId !== undefined && (obj.clientId = message.clientId);
     if (message.paths) {
-      obj.paths = message.paths.map((e) => e);
+      obj.paths = message.paths.map(e => e);
     } else {
       obj.paths = [];
     }
@@ -854,7 +953,7 @@ export const ConnectionPaths = {
   fromPartial(object: Partial<ConnectionPaths>): ConnectionPaths {
     const message = createBaseConnectionPaths();
     message.clientId = object.clientId ?? "";
-    message.paths = object.paths?.map((e) => e) || [];
+    message.paths = object.paths?.map(e => e) || [];
     return message;
   },
   fromAmino(object: ConnectionPathsAmino): ConnectionPaths {
@@ -862,16 +961,16 @@ export const ConnectionPaths = {
     if (object.client_id !== undefined && object.client_id !== null) {
       message.clientId = object.client_id;
     }
-    message.paths = object.paths?.map((e) => e) || [];
+    message.paths = object.paths?.map(e => e) || [];
     return message;
   },
   toAmino(message: ConnectionPaths): ConnectionPathsAmino {
     const obj: any = {};
-    obj.client_id = message.clientId;
+    obj.client_id = message.clientId === "" ? undefined : message.clientId;
     if (message.paths) {
-      obj.paths = message.paths.map((e) => e);
+      obj.paths = message.paths.map(e => e);
     } else {
-      obj.paths = [];
+      obj.paths = message.paths;
     }
     return obj;
   },
@@ -881,7 +980,7 @@ export const ConnectionPaths = {
   toAminoMsg(message: ConnectionPaths): ConnectionPathsAminoMsg {
     return {
       type: "cosmos-sdk/ConnectionPaths",
-      value: ConnectionPaths.toAmino(message),
+      value: ConnectionPaths.toAmino(message)
     };
   },
   fromProtoMsg(message: ConnectionPathsProtoMsg): ConnectionPaths {
@@ -893,18 +992,27 @@ export const ConnectionPaths = {
   toProtoMsg(message: ConnectionPaths): ConnectionPathsProtoMsg {
     return {
       typeUrl: "/ibc.core.connection.v1.ConnectionPaths",
-      value: ConnectionPaths.encode(message).finish(),
+      value: ConnectionPaths.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(ConnectionPaths.typeUrl, ConnectionPaths);
+GlobalDecoderRegistry.registerAminoProtoMapping(ConnectionPaths.aminoType, ConnectionPaths.typeUrl);
 function createBaseVersion(): Version {
   return {
     identifier: "",
-    features: [],
+    features: []
   };
 }
 export const Version = {
   typeUrl: "/ibc.core.connection.v1.Version",
+  aminoType: "cosmos-sdk/Version",
+  is(o: any): o is Version {
+    return o && (o.$typeUrl === Version.typeUrl || typeof o.identifier === "string" && Array.isArray(o.features) && (!o.features.length || typeof o.features[0] === "string"));
+  },
+  isAmino(o: any): o is VersionAmino {
+    return o && (o.$typeUrl === Version.typeUrl || typeof o.identifier === "string" && Array.isArray(o.features) && (!o.features.length || typeof o.features[0] === "string"));
+  },
   encode(message: Version, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.identifier !== "") {
       writer.uint32(10).string(message.identifier);
@@ -940,11 +1048,11 @@ export const Version = {
     if (Array.isArray(object?.features)) obj.features = object.features.map((e: any) => String(e));
     return obj;
   },
-  toJSON(message: Version): unknown {
+  toJSON(message: Version): JsonSafe<Version> {
     const obj: any = {};
     message.identifier !== undefined && (obj.identifier = message.identifier);
     if (message.features) {
-      obj.features = message.features.map((e) => e);
+      obj.features = message.features.map(e => e);
     } else {
       obj.features = [];
     }
@@ -953,7 +1061,7 @@ export const Version = {
   fromPartial(object: Partial<Version>): Version {
     const message = createBaseVersion();
     message.identifier = object.identifier ?? "";
-    message.features = object.features?.map((e) => e) || [];
+    message.features = object.features?.map(e => e) || [];
     return message;
   },
   fromAmino(object: VersionAmino): Version {
@@ -961,16 +1069,16 @@ export const Version = {
     if (object.identifier !== undefined && object.identifier !== null) {
       message.identifier = object.identifier;
     }
-    message.features = object.features?.map((e) => e) || [];
+    message.features = object.features?.map(e => e) || [];
     return message;
   },
   toAmino(message: Version): VersionAmino {
     const obj: any = {};
-    obj.identifier = message.identifier;
+    obj.identifier = message.identifier === "" ? undefined : message.identifier;
     if (message.features) {
-      obj.features = message.features.map((e) => e);
+      obj.features = message.features.map(e => e);
     } else {
-      obj.features = [];
+      obj.features = message.features;
     }
     return obj;
   },
@@ -980,7 +1088,7 @@ export const Version = {
   toAminoMsg(message: Version): VersionAminoMsg {
     return {
       type: "cosmos-sdk/Version",
-      value: Version.toAmino(message),
+      value: Version.toAmino(message)
     };
   },
   fromProtoMsg(message: VersionProtoMsg): Version {
@@ -992,17 +1100,26 @@ export const Version = {
   toProtoMsg(message: Version): VersionProtoMsg {
     return {
       typeUrl: "/ibc.core.connection.v1.Version",
-      value: Version.encode(message).finish(),
+      value: Version.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(Version.typeUrl, Version);
+GlobalDecoderRegistry.registerAminoProtoMapping(Version.aminoType, Version.typeUrl);
 function createBaseParams(): Params {
   return {
-    maxExpectedTimePerBlock: BigInt(0),
+    maxExpectedTimePerBlock: BigInt(0)
   };
 }
 export const Params = {
   typeUrl: "/ibc.core.connection.v1.Params",
+  aminoType: "cosmos-sdk/Params",
+  is(o: any): o is Params {
+    return o && (o.$typeUrl === Params.typeUrl || typeof o.maxExpectedTimePerBlock === "bigint");
+  },
+  isAmino(o: any): o is ParamsAmino {
+    return o && (o.$typeUrl === Params.typeUrl || typeof o.max_expected_time_per_block === "bigint");
+  },
   encode(message: Params, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.maxExpectedTimePerBlock !== BigInt(0)) {
       writer.uint32(8).uint64(message.maxExpectedTimePerBlock);
@@ -1028,14 +1145,12 @@ export const Params = {
   },
   fromJSON(object: any): Params {
     const obj = createBaseParams();
-    if (isSet(object.maxExpectedTimePerBlock))
-      obj.maxExpectedTimePerBlock = BigInt(object.maxExpectedTimePerBlock.toString());
+    if (isSet(object.maxExpectedTimePerBlock)) obj.maxExpectedTimePerBlock = BigInt(object.maxExpectedTimePerBlock.toString());
     return obj;
   },
-  toJSON(message: Params): unknown {
+  toJSON(message: Params): JsonSafe<Params> {
     const obj: any = {};
-    message.maxExpectedTimePerBlock !== undefined &&
-      (obj.maxExpectedTimePerBlock = (message.maxExpectedTimePerBlock || BigInt(0)).toString());
+    message.maxExpectedTimePerBlock !== undefined && (obj.maxExpectedTimePerBlock = (message.maxExpectedTimePerBlock || BigInt(0)).toString());
     return obj;
   },
   fromPartial(object: Partial<Params>): Params {
@@ -1054,9 +1169,7 @@ export const Params = {
   },
   toAmino(message: Params): ParamsAmino {
     const obj: any = {};
-    obj.max_expected_time_per_block = message.maxExpectedTimePerBlock
-      ? message.maxExpectedTimePerBlock.toString()
-      : undefined;
+    obj.max_expected_time_per_block = message.maxExpectedTimePerBlock !== BigInt(0) ? message.maxExpectedTimePerBlock?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: ParamsAminoMsg): Params {
@@ -1065,7 +1178,7 @@ export const Params = {
   toAminoMsg(message: Params): ParamsAminoMsg {
     return {
       type: "cosmos-sdk/Params",
-      value: Params.toAmino(message),
+      value: Params.toAmino(message)
     };
   },
   fromProtoMsg(message: ParamsProtoMsg): Params {
@@ -1077,7 +1190,9 @@ export const Params = {
   toProtoMsg(message: Params): ParamsProtoMsg {
     return {
       typeUrl: "/ibc.core.connection.v1.Params",
-      value: Params.encode(message).finish(),
+      value: Params.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(Params.typeUrl, Params);
+GlobalDecoderRegistry.registerAminoProtoMapping(Params.aminoType, Params.typeUrl);

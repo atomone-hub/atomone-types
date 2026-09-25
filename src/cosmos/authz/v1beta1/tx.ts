@@ -1,8 +1,10 @@
 /* eslint-disable */
 import { Grant, GrantAmino } from "./authz";
-import { Any, AnyAmino } from "../../../google/protobuf/any";
+import { Any, AnyProtoMsg, AnyAmino } from "../../../google/protobuf/any";
 import { BinaryReader, BinaryWriter } from "../../../binary";
+import { GlobalDecoderRegistry } from "../../../registry";
 import { isSet, bytesFromBase64, base64FromBytes } from "../../../helpers";
+import { JsonSafe } from "../../../json-safe";
 import { TxRpc } from "../../../types";
 export const protobufPackage = "cosmos.authz.v1beta1";
 /**
@@ -21,6 +23,9 @@ export interface MsgGrantProtoMsg {
 /**
  * MsgGrant is a request type for Grant method. It declares authorization to the grantee
  * on behalf of the granter with the provided expiration time.
+ * @name MsgGrantAmino
+ * @package cosmos.authz.v1beta1
+ * @see proto type: cosmos.authz.v1beta1.MsgGrant
  */
 export interface MsgGrantAmino {
   granter?: string;
@@ -37,7 +42,12 @@ export interface MsgGrantResponseProtoMsg {
   typeUrl: "/cosmos.authz.v1beta1.MsgGrantResponse";
   value: Uint8Array;
 }
-/** MsgGrantResponse defines the Msg/MsgGrant response type. */
+/**
+ * MsgGrantResponse defines the Msg/MsgGrant response type.
+ * @name MsgGrantResponseAmino
+ * @package cosmos.authz.v1beta1
+ * @see proto type: cosmos.authz.v1beta1.MsgGrantResponse
+ */
 export interface MsgGrantResponseAmino {}
 export interface MsgGrantResponseAminoMsg {
   type: "cosmos-sdk/MsgGrantResponse";
@@ -55,16 +65,27 @@ export interface MsgExec {
    * The x/authz will try to find a grant matching (msg.signers[0], grantee, MsgTypeURL(msg))
    * triple and validate it.
    */
-  msgs: Any[];
+  msgs: (Any)[] | Any[];
 }
 export interface MsgExecProtoMsg {
   typeUrl: "/cosmos.authz.v1beta1.MsgExec";
   value: Uint8Array;
 }
+export type MsgExecEncoded = Omit<MsgExec, "msgs"> & {
+  /**
+   * Execute Msg.
+   * The x/authz will try to find a grant matching (msg.signers[0], grantee, MsgTypeURL(msg))
+   * triple and validate it.
+   */
+  msgs: (AnyProtoMsg)[];
+};
 /**
  * MsgExec attempts to execute the provided messages using
  * authorizations granted to the grantee. Each message should have only
  * one signer corresponding to the granter of the authorization.
+ * @name MsgExecAmino
+ * @package cosmos.authz.v1beta1
+ * @see proto type: cosmos.authz.v1beta1.MsgExec
  */
 export interface MsgExecAmino {
   grantee?: string;
@@ -87,7 +108,12 @@ export interface MsgExecResponseProtoMsg {
   typeUrl: "/cosmos.authz.v1beta1.MsgExecResponse";
   value: Uint8Array;
 }
-/** MsgExecResponse defines the Msg/MsgExecResponse response type. */
+/**
+ * MsgExecResponse defines the Msg/MsgExecResponse response type.
+ * @name MsgExecResponseAmino
+ * @package cosmos.authz.v1beta1
+ * @see proto type: cosmos.authz.v1beta1.MsgExecResponse
+ */
 export interface MsgExecResponseAmino {
   results?: string[];
 }
@@ -111,6 +137,9 @@ export interface MsgRevokeProtoMsg {
 /**
  * MsgRevoke revokes any authorization with the provided sdk.Msg type on the
  * granter's account with that has been granted to the grantee.
+ * @name MsgRevokeAmino
+ * @package cosmos.authz.v1beta1
+ * @see proto type: cosmos.authz.v1beta1.MsgRevoke
  */
 export interface MsgRevokeAmino {
   granter?: string;
@@ -127,7 +156,12 @@ export interface MsgRevokeResponseProtoMsg {
   typeUrl: "/cosmos.authz.v1beta1.MsgRevokeResponse";
   value: Uint8Array;
 }
-/** MsgRevokeResponse defines the Msg/MsgRevokeResponse response type. */
+/**
+ * MsgRevokeResponse defines the Msg/MsgRevokeResponse response type.
+ * @name MsgRevokeResponseAmino
+ * @package cosmos.authz.v1beta1
+ * @see proto type: cosmos.authz.v1beta1.MsgRevokeResponse
+ */
 export interface MsgRevokeResponseAmino {}
 export interface MsgRevokeResponseAminoMsg {
   type: "cosmos-sdk/MsgRevokeResponse";
@@ -135,7 +169,7 @@ export interface MsgRevokeResponseAminoMsg {
 }
 /**
  * MsgPruneExpiredGrants prunes the expired grants.
- *
+ * 
  * Since cosmos-sdk 0.50.x-atomone
  */
 export interface MsgPruneExpiredGrants {
@@ -147,8 +181,11 @@ export interface MsgPruneExpiredGrantsProtoMsg {
 }
 /**
  * MsgPruneExpiredGrants prunes the expired grants.
- *
+ * 
  * Since cosmos-sdk 0.50.x-atomone
+ * @name MsgPruneExpiredGrantsAmino
+ * @package cosmos.authz.v1beta1
+ * @see proto type: cosmos.authz.v1beta1.MsgPruneExpiredGrants
  */
 export interface MsgPruneExpiredGrantsAmino {
   pruner?: string;
@@ -159,7 +196,7 @@ export interface MsgPruneExpiredGrantsAminoMsg {
 }
 /**
  * MsgPruneExpiredGrantsResponse defines the Msg/MsgPruneExpiredGrantsResponse response type.
- *
+ * 
  * Since cosmos-sdk 0.50.x-atomone
  */
 export interface MsgPruneExpiredGrantsResponse {}
@@ -169,8 +206,11 @@ export interface MsgPruneExpiredGrantsResponseProtoMsg {
 }
 /**
  * MsgPruneExpiredGrantsResponse defines the Msg/MsgPruneExpiredGrantsResponse response type.
- *
+ * 
  * Since cosmos-sdk 0.50.x-atomone
+ * @name MsgPruneExpiredGrantsResponseAmino
+ * @package cosmos.authz.v1beta1
+ * @see proto type: cosmos.authz.v1beta1.MsgPruneExpiredGrantsResponse
  */
 export interface MsgPruneExpiredGrantsResponseAmino {}
 export interface MsgPruneExpiredGrantsResponseAminoMsg {
@@ -181,11 +221,18 @@ function createBaseMsgGrant(): MsgGrant {
   return {
     granter: "",
     grantee: "",
-    grant: Grant.fromPartial({}),
+    grant: Grant.fromPartial({})
   };
 }
 export const MsgGrant = {
   typeUrl: "/cosmos.authz.v1beta1.MsgGrant",
+  aminoType: "cosmos-sdk/MsgGrant",
+  is(o: any): o is MsgGrant {
+    return o && (o.$typeUrl === MsgGrant.typeUrl || typeof o.granter === "string" && typeof o.grantee === "string" && Grant.is(o.grant));
+  },
+  isAmino(o: any): o is MsgGrantAmino {
+    return o && (o.$typeUrl === MsgGrant.typeUrl || typeof o.granter === "string" && typeof o.grantee === "string" && Grant.isAmino(o.grant));
+  },
   encode(message: MsgGrant, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.granter !== "") {
       writer.uint32(10).string(message.granter);
@@ -228,7 +275,7 @@ export const MsgGrant = {
     if (isSet(object.grant)) obj.grant = Grant.fromJSON(object.grant);
     return obj;
   },
-  toJSON(message: MsgGrant): unknown {
+  toJSON(message: MsgGrant): JsonSafe<MsgGrant> {
     const obj: any = {};
     message.granter !== undefined && (obj.granter = message.granter);
     message.grantee !== undefined && (obj.grantee = message.grantee);
@@ -259,9 +306,9 @@ export const MsgGrant = {
   },
   toAmino(message: MsgGrant): MsgGrantAmino {
     const obj: any = {};
-    obj.granter = message.granter;
-    obj.grantee = message.grantee;
-    obj.grant = message.grant ? Grant.toAmino(message.grant) : Grant.fromPartial({});
+    obj.granter = message.granter === "" ? undefined : message.granter;
+    obj.grantee = message.grantee === "" ? undefined : message.grantee;
+    obj.grant = message.grant ? Grant.toAmino(message.grant) : Grant.toAmino(Grant.fromPartial({}));
     return obj;
   },
   fromAminoMsg(object: MsgGrantAminoMsg): MsgGrant {
@@ -270,7 +317,7 @@ export const MsgGrant = {
   toAminoMsg(message: MsgGrant): MsgGrantAminoMsg {
     return {
       type: "cosmos-sdk/MsgGrant",
-      value: MsgGrant.toAmino(message),
+      value: MsgGrant.toAmino(message)
     };
   },
   fromProtoMsg(message: MsgGrantProtoMsg): MsgGrant {
@@ -282,15 +329,24 @@ export const MsgGrant = {
   toProtoMsg(message: MsgGrant): MsgGrantProtoMsg {
     return {
       typeUrl: "/cosmos.authz.v1beta1.MsgGrant",
-      value: MsgGrant.encode(message).finish(),
+      value: MsgGrant.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(MsgGrant.typeUrl, MsgGrant);
+GlobalDecoderRegistry.registerAminoProtoMapping(MsgGrant.aminoType, MsgGrant.typeUrl);
 function createBaseMsgGrantResponse(): MsgGrantResponse {
   return {};
 }
 export const MsgGrantResponse = {
   typeUrl: "/cosmos.authz.v1beta1.MsgGrantResponse",
+  aminoType: "cosmos-sdk/MsgGrantResponse",
+  is(o: any): o is MsgGrantResponse {
+    return o && o.$typeUrl === MsgGrantResponse.typeUrl;
+  },
+  isAmino(o: any): o is MsgGrantResponseAmino {
+    return o && o.$typeUrl === MsgGrantResponse.typeUrl;
+  },
   encode(_: MsgGrantResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
@@ -312,7 +368,7 @@ export const MsgGrantResponse = {
     const obj = createBaseMsgGrantResponse();
     return obj;
   },
-  toJSON(_: MsgGrantResponse): unknown {
+  toJSON(_: MsgGrantResponse): JsonSafe<MsgGrantResponse> {
     const obj: any = {};
     return obj;
   },
@@ -334,7 +390,7 @@ export const MsgGrantResponse = {
   toAminoMsg(message: MsgGrantResponse): MsgGrantResponseAminoMsg {
     return {
       type: "cosmos-sdk/MsgGrantResponse",
-      value: MsgGrantResponse.toAmino(message),
+      value: MsgGrantResponse.toAmino(message)
     };
   },
   fromProtoMsg(message: MsgGrantResponseProtoMsg): MsgGrantResponse {
@@ -346,24 +402,33 @@ export const MsgGrantResponse = {
   toProtoMsg(message: MsgGrantResponse): MsgGrantResponseProtoMsg {
     return {
       typeUrl: "/cosmos.authz.v1beta1.MsgGrantResponse",
-      value: MsgGrantResponse.encode(message).finish(),
+      value: MsgGrantResponse.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(MsgGrantResponse.typeUrl, MsgGrantResponse);
+GlobalDecoderRegistry.registerAminoProtoMapping(MsgGrantResponse.aminoType, MsgGrantResponse.typeUrl);
 function createBaseMsgExec(): MsgExec {
   return {
     grantee: "",
-    msgs: [],
+    msgs: []
   };
 }
 export const MsgExec = {
   typeUrl: "/cosmos.authz.v1beta1.MsgExec",
+  aminoType: "cosmos-sdk/MsgExec",
+  is(o: any): o is MsgExec {
+    return o && (o.$typeUrl === MsgExec.typeUrl || typeof o.grantee === "string" && Array.isArray(o.msgs) && (!o.msgs.length || Any.is(o.msgs[0])));
+  },
+  isAmino(o: any): o is MsgExecAmino {
+    return o && (o.$typeUrl === MsgExec.typeUrl || typeof o.grantee === "string" && Array.isArray(o.msgs) && (!o.msgs.length || Any.isAmino(o.msgs[0])));
+  },
   encode(message: MsgExec, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.grantee !== "") {
       writer.uint32(10).string(message.grantee);
     }
     for (const v of message.msgs) {
-      Any.encode(v!, writer.uint32(18).fork()).ldelim();
+      Any.encode(GlobalDecoderRegistry.wrapAny(v!), writer.uint32(18).fork()).ldelim();
     }
     return writer;
   },
@@ -378,7 +443,7 @@ export const MsgExec = {
           message.grantee = reader.string();
           break;
         case 2:
-          message.msgs.push(Any.decode(reader, reader.uint32()));
+          message.msgs.push(GlobalDecoderRegistry.unwrapAny(reader));
           break;
         default:
           reader.skipType(tag & 7);
@@ -390,14 +455,14 @@ export const MsgExec = {
   fromJSON(object: any): MsgExec {
     const obj = createBaseMsgExec();
     if (isSet(object.grantee)) obj.grantee = String(object.grantee);
-    if (Array.isArray(object?.msgs)) obj.msgs = object.msgs.map((e: any) => Any.fromJSON(e));
+    if (Array.isArray(object?.msgs)) obj.msgs = object.msgs.map((e: any) => GlobalDecoderRegistry.fromJSON(e));
     return obj;
   },
-  toJSON(message: MsgExec): unknown {
+  toJSON(message: MsgExec): JsonSafe<MsgExec> {
     const obj: any = {};
     message.grantee !== undefined && (obj.grantee = message.grantee);
     if (message.msgs) {
-      obj.msgs = message.msgs.map((e) => (e ? Any.toJSON(e) : undefined));
+      obj.msgs = message.msgs.map(e => e ? GlobalDecoderRegistry.toJSON(e) : undefined);
     } else {
       obj.msgs = [];
     }
@@ -406,7 +471,7 @@ export const MsgExec = {
   fromPartial(object: Partial<MsgExec>): MsgExec {
     const message = createBaseMsgExec();
     message.grantee = object.grantee ?? "";
-    message.msgs = object.msgs?.map((e) => Any.fromPartial(e)) || [];
+    message.msgs = object.msgs?.map(e => GlobalDecoderRegistry.fromPartial(e) as any) || [];
     return message;
   },
   fromAmino(object: MsgExecAmino): MsgExec {
@@ -414,16 +479,16 @@ export const MsgExec = {
     if (object.grantee !== undefined && object.grantee !== null) {
       message.grantee = object.grantee;
     }
-    message.msgs = object.msgs?.map((e) => Any.fromAmino(e)) || [];
+    message.msgs = object.msgs?.map(e => GlobalDecoderRegistry.fromAminoMsg(e)) || [];
     return message;
   },
   toAmino(message: MsgExec): MsgExecAmino {
     const obj: any = {};
-    obj.grantee = message.grantee;
+    obj.grantee = message.grantee === "" ? undefined : message.grantee;
     if (message.msgs) {
-      obj.msgs = message.msgs.map((e) => (e ? Any.toAmino(e) : undefined));
+      obj.msgs = message.msgs.map(e => e ? GlobalDecoderRegistry.toAminoMsg(e) : undefined);
     } else {
-      obj.msgs = [];
+      obj.msgs = message.msgs;
     }
     return obj;
   },
@@ -433,7 +498,7 @@ export const MsgExec = {
   toAminoMsg(message: MsgExec): MsgExecAminoMsg {
     return {
       type: "cosmos-sdk/MsgExec",
-      value: MsgExec.toAmino(message),
+      value: MsgExec.toAmino(message)
     };
   },
   fromProtoMsg(message: MsgExecProtoMsg): MsgExec {
@@ -445,17 +510,26 @@ export const MsgExec = {
   toProtoMsg(message: MsgExec): MsgExecProtoMsg {
     return {
       typeUrl: "/cosmos.authz.v1beta1.MsgExec",
-      value: MsgExec.encode(message).finish(),
+      value: MsgExec.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(MsgExec.typeUrl, MsgExec);
+GlobalDecoderRegistry.registerAminoProtoMapping(MsgExec.aminoType, MsgExec.typeUrl);
 function createBaseMsgExecResponse(): MsgExecResponse {
   return {
-    results: [],
+    results: []
   };
 }
 export const MsgExecResponse = {
   typeUrl: "/cosmos.authz.v1beta1.MsgExecResponse",
+  aminoType: "cosmos-sdk/MsgExecResponse",
+  is(o: any): o is MsgExecResponse {
+    return o && (o.$typeUrl === MsgExecResponse.typeUrl || Array.isArray(o.results) && (!o.results.length || o.results[0] instanceof Uint8Array || typeof o.results[0] === "string"));
+  },
+  isAmino(o: any): o is MsgExecResponseAmino {
+    return o && (o.$typeUrl === MsgExecResponse.typeUrl || Array.isArray(o.results) && (!o.results.length || o.results[0] instanceof Uint8Array || typeof o.results[0] === "string"));
+  },
   encode(message: MsgExecResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.results) {
       writer.uint32(10).bytes(v!);
@@ -484,10 +558,10 @@ export const MsgExecResponse = {
     if (Array.isArray(object?.results)) obj.results = object.results.map((e: any) => bytesFromBase64(e));
     return obj;
   },
-  toJSON(message: MsgExecResponse): unknown {
+  toJSON(message: MsgExecResponse): JsonSafe<MsgExecResponse> {
     const obj: any = {};
     if (message.results) {
-      obj.results = message.results.map((e) => base64FromBytes(e !== undefined ? e : new Uint8Array()));
+      obj.results = message.results.map(e => base64FromBytes(e !== undefined ? e : new Uint8Array()));
     } else {
       obj.results = [];
     }
@@ -495,20 +569,20 @@ export const MsgExecResponse = {
   },
   fromPartial(object: Partial<MsgExecResponse>): MsgExecResponse {
     const message = createBaseMsgExecResponse();
-    message.results = object.results?.map((e) => e) || [];
+    message.results = object.results?.map(e => e) || [];
     return message;
   },
   fromAmino(object: MsgExecResponseAmino): MsgExecResponse {
     const message = createBaseMsgExecResponse();
-    message.results = object.results?.map((e) => bytesFromBase64(e)) || [];
+    message.results = object.results?.map(e => bytesFromBase64(e)) || [];
     return message;
   },
   toAmino(message: MsgExecResponse): MsgExecResponseAmino {
     const obj: any = {};
     if (message.results) {
-      obj.results = message.results.map((e) => base64FromBytes(e));
+      obj.results = message.results.map(e => base64FromBytes(e));
     } else {
-      obj.results = [];
+      obj.results = message.results;
     }
     return obj;
   },
@@ -518,7 +592,7 @@ export const MsgExecResponse = {
   toAminoMsg(message: MsgExecResponse): MsgExecResponseAminoMsg {
     return {
       type: "cosmos-sdk/MsgExecResponse",
-      value: MsgExecResponse.toAmino(message),
+      value: MsgExecResponse.toAmino(message)
     };
   },
   fromProtoMsg(message: MsgExecResponseProtoMsg): MsgExecResponse {
@@ -530,19 +604,28 @@ export const MsgExecResponse = {
   toProtoMsg(message: MsgExecResponse): MsgExecResponseProtoMsg {
     return {
       typeUrl: "/cosmos.authz.v1beta1.MsgExecResponse",
-      value: MsgExecResponse.encode(message).finish(),
+      value: MsgExecResponse.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(MsgExecResponse.typeUrl, MsgExecResponse);
+GlobalDecoderRegistry.registerAminoProtoMapping(MsgExecResponse.aminoType, MsgExecResponse.typeUrl);
 function createBaseMsgRevoke(): MsgRevoke {
   return {
     granter: "",
     grantee: "",
-    msgTypeUrl: "",
+    msgTypeUrl: ""
   };
 }
 export const MsgRevoke = {
   typeUrl: "/cosmos.authz.v1beta1.MsgRevoke",
+  aminoType: "cosmos-sdk/MsgRevoke",
+  is(o: any): o is MsgRevoke {
+    return o && (o.$typeUrl === MsgRevoke.typeUrl || typeof o.granter === "string" && typeof o.grantee === "string" && typeof o.msgTypeUrl === "string");
+  },
+  isAmino(o: any): o is MsgRevokeAmino {
+    return o && (o.$typeUrl === MsgRevoke.typeUrl || typeof o.granter === "string" && typeof o.grantee === "string" && typeof o.msg_type_url === "string");
+  },
   encode(message: MsgRevoke, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.granter !== "") {
       writer.uint32(10).string(message.granter);
@@ -585,7 +668,7 @@ export const MsgRevoke = {
     if (isSet(object.msgTypeUrl)) obj.msgTypeUrl = String(object.msgTypeUrl);
     return obj;
   },
-  toJSON(message: MsgRevoke): unknown {
+  toJSON(message: MsgRevoke): JsonSafe<MsgRevoke> {
     const obj: any = {};
     message.granter !== undefined && (obj.granter = message.granter);
     message.grantee !== undefined && (obj.grantee = message.grantee);
@@ -614,9 +697,9 @@ export const MsgRevoke = {
   },
   toAmino(message: MsgRevoke): MsgRevokeAmino {
     const obj: any = {};
-    obj.granter = message.granter;
-    obj.grantee = message.grantee;
-    obj.msg_type_url = message.msgTypeUrl;
+    obj.granter = message.granter === "" ? undefined : message.granter;
+    obj.grantee = message.grantee === "" ? undefined : message.grantee;
+    obj.msg_type_url = message.msgTypeUrl === "" ? undefined : message.msgTypeUrl;
     return obj;
   },
   fromAminoMsg(object: MsgRevokeAminoMsg): MsgRevoke {
@@ -625,7 +708,7 @@ export const MsgRevoke = {
   toAminoMsg(message: MsgRevoke): MsgRevokeAminoMsg {
     return {
       type: "cosmos-sdk/MsgRevoke",
-      value: MsgRevoke.toAmino(message),
+      value: MsgRevoke.toAmino(message)
     };
   },
   fromProtoMsg(message: MsgRevokeProtoMsg): MsgRevoke {
@@ -637,15 +720,24 @@ export const MsgRevoke = {
   toProtoMsg(message: MsgRevoke): MsgRevokeProtoMsg {
     return {
       typeUrl: "/cosmos.authz.v1beta1.MsgRevoke",
-      value: MsgRevoke.encode(message).finish(),
+      value: MsgRevoke.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(MsgRevoke.typeUrl, MsgRevoke);
+GlobalDecoderRegistry.registerAminoProtoMapping(MsgRevoke.aminoType, MsgRevoke.typeUrl);
 function createBaseMsgRevokeResponse(): MsgRevokeResponse {
   return {};
 }
 export const MsgRevokeResponse = {
   typeUrl: "/cosmos.authz.v1beta1.MsgRevokeResponse",
+  aminoType: "cosmos-sdk/MsgRevokeResponse",
+  is(o: any): o is MsgRevokeResponse {
+    return o && o.$typeUrl === MsgRevokeResponse.typeUrl;
+  },
+  isAmino(o: any): o is MsgRevokeResponseAmino {
+    return o && o.$typeUrl === MsgRevokeResponse.typeUrl;
+  },
   encode(_: MsgRevokeResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
@@ -667,7 +759,7 @@ export const MsgRevokeResponse = {
     const obj = createBaseMsgRevokeResponse();
     return obj;
   },
-  toJSON(_: MsgRevokeResponse): unknown {
+  toJSON(_: MsgRevokeResponse): JsonSafe<MsgRevokeResponse> {
     const obj: any = {};
     return obj;
   },
@@ -689,7 +781,7 @@ export const MsgRevokeResponse = {
   toAminoMsg(message: MsgRevokeResponse): MsgRevokeResponseAminoMsg {
     return {
       type: "cosmos-sdk/MsgRevokeResponse",
-      value: MsgRevokeResponse.toAmino(message),
+      value: MsgRevokeResponse.toAmino(message)
     };
   },
   fromProtoMsg(message: MsgRevokeResponseProtoMsg): MsgRevokeResponse {
@@ -701,17 +793,26 @@ export const MsgRevokeResponse = {
   toProtoMsg(message: MsgRevokeResponse): MsgRevokeResponseProtoMsg {
     return {
       typeUrl: "/cosmos.authz.v1beta1.MsgRevokeResponse",
-      value: MsgRevokeResponse.encode(message).finish(),
+      value: MsgRevokeResponse.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(MsgRevokeResponse.typeUrl, MsgRevokeResponse);
+GlobalDecoderRegistry.registerAminoProtoMapping(MsgRevokeResponse.aminoType, MsgRevokeResponse.typeUrl);
 function createBaseMsgPruneExpiredGrants(): MsgPruneExpiredGrants {
   return {
-    pruner: "",
+    pruner: ""
   };
 }
 export const MsgPruneExpiredGrants = {
   typeUrl: "/cosmos.authz.v1beta1.MsgPruneExpiredGrants",
+  aminoType: "cosmos-sdk/MsgPruneExpiredGrants",
+  is(o: any): o is MsgPruneExpiredGrants {
+    return o && (o.$typeUrl === MsgPruneExpiredGrants.typeUrl || typeof o.pruner === "string");
+  },
+  isAmino(o: any): o is MsgPruneExpiredGrantsAmino {
+    return o && (o.$typeUrl === MsgPruneExpiredGrants.typeUrl || typeof o.pruner === "string");
+  },
   encode(message: MsgPruneExpiredGrants, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.pruner !== "") {
       writer.uint32(10).string(message.pruner);
@@ -740,7 +841,7 @@ export const MsgPruneExpiredGrants = {
     if (isSet(object.pruner)) obj.pruner = String(object.pruner);
     return obj;
   },
-  toJSON(message: MsgPruneExpiredGrants): unknown {
+  toJSON(message: MsgPruneExpiredGrants): JsonSafe<MsgPruneExpiredGrants> {
     const obj: any = {};
     message.pruner !== undefined && (obj.pruner = message.pruner);
     return obj;
@@ -759,7 +860,7 @@ export const MsgPruneExpiredGrants = {
   },
   toAmino(message: MsgPruneExpiredGrants): MsgPruneExpiredGrantsAmino {
     const obj: any = {};
-    obj.pruner = message.pruner;
+    obj.pruner = message.pruner === "" ? undefined : message.pruner;
     return obj;
   },
   fromAminoMsg(object: MsgPruneExpiredGrantsAminoMsg): MsgPruneExpiredGrants {
@@ -768,7 +869,7 @@ export const MsgPruneExpiredGrants = {
   toAminoMsg(message: MsgPruneExpiredGrants): MsgPruneExpiredGrantsAminoMsg {
     return {
       type: "cosmos-sdk/MsgPruneExpiredGrants",
-      value: MsgPruneExpiredGrants.toAmino(message),
+      value: MsgPruneExpiredGrants.toAmino(message)
     };
   },
   fromProtoMsg(message: MsgPruneExpiredGrantsProtoMsg): MsgPruneExpiredGrants {
@@ -780,15 +881,24 @@ export const MsgPruneExpiredGrants = {
   toProtoMsg(message: MsgPruneExpiredGrants): MsgPruneExpiredGrantsProtoMsg {
     return {
       typeUrl: "/cosmos.authz.v1beta1.MsgPruneExpiredGrants",
-      value: MsgPruneExpiredGrants.encode(message).finish(),
+      value: MsgPruneExpiredGrants.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(MsgPruneExpiredGrants.typeUrl, MsgPruneExpiredGrants);
+GlobalDecoderRegistry.registerAminoProtoMapping(MsgPruneExpiredGrants.aminoType, MsgPruneExpiredGrants.typeUrl);
 function createBaseMsgPruneExpiredGrantsResponse(): MsgPruneExpiredGrantsResponse {
   return {};
 }
 export const MsgPruneExpiredGrantsResponse = {
   typeUrl: "/cosmos.authz.v1beta1.MsgPruneExpiredGrantsResponse",
+  aminoType: "cosmos-sdk/MsgPruneExpiredGrantsResponse",
+  is(o: any): o is MsgPruneExpiredGrantsResponse {
+    return o && o.$typeUrl === MsgPruneExpiredGrantsResponse.typeUrl;
+  },
+  isAmino(o: any): o is MsgPruneExpiredGrantsResponseAmino {
+    return o && o.$typeUrl === MsgPruneExpiredGrantsResponse.typeUrl;
+  },
   encode(_: MsgPruneExpiredGrantsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
@@ -810,7 +920,7 @@ export const MsgPruneExpiredGrantsResponse = {
     const obj = createBaseMsgPruneExpiredGrantsResponse();
     return obj;
   },
-  toJSON(_: MsgPruneExpiredGrantsResponse): unknown {
+  toJSON(_: MsgPruneExpiredGrantsResponse): JsonSafe<MsgPruneExpiredGrantsResponse> {
     const obj: any = {};
     return obj;
   },
@@ -832,7 +942,7 @@ export const MsgPruneExpiredGrantsResponse = {
   toAminoMsg(message: MsgPruneExpiredGrantsResponse): MsgPruneExpiredGrantsResponseAminoMsg {
     return {
       type: "cosmos-sdk/MsgPruneExpiredGrantsResponse",
-      value: MsgPruneExpiredGrantsResponse.toAmino(message),
+      value: MsgPruneExpiredGrantsResponse.toAmino(message)
     };
   },
   fromProtoMsg(message: MsgPruneExpiredGrantsResponseProtoMsg): MsgPruneExpiredGrantsResponse {
@@ -844,10 +954,12 @@ export const MsgPruneExpiredGrantsResponse = {
   toProtoMsg(message: MsgPruneExpiredGrantsResponse): MsgPruneExpiredGrantsResponseProtoMsg {
     return {
       typeUrl: "/cosmos.authz.v1beta1.MsgPruneExpiredGrantsResponse",
-      value: MsgPruneExpiredGrantsResponse.encode(message).finish(),
+      value: MsgPruneExpiredGrantsResponse.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(MsgPruneExpiredGrantsResponse.typeUrl, MsgPruneExpiredGrantsResponse);
+GlobalDecoderRegistry.registerAminoProtoMapping(MsgPruneExpiredGrantsResponse.aminoType, MsgPruneExpiredGrantsResponse.typeUrl);
 /** Msg defines the authz Msg service. */
 export interface Msg {
   /**
@@ -870,7 +982,7 @@ export interface Msg {
   Revoke(request: MsgRevoke): Promise<MsgRevokeResponse>;
   /**
    * PruneExpiredGrants prunes the expired grants. Currently up to 75 at a time.
-   *
+   * 
    * Since cosmos-sdk 0.50.x-atomone
    */
   PruneExpiredGrants(request: MsgPruneExpiredGrants): Promise<MsgPruneExpiredGrantsResponse>;
@@ -887,21 +999,21 @@ export class MsgClientImpl implements Msg {
   Grant(request: MsgGrant): Promise<MsgGrantResponse> {
     const data = MsgGrant.encode(request).finish();
     const promise = this.rpc.request("cosmos.authz.v1beta1.Msg", "Grant", data);
-    return promise.then((data) => MsgGrantResponse.decode(new BinaryReader(data)));
+    return promise.then(data => MsgGrantResponse.decode(new BinaryReader(data)));
   }
   Exec(request: MsgExec): Promise<MsgExecResponse> {
     const data = MsgExec.encode(request).finish();
     const promise = this.rpc.request("cosmos.authz.v1beta1.Msg", "Exec", data);
-    return promise.then((data) => MsgExecResponse.decode(new BinaryReader(data)));
+    return promise.then(data => MsgExecResponse.decode(new BinaryReader(data)));
   }
   Revoke(request: MsgRevoke): Promise<MsgRevokeResponse> {
     const data = MsgRevoke.encode(request).finish();
     const promise = this.rpc.request("cosmos.authz.v1beta1.Msg", "Revoke", data);
-    return promise.then((data) => MsgRevokeResponse.decode(new BinaryReader(data)));
+    return promise.then(data => MsgRevokeResponse.decode(new BinaryReader(data)));
   }
   PruneExpiredGrants(request: MsgPruneExpiredGrants): Promise<MsgPruneExpiredGrantsResponse> {
     const data = MsgPruneExpiredGrants.encode(request).finish();
     const promise = this.rpc.request("cosmos.authz.v1beta1.Msg", "PruneExpiredGrants", data);
-    return promise.then((data) => MsgPruneExpiredGrantsResponse.decode(new BinaryReader(data)));
+    return promise.then(data => MsgPruneExpiredGrantsResponse.decode(new BinaryReader(data)));
   }
 }

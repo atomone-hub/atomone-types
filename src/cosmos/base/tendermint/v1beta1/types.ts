@@ -1,23 +1,12 @@
 /* eslint-disable */
-import {
-  Data,
-  DataAmino,
-  Commit,
-  CommitAmino,
-  BlockID,
-  BlockIDAmino,
-} from "../../../../tendermint/types/types";
+import { Data, DataAmino, Commit, CommitAmino, BlockID, BlockIDAmino } from "../../../../tendermint/types/types";
 import { EvidenceList, EvidenceListAmino } from "../../../../tendermint/types/evidence";
 import { Consensus, ConsensusAmino } from "../../../../tendermint/version/types";
 import { Timestamp } from "../../../../google/protobuf/timestamp";
 import { BinaryReader, BinaryWriter } from "../../../../binary";
-import {
-  isSet,
-  fromJsonTimestamp,
-  bytesFromBase64,
-  fromTimestamp,
-  base64FromBytes,
-} from "../../../../helpers";
+import { GlobalDecoderRegistry } from "../../../../registry";
+import { isSet, fromJsonTimestamp, bytesFromBase64, fromTimestamp, base64FromBytes } from "../../../../helpers";
+import { JsonSafe } from "../../../../json-safe";
 export const protobufPackage = "cosmos.base.tendermint.v1beta1";
 /**
  * Block is tendermint type Block, with the Header proposer address
@@ -36,6 +25,9 @@ export interface BlockProtoMsg {
 /**
  * Block is tendermint type Block, with the Header proposer address
  * field converted to bech32 string.
+ * @name BlockAmino
+ * @package cosmos.base.tendermint.v1beta1
+ * @see proto type: cosmos.base.tendermint.v1beta1.Block
  */
 export interface BlockAmino {
   header: HeaderAmino | undefined;
@@ -58,6 +50,7 @@ export interface Header {
   lastBlockId: BlockID | undefined;
   /** hashes of block data */
   lastCommitHash: Uint8Array;
+  /** transactions */
   dataHash: Uint8Array;
   /** hashes from the app output from the prev block */
   validatorsHash: Uint8Array;
@@ -67,6 +60,7 @@ export interface Header {
   consensusHash: Uint8Array;
   /** state after txs from the previous block */
   appHash: Uint8Array;
+  /** root hash of all results from the txs from the previous block */
   lastResultsHash: Uint8Array;
   /** consensus info */
   evidenceHash: Uint8Array;
@@ -81,28 +75,55 @@ export interface HeaderProtoMsg {
   typeUrl: "/cosmos.base.tendermint.v1beta1.Header";
   value: Uint8Array;
 }
-/** Header defines the structure of a Tendermint block header. */
+/**
+ * Header defines the structure of a Tendermint block header.
+ * @name HeaderAmino
+ * @package cosmos.base.tendermint.v1beta1
+ * @see proto type: cosmos.base.tendermint.v1beta1.Header
+ */
 export interface HeaderAmino {
-  /** basic block info */
+  /**
+   * basic block info
+   */
   version: ConsensusAmino | undefined;
   chain_id?: string;
   height?: string;
   time: string | undefined;
-  /** prev block info */
+  /**
+   * prev block info
+   */
   last_block_id: BlockIDAmino | undefined;
-  /** hashes of block data */
+  /**
+   * hashes of block data
+   */
   last_commit_hash?: string;
+  /**
+   * transactions
+   */
   data_hash?: string;
-  /** hashes from the app output from the prev block */
+  /**
+   * hashes from the app output from the prev block
+   */
   validators_hash?: string;
-  /** validators for the next block */
+  /**
+   * validators for the next block
+   */
   next_validators_hash?: string;
-  /** consensus params for current block */
+  /**
+   * consensus params for current block
+   */
   consensus_hash?: string;
-  /** state after txs from the previous block */
+  /**
+   * state after txs from the previous block
+   */
   app_hash?: string;
+  /**
+   * root hash of all results from the txs from the previous block
+   */
   last_results_hash?: string;
-  /** consensus info */
+  /**
+   * consensus info
+   */
   evidence_hash?: string;
   /**
    * proposer_address is the original block proposer address, formatted as a Bech32 string.
@@ -120,11 +141,18 @@ function createBaseBlock(): Block {
     header: Header.fromPartial({}),
     data: Data.fromPartial({}),
     evidence: EvidenceList.fromPartial({}),
-    lastCommit: undefined,
+    lastCommit: undefined
   };
 }
 export const Block = {
   typeUrl: "/cosmos.base.tendermint.v1beta1.Block",
+  aminoType: "cosmos-sdk/Block",
+  is(o: any): o is Block {
+    return o && (o.$typeUrl === Block.typeUrl || Header.is(o.header) && Data.is(o.data) && EvidenceList.is(o.evidence));
+  },
+  isAmino(o: any): o is BlockAmino {
+    return o && (o.$typeUrl === Block.typeUrl || Header.isAmino(o.header) && Data.isAmino(o.data) && EvidenceList.isAmino(o.evidence));
+  },
   encode(message: Block, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.header !== undefined) {
       Header.encode(message.header, writer.uint32(10).fork()).ldelim();
@@ -174,14 +202,12 @@ export const Block = {
     if (isSet(object.lastCommit)) obj.lastCommit = Commit.fromJSON(object.lastCommit);
     return obj;
   },
-  toJSON(message: Block): unknown {
+  toJSON(message: Block): JsonSafe<Block> {
     const obj: any = {};
     message.header !== undefined && (obj.header = message.header ? Header.toJSON(message.header) : undefined);
     message.data !== undefined && (obj.data = message.data ? Data.toJSON(message.data) : undefined);
-    message.evidence !== undefined &&
-      (obj.evidence = message.evidence ? EvidenceList.toJSON(message.evidence) : undefined);
-    message.lastCommit !== undefined &&
-      (obj.lastCommit = message.lastCommit ? Commit.toJSON(message.lastCommit) : undefined);
+    message.evidence !== undefined && (obj.evidence = message.evidence ? EvidenceList.toJSON(message.evidence) : undefined);
+    message.lastCommit !== undefined && (obj.lastCommit = message.lastCommit ? Commit.toJSON(message.lastCommit) : undefined);
     return obj;
   },
   fromPartial(object: Partial<Block>): Block {
@@ -218,9 +244,9 @@ export const Block = {
   },
   toAmino(message: Block): BlockAmino {
     const obj: any = {};
-    obj.header = message.header ? Header.toAmino(message.header) : Header.fromPartial({});
-    obj.data = message.data ? Data.toAmino(message.data) : Data.fromPartial({});
-    obj.evidence = message.evidence ? EvidenceList.toAmino(message.evidence) : EvidenceList.fromPartial({});
+    obj.header = message.header ? Header.toAmino(message.header) : Header.toAmino(Header.fromPartial({}));
+    obj.data = message.data ? Data.toAmino(message.data) : Data.toAmino(Data.fromPartial({}));
+    obj.evidence = message.evidence ? EvidenceList.toAmino(message.evidence) : EvidenceList.toAmino(EvidenceList.fromPartial({}));
     obj.last_commit = message.lastCommit ? Commit.toAmino(message.lastCommit) : undefined;
     return obj;
   },
@@ -230,7 +256,7 @@ export const Block = {
   toAminoMsg(message: Block): BlockAminoMsg {
     return {
       type: "cosmos-sdk/Block",
-      value: Block.toAmino(message),
+      value: Block.toAmino(message)
     };
   },
   fromProtoMsg(message: BlockProtoMsg): Block {
@@ -242,10 +268,12 @@ export const Block = {
   toProtoMsg(message: Block): BlockProtoMsg {
     return {
       typeUrl: "/cosmos.base.tendermint.v1beta1.Block",
-      value: Block.encode(message).finish(),
+      value: Block.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(Block.typeUrl, Block);
+GlobalDecoderRegistry.registerAminoProtoMapping(Block.aminoType, Block.typeUrl);
 function createBaseHeader(): Header {
   return {
     version: Consensus.fromPartial({}),
@@ -261,11 +289,18 @@ function createBaseHeader(): Header {
     appHash: new Uint8Array(),
     lastResultsHash: new Uint8Array(),
     evidenceHash: new Uint8Array(),
-    proposerAddress: "",
+    proposerAddress: ""
   };
 }
 export const Header = {
   typeUrl: "/cosmos.base.tendermint.v1beta1.Header",
+  aminoType: "cosmos-sdk/Header",
+  is(o: any): o is Header {
+    return o && (o.$typeUrl === Header.typeUrl || Consensus.is(o.version) && typeof o.chainId === "string" && typeof o.height === "bigint" && Timestamp.is(o.time) && BlockID.is(o.lastBlockId) && (o.lastCommitHash instanceof Uint8Array || typeof o.lastCommitHash === "string") && (o.dataHash instanceof Uint8Array || typeof o.dataHash === "string") && (o.validatorsHash instanceof Uint8Array || typeof o.validatorsHash === "string") && (o.nextValidatorsHash instanceof Uint8Array || typeof o.nextValidatorsHash === "string") && (o.consensusHash instanceof Uint8Array || typeof o.consensusHash === "string") && (o.appHash instanceof Uint8Array || typeof o.appHash === "string") && (o.lastResultsHash instanceof Uint8Array || typeof o.lastResultsHash === "string") && (o.evidenceHash instanceof Uint8Array || typeof o.evidenceHash === "string") && typeof o.proposerAddress === "string");
+  },
+  isAmino(o: any): o is HeaderAmino {
+    return o && (o.$typeUrl === Header.typeUrl || Consensus.isAmino(o.version) && typeof o.chain_id === "string" && typeof o.height === "bigint" && Timestamp.isAmino(o.time) && BlockID.isAmino(o.last_block_id) && (o.last_commit_hash instanceof Uint8Array || typeof o.last_commit_hash === "string") && (o.data_hash instanceof Uint8Array || typeof o.data_hash === "string") && (o.validators_hash instanceof Uint8Array || typeof o.validators_hash === "string") && (o.next_validators_hash instanceof Uint8Array || typeof o.next_validators_hash === "string") && (o.consensus_hash instanceof Uint8Array || typeof o.consensus_hash === "string") && (o.app_hash instanceof Uint8Array || typeof o.app_hash === "string") && (o.last_results_hash instanceof Uint8Array || typeof o.last_results_hash === "string") && (o.evidence_hash instanceof Uint8Array || typeof o.evidence_hash === "string") && typeof o.proposer_address === "string");
+  },
   encode(message: Header, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.version !== undefined) {
       Consensus.encode(message.version, writer.uint32(10).fork()).ldelim();
@@ -385,43 +420,21 @@ export const Header = {
     if (isSet(object.proposerAddress)) obj.proposerAddress = String(object.proposerAddress);
     return obj;
   },
-  toJSON(message: Header): unknown {
+  toJSON(message: Header): JsonSafe<Header> {
     const obj: any = {};
-    message.version !== undefined &&
-      (obj.version = message.version ? Consensus.toJSON(message.version) : undefined);
+    message.version !== undefined && (obj.version = message.version ? Consensus.toJSON(message.version) : undefined);
     message.chainId !== undefined && (obj.chainId = message.chainId);
     message.height !== undefined && (obj.height = (message.height || BigInt(0)).toString());
     message.time !== undefined && (obj.time = fromTimestamp(message.time).toISOString());
-    message.lastBlockId !== undefined &&
-      (obj.lastBlockId = message.lastBlockId ? BlockID.toJSON(message.lastBlockId) : undefined);
-    message.lastCommitHash !== undefined &&
-      (obj.lastCommitHash = base64FromBytes(
-        message.lastCommitHash !== undefined ? message.lastCommitHash : new Uint8Array(),
-      ));
-    message.dataHash !== undefined &&
-      (obj.dataHash = base64FromBytes(message.dataHash !== undefined ? message.dataHash : new Uint8Array()));
-    message.validatorsHash !== undefined &&
-      (obj.validatorsHash = base64FromBytes(
-        message.validatorsHash !== undefined ? message.validatorsHash : new Uint8Array(),
-      ));
-    message.nextValidatorsHash !== undefined &&
-      (obj.nextValidatorsHash = base64FromBytes(
-        message.nextValidatorsHash !== undefined ? message.nextValidatorsHash : new Uint8Array(),
-      ));
-    message.consensusHash !== undefined &&
-      (obj.consensusHash = base64FromBytes(
-        message.consensusHash !== undefined ? message.consensusHash : new Uint8Array(),
-      ));
-    message.appHash !== undefined &&
-      (obj.appHash = base64FromBytes(message.appHash !== undefined ? message.appHash : new Uint8Array()));
-    message.lastResultsHash !== undefined &&
-      (obj.lastResultsHash = base64FromBytes(
-        message.lastResultsHash !== undefined ? message.lastResultsHash : new Uint8Array(),
-      ));
-    message.evidenceHash !== undefined &&
-      (obj.evidenceHash = base64FromBytes(
-        message.evidenceHash !== undefined ? message.evidenceHash : new Uint8Array(),
-      ));
+    message.lastBlockId !== undefined && (obj.lastBlockId = message.lastBlockId ? BlockID.toJSON(message.lastBlockId) : undefined);
+    message.lastCommitHash !== undefined && (obj.lastCommitHash = base64FromBytes(message.lastCommitHash !== undefined ? message.lastCommitHash : new Uint8Array()));
+    message.dataHash !== undefined && (obj.dataHash = base64FromBytes(message.dataHash !== undefined ? message.dataHash : new Uint8Array()));
+    message.validatorsHash !== undefined && (obj.validatorsHash = base64FromBytes(message.validatorsHash !== undefined ? message.validatorsHash : new Uint8Array()));
+    message.nextValidatorsHash !== undefined && (obj.nextValidatorsHash = base64FromBytes(message.nextValidatorsHash !== undefined ? message.nextValidatorsHash : new Uint8Array()));
+    message.consensusHash !== undefined && (obj.consensusHash = base64FromBytes(message.consensusHash !== undefined ? message.consensusHash : new Uint8Array()));
+    message.appHash !== undefined && (obj.appHash = base64FromBytes(message.appHash !== undefined ? message.appHash : new Uint8Array()));
+    message.lastResultsHash !== undefined && (obj.lastResultsHash = base64FromBytes(message.lastResultsHash !== undefined ? message.lastResultsHash : new Uint8Array()));
+    message.evidenceHash !== undefined && (obj.evidenceHash = base64FromBytes(message.evidenceHash !== undefined ? message.evidenceHash : new Uint8Array()));
     message.proposerAddress !== undefined && (obj.proposerAddress = message.proposerAddress);
     return obj;
   },
@@ -499,22 +512,20 @@ export const Header = {
   },
   toAmino(message: Header): HeaderAmino {
     const obj: any = {};
-    obj.version = message.version ? Consensus.toAmino(message.version) : Consensus.fromPartial({});
-    obj.chain_id = message.chainId;
-    obj.height = message.height ? message.height.toString() : undefined;
-    obj.time = message.time ? Timestamp.toAmino(message.time) : undefined;
-    obj.last_block_id = message.lastBlockId ? BlockID.toAmino(message.lastBlockId) : BlockID.fromPartial({});
+    obj.version = message.version ? Consensus.toAmino(message.version) : Consensus.toAmino(Consensus.fromPartial({}));
+    obj.chain_id = message.chainId === "" ? undefined : message.chainId;
+    obj.height = message.height !== BigInt(0) ? message.height?.toString() : undefined;
+    obj.time = message.time ? Timestamp.toAmino(message.time) : Timestamp.toAmino(Timestamp.fromPartial({}));
+    obj.last_block_id = message.lastBlockId ? BlockID.toAmino(message.lastBlockId) : BlockID.toAmino(BlockID.fromPartial({}));
     obj.last_commit_hash = message.lastCommitHash ? base64FromBytes(message.lastCommitHash) : undefined;
     obj.data_hash = message.dataHash ? base64FromBytes(message.dataHash) : undefined;
     obj.validators_hash = message.validatorsHash ? base64FromBytes(message.validatorsHash) : undefined;
-    obj.next_validators_hash = message.nextValidatorsHash
-      ? base64FromBytes(message.nextValidatorsHash)
-      : undefined;
+    obj.next_validators_hash = message.nextValidatorsHash ? base64FromBytes(message.nextValidatorsHash) : undefined;
     obj.consensus_hash = message.consensusHash ? base64FromBytes(message.consensusHash) : undefined;
     obj.app_hash = message.appHash ? base64FromBytes(message.appHash) : undefined;
     obj.last_results_hash = message.lastResultsHash ? base64FromBytes(message.lastResultsHash) : undefined;
     obj.evidence_hash = message.evidenceHash ? base64FromBytes(message.evidenceHash) : undefined;
-    obj.proposer_address = message.proposerAddress;
+    obj.proposer_address = message.proposerAddress === "" ? undefined : message.proposerAddress;
     return obj;
   },
   fromAminoMsg(object: HeaderAminoMsg): Header {
@@ -523,7 +534,7 @@ export const Header = {
   toAminoMsg(message: Header): HeaderAminoMsg {
     return {
       type: "cosmos-sdk/Header",
-      value: Header.toAmino(message),
+      value: Header.toAmino(message)
     };
   },
   fromProtoMsg(message: HeaderProtoMsg): Header {
@@ -535,7 +546,9 @@ export const Header = {
   toProtoMsg(message: Header): HeaderProtoMsg {
     return {
       typeUrl: "/cosmos.base.tendermint.v1beta1.Header",
-      value: Header.encode(message).finish(),
+      value: Header.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(Header.typeUrl, Header);
+GlobalDecoderRegistry.registerAminoProtoMapping(Header.aminoType, Header.typeUrl);

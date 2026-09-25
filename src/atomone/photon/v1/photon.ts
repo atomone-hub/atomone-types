@@ -1,6 +1,8 @@
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "../../../binary";
 import { isSet } from "../../../helpers";
+import { JsonSafe } from "../../../json-safe";
+import { GlobalDecoderRegistry } from "../../../registry";
 export const protobufPackage = "atomone.photon.v1";
 /** Params defines the parameters for the x/photon module. */
 export interface Params {
@@ -17,9 +19,16 @@ export interface ParamsProtoMsg {
   typeUrl: "/atomone.photon.v1.Params";
   value: Uint8Array;
 }
-/** Params defines the parameters for the x/photon module. */
+/**
+ * Params defines the parameters for the x/photon module.
+ * @name ParamsAmino
+ * @package atomone.photon.v1
+ * @see proto type: atomone.photon.v1.Params
+ */
 export interface ParamsAmino {
-  /** Allow to mint photon or not */
+  /**
+   * Allow to mint photon or not
+   */
   mint_disabled?: boolean;
   /**
    * tx_fee_exceptions holds the msg type urls that are allowed to use some
@@ -35,11 +44,17 @@ export interface ParamsAminoMsg {
 function createBaseParams(): Params {
   return {
     mintDisabled: false,
-    txFeeExceptions: [],
+    txFeeExceptions: []
   };
 }
 export const Params = {
   typeUrl: "/atomone.photon.v1.Params",
+  is(o: any): o is Params {
+    return o && (o.$typeUrl === Params.typeUrl || typeof o.mintDisabled === "boolean" && Array.isArray(o.txFeeExceptions) && (!o.txFeeExceptions.length || typeof o.txFeeExceptions[0] === "string"));
+  },
+  isAmino(o: any): o is ParamsAmino {
+    return o && (o.$typeUrl === Params.typeUrl || typeof o.mint_disabled === "boolean" && Array.isArray(o.tx_fee_exceptions) && (!o.tx_fee_exceptions.length || typeof o.tx_fee_exceptions[0] === "string"));
+  },
   encode(message: Params, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.mintDisabled === true) {
       writer.uint32(8).bool(message.mintDisabled);
@@ -72,15 +87,14 @@ export const Params = {
   fromJSON(object: any): Params {
     const obj = createBaseParams();
     if (isSet(object.mintDisabled)) obj.mintDisabled = Boolean(object.mintDisabled);
-    if (Array.isArray(object?.txFeeExceptions))
-      obj.txFeeExceptions = object.txFeeExceptions.map((e: any) => String(e));
+    if (Array.isArray(object?.txFeeExceptions)) obj.txFeeExceptions = object.txFeeExceptions.map((e: any) => String(e));
     return obj;
   },
-  toJSON(message: Params): unknown {
+  toJSON(message: Params): JsonSafe<Params> {
     const obj: any = {};
     message.mintDisabled !== undefined && (obj.mintDisabled = message.mintDisabled);
     if (message.txFeeExceptions) {
-      obj.txFeeExceptions = message.txFeeExceptions.map((e) => e);
+      obj.txFeeExceptions = message.txFeeExceptions.map(e => e);
     } else {
       obj.txFeeExceptions = [];
     }
@@ -89,7 +103,7 @@ export const Params = {
   fromPartial(object: Partial<Params>): Params {
     const message = createBaseParams();
     message.mintDisabled = object.mintDisabled ?? false;
-    message.txFeeExceptions = object.txFeeExceptions?.map((e) => e) || [];
+    message.txFeeExceptions = object.txFeeExceptions?.map(e => e) || [];
     return message;
   },
   fromAmino(object: ParamsAmino): Params {
@@ -97,16 +111,16 @@ export const Params = {
     if (object.mint_disabled !== undefined && object.mint_disabled !== null) {
       message.mintDisabled = object.mint_disabled;
     }
-    message.txFeeExceptions = object.tx_fee_exceptions?.map((e) => e) || [];
+    message.txFeeExceptions = object.tx_fee_exceptions?.map(e => e) || [];
     return message;
   },
   toAmino(message: Params): ParamsAmino {
     const obj: any = {};
-    obj.mint_disabled = message.mintDisabled;
+    obj.mint_disabled = message.mintDisabled === false ? undefined : message.mintDisabled;
     if (message.txFeeExceptions) {
-      obj.tx_fee_exceptions = message.txFeeExceptions.map((e) => e);
+      obj.tx_fee_exceptions = message.txFeeExceptions.map(e => e);
     } else {
-      obj.tx_fee_exceptions = [];
+      obj.tx_fee_exceptions = message.txFeeExceptions;
     }
     return obj;
   },
@@ -122,7 +136,8 @@ export const Params = {
   toProtoMsg(message: Params): ParamsProtoMsg {
     return {
       typeUrl: "/atomone.photon.v1.Params",
-      value: Params.encode(message).finish(),
+      value: Params.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(Params.typeUrl, Params);

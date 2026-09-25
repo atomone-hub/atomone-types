@@ -1,12 +1,9 @@
 /* eslint-disable */
-import {
-  PageRequest,
-  PageRequestAmino,
-  PageResponse,
-  PageResponseAmino,
-} from "../../../../cosmos/base/query/v1beta1/pagination";
+import { PageRequest, PageRequestAmino, PageResponse, PageResponseAmino } from "../../../../cosmos/base/query/v1beta1/pagination";
 import { BinaryReader, BinaryWriter } from "../../../../binary";
+import { GlobalDecoderRegistry } from "../../../../registry";
 import { isSet, bytesFromBase64, base64FromBytes } from "../../../../helpers";
+import { JsonSafe } from "../../../../json-safe";
 import { TxRpc } from "../../../../types";
 export const protobufPackage = "ibc.lightclients.wasm.v1";
 /** QueryChecksumsRequest is the request type for the Query/Checksums RPC method. */
@@ -18,9 +15,16 @@ export interface QueryChecksumsRequestProtoMsg {
   typeUrl: "/ibc.lightclients.wasm.v1.QueryChecksumsRequest";
   value: Uint8Array;
 }
-/** QueryChecksumsRequest is the request type for the Query/Checksums RPC method. */
+/**
+ * QueryChecksumsRequest is the request type for the Query/Checksums RPC method.
+ * @name QueryChecksumsRequestAmino
+ * @package ibc.lightclients.wasm.v1
+ * @see proto type: ibc.lightclients.wasm.v1.QueryChecksumsRequest
+ */
 export interface QueryChecksumsRequestAmino {
-  /** pagination defines an optional pagination for the request. */
+  /**
+   * pagination defines an optional pagination for the request.
+   */
   pagination?: PageRequestAmino | undefined;
 }
 export interface QueryChecksumsRequestAminoMsg {
@@ -38,11 +42,20 @@ export interface QueryChecksumsResponseProtoMsg {
   typeUrl: "/ibc.lightclients.wasm.v1.QueryChecksumsResponse";
   value: Uint8Array;
 }
-/** QueryChecksumsResponse is the response type for the Query/Checksums RPC method. */
+/**
+ * QueryChecksumsResponse is the response type for the Query/Checksums RPC method.
+ * @name QueryChecksumsResponseAmino
+ * @package ibc.lightclients.wasm.v1
+ * @see proto type: ibc.lightclients.wasm.v1.QueryChecksumsResponse
+ */
 export interface QueryChecksumsResponseAmino {
-  /** checksums is a list of the hex encoded checksums of all wasm codes stored. */
+  /**
+   * checksums is a list of the hex encoded checksums of all wasm codes stored.
+   */
   checksums?: string[];
-  /** pagination defines the pagination in the response. */
+  /**
+   * pagination defines the pagination in the response.
+   */
   pagination?: PageResponseAmino | undefined;
 }
 export interface QueryChecksumsResponseAminoMsg {
@@ -58,9 +71,16 @@ export interface QueryCodeRequestProtoMsg {
   typeUrl: "/ibc.lightclients.wasm.v1.QueryCodeRequest";
   value: Uint8Array;
 }
-/** QueryCodeRequest is the request type for the Query/Code RPC method. */
+/**
+ * QueryCodeRequest is the request type for the Query/Code RPC method.
+ * @name QueryCodeRequestAmino
+ * @package ibc.lightclients.wasm.v1
+ * @see proto type: ibc.lightclients.wasm.v1.QueryCodeRequest
+ */
 export interface QueryCodeRequestAmino {
-  /** checksum is a hex encoded string of the code stored. */
+  /**
+   * checksum is a hex encoded string of the code stored.
+   */
   checksum?: string;
 }
 export interface QueryCodeRequestAminoMsg {
@@ -75,7 +95,12 @@ export interface QueryCodeResponseProtoMsg {
   typeUrl: "/ibc.lightclients.wasm.v1.QueryCodeResponse";
   value: Uint8Array;
 }
-/** QueryCodeResponse is the response type for the Query/Code RPC method. */
+/**
+ * QueryCodeResponse is the response type for the Query/Code RPC method.
+ * @name QueryCodeResponseAmino
+ * @package ibc.lightclients.wasm.v1
+ * @see proto type: ibc.lightclients.wasm.v1.QueryCodeResponse
+ */
 export interface QueryCodeResponseAmino {
   data?: string;
 }
@@ -85,11 +110,18 @@ export interface QueryCodeResponseAminoMsg {
 }
 function createBaseQueryChecksumsRequest(): QueryChecksumsRequest {
   return {
-    pagination: undefined,
+    pagination: undefined
   };
 }
 export const QueryChecksumsRequest = {
   typeUrl: "/ibc.lightclients.wasm.v1.QueryChecksumsRequest",
+  aminoType: "cosmos-sdk/QueryChecksumsRequest",
+  is(o: any): o is QueryChecksumsRequest {
+    return o && o.$typeUrl === QueryChecksumsRequest.typeUrl;
+  },
+  isAmino(o: any): o is QueryChecksumsRequestAmino {
+    return o && o.$typeUrl === QueryChecksumsRequest.typeUrl;
+  },
   encode(message: QueryChecksumsRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.pagination !== undefined) {
       PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
@@ -118,10 +150,9 @@ export const QueryChecksumsRequest = {
     if (isSet(object.pagination)) obj.pagination = PageRequest.fromJSON(object.pagination);
     return obj;
   },
-  toJSON(message: QueryChecksumsRequest): unknown {
+  toJSON(message: QueryChecksumsRequest): JsonSafe<QueryChecksumsRequest> {
     const obj: any = {};
-    message.pagination !== undefined &&
-      (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
+    message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
     return obj;
   },
   fromPartial(object: Partial<QueryChecksumsRequest>): QueryChecksumsRequest {
@@ -149,7 +180,7 @@ export const QueryChecksumsRequest = {
   toAminoMsg(message: QueryChecksumsRequest): QueryChecksumsRequestAminoMsg {
     return {
       type: "cosmos-sdk/QueryChecksumsRequest",
-      value: QueryChecksumsRequest.toAmino(message),
+      value: QueryChecksumsRequest.toAmino(message)
     };
   },
   fromProtoMsg(message: QueryChecksumsRequestProtoMsg): QueryChecksumsRequest {
@@ -161,18 +192,27 @@ export const QueryChecksumsRequest = {
   toProtoMsg(message: QueryChecksumsRequest): QueryChecksumsRequestProtoMsg {
     return {
       typeUrl: "/ibc.lightclients.wasm.v1.QueryChecksumsRequest",
-      value: QueryChecksumsRequest.encode(message).finish(),
+      value: QueryChecksumsRequest.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(QueryChecksumsRequest.typeUrl, QueryChecksumsRequest);
+GlobalDecoderRegistry.registerAminoProtoMapping(QueryChecksumsRequest.aminoType, QueryChecksumsRequest.typeUrl);
 function createBaseQueryChecksumsResponse(): QueryChecksumsResponse {
   return {
     checksums: [],
-    pagination: undefined,
+    pagination: undefined
   };
 }
 export const QueryChecksumsResponse = {
   typeUrl: "/ibc.lightclients.wasm.v1.QueryChecksumsResponse",
+  aminoType: "cosmos-sdk/QueryChecksumsResponse",
+  is(o: any): o is QueryChecksumsResponse {
+    return o && (o.$typeUrl === QueryChecksumsResponse.typeUrl || Array.isArray(o.checksums) && (!o.checksums.length || typeof o.checksums[0] === "string"));
+  },
+  isAmino(o: any): o is QueryChecksumsResponseAmino {
+    return o && (o.$typeUrl === QueryChecksumsResponse.typeUrl || Array.isArray(o.checksums) && (!o.checksums.length || typeof o.checksums[0] === "string"));
+  },
   encode(message: QueryChecksumsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.checksums) {
       writer.uint32(10).string(v!);
@@ -208,20 +248,19 @@ export const QueryChecksumsResponse = {
     if (isSet(object.pagination)) obj.pagination = PageResponse.fromJSON(object.pagination);
     return obj;
   },
-  toJSON(message: QueryChecksumsResponse): unknown {
+  toJSON(message: QueryChecksumsResponse): JsonSafe<QueryChecksumsResponse> {
     const obj: any = {};
     if (message.checksums) {
-      obj.checksums = message.checksums.map((e) => e);
+      obj.checksums = message.checksums.map(e => e);
     } else {
       obj.checksums = [];
     }
-    message.pagination !== undefined &&
-      (obj.pagination = message.pagination ? PageResponse.toJSON(message.pagination) : undefined);
+    message.pagination !== undefined && (obj.pagination = message.pagination ? PageResponse.toJSON(message.pagination) : undefined);
     return obj;
   },
   fromPartial(object: Partial<QueryChecksumsResponse>): QueryChecksumsResponse {
     const message = createBaseQueryChecksumsResponse();
-    message.checksums = object.checksums?.map((e) => e) || [];
+    message.checksums = object.checksums?.map(e => e) || [];
     if (object.pagination !== undefined && object.pagination !== null) {
       message.pagination = PageResponse.fromPartial(object.pagination);
     }
@@ -229,7 +268,7 @@ export const QueryChecksumsResponse = {
   },
   fromAmino(object: QueryChecksumsResponseAmino): QueryChecksumsResponse {
     const message = createBaseQueryChecksumsResponse();
-    message.checksums = object.checksums?.map((e) => e) || [];
+    message.checksums = object.checksums?.map(e => e) || [];
     if (object.pagination !== undefined && object.pagination !== null) {
       message.pagination = PageResponse.fromAmino(object.pagination);
     }
@@ -238,9 +277,9 @@ export const QueryChecksumsResponse = {
   toAmino(message: QueryChecksumsResponse): QueryChecksumsResponseAmino {
     const obj: any = {};
     if (message.checksums) {
-      obj.checksums = message.checksums.map((e) => e);
+      obj.checksums = message.checksums.map(e => e);
     } else {
-      obj.checksums = [];
+      obj.checksums = message.checksums;
     }
     obj.pagination = message.pagination ? PageResponse.toAmino(message.pagination) : undefined;
     return obj;
@@ -251,7 +290,7 @@ export const QueryChecksumsResponse = {
   toAminoMsg(message: QueryChecksumsResponse): QueryChecksumsResponseAminoMsg {
     return {
       type: "cosmos-sdk/QueryChecksumsResponse",
-      value: QueryChecksumsResponse.toAmino(message),
+      value: QueryChecksumsResponse.toAmino(message)
     };
   },
   fromProtoMsg(message: QueryChecksumsResponseProtoMsg): QueryChecksumsResponse {
@@ -263,17 +302,26 @@ export const QueryChecksumsResponse = {
   toProtoMsg(message: QueryChecksumsResponse): QueryChecksumsResponseProtoMsg {
     return {
       typeUrl: "/ibc.lightclients.wasm.v1.QueryChecksumsResponse",
-      value: QueryChecksumsResponse.encode(message).finish(),
+      value: QueryChecksumsResponse.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(QueryChecksumsResponse.typeUrl, QueryChecksumsResponse);
+GlobalDecoderRegistry.registerAminoProtoMapping(QueryChecksumsResponse.aminoType, QueryChecksumsResponse.typeUrl);
 function createBaseQueryCodeRequest(): QueryCodeRequest {
   return {
-    checksum: "",
+    checksum: ""
   };
 }
 export const QueryCodeRequest = {
   typeUrl: "/ibc.lightclients.wasm.v1.QueryCodeRequest",
+  aminoType: "cosmos-sdk/QueryCodeRequest",
+  is(o: any): o is QueryCodeRequest {
+    return o && (o.$typeUrl === QueryCodeRequest.typeUrl || typeof o.checksum === "string");
+  },
+  isAmino(o: any): o is QueryCodeRequestAmino {
+    return o && (o.$typeUrl === QueryCodeRequest.typeUrl || typeof o.checksum === "string");
+  },
   encode(message: QueryCodeRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.checksum !== "") {
       writer.uint32(10).string(message.checksum);
@@ -302,7 +350,7 @@ export const QueryCodeRequest = {
     if (isSet(object.checksum)) obj.checksum = String(object.checksum);
     return obj;
   },
-  toJSON(message: QueryCodeRequest): unknown {
+  toJSON(message: QueryCodeRequest): JsonSafe<QueryCodeRequest> {
     const obj: any = {};
     message.checksum !== undefined && (obj.checksum = message.checksum);
     return obj;
@@ -321,7 +369,7 @@ export const QueryCodeRequest = {
   },
   toAmino(message: QueryCodeRequest): QueryCodeRequestAmino {
     const obj: any = {};
-    obj.checksum = message.checksum;
+    obj.checksum = message.checksum === "" ? undefined : message.checksum;
     return obj;
   },
   fromAminoMsg(object: QueryCodeRequestAminoMsg): QueryCodeRequest {
@@ -330,7 +378,7 @@ export const QueryCodeRequest = {
   toAminoMsg(message: QueryCodeRequest): QueryCodeRequestAminoMsg {
     return {
       type: "cosmos-sdk/QueryCodeRequest",
-      value: QueryCodeRequest.toAmino(message),
+      value: QueryCodeRequest.toAmino(message)
     };
   },
   fromProtoMsg(message: QueryCodeRequestProtoMsg): QueryCodeRequest {
@@ -342,17 +390,26 @@ export const QueryCodeRequest = {
   toProtoMsg(message: QueryCodeRequest): QueryCodeRequestProtoMsg {
     return {
       typeUrl: "/ibc.lightclients.wasm.v1.QueryCodeRequest",
-      value: QueryCodeRequest.encode(message).finish(),
+      value: QueryCodeRequest.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(QueryCodeRequest.typeUrl, QueryCodeRequest);
+GlobalDecoderRegistry.registerAminoProtoMapping(QueryCodeRequest.aminoType, QueryCodeRequest.typeUrl);
 function createBaseQueryCodeResponse(): QueryCodeResponse {
   return {
-    data: new Uint8Array(),
+    data: new Uint8Array()
   };
 }
 export const QueryCodeResponse = {
   typeUrl: "/ibc.lightclients.wasm.v1.QueryCodeResponse",
+  aminoType: "cosmos-sdk/QueryCodeResponse",
+  is(o: any): o is QueryCodeResponse {
+    return o && (o.$typeUrl === QueryCodeResponse.typeUrl || o.data instanceof Uint8Array || typeof o.data === "string");
+  },
+  isAmino(o: any): o is QueryCodeResponseAmino {
+    return o && (o.$typeUrl === QueryCodeResponse.typeUrl || o.data instanceof Uint8Array || typeof o.data === "string");
+  },
   encode(message: QueryCodeResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.data.length !== 0) {
       writer.uint32(10).bytes(message.data);
@@ -381,10 +438,9 @@ export const QueryCodeResponse = {
     if (isSet(object.data)) obj.data = bytesFromBase64(object.data);
     return obj;
   },
-  toJSON(message: QueryCodeResponse): unknown {
+  toJSON(message: QueryCodeResponse): JsonSafe<QueryCodeResponse> {
     const obj: any = {};
-    message.data !== undefined &&
-      (obj.data = base64FromBytes(message.data !== undefined ? message.data : new Uint8Array()));
+    message.data !== undefined && (obj.data = base64FromBytes(message.data !== undefined ? message.data : new Uint8Array()));
     return obj;
   },
   fromPartial(object: Partial<QueryCodeResponse>): QueryCodeResponse {
@@ -410,7 +466,7 @@ export const QueryCodeResponse = {
   toAminoMsg(message: QueryCodeResponse): QueryCodeResponseAminoMsg {
     return {
       type: "cosmos-sdk/QueryCodeResponse",
-      value: QueryCodeResponse.toAmino(message),
+      value: QueryCodeResponse.toAmino(message)
     };
   },
   fromProtoMsg(message: QueryCodeResponseProtoMsg): QueryCodeResponse {
@@ -422,10 +478,12 @@ export const QueryCodeResponse = {
   toProtoMsg(message: QueryCodeResponse): QueryCodeResponseProtoMsg {
     return {
       typeUrl: "/ibc.lightclients.wasm.v1.QueryCodeResponse",
-      value: QueryCodeResponse.encode(message).finish(),
+      value: QueryCodeResponse.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(QueryCodeResponse.typeUrl, QueryCodeResponse);
+GlobalDecoderRegistry.registerAminoProtoMapping(QueryCodeResponse.aminoType, QueryCodeResponse.typeUrl);
 /** Query service for wasm module */
 export interface Query {
   /** Get all Wasm checksums */
@@ -440,18 +498,16 @@ export class QueryClientImpl implements Query {
     this.Checksums = this.Checksums.bind(this);
     this.Code = this.Code.bind(this);
   }
-  Checksums(
-    request: QueryChecksumsRequest = {
-      pagination: PageRequest.fromPartial({}),
-    },
-  ): Promise<QueryChecksumsResponse> {
+  Checksums(request: QueryChecksumsRequest = {
+    pagination: PageRequest.fromPartial({})
+  }): Promise<QueryChecksumsResponse> {
     const data = QueryChecksumsRequest.encode(request).finish();
     const promise = this.rpc.request("ibc.lightclients.wasm.v1.Query", "Checksums", data);
-    return promise.then((data) => QueryChecksumsResponse.decode(new BinaryReader(data)));
+    return promise.then(data => QueryChecksumsResponse.decode(new BinaryReader(data)));
   }
   Code(request: QueryCodeRequest): Promise<QueryCodeResponse> {
     const data = QueryCodeRequest.encode(request).finish();
     const promise = this.rpc.request("ibc.lightclients.wasm.v1.Query", "Code", data);
-    return promise.then((data) => QueryCodeResponse.decode(new BinaryReader(data)));
+    return promise.then(data => QueryCodeResponse.decode(new BinaryReader(data)));
   }
 }

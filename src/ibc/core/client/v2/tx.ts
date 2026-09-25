@@ -2,6 +2,8 @@
 import { Config, ConfigAmino } from "./config";
 import { BinaryReader, BinaryWriter } from "../../../../binary";
 import { isSet, bytesFromBase64, base64FromBytes } from "../../../../helpers";
+import { JsonSafe } from "../../../../json-safe";
+import { GlobalDecoderRegistry } from "../../../../registry";
 import { TxRpc } from "../../../../types";
 export const protobufPackage = "ibc.core.client.v2";
 /** MsgRegisterCounterparty defines a message to register a counterparty on a client */
@@ -19,15 +21,28 @@ export interface MsgRegisterCounterpartyProtoMsg {
   typeUrl: "/ibc.core.client.v2.MsgRegisterCounterparty";
   value: Uint8Array;
 }
-/** MsgRegisterCounterparty defines a message to register a counterparty on a client */
+/**
+ * MsgRegisterCounterparty defines a message to register a counterparty on a client
+ * @name MsgRegisterCounterpartyAmino
+ * @package ibc.core.client.v2
+ * @see proto type: ibc.core.client.v2.MsgRegisterCounterparty
+ */
 export interface MsgRegisterCounterpartyAmino {
-  /** client identifier */
+  /**
+   * client identifier
+   */
   client_id?: string;
-  /** counterparty merkle prefix */
+  /**
+   * counterparty merkle prefix
+   */
   counterparty_merkle_prefix?: string[];
-  /** counterparty client identifier */
+  /**
+   * counterparty client identifier
+   */
   counterparty_client_id?: string;
-  /** signer address */
+  /**
+   * signer address
+   */
   signer?: string;
 }
 export interface MsgRegisterCounterpartyAminoMsg {
@@ -40,7 +55,12 @@ export interface MsgRegisterCounterpartyResponseProtoMsg {
   typeUrl: "/ibc.core.client.v2.MsgRegisterCounterpartyResponse";
   value: Uint8Array;
 }
-/** MsgRegisterCounterpartyResponse defines the Msg/RegisterCounterparty response type. */
+/**
+ * MsgRegisterCounterpartyResponse defines the Msg/RegisterCounterparty response type.
+ * @name MsgRegisterCounterpartyResponseAmino
+ * @package ibc.core.client.v2
+ * @see proto type: ibc.core.client.v2.MsgRegisterCounterpartyResponse
+ */
 export interface MsgRegisterCounterpartyResponseAmino {}
 export interface MsgRegisterCounterpartyResponseAminoMsg {
   type: "cosmos-sdk/MsgRegisterCounterpartyResponse";
@@ -52,7 +72,7 @@ export interface MsgUpdateClientConfig {
   clientId: string;
   /**
    * allowed relayers
-   *
+   * 
    * NOTE: All fields in the config must be supplied.
    */
   config: Config | undefined;
@@ -63,17 +83,26 @@ export interface MsgUpdateClientConfigProtoMsg {
   typeUrl: "/ibc.core.client.v2.MsgUpdateClientConfig";
   value: Uint8Array;
 }
-/** MsgUpdateClientConfig defines the sdk.Msg type to update the configuration for a given client */
+/**
+ * MsgUpdateClientConfig defines the sdk.Msg type to update the configuration for a given client
+ * @name MsgUpdateClientConfigAmino
+ * @package ibc.core.client.v2
+ * @see proto type: ibc.core.client.v2.MsgUpdateClientConfig
+ */
 export interface MsgUpdateClientConfigAmino {
-  /** client identifier */
+  /**
+   * client identifier
+   */
   client_id?: string;
   /**
    * allowed relayers
-   *
+   * 
    * NOTE: All fields in the config must be supplied.
    */
   config?: ConfigAmino | undefined;
-  /** signer address */
+  /**
+   * signer address
+   */
   signer?: string;
 }
 export interface MsgUpdateClientConfigAminoMsg {
@@ -86,7 +115,12 @@ export interface MsgUpdateClientConfigResponseProtoMsg {
   typeUrl: "/ibc.core.client.v2.MsgUpdateClientConfigResponse";
   value: Uint8Array;
 }
-/** MsgUpdateClientConfigResponse defines the MsgUpdateClientConfig response type. */
+/**
+ * MsgUpdateClientConfigResponse defines the MsgUpdateClientConfig response type.
+ * @name MsgUpdateClientConfigResponseAmino
+ * @package ibc.core.client.v2
+ * @see proto type: ibc.core.client.v2.MsgUpdateClientConfigResponse
+ */
 export interface MsgUpdateClientConfigResponseAmino {}
 export interface MsgUpdateClientConfigResponseAminoMsg {
   type: "cosmos-sdk/MsgUpdateClientConfigResponse";
@@ -97,11 +131,18 @@ function createBaseMsgRegisterCounterparty(): MsgRegisterCounterparty {
     clientId: "",
     counterpartyMerklePrefix: [],
     counterpartyClientId: "",
-    signer: "",
+    signer: ""
   };
 }
 export const MsgRegisterCounterparty = {
   typeUrl: "/ibc.core.client.v2.MsgRegisterCounterparty",
+  aminoType: "cosmos-sdk/MsgRegisterCounterparty",
+  is(o: any): o is MsgRegisterCounterparty {
+    return o && (o.$typeUrl === MsgRegisterCounterparty.typeUrl || typeof o.clientId === "string" && Array.isArray(o.counterpartyMerklePrefix) && (!o.counterpartyMerklePrefix.length || o.counterpartyMerklePrefix[0] instanceof Uint8Array || typeof o.counterpartyMerklePrefix[0] === "string") && typeof o.counterpartyClientId === "string" && typeof o.signer === "string");
+  },
+  isAmino(o: any): o is MsgRegisterCounterpartyAmino {
+    return o && (o.$typeUrl === MsgRegisterCounterparty.typeUrl || typeof o.client_id === "string" && Array.isArray(o.counterparty_merkle_prefix) && (!o.counterparty_merkle_prefix.length || o.counterparty_merkle_prefix[0] instanceof Uint8Array || typeof o.counterparty_merkle_prefix[0] === "string") && typeof o.counterparty_client_id === "string" && typeof o.signer === "string");
+  },
   encode(message: MsgRegisterCounterparty, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.clientId !== "") {
       writer.uint32(10).string(message.clientId);
@@ -146,19 +187,16 @@ export const MsgRegisterCounterparty = {
   fromJSON(object: any): MsgRegisterCounterparty {
     const obj = createBaseMsgRegisterCounterparty();
     if (isSet(object.clientId)) obj.clientId = String(object.clientId);
-    if (Array.isArray(object?.counterpartyMerklePrefix))
-      obj.counterpartyMerklePrefix = object.counterpartyMerklePrefix.map((e: any) => bytesFromBase64(e));
+    if (Array.isArray(object?.counterpartyMerklePrefix)) obj.counterpartyMerklePrefix = object.counterpartyMerklePrefix.map((e: any) => bytesFromBase64(e));
     if (isSet(object.counterpartyClientId)) obj.counterpartyClientId = String(object.counterpartyClientId);
     if (isSet(object.signer)) obj.signer = String(object.signer);
     return obj;
   },
-  toJSON(message: MsgRegisterCounterparty): unknown {
+  toJSON(message: MsgRegisterCounterparty): JsonSafe<MsgRegisterCounterparty> {
     const obj: any = {};
     message.clientId !== undefined && (obj.clientId = message.clientId);
     if (message.counterpartyMerklePrefix) {
-      obj.counterpartyMerklePrefix = message.counterpartyMerklePrefix.map((e) =>
-        base64FromBytes(e !== undefined ? e : new Uint8Array()),
-      );
+      obj.counterpartyMerklePrefix = message.counterpartyMerklePrefix.map(e => base64FromBytes(e !== undefined ? e : new Uint8Array()));
     } else {
       obj.counterpartyMerklePrefix = [];
     }
@@ -169,7 +207,7 @@ export const MsgRegisterCounterparty = {
   fromPartial(object: Partial<MsgRegisterCounterparty>): MsgRegisterCounterparty {
     const message = createBaseMsgRegisterCounterparty();
     message.clientId = object.clientId ?? "";
-    message.counterpartyMerklePrefix = object.counterpartyMerklePrefix?.map((e) => e) || [];
+    message.counterpartyMerklePrefix = object.counterpartyMerklePrefix?.map(e => e) || [];
     message.counterpartyClientId = object.counterpartyClientId ?? "";
     message.signer = object.signer ?? "";
     return message;
@@ -179,8 +217,7 @@ export const MsgRegisterCounterparty = {
     if (object.client_id !== undefined && object.client_id !== null) {
       message.clientId = object.client_id;
     }
-    message.counterpartyMerklePrefix =
-      object.counterparty_merkle_prefix?.map((e) => bytesFromBase64(e)) || [];
+    message.counterpartyMerklePrefix = object.counterparty_merkle_prefix?.map(e => bytesFromBase64(e)) || [];
     if (object.counterparty_client_id !== undefined && object.counterparty_client_id !== null) {
       message.counterpartyClientId = object.counterparty_client_id;
     }
@@ -191,14 +228,14 @@ export const MsgRegisterCounterparty = {
   },
   toAmino(message: MsgRegisterCounterparty): MsgRegisterCounterpartyAmino {
     const obj: any = {};
-    obj.client_id = message.clientId;
+    obj.client_id = message.clientId === "" ? undefined : message.clientId;
     if (message.counterpartyMerklePrefix) {
-      obj.counterparty_merkle_prefix = message.counterpartyMerklePrefix.map((e) => base64FromBytes(e));
+      obj.counterparty_merkle_prefix = message.counterpartyMerklePrefix.map(e => base64FromBytes(e));
     } else {
-      obj.counterparty_merkle_prefix = [];
+      obj.counterparty_merkle_prefix = message.counterpartyMerklePrefix;
     }
-    obj.counterparty_client_id = message.counterpartyClientId;
-    obj.signer = message.signer;
+    obj.counterparty_client_id = message.counterpartyClientId === "" ? undefined : message.counterpartyClientId;
+    obj.signer = message.signer === "" ? undefined : message.signer;
     return obj;
   },
   fromAminoMsg(object: MsgRegisterCounterpartyAminoMsg): MsgRegisterCounterparty {
@@ -207,7 +244,7 @@ export const MsgRegisterCounterparty = {
   toAminoMsg(message: MsgRegisterCounterparty): MsgRegisterCounterpartyAminoMsg {
     return {
       type: "cosmos-sdk/MsgRegisterCounterparty",
-      value: MsgRegisterCounterparty.toAmino(message),
+      value: MsgRegisterCounterparty.toAmino(message)
     };
   },
   fromProtoMsg(message: MsgRegisterCounterpartyProtoMsg): MsgRegisterCounterparty {
@@ -219,15 +256,24 @@ export const MsgRegisterCounterparty = {
   toProtoMsg(message: MsgRegisterCounterparty): MsgRegisterCounterpartyProtoMsg {
     return {
       typeUrl: "/ibc.core.client.v2.MsgRegisterCounterparty",
-      value: MsgRegisterCounterparty.encode(message).finish(),
+      value: MsgRegisterCounterparty.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(MsgRegisterCounterparty.typeUrl, MsgRegisterCounterparty);
+GlobalDecoderRegistry.registerAminoProtoMapping(MsgRegisterCounterparty.aminoType, MsgRegisterCounterparty.typeUrl);
 function createBaseMsgRegisterCounterpartyResponse(): MsgRegisterCounterpartyResponse {
   return {};
 }
 export const MsgRegisterCounterpartyResponse = {
   typeUrl: "/ibc.core.client.v2.MsgRegisterCounterpartyResponse",
+  aminoType: "cosmos-sdk/MsgRegisterCounterpartyResponse",
+  is(o: any): o is MsgRegisterCounterpartyResponse {
+    return o && o.$typeUrl === MsgRegisterCounterpartyResponse.typeUrl;
+  },
+  isAmino(o: any): o is MsgRegisterCounterpartyResponseAmino {
+    return o && o.$typeUrl === MsgRegisterCounterpartyResponse.typeUrl;
+  },
   encode(_: MsgRegisterCounterpartyResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
@@ -249,7 +295,7 @@ export const MsgRegisterCounterpartyResponse = {
     const obj = createBaseMsgRegisterCounterpartyResponse();
     return obj;
   },
-  toJSON(_: MsgRegisterCounterpartyResponse): unknown {
+  toJSON(_: MsgRegisterCounterpartyResponse): JsonSafe<MsgRegisterCounterpartyResponse> {
     const obj: any = {};
     return obj;
   },
@@ -271,7 +317,7 @@ export const MsgRegisterCounterpartyResponse = {
   toAminoMsg(message: MsgRegisterCounterpartyResponse): MsgRegisterCounterpartyResponseAminoMsg {
     return {
       type: "cosmos-sdk/MsgRegisterCounterpartyResponse",
-      value: MsgRegisterCounterpartyResponse.toAmino(message),
+      value: MsgRegisterCounterpartyResponse.toAmino(message)
     };
   },
   fromProtoMsg(message: MsgRegisterCounterpartyResponseProtoMsg): MsgRegisterCounterpartyResponse {
@@ -283,19 +329,28 @@ export const MsgRegisterCounterpartyResponse = {
   toProtoMsg(message: MsgRegisterCounterpartyResponse): MsgRegisterCounterpartyResponseProtoMsg {
     return {
       typeUrl: "/ibc.core.client.v2.MsgRegisterCounterpartyResponse",
-      value: MsgRegisterCounterpartyResponse.encode(message).finish(),
+      value: MsgRegisterCounterpartyResponse.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(MsgRegisterCounterpartyResponse.typeUrl, MsgRegisterCounterpartyResponse);
+GlobalDecoderRegistry.registerAminoProtoMapping(MsgRegisterCounterpartyResponse.aminoType, MsgRegisterCounterpartyResponse.typeUrl);
 function createBaseMsgUpdateClientConfig(): MsgUpdateClientConfig {
   return {
     clientId: "",
     config: Config.fromPartial({}),
-    signer: "",
+    signer: ""
   };
 }
 export const MsgUpdateClientConfig = {
   typeUrl: "/ibc.core.client.v2.MsgUpdateClientConfig",
+  aminoType: "cosmos-sdk/MsgUpdateClientConfig",
+  is(o: any): o is MsgUpdateClientConfig {
+    return o && (o.$typeUrl === MsgUpdateClientConfig.typeUrl || typeof o.clientId === "string" && Config.is(o.config) && typeof o.signer === "string");
+  },
+  isAmino(o: any): o is MsgUpdateClientConfigAmino {
+    return o && (o.$typeUrl === MsgUpdateClientConfig.typeUrl || typeof o.client_id === "string" && Config.isAmino(o.config) && typeof o.signer === "string");
+  },
   encode(message: MsgUpdateClientConfig, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.clientId !== "") {
       writer.uint32(10).string(message.clientId);
@@ -338,7 +393,7 @@ export const MsgUpdateClientConfig = {
     if (isSet(object.signer)) obj.signer = String(object.signer);
     return obj;
   },
-  toJSON(message: MsgUpdateClientConfig): unknown {
+  toJSON(message: MsgUpdateClientConfig): JsonSafe<MsgUpdateClientConfig> {
     const obj: any = {};
     message.clientId !== undefined && (obj.clientId = message.clientId);
     message.config !== undefined && (obj.config = message.config ? Config.toJSON(message.config) : undefined);
@@ -369,9 +424,9 @@ export const MsgUpdateClientConfig = {
   },
   toAmino(message: MsgUpdateClientConfig): MsgUpdateClientConfigAmino {
     const obj: any = {};
-    obj.client_id = message.clientId;
+    obj.client_id = message.clientId === "" ? undefined : message.clientId;
     obj.config = message.config ? Config.toAmino(message.config) : undefined;
-    obj.signer = message.signer;
+    obj.signer = message.signer === "" ? undefined : message.signer;
     return obj;
   },
   fromAminoMsg(object: MsgUpdateClientConfigAminoMsg): MsgUpdateClientConfig {
@@ -380,7 +435,7 @@ export const MsgUpdateClientConfig = {
   toAminoMsg(message: MsgUpdateClientConfig): MsgUpdateClientConfigAminoMsg {
     return {
       type: "cosmos-sdk/MsgUpdateClientConfig",
-      value: MsgUpdateClientConfig.toAmino(message),
+      value: MsgUpdateClientConfig.toAmino(message)
     };
   },
   fromProtoMsg(message: MsgUpdateClientConfigProtoMsg): MsgUpdateClientConfig {
@@ -392,15 +447,24 @@ export const MsgUpdateClientConfig = {
   toProtoMsg(message: MsgUpdateClientConfig): MsgUpdateClientConfigProtoMsg {
     return {
       typeUrl: "/ibc.core.client.v2.MsgUpdateClientConfig",
-      value: MsgUpdateClientConfig.encode(message).finish(),
+      value: MsgUpdateClientConfig.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(MsgUpdateClientConfig.typeUrl, MsgUpdateClientConfig);
+GlobalDecoderRegistry.registerAminoProtoMapping(MsgUpdateClientConfig.aminoType, MsgUpdateClientConfig.typeUrl);
 function createBaseMsgUpdateClientConfigResponse(): MsgUpdateClientConfigResponse {
   return {};
 }
 export const MsgUpdateClientConfigResponse = {
   typeUrl: "/ibc.core.client.v2.MsgUpdateClientConfigResponse",
+  aminoType: "cosmos-sdk/MsgUpdateClientConfigResponse",
+  is(o: any): o is MsgUpdateClientConfigResponse {
+    return o && o.$typeUrl === MsgUpdateClientConfigResponse.typeUrl;
+  },
+  isAmino(o: any): o is MsgUpdateClientConfigResponseAmino {
+    return o && o.$typeUrl === MsgUpdateClientConfigResponse.typeUrl;
+  },
   encode(_: MsgUpdateClientConfigResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
@@ -422,7 +486,7 @@ export const MsgUpdateClientConfigResponse = {
     const obj = createBaseMsgUpdateClientConfigResponse();
     return obj;
   },
-  toJSON(_: MsgUpdateClientConfigResponse): unknown {
+  toJSON(_: MsgUpdateClientConfigResponse): JsonSafe<MsgUpdateClientConfigResponse> {
     const obj: any = {};
     return obj;
   },
@@ -444,7 +508,7 @@ export const MsgUpdateClientConfigResponse = {
   toAminoMsg(message: MsgUpdateClientConfigResponse): MsgUpdateClientConfigResponseAminoMsg {
     return {
       type: "cosmos-sdk/MsgUpdateClientConfigResponse",
-      value: MsgUpdateClientConfigResponse.toAmino(message),
+      value: MsgUpdateClientConfigResponse.toAmino(message)
     };
   },
   fromProtoMsg(message: MsgUpdateClientConfigResponseProtoMsg): MsgUpdateClientConfigResponse {
@@ -456,10 +520,12 @@ export const MsgUpdateClientConfigResponse = {
   toProtoMsg(message: MsgUpdateClientConfigResponse): MsgUpdateClientConfigResponseProtoMsg {
     return {
       typeUrl: "/ibc.core.client.v2.MsgUpdateClientConfigResponse",
-      value: MsgUpdateClientConfigResponse.encode(message).finish(),
+      value: MsgUpdateClientConfigResponse.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(MsgUpdateClientConfigResponse.typeUrl, MsgUpdateClientConfigResponse);
+GlobalDecoderRegistry.registerAminoProtoMapping(MsgUpdateClientConfigResponse.aminoType, MsgUpdateClientConfigResponse.typeUrl);
 /** Msg defines the ibc/client/v2 Msg service. */
 export interface Msg {
   /** RegisterCounterparty defines a rpc handler method for MsgRegisterCounterparty. */
@@ -477,11 +543,11 @@ export class MsgClientImpl implements Msg {
   RegisterCounterparty(request: MsgRegisterCounterparty): Promise<MsgRegisterCounterpartyResponse> {
     const data = MsgRegisterCounterparty.encode(request).finish();
     const promise = this.rpc.request("ibc.core.client.v2.Msg", "RegisterCounterparty", data);
-    return promise.then((data) => MsgRegisterCounterpartyResponse.decode(new BinaryReader(data)));
+    return promise.then(data => MsgRegisterCounterpartyResponse.decode(new BinaryReader(data)));
   }
   UpdateClientConfig(request: MsgUpdateClientConfig): Promise<MsgUpdateClientConfigResponse> {
     const data = MsgUpdateClientConfig.encode(request).finish();
     const promise = this.rpc.request("ibc.core.client.v2.Msg", "UpdateClientConfig", data);
-    return promise.then((data) => MsgUpdateClientConfigResponse.decode(new BinaryReader(data)));
+    return promise.then(data => MsgUpdateClientConfigResponse.decode(new BinaryReader(data)));
   }
 }

@@ -1,6 +1,8 @@
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "../../../../binary";
 import { isSet } from "../../../../helpers";
+import { JsonSafe } from "../../../../json-safe";
+import { GlobalDecoderRegistry } from "../../../../registry";
 export const protobufPackage = "cosmos.distribution.module.v1";
 /** Module is the config object of the distribution module. */
 export interface Module {
@@ -12,10 +14,17 @@ export interface ModuleProtoMsg {
   typeUrl: "/cosmos.distribution.module.v1.Module";
   value: Uint8Array;
 }
-/** Module is the config object of the distribution module. */
+/**
+ * Module is the config object of the distribution module.
+ * @name ModuleAmino
+ * @package cosmos.distribution.module.v1
+ * @see proto type: cosmos.distribution.module.v1.Module
+ */
 export interface ModuleAmino {
   fee_collector_name?: string;
-  /** authority defines the custom module authority. If not set, defaults to the governance module. */
+  /**
+   * authority defines the custom module authority. If not set, defaults to the governance module.
+   */
   authority?: string;
 }
 export interface ModuleAminoMsg {
@@ -25,11 +34,18 @@ export interface ModuleAminoMsg {
 function createBaseModule(): Module {
   return {
     feeCollectorName: "",
-    authority: "",
+    authority: ""
   };
 }
 export const Module = {
   typeUrl: "/cosmos.distribution.module.v1.Module",
+  aminoType: "cosmos-sdk/Module",
+  is(o: any): o is Module {
+    return o && (o.$typeUrl === Module.typeUrl || typeof o.feeCollectorName === "string" && typeof o.authority === "string");
+  },
+  isAmino(o: any): o is ModuleAmino {
+    return o && (o.$typeUrl === Module.typeUrl || typeof o.fee_collector_name === "string" && typeof o.authority === "string");
+  },
   encode(message: Module, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.feeCollectorName !== "") {
       writer.uint32(10).string(message.feeCollectorName);
@@ -65,7 +81,7 @@ export const Module = {
     if (isSet(object.authority)) obj.authority = String(object.authority);
     return obj;
   },
-  toJSON(message: Module): unknown {
+  toJSON(message: Module): JsonSafe<Module> {
     const obj: any = {};
     message.feeCollectorName !== undefined && (obj.feeCollectorName = message.feeCollectorName);
     message.authority !== undefined && (obj.authority = message.authority);
@@ -89,8 +105,8 @@ export const Module = {
   },
   toAmino(message: Module): ModuleAmino {
     const obj: any = {};
-    obj.fee_collector_name = message.feeCollectorName;
-    obj.authority = message.authority;
+    obj.fee_collector_name = message.feeCollectorName === "" ? undefined : message.feeCollectorName;
+    obj.authority = message.authority === "" ? undefined : message.authority;
     return obj;
   },
   fromAminoMsg(object: ModuleAminoMsg): Module {
@@ -99,7 +115,7 @@ export const Module = {
   toAminoMsg(message: Module): ModuleAminoMsg {
     return {
       type: "cosmos-sdk/Module",
-      value: Module.toAmino(message),
+      value: Module.toAmino(message)
     };
   },
   fromProtoMsg(message: ModuleProtoMsg): Module {
@@ -111,7 +127,9 @@ export const Module = {
   toProtoMsg(message: Module): ModuleProtoMsg {
     return {
       typeUrl: "/cosmos.distribution.module.v1.Module",
-      value: Module.encode(message).finish(),
+      value: Module.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(Module.typeUrl, Module);
+GlobalDecoderRegistry.registerAminoProtoMapping(Module.aminoType, Module.typeUrl);

@@ -1,6 +1,8 @@
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "../../binary";
 import { isSet, bytesFromBase64, base64FromBytes } from "../../helpers";
+import { JsonSafe } from "../../json-safe";
+import { GlobalDecoderRegistry } from "../../registry";
 export const protobufPackage = "tendermint.crypto";
 /** PublicKey defines the keys available for use with Validators */
 export interface PublicKey {
@@ -11,7 +13,12 @@ export interface PublicKeyProtoMsg {
   typeUrl: "/tendermint.crypto.PublicKey";
   value: Uint8Array;
 }
-/** PublicKey defines the keys available for use with Validators */
+/**
+ * PublicKey defines the keys available for use with Validators
+ * @name PublicKeyAmino
+ * @package tendermint.crypto
+ * @see proto type: tendermint.crypto.PublicKey
+ */
 export interface PublicKeyAmino {
   ed25519?: string;
   secp256k1?: string;
@@ -23,11 +30,17 @@ export interface PublicKeyAminoMsg {
 function createBasePublicKey(): PublicKey {
   return {
     ed25519: undefined,
-    secp256k1: undefined,
+    secp256k1: undefined
   };
 }
 export const PublicKey = {
   typeUrl: "/tendermint.crypto.PublicKey",
+  is(o: any): o is PublicKey {
+    return o && o.$typeUrl === PublicKey.typeUrl;
+  },
+  isAmino(o: any): o is PublicKeyAmino {
+    return o && o.$typeUrl === PublicKey.typeUrl;
+  },
   encode(message: PublicKey, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.ed25519 !== undefined) {
       writer.uint32(10).bytes(message.ed25519);
@@ -63,12 +76,10 @@ export const PublicKey = {
     if (isSet(object.secp256k1)) obj.secp256k1 = bytesFromBase64(object.secp256k1);
     return obj;
   },
-  toJSON(message: PublicKey): unknown {
+  toJSON(message: PublicKey): JsonSafe<PublicKey> {
     const obj: any = {};
-    message.ed25519 !== undefined &&
-      (obj.ed25519 = message.ed25519 !== undefined ? base64FromBytes(message.ed25519) : undefined);
-    message.secp256k1 !== undefined &&
-      (obj.secp256k1 = message.secp256k1 !== undefined ? base64FromBytes(message.secp256k1) : undefined);
+    message.ed25519 !== undefined && (obj.ed25519 = message.ed25519 !== undefined ? base64FromBytes(message.ed25519) : undefined);
+    message.secp256k1 !== undefined && (obj.secp256k1 = message.secp256k1 !== undefined ? base64FromBytes(message.secp256k1) : undefined);
     return obj;
   },
   fromPartial(object: Partial<PublicKey>): PublicKey {
@@ -105,7 +116,8 @@ export const PublicKey = {
   toProtoMsg(message: PublicKey): PublicKeyProtoMsg {
     return {
       typeUrl: "/tendermint.crypto.PublicKey",
-      value: PublicKey.encode(message).finish(),
+      value: PublicKey.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(PublicKey.typeUrl, PublicKey);

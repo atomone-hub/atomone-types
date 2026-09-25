@@ -1,0 +1,68 @@
+name: Tests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+# The jobs only read the repository.
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+        with:
+          # The build regenerates src/ from the protos in these submodules.
+          submodules: recursive
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 'lts/*'
+          cache: 'pnpm'
+
+      - name: Install modules
+        run: pnpm install --frozen-lockfile
+
+      # Regenerates src/ from protos/, formats it, then compiles into dist/.
+      # tsc runs with noEmitOnError, so this is the type check as well.
+      - name: Build
+        run: pnpm run build
+
+      # The build just rewrote src/ from the protos, so any diff means the
+      # committed sources describe older protos, or were never formatted.
+      - name: Check the committed sources match the protos
+        run: |
+          if ! git diff --exit-code -- src; then
+            echo "::error::src/ is out of date; run 'pnpm build' and commit the result"
+            exit 1
+          fi
+
+      # dist/ reaches consumers through an exports map, so resolve it the way
+      # they do instead of trusting the packaged file list.
+      - name: Pack and resolve as a consumer
+        run: |
+          pnpm pack --pack-destination "$RUNNER_TEMP" >/dev/null
+          mkdir -p "$RUNNER_TEMP/consumer"
+          cd "$RUNNER_TEMP/consumer"
+          echo '{ "name": "consumer", "private": true, "version": "1.0.0" }' > package.json
+          pnpm add "$RUNNER_TEMP"/atomone-atomone-types-*.tgz
+          node -e "
+            require('@atomone/atomone-types');
+            const gov = require('@atomone/atomone-types/atomone/gov/v1/gov');
+            const tx = require('@atomone/atomone-types/atomone/gov/v1/tx.js');
+            const { GlobalDecoderRegistry } = require('@atomone/atomone-types/registry');
+            if (typeof gov.Proposal !== 'object') throw new Error('deep import is broken');
+            if (typeof tx.MsgSubmitProposal !== 'object') throw new Error('deep .js import is broken');
+            const registered = Object.keys(GlobalDecoderRegistry.registry).length;
+            if (registered === 0) throw new Error('the decoder registry is empty');
+            console.log('resolved bare, deep and registry imports; ' + registered + ' decoders registered');
+          "

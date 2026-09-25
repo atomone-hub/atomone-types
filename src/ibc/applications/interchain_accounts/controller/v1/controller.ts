@@ -1,6 +1,8 @@
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "../../../../../binary";
 import { isSet } from "../../../../../helpers";
+import { JsonSafe } from "../../../../../json-safe";
+import { GlobalDecoderRegistry } from "../../../../../registry";
 export const protobufPackage = "ibc.applications.interchain_accounts.controller.v1";
 /**
  * Params defines the set of on-chain interchain accounts parameters.
@@ -17,9 +19,14 @@ export interface ParamsProtoMsg {
 /**
  * Params defines the set of on-chain interchain accounts parameters.
  * The following parameters may be used to disable the controller submodule.
+ * @name ParamsAmino
+ * @package ibc.applications.interchain_accounts.controller.v1
+ * @see proto type: ibc.applications.interchain_accounts.controller.v1.Params
  */
 export interface ParamsAmino {
-  /** controller_enabled enables or disables the controller submodule. */
+  /**
+   * controller_enabled enables or disables the controller submodule.
+   */
   controller_enabled?: boolean;
 }
 export interface ParamsAminoMsg {
@@ -28,11 +35,18 @@ export interface ParamsAminoMsg {
 }
 function createBaseParams(): Params {
   return {
-    controllerEnabled: false,
+    controllerEnabled: false
   };
 }
 export const Params = {
   typeUrl: "/ibc.applications.interchain_accounts.controller.v1.Params",
+  aminoType: "cosmos-sdk/Params",
+  is(o: any): o is Params {
+    return o && (o.$typeUrl === Params.typeUrl || typeof o.controllerEnabled === "boolean");
+  },
+  isAmino(o: any): o is ParamsAmino {
+    return o && (o.$typeUrl === Params.typeUrl || typeof o.controller_enabled === "boolean");
+  },
   encode(message: Params, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.controllerEnabled === true) {
       writer.uint32(8).bool(message.controllerEnabled);
@@ -61,7 +75,7 @@ export const Params = {
     if (isSet(object.controllerEnabled)) obj.controllerEnabled = Boolean(object.controllerEnabled);
     return obj;
   },
-  toJSON(message: Params): unknown {
+  toJSON(message: Params): JsonSafe<Params> {
     const obj: any = {};
     message.controllerEnabled !== undefined && (obj.controllerEnabled = message.controllerEnabled);
     return obj;
@@ -80,7 +94,7 @@ export const Params = {
   },
   toAmino(message: Params): ParamsAmino {
     const obj: any = {};
-    obj.controller_enabled = message.controllerEnabled;
+    obj.controller_enabled = message.controllerEnabled === false ? undefined : message.controllerEnabled;
     return obj;
   },
   fromAminoMsg(object: ParamsAminoMsg): Params {
@@ -89,7 +103,7 @@ export const Params = {
   toAminoMsg(message: Params): ParamsAminoMsg {
     return {
       type: "cosmos-sdk/Params",
-      value: Params.toAmino(message),
+      value: Params.toAmino(message)
     };
   },
   fromProtoMsg(message: ParamsProtoMsg): Params {
@@ -101,7 +115,9 @@ export const Params = {
   toProtoMsg(message: Params): ParamsProtoMsg {
     return {
       typeUrl: "/ibc.applications.interchain_accounts.controller.v1.Params",
-      value: Params.encode(message).finish(),
+      value: Params.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(Params.typeUrl, Params);
+GlobalDecoderRegistry.registerAminoProtoMapping(Params.aminoType, Params.typeUrl);

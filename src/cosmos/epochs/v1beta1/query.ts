@@ -1,6 +1,8 @@
 /* eslint-disable */
 import { EpochInfo, EpochInfoAmino } from "./genesis";
 import { BinaryReader, BinaryWriter } from "../../../binary";
+import { JsonSafe } from "../../../json-safe";
+import { GlobalDecoderRegistry } from "../../../registry";
 import { isSet } from "../../../helpers";
 import { TxRpc } from "../../../types";
 export const protobufPackage = "cosmos.epochs.v1beta1";
@@ -16,6 +18,9 @@ export interface QueryEpochInfosRequestProtoMsg {
 /**
  * QueryEpochInfosRequest defines the gRPC request structure for
  * querying all epoch info.
+ * @name QueryEpochInfosRequestAmino
+ * @package cosmos.epochs.v1beta1
+ * @see proto type: cosmos.epochs.v1beta1.QueryEpochInfosRequest
  */
 export interface QueryEpochInfosRequestAmino {}
 export interface QueryEpochInfosRequestAminoMsg {
@@ -36,6 +41,9 @@ export interface QueryEpochInfosResponseProtoMsg {
 /**
  * QueryEpochInfosRequest defines the gRPC response structure for
  * querying all epoch info.
+ * @name QueryEpochInfosResponseAmino
+ * @package cosmos.epochs.v1beta1
+ * @see proto type: cosmos.epochs.v1beta1.QueryEpochInfosResponse
  */
 export interface QueryEpochInfosResponseAmino {
   epochs?: EpochInfoAmino[];
@@ -58,6 +66,9 @@ export interface QueryCurrentEpochRequestProtoMsg {
 /**
  * QueryCurrentEpochRequest defines the gRPC request structure for
  * querying an epoch by its identifier.
+ * @name QueryCurrentEpochRequestAmino
+ * @package cosmos.epochs.v1beta1
+ * @see proto type: cosmos.epochs.v1beta1.QueryCurrentEpochRequest
  */
 export interface QueryCurrentEpochRequestAmino {
   identifier?: string;
@@ -80,6 +91,9 @@ export interface QueryCurrentEpochResponseProtoMsg {
 /**
  * QueryCurrentEpochResponse defines the gRPC response structure for
  * querying an epoch by its identifier.
+ * @name QueryCurrentEpochResponseAmino
+ * @package cosmos.epochs.v1beta1
+ * @see proto type: cosmos.epochs.v1beta1.QueryCurrentEpochResponse
  */
 export interface QueryCurrentEpochResponseAmino {
   current_epoch?: string;
@@ -93,6 +107,13 @@ function createBaseQueryEpochInfosRequest(): QueryEpochInfosRequest {
 }
 export const QueryEpochInfosRequest = {
   typeUrl: "/cosmos.epochs.v1beta1.QueryEpochInfosRequest",
+  aminoType: "cosmos-sdk/QueryEpochInfosRequest",
+  is(o: any): o is QueryEpochInfosRequest {
+    return o && o.$typeUrl === QueryEpochInfosRequest.typeUrl;
+  },
+  isAmino(o: any): o is QueryEpochInfosRequestAmino {
+    return o && o.$typeUrl === QueryEpochInfosRequest.typeUrl;
+  },
   encode(_: QueryEpochInfosRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
@@ -114,7 +135,7 @@ export const QueryEpochInfosRequest = {
     const obj = createBaseQueryEpochInfosRequest();
     return obj;
   },
-  toJSON(_: QueryEpochInfosRequest): unknown {
+  toJSON(_: QueryEpochInfosRequest): JsonSafe<QueryEpochInfosRequest> {
     const obj: any = {};
     return obj;
   },
@@ -136,7 +157,7 @@ export const QueryEpochInfosRequest = {
   toAminoMsg(message: QueryEpochInfosRequest): QueryEpochInfosRequestAminoMsg {
     return {
       type: "cosmos-sdk/QueryEpochInfosRequest",
-      value: QueryEpochInfosRequest.toAmino(message),
+      value: QueryEpochInfosRequest.toAmino(message)
     };
   },
   fromProtoMsg(message: QueryEpochInfosRequestProtoMsg): QueryEpochInfosRequest {
@@ -148,17 +169,26 @@ export const QueryEpochInfosRequest = {
   toProtoMsg(message: QueryEpochInfosRequest): QueryEpochInfosRequestProtoMsg {
     return {
       typeUrl: "/cosmos.epochs.v1beta1.QueryEpochInfosRequest",
-      value: QueryEpochInfosRequest.encode(message).finish(),
+      value: QueryEpochInfosRequest.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(QueryEpochInfosRequest.typeUrl, QueryEpochInfosRequest);
+GlobalDecoderRegistry.registerAminoProtoMapping(QueryEpochInfosRequest.aminoType, QueryEpochInfosRequest.typeUrl);
 function createBaseQueryEpochInfosResponse(): QueryEpochInfosResponse {
   return {
-    epochs: [],
+    epochs: []
   };
 }
 export const QueryEpochInfosResponse = {
   typeUrl: "/cosmos.epochs.v1beta1.QueryEpochInfosResponse",
+  aminoType: "cosmos-sdk/QueryEpochInfosResponse",
+  is(o: any): o is QueryEpochInfosResponse {
+    return o && (o.$typeUrl === QueryEpochInfosResponse.typeUrl || Array.isArray(o.epochs) && (!o.epochs.length || EpochInfo.is(o.epochs[0])));
+  },
+  isAmino(o: any): o is QueryEpochInfosResponseAmino {
+    return o && (o.$typeUrl === QueryEpochInfosResponse.typeUrl || Array.isArray(o.epochs) && (!o.epochs.length || EpochInfo.isAmino(o.epochs[0])));
+  },
   encode(message: QueryEpochInfosResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.epochs) {
       EpochInfo.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -187,10 +217,10 @@ export const QueryEpochInfosResponse = {
     if (Array.isArray(object?.epochs)) obj.epochs = object.epochs.map((e: any) => EpochInfo.fromJSON(e));
     return obj;
   },
-  toJSON(message: QueryEpochInfosResponse): unknown {
+  toJSON(message: QueryEpochInfosResponse): JsonSafe<QueryEpochInfosResponse> {
     const obj: any = {};
     if (message.epochs) {
-      obj.epochs = message.epochs.map((e) => (e ? EpochInfo.toJSON(e) : undefined));
+      obj.epochs = message.epochs.map(e => e ? EpochInfo.toJSON(e) : undefined);
     } else {
       obj.epochs = [];
     }
@@ -198,20 +228,20 @@ export const QueryEpochInfosResponse = {
   },
   fromPartial(object: Partial<QueryEpochInfosResponse>): QueryEpochInfosResponse {
     const message = createBaseQueryEpochInfosResponse();
-    message.epochs = object.epochs?.map((e) => EpochInfo.fromPartial(e)) || [];
+    message.epochs = object.epochs?.map(e => EpochInfo.fromPartial(e)) || [];
     return message;
   },
   fromAmino(object: QueryEpochInfosResponseAmino): QueryEpochInfosResponse {
     const message = createBaseQueryEpochInfosResponse();
-    message.epochs = object.epochs?.map((e) => EpochInfo.fromAmino(e)) || [];
+    message.epochs = object.epochs?.map(e => EpochInfo.fromAmino(e)) || [];
     return message;
   },
   toAmino(message: QueryEpochInfosResponse): QueryEpochInfosResponseAmino {
     const obj: any = {};
     if (message.epochs) {
-      obj.epochs = message.epochs.map((e) => (e ? EpochInfo.toAmino(e) : undefined));
+      obj.epochs = message.epochs.map(e => e ? EpochInfo.toAmino(e) : undefined);
     } else {
-      obj.epochs = [];
+      obj.epochs = message.epochs;
     }
     return obj;
   },
@@ -221,7 +251,7 @@ export const QueryEpochInfosResponse = {
   toAminoMsg(message: QueryEpochInfosResponse): QueryEpochInfosResponseAminoMsg {
     return {
       type: "cosmos-sdk/QueryEpochInfosResponse",
-      value: QueryEpochInfosResponse.toAmino(message),
+      value: QueryEpochInfosResponse.toAmino(message)
     };
   },
   fromProtoMsg(message: QueryEpochInfosResponseProtoMsg): QueryEpochInfosResponse {
@@ -233,17 +263,26 @@ export const QueryEpochInfosResponse = {
   toProtoMsg(message: QueryEpochInfosResponse): QueryEpochInfosResponseProtoMsg {
     return {
       typeUrl: "/cosmos.epochs.v1beta1.QueryEpochInfosResponse",
-      value: QueryEpochInfosResponse.encode(message).finish(),
+      value: QueryEpochInfosResponse.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(QueryEpochInfosResponse.typeUrl, QueryEpochInfosResponse);
+GlobalDecoderRegistry.registerAminoProtoMapping(QueryEpochInfosResponse.aminoType, QueryEpochInfosResponse.typeUrl);
 function createBaseQueryCurrentEpochRequest(): QueryCurrentEpochRequest {
   return {
-    identifier: "",
+    identifier: ""
   };
 }
 export const QueryCurrentEpochRequest = {
   typeUrl: "/cosmos.epochs.v1beta1.QueryCurrentEpochRequest",
+  aminoType: "cosmos-sdk/QueryCurrentEpochRequest",
+  is(o: any): o is QueryCurrentEpochRequest {
+    return o && (o.$typeUrl === QueryCurrentEpochRequest.typeUrl || typeof o.identifier === "string");
+  },
+  isAmino(o: any): o is QueryCurrentEpochRequestAmino {
+    return o && (o.$typeUrl === QueryCurrentEpochRequest.typeUrl || typeof o.identifier === "string");
+  },
   encode(message: QueryCurrentEpochRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.identifier !== "") {
       writer.uint32(10).string(message.identifier);
@@ -272,7 +311,7 @@ export const QueryCurrentEpochRequest = {
     if (isSet(object.identifier)) obj.identifier = String(object.identifier);
     return obj;
   },
-  toJSON(message: QueryCurrentEpochRequest): unknown {
+  toJSON(message: QueryCurrentEpochRequest): JsonSafe<QueryCurrentEpochRequest> {
     const obj: any = {};
     message.identifier !== undefined && (obj.identifier = message.identifier);
     return obj;
@@ -291,7 +330,7 @@ export const QueryCurrentEpochRequest = {
   },
   toAmino(message: QueryCurrentEpochRequest): QueryCurrentEpochRequestAmino {
     const obj: any = {};
-    obj.identifier = message.identifier;
+    obj.identifier = message.identifier === "" ? undefined : message.identifier;
     return obj;
   },
   fromAminoMsg(object: QueryCurrentEpochRequestAminoMsg): QueryCurrentEpochRequest {
@@ -300,7 +339,7 @@ export const QueryCurrentEpochRequest = {
   toAminoMsg(message: QueryCurrentEpochRequest): QueryCurrentEpochRequestAminoMsg {
     return {
       type: "cosmos-sdk/QueryCurrentEpochRequest",
-      value: QueryCurrentEpochRequest.toAmino(message),
+      value: QueryCurrentEpochRequest.toAmino(message)
     };
   },
   fromProtoMsg(message: QueryCurrentEpochRequestProtoMsg): QueryCurrentEpochRequest {
@@ -312,17 +351,26 @@ export const QueryCurrentEpochRequest = {
   toProtoMsg(message: QueryCurrentEpochRequest): QueryCurrentEpochRequestProtoMsg {
     return {
       typeUrl: "/cosmos.epochs.v1beta1.QueryCurrentEpochRequest",
-      value: QueryCurrentEpochRequest.encode(message).finish(),
+      value: QueryCurrentEpochRequest.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(QueryCurrentEpochRequest.typeUrl, QueryCurrentEpochRequest);
+GlobalDecoderRegistry.registerAminoProtoMapping(QueryCurrentEpochRequest.aminoType, QueryCurrentEpochRequest.typeUrl);
 function createBaseQueryCurrentEpochResponse(): QueryCurrentEpochResponse {
   return {
-    currentEpoch: BigInt(0),
+    currentEpoch: BigInt(0)
   };
 }
 export const QueryCurrentEpochResponse = {
   typeUrl: "/cosmos.epochs.v1beta1.QueryCurrentEpochResponse",
+  aminoType: "cosmos-sdk/QueryCurrentEpochResponse",
+  is(o: any): o is QueryCurrentEpochResponse {
+    return o && (o.$typeUrl === QueryCurrentEpochResponse.typeUrl || typeof o.currentEpoch === "bigint");
+  },
+  isAmino(o: any): o is QueryCurrentEpochResponseAmino {
+    return o && (o.$typeUrl === QueryCurrentEpochResponse.typeUrl || typeof o.current_epoch === "bigint");
+  },
   encode(message: QueryCurrentEpochResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.currentEpoch !== BigInt(0)) {
       writer.uint32(8).int64(message.currentEpoch);
@@ -351,7 +399,7 @@ export const QueryCurrentEpochResponse = {
     if (isSet(object.currentEpoch)) obj.currentEpoch = BigInt(object.currentEpoch.toString());
     return obj;
   },
-  toJSON(message: QueryCurrentEpochResponse): unknown {
+  toJSON(message: QueryCurrentEpochResponse): JsonSafe<QueryCurrentEpochResponse> {
     const obj: any = {};
     message.currentEpoch !== undefined && (obj.currentEpoch = (message.currentEpoch || BigInt(0)).toString());
     return obj;
@@ -372,7 +420,7 @@ export const QueryCurrentEpochResponse = {
   },
   toAmino(message: QueryCurrentEpochResponse): QueryCurrentEpochResponseAmino {
     const obj: any = {};
-    obj.current_epoch = message.currentEpoch ? message.currentEpoch.toString() : undefined;
+    obj.current_epoch = message.currentEpoch !== BigInt(0) ? message.currentEpoch?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: QueryCurrentEpochResponseAminoMsg): QueryCurrentEpochResponse {
@@ -381,7 +429,7 @@ export const QueryCurrentEpochResponse = {
   toAminoMsg(message: QueryCurrentEpochResponse): QueryCurrentEpochResponseAminoMsg {
     return {
       type: "cosmos-sdk/QueryCurrentEpochResponse",
-      value: QueryCurrentEpochResponse.toAmino(message),
+      value: QueryCurrentEpochResponse.toAmino(message)
     };
   },
   fromProtoMsg(message: QueryCurrentEpochResponseProtoMsg): QueryCurrentEpochResponse {
@@ -393,10 +441,12 @@ export const QueryCurrentEpochResponse = {
   toProtoMsg(message: QueryCurrentEpochResponse): QueryCurrentEpochResponseProtoMsg {
     return {
       typeUrl: "/cosmos.epochs.v1beta1.QueryCurrentEpochResponse",
-      value: QueryCurrentEpochResponse.encode(message).finish(),
+      value: QueryCurrentEpochResponse.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(QueryCurrentEpochResponse.typeUrl, QueryCurrentEpochResponse);
+GlobalDecoderRegistry.registerAminoProtoMapping(QueryCurrentEpochResponse.aminoType, QueryCurrentEpochResponse.typeUrl);
 /** Query defines the gRPC querier service. */
 export interface Query {
   /** EpochInfos provide running epochInfos */
@@ -414,11 +464,11 @@ export class QueryClientImpl implements Query {
   EpochInfos(request: QueryEpochInfosRequest = {}): Promise<QueryEpochInfosResponse> {
     const data = QueryEpochInfosRequest.encode(request).finish();
     const promise = this.rpc.request("cosmos.epochs.v1beta1.Query", "EpochInfos", data);
-    return promise.then((data) => QueryEpochInfosResponse.decode(new BinaryReader(data)));
+    return promise.then(data => QueryEpochInfosResponse.decode(new BinaryReader(data)));
   }
   CurrentEpoch(request: QueryCurrentEpochRequest): Promise<QueryCurrentEpochResponse> {
     const data = QueryCurrentEpochRequest.encode(request).finish();
     const promise = this.rpc.request("cosmos.epochs.v1beta1.Query", "CurrentEpoch", data);
-    return promise.then((data) => QueryCurrentEpochResponse.decode(new BinaryReader(data)));
+    return promise.then(data => QueryCurrentEpochResponse.decode(new BinaryReader(data)));
   }
 }

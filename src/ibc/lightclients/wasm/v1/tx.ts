@@ -1,6 +1,8 @@
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "../../../../binary";
 import { isSet, bytesFromBase64, base64FromBytes } from "../../../../helpers";
+import { JsonSafe } from "../../../../json-safe";
+import { GlobalDecoderRegistry } from "../../../../registry";
 import { TxRpc } from "../../../../types";
 export const protobufPackage = "ibc.lightclients.wasm.v1";
 /** MsgStoreCode defines the request type for the StoreCode rpc. */
@@ -14,11 +16,20 @@ export interface MsgStoreCodeProtoMsg {
   typeUrl: "/ibc.lightclients.wasm.v1.MsgStoreCode";
   value: Uint8Array;
 }
-/** MsgStoreCode defines the request type for the StoreCode rpc. */
+/**
+ * MsgStoreCode defines the request type for the StoreCode rpc.
+ * @name MsgStoreCodeAmino
+ * @package ibc.lightclients.wasm.v1
+ * @see proto type: ibc.lightclients.wasm.v1.MsgStoreCode
+ */
 export interface MsgStoreCodeAmino {
-  /** signer address */
+  /**
+   * signer address
+   */
   signer?: string;
-  /** wasm byte code of light client contract. It can be raw or gzip compressed */
+  /**
+   * wasm byte code of light client contract. It can be raw or gzip compressed
+   */
   wasm_byte_code?: string;
 }
 export interface MsgStoreCodeAminoMsg {
@@ -34,9 +45,16 @@ export interface MsgStoreCodeResponseProtoMsg {
   typeUrl: "/ibc.lightclients.wasm.v1.MsgStoreCodeResponse";
   value: Uint8Array;
 }
-/** MsgStoreCodeResponse defines the response type for the StoreCode rpc */
+/**
+ * MsgStoreCodeResponse defines the response type for the StoreCode rpc
+ * @name MsgStoreCodeResponseAmino
+ * @package ibc.lightclients.wasm.v1
+ * @see proto type: ibc.lightclients.wasm.v1.MsgStoreCodeResponse
+ */
 export interface MsgStoreCodeResponseAmino {
-  /** checksum is the sha256 hash of the stored code */
+  /**
+   * checksum is the sha256 hash of the stored code
+   */
   checksum?: string;
 }
 export interface MsgStoreCodeResponseAminoMsg {
@@ -54,11 +72,20 @@ export interface MsgRemoveChecksumProtoMsg {
   typeUrl: "/ibc.lightclients.wasm.v1.MsgRemoveChecksum";
   value: Uint8Array;
 }
-/** MsgRemoveChecksum defines the request type for the MsgRemoveChecksum rpc. */
+/**
+ * MsgRemoveChecksum defines the request type for the MsgRemoveChecksum rpc.
+ * @name MsgRemoveChecksumAmino
+ * @package ibc.lightclients.wasm.v1
+ * @see proto type: ibc.lightclients.wasm.v1.MsgRemoveChecksum
+ */
 export interface MsgRemoveChecksumAmino {
-  /** signer address */
+  /**
+   * signer address
+   */
   signer?: string;
-  /** checksum is the sha256 hash to be removed from the store */
+  /**
+   * checksum is the sha256 hash to be removed from the store
+   */
   checksum?: string;
 }
 export interface MsgRemoveChecksumAminoMsg {
@@ -71,7 +98,12 @@ export interface MsgRemoveChecksumResponseProtoMsg {
   typeUrl: "/ibc.lightclients.wasm.v1.MsgRemoveChecksumResponse";
   value: Uint8Array;
 }
-/** MsgStoreChecksumResponse defines the response type for the StoreCode rpc */
+/**
+ * MsgStoreChecksumResponse defines the response type for the StoreCode rpc
+ * @name MsgRemoveChecksumResponseAmino
+ * @package ibc.lightclients.wasm.v1
+ * @see proto type: ibc.lightclients.wasm.v1.MsgRemoveChecksumResponse
+ */
 export interface MsgRemoveChecksumResponseAmino {}
 export interface MsgRemoveChecksumResponseAminoMsg {
   type: "cosmos-sdk/MsgRemoveChecksumResponse";
@@ -92,15 +124,28 @@ export interface MsgMigrateContractProtoMsg {
   typeUrl: "/ibc.lightclients.wasm.v1.MsgMigrateContract";
   value: Uint8Array;
 }
-/** MsgMigrateContract defines the request type for the MigrateContract rpc. */
+/**
+ * MsgMigrateContract defines the request type for the MigrateContract rpc.
+ * @name MsgMigrateContractAmino
+ * @package ibc.lightclients.wasm.v1
+ * @see proto type: ibc.lightclients.wasm.v1.MsgMigrateContract
+ */
 export interface MsgMigrateContractAmino {
-  /** signer address */
+  /**
+   * signer address
+   */
   signer?: string;
-  /** the client id of the contract */
+  /**
+   * the client id of the contract
+   */
   client_id?: string;
-  /** checksum is the sha256 hash of the new wasm byte code for the contract */
+  /**
+   * checksum is the sha256 hash of the new wasm byte code for the contract
+   */
   checksum?: string;
-  /** the json encoded message to be passed to the contract on migration */
+  /**
+   * the json encoded message to be passed to the contract on migration
+   */
   msg?: string;
 }
 export interface MsgMigrateContractAminoMsg {
@@ -113,7 +158,12 @@ export interface MsgMigrateContractResponseProtoMsg {
   typeUrl: "/ibc.lightclients.wasm.v1.MsgMigrateContractResponse";
   value: Uint8Array;
 }
-/** MsgMigrateContractResponse defines the response type for the MigrateContract rpc */
+/**
+ * MsgMigrateContractResponse defines the response type for the MigrateContract rpc
+ * @name MsgMigrateContractResponseAmino
+ * @package ibc.lightclients.wasm.v1
+ * @see proto type: ibc.lightclients.wasm.v1.MsgMigrateContractResponse
+ */
 export interface MsgMigrateContractResponseAmino {}
 export interface MsgMigrateContractResponseAminoMsg {
   type: "cosmos-sdk/MsgMigrateContractResponse";
@@ -122,11 +172,18 @@ export interface MsgMigrateContractResponseAminoMsg {
 function createBaseMsgStoreCode(): MsgStoreCode {
   return {
     signer: "",
-    wasmByteCode: new Uint8Array(),
+    wasmByteCode: new Uint8Array()
   };
 }
 export const MsgStoreCode = {
   typeUrl: "/ibc.lightclients.wasm.v1.MsgStoreCode",
+  aminoType: "cosmos-sdk/MsgStoreCode",
+  is(o: any): o is MsgStoreCode {
+    return o && (o.$typeUrl === MsgStoreCode.typeUrl || typeof o.signer === "string" && (o.wasmByteCode instanceof Uint8Array || typeof o.wasmByteCode === "string"));
+  },
+  isAmino(o: any): o is MsgStoreCodeAmino {
+    return o && (o.$typeUrl === MsgStoreCode.typeUrl || typeof o.signer === "string" && (o.wasm_byte_code instanceof Uint8Array || typeof o.wasm_byte_code === "string"));
+  },
   encode(message: MsgStoreCode, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.signer !== "") {
       writer.uint32(10).string(message.signer);
@@ -162,13 +219,10 @@ export const MsgStoreCode = {
     if (isSet(object.wasmByteCode)) obj.wasmByteCode = bytesFromBase64(object.wasmByteCode);
     return obj;
   },
-  toJSON(message: MsgStoreCode): unknown {
+  toJSON(message: MsgStoreCode): JsonSafe<MsgStoreCode> {
     const obj: any = {};
     message.signer !== undefined && (obj.signer = message.signer);
-    message.wasmByteCode !== undefined &&
-      (obj.wasmByteCode = base64FromBytes(
-        message.wasmByteCode !== undefined ? message.wasmByteCode : new Uint8Array(),
-      ));
+    message.wasmByteCode !== undefined && (obj.wasmByteCode = base64FromBytes(message.wasmByteCode !== undefined ? message.wasmByteCode : new Uint8Array()));
     return obj;
   },
   fromPartial(object: Partial<MsgStoreCode>): MsgStoreCode {
@@ -189,7 +243,7 @@ export const MsgStoreCode = {
   },
   toAmino(message: MsgStoreCode): MsgStoreCodeAmino {
     const obj: any = {};
-    obj.signer = message.signer;
+    obj.signer = message.signer === "" ? undefined : message.signer;
     obj.wasm_byte_code = message.wasmByteCode ? base64FromBytes(message.wasmByteCode) : undefined;
     return obj;
   },
@@ -199,7 +253,7 @@ export const MsgStoreCode = {
   toAminoMsg(message: MsgStoreCode): MsgStoreCodeAminoMsg {
     return {
       type: "cosmos-sdk/MsgStoreCode",
-      value: MsgStoreCode.toAmino(message),
+      value: MsgStoreCode.toAmino(message)
     };
   },
   fromProtoMsg(message: MsgStoreCodeProtoMsg): MsgStoreCode {
@@ -211,17 +265,26 @@ export const MsgStoreCode = {
   toProtoMsg(message: MsgStoreCode): MsgStoreCodeProtoMsg {
     return {
       typeUrl: "/ibc.lightclients.wasm.v1.MsgStoreCode",
-      value: MsgStoreCode.encode(message).finish(),
+      value: MsgStoreCode.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(MsgStoreCode.typeUrl, MsgStoreCode);
+GlobalDecoderRegistry.registerAminoProtoMapping(MsgStoreCode.aminoType, MsgStoreCode.typeUrl);
 function createBaseMsgStoreCodeResponse(): MsgStoreCodeResponse {
   return {
-    checksum: new Uint8Array(),
+    checksum: new Uint8Array()
   };
 }
 export const MsgStoreCodeResponse = {
   typeUrl: "/ibc.lightclients.wasm.v1.MsgStoreCodeResponse",
+  aminoType: "cosmos-sdk/MsgStoreCodeResponse",
+  is(o: any): o is MsgStoreCodeResponse {
+    return o && (o.$typeUrl === MsgStoreCodeResponse.typeUrl || o.checksum instanceof Uint8Array || typeof o.checksum === "string");
+  },
+  isAmino(o: any): o is MsgStoreCodeResponseAmino {
+    return o && (o.$typeUrl === MsgStoreCodeResponse.typeUrl || o.checksum instanceof Uint8Array || typeof o.checksum === "string");
+  },
   encode(message: MsgStoreCodeResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.checksum.length !== 0) {
       writer.uint32(10).bytes(message.checksum);
@@ -250,10 +313,9 @@ export const MsgStoreCodeResponse = {
     if (isSet(object.checksum)) obj.checksum = bytesFromBase64(object.checksum);
     return obj;
   },
-  toJSON(message: MsgStoreCodeResponse): unknown {
+  toJSON(message: MsgStoreCodeResponse): JsonSafe<MsgStoreCodeResponse> {
     const obj: any = {};
-    message.checksum !== undefined &&
-      (obj.checksum = base64FromBytes(message.checksum !== undefined ? message.checksum : new Uint8Array()));
+    message.checksum !== undefined && (obj.checksum = base64FromBytes(message.checksum !== undefined ? message.checksum : new Uint8Array()));
     return obj;
   },
   fromPartial(object: Partial<MsgStoreCodeResponse>): MsgStoreCodeResponse {
@@ -279,7 +341,7 @@ export const MsgStoreCodeResponse = {
   toAminoMsg(message: MsgStoreCodeResponse): MsgStoreCodeResponseAminoMsg {
     return {
       type: "cosmos-sdk/MsgStoreCodeResponse",
-      value: MsgStoreCodeResponse.toAmino(message),
+      value: MsgStoreCodeResponse.toAmino(message)
     };
   },
   fromProtoMsg(message: MsgStoreCodeResponseProtoMsg): MsgStoreCodeResponse {
@@ -291,18 +353,27 @@ export const MsgStoreCodeResponse = {
   toProtoMsg(message: MsgStoreCodeResponse): MsgStoreCodeResponseProtoMsg {
     return {
       typeUrl: "/ibc.lightclients.wasm.v1.MsgStoreCodeResponse",
-      value: MsgStoreCodeResponse.encode(message).finish(),
+      value: MsgStoreCodeResponse.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(MsgStoreCodeResponse.typeUrl, MsgStoreCodeResponse);
+GlobalDecoderRegistry.registerAminoProtoMapping(MsgStoreCodeResponse.aminoType, MsgStoreCodeResponse.typeUrl);
 function createBaseMsgRemoveChecksum(): MsgRemoveChecksum {
   return {
     signer: "",
-    checksum: new Uint8Array(),
+    checksum: new Uint8Array()
   };
 }
 export const MsgRemoveChecksum = {
   typeUrl: "/ibc.lightclients.wasm.v1.MsgRemoveChecksum",
+  aminoType: "cosmos-sdk/MsgRemoveChecksum",
+  is(o: any): o is MsgRemoveChecksum {
+    return o && (o.$typeUrl === MsgRemoveChecksum.typeUrl || typeof o.signer === "string" && (o.checksum instanceof Uint8Array || typeof o.checksum === "string"));
+  },
+  isAmino(o: any): o is MsgRemoveChecksumAmino {
+    return o && (o.$typeUrl === MsgRemoveChecksum.typeUrl || typeof o.signer === "string" && (o.checksum instanceof Uint8Array || typeof o.checksum === "string"));
+  },
   encode(message: MsgRemoveChecksum, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.signer !== "") {
       writer.uint32(10).string(message.signer);
@@ -338,11 +409,10 @@ export const MsgRemoveChecksum = {
     if (isSet(object.checksum)) obj.checksum = bytesFromBase64(object.checksum);
     return obj;
   },
-  toJSON(message: MsgRemoveChecksum): unknown {
+  toJSON(message: MsgRemoveChecksum): JsonSafe<MsgRemoveChecksum> {
     const obj: any = {};
     message.signer !== undefined && (obj.signer = message.signer);
-    message.checksum !== undefined &&
-      (obj.checksum = base64FromBytes(message.checksum !== undefined ? message.checksum : new Uint8Array()));
+    message.checksum !== undefined && (obj.checksum = base64FromBytes(message.checksum !== undefined ? message.checksum : new Uint8Array()));
     return obj;
   },
   fromPartial(object: Partial<MsgRemoveChecksum>): MsgRemoveChecksum {
@@ -363,7 +433,7 @@ export const MsgRemoveChecksum = {
   },
   toAmino(message: MsgRemoveChecksum): MsgRemoveChecksumAmino {
     const obj: any = {};
-    obj.signer = message.signer;
+    obj.signer = message.signer === "" ? undefined : message.signer;
     obj.checksum = message.checksum ? base64FromBytes(message.checksum) : undefined;
     return obj;
   },
@@ -373,7 +443,7 @@ export const MsgRemoveChecksum = {
   toAminoMsg(message: MsgRemoveChecksum): MsgRemoveChecksumAminoMsg {
     return {
       type: "cosmos-sdk/MsgRemoveChecksum",
-      value: MsgRemoveChecksum.toAmino(message),
+      value: MsgRemoveChecksum.toAmino(message)
     };
   },
   fromProtoMsg(message: MsgRemoveChecksumProtoMsg): MsgRemoveChecksum {
@@ -385,15 +455,24 @@ export const MsgRemoveChecksum = {
   toProtoMsg(message: MsgRemoveChecksum): MsgRemoveChecksumProtoMsg {
     return {
       typeUrl: "/ibc.lightclients.wasm.v1.MsgRemoveChecksum",
-      value: MsgRemoveChecksum.encode(message).finish(),
+      value: MsgRemoveChecksum.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(MsgRemoveChecksum.typeUrl, MsgRemoveChecksum);
+GlobalDecoderRegistry.registerAminoProtoMapping(MsgRemoveChecksum.aminoType, MsgRemoveChecksum.typeUrl);
 function createBaseMsgRemoveChecksumResponse(): MsgRemoveChecksumResponse {
   return {};
 }
 export const MsgRemoveChecksumResponse = {
   typeUrl: "/ibc.lightclients.wasm.v1.MsgRemoveChecksumResponse",
+  aminoType: "cosmos-sdk/MsgRemoveChecksumResponse",
+  is(o: any): o is MsgRemoveChecksumResponse {
+    return o && o.$typeUrl === MsgRemoveChecksumResponse.typeUrl;
+  },
+  isAmino(o: any): o is MsgRemoveChecksumResponseAmino {
+    return o && o.$typeUrl === MsgRemoveChecksumResponse.typeUrl;
+  },
   encode(_: MsgRemoveChecksumResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
@@ -415,7 +494,7 @@ export const MsgRemoveChecksumResponse = {
     const obj = createBaseMsgRemoveChecksumResponse();
     return obj;
   },
-  toJSON(_: MsgRemoveChecksumResponse): unknown {
+  toJSON(_: MsgRemoveChecksumResponse): JsonSafe<MsgRemoveChecksumResponse> {
     const obj: any = {};
     return obj;
   },
@@ -437,7 +516,7 @@ export const MsgRemoveChecksumResponse = {
   toAminoMsg(message: MsgRemoveChecksumResponse): MsgRemoveChecksumResponseAminoMsg {
     return {
       type: "cosmos-sdk/MsgRemoveChecksumResponse",
-      value: MsgRemoveChecksumResponse.toAmino(message),
+      value: MsgRemoveChecksumResponse.toAmino(message)
     };
   },
   fromProtoMsg(message: MsgRemoveChecksumResponseProtoMsg): MsgRemoveChecksumResponse {
@@ -449,20 +528,29 @@ export const MsgRemoveChecksumResponse = {
   toProtoMsg(message: MsgRemoveChecksumResponse): MsgRemoveChecksumResponseProtoMsg {
     return {
       typeUrl: "/ibc.lightclients.wasm.v1.MsgRemoveChecksumResponse",
-      value: MsgRemoveChecksumResponse.encode(message).finish(),
+      value: MsgRemoveChecksumResponse.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(MsgRemoveChecksumResponse.typeUrl, MsgRemoveChecksumResponse);
+GlobalDecoderRegistry.registerAminoProtoMapping(MsgRemoveChecksumResponse.aminoType, MsgRemoveChecksumResponse.typeUrl);
 function createBaseMsgMigrateContract(): MsgMigrateContract {
   return {
     signer: "",
     clientId: "",
     checksum: new Uint8Array(),
-    msg: new Uint8Array(),
+    msg: new Uint8Array()
   };
 }
 export const MsgMigrateContract = {
   typeUrl: "/ibc.lightclients.wasm.v1.MsgMigrateContract",
+  aminoType: "cosmos-sdk/MsgMigrateContract",
+  is(o: any): o is MsgMigrateContract {
+    return o && (o.$typeUrl === MsgMigrateContract.typeUrl || typeof o.signer === "string" && typeof o.clientId === "string" && (o.checksum instanceof Uint8Array || typeof o.checksum === "string") && (o.msg instanceof Uint8Array || typeof o.msg === "string"));
+  },
+  isAmino(o: any): o is MsgMigrateContractAmino {
+    return o && (o.$typeUrl === MsgMigrateContract.typeUrl || typeof o.signer === "string" && typeof o.client_id === "string" && (o.checksum instanceof Uint8Array || typeof o.checksum === "string") && (o.msg instanceof Uint8Array || typeof o.msg === "string"));
+  },
   encode(message: MsgMigrateContract, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.signer !== "") {
       writer.uint32(10).string(message.signer);
@@ -512,14 +600,12 @@ export const MsgMigrateContract = {
     if (isSet(object.msg)) obj.msg = bytesFromBase64(object.msg);
     return obj;
   },
-  toJSON(message: MsgMigrateContract): unknown {
+  toJSON(message: MsgMigrateContract): JsonSafe<MsgMigrateContract> {
     const obj: any = {};
     message.signer !== undefined && (obj.signer = message.signer);
     message.clientId !== undefined && (obj.clientId = message.clientId);
-    message.checksum !== undefined &&
-      (obj.checksum = base64FromBytes(message.checksum !== undefined ? message.checksum : new Uint8Array()));
-    message.msg !== undefined &&
-      (obj.msg = base64FromBytes(message.msg !== undefined ? message.msg : new Uint8Array()));
+    message.checksum !== undefined && (obj.checksum = base64FromBytes(message.checksum !== undefined ? message.checksum : new Uint8Array()));
+    message.msg !== undefined && (obj.msg = base64FromBytes(message.msg !== undefined ? message.msg : new Uint8Array()));
     return obj;
   },
   fromPartial(object: Partial<MsgMigrateContract>): MsgMigrateContract {
@@ -548,8 +634,8 @@ export const MsgMigrateContract = {
   },
   toAmino(message: MsgMigrateContract): MsgMigrateContractAmino {
     const obj: any = {};
-    obj.signer = message.signer;
-    obj.client_id = message.clientId;
+    obj.signer = message.signer === "" ? undefined : message.signer;
+    obj.client_id = message.clientId === "" ? undefined : message.clientId;
     obj.checksum = message.checksum ? base64FromBytes(message.checksum) : undefined;
     obj.msg = message.msg ? base64FromBytes(message.msg) : undefined;
     return obj;
@@ -560,7 +646,7 @@ export const MsgMigrateContract = {
   toAminoMsg(message: MsgMigrateContract): MsgMigrateContractAminoMsg {
     return {
       type: "cosmos-sdk/MsgMigrateContract",
-      value: MsgMigrateContract.toAmino(message),
+      value: MsgMigrateContract.toAmino(message)
     };
   },
   fromProtoMsg(message: MsgMigrateContractProtoMsg): MsgMigrateContract {
@@ -572,15 +658,24 @@ export const MsgMigrateContract = {
   toProtoMsg(message: MsgMigrateContract): MsgMigrateContractProtoMsg {
     return {
       typeUrl: "/ibc.lightclients.wasm.v1.MsgMigrateContract",
-      value: MsgMigrateContract.encode(message).finish(),
+      value: MsgMigrateContract.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(MsgMigrateContract.typeUrl, MsgMigrateContract);
+GlobalDecoderRegistry.registerAminoProtoMapping(MsgMigrateContract.aminoType, MsgMigrateContract.typeUrl);
 function createBaseMsgMigrateContractResponse(): MsgMigrateContractResponse {
   return {};
 }
 export const MsgMigrateContractResponse = {
   typeUrl: "/ibc.lightclients.wasm.v1.MsgMigrateContractResponse",
+  aminoType: "cosmos-sdk/MsgMigrateContractResponse",
+  is(o: any): o is MsgMigrateContractResponse {
+    return o && o.$typeUrl === MsgMigrateContractResponse.typeUrl;
+  },
+  isAmino(o: any): o is MsgMigrateContractResponseAmino {
+    return o && o.$typeUrl === MsgMigrateContractResponse.typeUrl;
+  },
   encode(_: MsgMigrateContractResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
@@ -602,7 +697,7 @@ export const MsgMigrateContractResponse = {
     const obj = createBaseMsgMigrateContractResponse();
     return obj;
   },
-  toJSON(_: MsgMigrateContractResponse): unknown {
+  toJSON(_: MsgMigrateContractResponse): JsonSafe<MsgMigrateContractResponse> {
     const obj: any = {};
     return obj;
   },
@@ -624,7 +719,7 @@ export const MsgMigrateContractResponse = {
   toAminoMsg(message: MsgMigrateContractResponse): MsgMigrateContractResponseAminoMsg {
     return {
       type: "cosmos-sdk/MsgMigrateContractResponse",
-      value: MsgMigrateContractResponse.toAmino(message),
+      value: MsgMigrateContractResponse.toAmino(message)
     };
   },
   fromProtoMsg(message: MsgMigrateContractResponseProtoMsg): MsgMigrateContractResponse {
@@ -636,10 +731,12 @@ export const MsgMigrateContractResponse = {
   toProtoMsg(message: MsgMigrateContractResponse): MsgMigrateContractResponseProtoMsg {
     return {
       typeUrl: "/ibc.lightclients.wasm.v1.MsgMigrateContractResponse",
-      value: MsgMigrateContractResponse.encode(message).finish(),
+      value: MsgMigrateContractResponse.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(MsgMigrateContractResponse.typeUrl, MsgMigrateContractResponse);
+GlobalDecoderRegistry.registerAminoProtoMapping(MsgMigrateContractResponse.aminoType, MsgMigrateContractResponse.typeUrl);
 /** Msg defines the ibc/08-wasm Msg service. */
 export interface Msg {
   /** StoreCode defines a rpc handler method for MsgStoreCode. */
@@ -660,16 +757,16 @@ export class MsgClientImpl implements Msg {
   StoreCode(request: MsgStoreCode): Promise<MsgStoreCodeResponse> {
     const data = MsgStoreCode.encode(request).finish();
     const promise = this.rpc.request("ibc.lightclients.wasm.v1.Msg", "StoreCode", data);
-    return promise.then((data) => MsgStoreCodeResponse.decode(new BinaryReader(data)));
+    return promise.then(data => MsgStoreCodeResponse.decode(new BinaryReader(data)));
   }
   RemoveChecksum(request: MsgRemoveChecksum): Promise<MsgRemoveChecksumResponse> {
     const data = MsgRemoveChecksum.encode(request).finish();
     const promise = this.rpc.request("ibc.lightclients.wasm.v1.Msg", "RemoveChecksum", data);
-    return promise.then((data) => MsgRemoveChecksumResponse.decode(new BinaryReader(data)));
+    return promise.then(data => MsgRemoveChecksumResponse.decode(new BinaryReader(data)));
   }
   MigrateContract(request: MsgMigrateContract): Promise<MsgMigrateContractResponse> {
     const data = MsgMigrateContract.encode(request).finish();
     const promise = this.rpc.request("ibc.lightclients.wasm.v1.Msg", "MigrateContract", data);
-    return promise.then((data) => MsgMigrateContractResponse.decode(new BinaryReader(data)));
+    return promise.then(data => MsgMigrateContractResponse.decode(new BinaryReader(data)));
   }
 }

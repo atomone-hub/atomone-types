@@ -3,7 +3,9 @@ import { Any, AnyAmino } from "../../../../google/protobuf/any";
 import { Plan, PlanAmino } from "../../../../cosmos/upgrade/v1beta1/upgrade";
 import { Params, ParamsAmino } from "./client";
 import { BinaryReader, BinaryWriter } from "../../../../binary";
+import { GlobalDecoderRegistry } from "../../../../registry";
 import { isSet, bytesFromBase64, base64FromBytes } from "../../../../helpers";
+import { JsonSafe } from "../../../../json-safe";
 import { TxRpc } from "../../../../types";
 export const protobufPackage = "ibc.core.client.v1";
 /** MsgCreateClient defines a message to create an IBC client */
@@ -22,16 +24,25 @@ export interface MsgCreateClientProtoMsg {
   typeUrl: "/ibc.core.client.v1.MsgCreateClient";
   value: Uint8Array;
 }
-/** MsgCreateClient defines a message to create an IBC client */
+/**
+ * MsgCreateClient defines a message to create an IBC client
+ * @name MsgCreateClientAmino
+ * @package ibc.core.client.v1
+ * @see proto type: ibc.core.client.v1.MsgCreateClient
+ */
 export interface MsgCreateClientAmino {
-  /** light client state */
+  /**
+   * light client state
+   */
   client_state?: AnyAmino | undefined;
   /**
    * consensus state associated with the client that corresponds to a given
    * height.
    */
   consensus_state?: AnyAmino | undefined;
-  /** signer address */
+  /**
+   * signer address
+   */
   signer?: string;
 }
 export interface MsgCreateClientAminoMsg {
@@ -46,7 +57,12 @@ export interface MsgCreateClientResponseProtoMsg {
   typeUrl: "/ibc.core.client.v1.MsgCreateClientResponse";
   value: Uint8Array;
 }
-/** MsgCreateClientResponse defines the Msg/CreateClient response type. */
+/**
+ * MsgCreateClientResponse defines the Msg/CreateClient response type.
+ * @name MsgCreateClientResponseAmino
+ * @package ibc.core.client.v1
+ * @see proto type: ibc.core.client.v1.MsgCreateClientResponse
+ */
 export interface MsgCreateClientResponseAmino {
   client_id?: string;
 }
@@ -73,13 +89,22 @@ export interface MsgUpdateClientProtoMsg {
 /**
  * MsgUpdateClient defines an sdk.Msg to update a IBC client state using
  * the given client message.
+ * @name MsgUpdateClientAmino
+ * @package ibc.core.client.v1
+ * @see proto type: ibc.core.client.v1.MsgUpdateClient
  */
 export interface MsgUpdateClientAmino {
-  /** client unique identifier */
+  /**
+   * client unique identifier
+   */
   client_id?: string;
-  /** client message to update the light client */
+  /**
+   * client message to update the light client
+   */
   client_message?: AnyAmino | undefined;
-  /** signer address */
+  /**
+   * signer address
+   */
   signer?: string;
 }
 export interface MsgUpdateClientAminoMsg {
@@ -92,7 +117,12 @@ export interface MsgUpdateClientResponseProtoMsg {
   typeUrl: "/ibc.core.client.v1.MsgUpdateClientResponse";
   value: Uint8Array;
 }
-/** MsgUpdateClientResponse defines the Msg/UpdateClient response type. */
+/**
+ * MsgUpdateClientResponse defines the Msg/UpdateClient response type.
+ * @name MsgUpdateClientResponseAmino
+ * @package ibc.core.client.v1
+ * @see proto type: ibc.core.client.v1.MsgUpdateClientResponse
+ */
 export interface MsgUpdateClientResponseAmino {}
 export interface MsgUpdateClientResponseAminoMsg {
   type: "cosmos-sdk/MsgUpdateClientResponse";
@@ -126,22 +156,35 @@ export interface MsgUpgradeClientProtoMsg {
 /**
  * MsgUpgradeClient defines an sdk.Msg to upgrade an IBC client to a new client
  * state
+ * @name MsgUpgradeClientAmino
+ * @package ibc.core.client.v1
+ * @see proto type: ibc.core.client.v1.MsgUpgradeClient
  */
 export interface MsgUpgradeClientAmino {
-  /** client unique identifier */
+  /**
+   * client unique identifier
+   */
   client_id?: string;
-  /** upgraded client state */
+  /**
+   * upgraded client state
+   */
   client_state?: AnyAmino | undefined;
   /**
    * upgraded consensus state, only contains enough information to serve as a
    * basis of trust in update logic
    */
   consensus_state?: AnyAmino | undefined;
-  /** proof that old chain committed to new client */
+  /**
+   * proof that old chain committed to new client
+   */
   proof_upgrade_client?: string;
-  /** proof that old chain committed to new consensus state */
+  /**
+   * proof that old chain committed to new consensus state
+   */
   proof_upgrade_consensus_state?: string;
-  /** signer address */
+  /**
+   * signer address
+   */
   signer?: string;
 }
 export interface MsgUpgradeClientAminoMsg {
@@ -154,7 +197,12 @@ export interface MsgUpgradeClientResponseProtoMsg {
   typeUrl: "/ibc.core.client.v1.MsgUpgradeClientResponse";
   value: Uint8Array;
 }
-/** MsgUpgradeClientResponse defines the Msg/UpgradeClient response type. */
+/**
+ * MsgUpgradeClientResponse defines the Msg/UpgradeClient response type.
+ * @name MsgUpgradeClientResponseAmino
+ * @package ibc.core.client.v1
+ * @see proto type: ibc.core.client.v1.MsgUpgradeClientResponse
+ */
 export interface MsgUpgradeClientResponseAmino {}
 export interface MsgUpgradeClientResponseAminoMsg {
   type: "cosmos-sdk/MsgUpgradeClientResponse";
@@ -182,14 +230,23 @@ export interface MsgSubmitMisbehaviourProtoMsg {
  * MsgSubmitMisbehaviour defines an sdk.Msg type that submits Evidence for
  * light client misbehaviour.
  * This message has been deprecated. Use MsgUpdateClient instead.
+ * @name MsgSubmitMisbehaviourAmino
+ * @package ibc.core.client.v1
+ * @see proto type: ibc.core.client.v1.MsgSubmitMisbehaviour
+ * @deprecated
  */
-/** @deprecated */
 export interface MsgSubmitMisbehaviourAmino {
-  /** client unique identifier */
+  /**
+   * client unique identifier
+   */
   client_id?: string;
-  /** misbehaviour used for freezing the light client */
+  /**
+   * misbehaviour used for freezing the light client
+   */
   misbehaviour?: AnyAmino | undefined;
-  /** signer address */
+  /**
+   * signer address
+   */
   signer?: string;
 }
 export interface MsgSubmitMisbehaviourAminoMsg {
@@ -208,6 +265,9 @@ export interface MsgSubmitMisbehaviourResponseProtoMsg {
 /**
  * MsgSubmitMisbehaviourResponse defines the Msg/SubmitMisbehaviour response
  * type.
+ * @name MsgSubmitMisbehaviourResponseAmino
+ * @package ibc.core.client.v1
+ * @see proto type: ibc.core.client.v1.MsgSubmitMisbehaviourResponse
  */
 export interface MsgSubmitMisbehaviourResponseAmino {}
 export interface MsgSubmitMisbehaviourResponseAminoMsg {
@@ -230,16 +290,25 @@ export interface MsgRecoverClientProtoMsg {
   typeUrl: "/ibc.core.client.v1.MsgRecoverClient";
   value: Uint8Array;
 }
-/** MsgRecoverClient defines the message used to recover a frozen or expired client. */
+/**
+ * MsgRecoverClient defines the message used to recover a frozen or expired client.
+ * @name MsgRecoverClientAmino
+ * @package ibc.core.client.v1
+ * @see proto type: ibc.core.client.v1.MsgRecoverClient
+ */
 export interface MsgRecoverClientAmino {
-  /** the client identifier for the client to be updated if the proposal passes */
+  /**
+   * the client identifier for the client to be updated if the proposal passes
+   */
   subject_client_id?: string;
   /**
    * the substitute client identifier for the client which will replace the subject
    * client
    */
   substitute_client_id?: string;
-  /** signer address */
+  /**
+   * signer address
+   */
   signer?: string;
 }
 export interface MsgRecoverClientAminoMsg {
@@ -252,7 +321,12 @@ export interface MsgRecoverClientResponseProtoMsg {
   typeUrl: "/ibc.core.client.v1.MsgRecoverClientResponse";
   value: Uint8Array;
 }
-/** MsgRecoverClientResponse defines the Msg/RecoverClient response type. */
+/**
+ * MsgRecoverClientResponse defines the Msg/RecoverClient response type.
+ * @name MsgRecoverClientResponseAmino
+ * @package ibc.core.client.v1
+ * @see proto type: ibc.core.client.v1.MsgRecoverClientResponse
+ */
 export interface MsgRecoverClientResponseAmino {}
 export interface MsgRecoverClientResponseAminoMsg {
   type: "cosmos-sdk/MsgRecoverClientResponse";
@@ -279,7 +353,12 @@ export interface MsgIBCSoftwareUpgradeProtoMsg {
   typeUrl: "/ibc.core.client.v1.MsgIBCSoftwareUpgrade";
   value: Uint8Array;
 }
-/** MsgIBCSoftwareUpgrade defines the message used to schedule an upgrade of an IBC client using a v1 governance proposal */
+/**
+ * MsgIBCSoftwareUpgrade defines the message used to schedule an upgrade of an IBC client using a v1 governance proposal
+ * @name MsgIBCSoftwareUpgradeAmino
+ * @package ibc.core.client.v1
+ * @see proto type: ibc.core.client.v1.MsgIBCSoftwareUpgrade
+ */
 export interface MsgIBCSoftwareUpgradeAmino {
   plan?: PlanAmino | undefined;
   /**
@@ -293,7 +372,9 @@ export interface MsgIBCSoftwareUpgradeAmino {
    * the 02-client module.
    */
   upgraded_client_state?: AnyAmino | undefined;
-  /** signer address */
+  /**
+   * signer address
+   */
   signer?: string;
 }
 export interface MsgIBCSoftwareUpgradeAminoMsg {
@@ -306,7 +387,12 @@ export interface MsgIBCSoftwareUpgradeResponseProtoMsg {
   typeUrl: "/ibc.core.client.v1.MsgIBCSoftwareUpgradeResponse";
   value: Uint8Array;
 }
-/** MsgIBCSoftwareUpgradeResponse defines the Msg/IBCSoftwareUpgrade response type. */
+/**
+ * MsgIBCSoftwareUpgradeResponse defines the Msg/IBCSoftwareUpgrade response type.
+ * @name MsgIBCSoftwareUpgradeResponseAmino
+ * @package ibc.core.client.v1
+ * @see proto type: ibc.core.client.v1.MsgIBCSoftwareUpgradeResponse
+ */
 export interface MsgIBCSoftwareUpgradeResponseAmino {}
 export interface MsgIBCSoftwareUpgradeResponseAminoMsg {
   type: "cosmos-sdk/MsgIBCSoftwareUpgradeResponse";
@@ -318,7 +404,7 @@ export interface MsgUpdateParams {
   signer: string;
   /**
    * params defines the client parameters to update.
-   *
+   * 
    * NOTE: All parameters must be supplied.
    */
   params: Params | undefined;
@@ -327,13 +413,20 @@ export interface MsgUpdateParamsProtoMsg {
   typeUrl: "/ibc.core.client.v1.MsgUpdateParams";
   value: Uint8Array;
 }
-/** MsgUpdateParams defines the sdk.Msg type to update the client parameters. */
+/**
+ * MsgUpdateParams defines the sdk.Msg type to update the client parameters.
+ * @name MsgUpdateParamsAmino
+ * @package ibc.core.client.v1
+ * @see proto type: ibc.core.client.v1.MsgUpdateParams
+ */
 export interface MsgUpdateParamsAmino {
-  /** signer address */
+  /**
+   * signer address
+   */
   signer?: string;
   /**
    * params defines the client parameters to update.
-   *
+   * 
    * NOTE: All parameters must be supplied.
    */
   params?: ParamsAmino | undefined;
@@ -348,7 +441,12 @@ export interface MsgUpdateParamsResponseProtoMsg {
   typeUrl: "/ibc.core.client.v1.MsgUpdateParamsResponse";
   value: Uint8Array;
 }
-/** MsgUpdateParamsResponse defines the MsgUpdateParams response type. */
+/**
+ * MsgUpdateParamsResponse defines the MsgUpdateParams response type.
+ * @name MsgUpdateParamsResponseAmino
+ * @package ibc.core.client.v1
+ * @see proto type: ibc.core.client.v1.MsgUpdateParamsResponse
+ */
 export interface MsgUpdateParamsResponseAmino {}
 export interface MsgUpdateParamsResponseAminoMsg {
   type: "cosmos-sdk/MsgUpdateParamsResponse";
@@ -365,11 +463,20 @@ export interface MsgDeleteClientCreatorProtoMsg {
   typeUrl: "/ibc.core.client.v1.MsgDeleteClientCreator";
   value: Uint8Array;
 }
-/** MsgDeleteClientCreator defines a message to delete the client creator of a client */
+/**
+ * MsgDeleteClientCreator defines a message to delete the client creator of a client
+ * @name MsgDeleteClientCreatorAmino
+ * @package ibc.core.client.v1
+ * @see proto type: ibc.core.client.v1.MsgDeleteClientCreator
+ */
 export interface MsgDeleteClientCreatorAmino {
-  /** client identifier */
+  /**
+   * client identifier
+   */
   client_id?: string;
-  /** signer address */
+  /**
+   * signer address
+   */
   signer?: string;
 }
 export interface MsgDeleteClientCreatorAminoMsg {
@@ -382,7 +489,12 @@ export interface MsgDeleteClientCreatorResponseProtoMsg {
   typeUrl: "/ibc.core.client.v1.MsgDeleteClientCreatorResponse";
   value: Uint8Array;
 }
-/** MsgDeleteClientCreatorResponse defines the Msg/DeleteClientCreator response type. */
+/**
+ * MsgDeleteClientCreatorResponse defines the Msg/DeleteClientCreator response type.
+ * @name MsgDeleteClientCreatorResponseAmino
+ * @package ibc.core.client.v1
+ * @see proto type: ibc.core.client.v1.MsgDeleteClientCreatorResponse
+ */
 export interface MsgDeleteClientCreatorResponseAmino {}
 export interface MsgDeleteClientCreatorResponseAminoMsg {
   type: "cosmos-sdk/MsgDeleteClientCreatorResponse";
@@ -392,11 +504,18 @@ function createBaseMsgCreateClient(): MsgCreateClient {
   return {
     clientState: undefined,
     consensusState: undefined,
-    signer: "",
+    signer: ""
   };
 }
 export const MsgCreateClient = {
   typeUrl: "/ibc.core.client.v1.MsgCreateClient",
+  aminoType: "cosmos-sdk/MsgCreateClient",
+  is(o: any): o is MsgCreateClient {
+    return o && (o.$typeUrl === MsgCreateClient.typeUrl || typeof o.signer === "string");
+  },
+  isAmino(o: any): o is MsgCreateClientAmino {
+    return o && (o.$typeUrl === MsgCreateClient.typeUrl || typeof o.signer === "string");
+  },
   encode(message: MsgCreateClient, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.clientState !== undefined) {
       Any.encode(message.clientState, writer.uint32(10).fork()).ldelim();
@@ -439,12 +558,10 @@ export const MsgCreateClient = {
     if (isSet(object.signer)) obj.signer = String(object.signer);
     return obj;
   },
-  toJSON(message: MsgCreateClient): unknown {
+  toJSON(message: MsgCreateClient): JsonSafe<MsgCreateClient> {
     const obj: any = {};
-    message.clientState !== undefined &&
-      (obj.clientState = message.clientState ? Any.toJSON(message.clientState) : undefined);
-    message.consensusState !== undefined &&
-      (obj.consensusState = message.consensusState ? Any.toJSON(message.consensusState) : undefined);
+    message.clientState !== undefined && (obj.clientState = message.clientState ? Any.toJSON(message.clientState) : undefined);
+    message.consensusState !== undefined && (obj.consensusState = message.consensusState ? Any.toJSON(message.consensusState) : undefined);
     message.signer !== undefined && (obj.signer = message.signer);
     return obj;
   },
@@ -476,7 +593,7 @@ export const MsgCreateClient = {
     const obj: any = {};
     obj.client_state = message.clientState ? Any.toAmino(message.clientState) : undefined;
     obj.consensus_state = message.consensusState ? Any.toAmino(message.consensusState) : undefined;
-    obj.signer = message.signer;
+    obj.signer = message.signer === "" ? undefined : message.signer;
     return obj;
   },
   fromAminoMsg(object: MsgCreateClientAminoMsg): MsgCreateClient {
@@ -485,7 +602,7 @@ export const MsgCreateClient = {
   toAminoMsg(message: MsgCreateClient): MsgCreateClientAminoMsg {
     return {
       type: "cosmos-sdk/MsgCreateClient",
-      value: MsgCreateClient.toAmino(message),
+      value: MsgCreateClient.toAmino(message)
     };
   },
   fromProtoMsg(message: MsgCreateClientProtoMsg): MsgCreateClient {
@@ -497,17 +614,26 @@ export const MsgCreateClient = {
   toProtoMsg(message: MsgCreateClient): MsgCreateClientProtoMsg {
     return {
       typeUrl: "/ibc.core.client.v1.MsgCreateClient",
-      value: MsgCreateClient.encode(message).finish(),
+      value: MsgCreateClient.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(MsgCreateClient.typeUrl, MsgCreateClient);
+GlobalDecoderRegistry.registerAminoProtoMapping(MsgCreateClient.aminoType, MsgCreateClient.typeUrl);
 function createBaseMsgCreateClientResponse(): MsgCreateClientResponse {
   return {
-    clientId: "",
+    clientId: ""
   };
 }
 export const MsgCreateClientResponse = {
   typeUrl: "/ibc.core.client.v1.MsgCreateClientResponse",
+  aminoType: "cosmos-sdk/MsgCreateClientResponse",
+  is(o: any): o is MsgCreateClientResponse {
+    return o && (o.$typeUrl === MsgCreateClientResponse.typeUrl || typeof o.clientId === "string");
+  },
+  isAmino(o: any): o is MsgCreateClientResponseAmino {
+    return o && (o.$typeUrl === MsgCreateClientResponse.typeUrl || typeof o.client_id === "string");
+  },
   encode(message: MsgCreateClientResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.clientId !== "") {
       writer.uint32(10).string(message.clientId);
@@ -536,7 +662,7 @@ export const MsgCreateClientResponse = {
     if (isSet(object.clientId)) obj.clientId = String(object.clientId);
     return obj;
   },
-  toJSON(message: MsgCreateClientResponse): unknown {
+  toJSON(message: MsgCreateClientResponse): JsonSafe<MsgCreateClientResponse> {
     const obj: any = {};
     message.clientId !== undefined && (obj.clientId = message.clientId);
     return obj;
@@ -555,7 +681,7 @@ export const MsgCreateClientResponse = {
   },
   toAmino(message: MsgCreateClientResponse): MsgCreateClientResponseAmino {
     const obj: any = {};
-    obj.client_id = message.clientId;
+    obj.client_id = message.clientId === "" ? undefined : message.clientId;
     return obj;
   },
   fromAminoMsg(object: MsgCreateClientResponseAminoMsg): MsgCreateClientResponse {
@@ -564,7 +690,7 @@ export const MsgCreateClientResponse = {
   toAminoMsg(message: MsgCreateClientResponse): MsgCreateClientResponseAminoMsg {
     return {
       type: "cosmos-sdk/MsgCreateClientResponse",
-      value: MsgCreateClientResponse.toAmino(message),
+      value: MsgCreateClientResponse.toAmino(message)
     };
   },
   fromProtoMsg(message: MsgCreateClientResponseProtoMsg): MsgCreateClientResponse {
@@ -576,19 +702,28 @@ export const MsgCreateClientResponse = {
   toProtoMsg(message: MsgCreateClientResponse): MsgCreateClientResponseProtoMsg {
     return {
       typeUrl: "/ibc.core.client.v1.MsgCreateClientResponse",
-      value: MsgCreateClientResponse.encode(message).finish(),
+      value: MsgCreateClientResponse.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(MsgCreateClientResponse.typeUrl, MsgCreateClientResponse);
+GlobalDecoderRegistry.registerAminoProtoMapping(MsgCreateClientResponse.aminoType, MsgCreateClientResponse.typeUrl);
 function createBaseMsgUpdateClient(): MsgUpdateClient {
   return {
     clientId: "",
     clientMessage: undefined,
-    signer: "",
+    signer: ""
   };
 }
 export const MsgUpdateClient = {
   typeUrl: "/ibc.core.client.v1.MsgUpdateClient",
+  aminoType: "cosmos-sdk/MsgUpdateClient",
+  is(o: any): o is MsgUpdateClient {
+    return o && (o.$typeUrl === MsgUpdateClient.typeUrl || typeof o.clientId === "string" && typeof o.signer === "string");
+  },
+  isAmino(o: any): o is MsgUpdateClientAmino {
+    return o && (o.$typeUrl === MsgUpdateClient.typeUrl || typeof o.client_id === "string" && typeof o.signer === "string");
+  },
   encode(message: MsgUpdateClient, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.clientId !== "") {
       writer.uint32(10).string(message.clientId);
@@ -631,11 +766,10 @@ export const MsgUpdateClient = {
     if (isSet(object.signer)) obj.signer = String(object.signer);
     return obj;
   },
-  toJSON(message: MsgUpdateClient): unknown {
+  toJSON(message: MsgUpdateClient): JsonSafe<MsgUpdateClient> {
     const obj: any = {};
     message.clientId !== undefined && (obj.clientId = message.clientId);
-    message.clientMessage !== undefined &&
-      (obj.clientMessage = message.clientMessage ? Any.toJSON(message.clientMessage) : undefined);
+    message.clientMessage !== undefined && (obj.clientMessage = message.clientMessage ? Any.toJSON(message.clientMessage) : undefined);
     message.signer !== undefined && (obj.signer = message.signer);
     return obj;
   },
@@ -663,9 +797,9 @@ export const MsgUpdateClient = {
   },
   toAmino(message: MsgUpdateClient): MsgUpdateClientAmino {
     const obj: any = {};
-    obj.client_id = message.clientId;
+    obj.client_id = message.clientId === "" ? undefined : message.clientId;
     obj.client_message = message.clientMessage ? Any.toAmino(message.clientMessage) : undefined;
-    obj.signer = message.signer;
+    obj.signer = message.signer === "" ? undefined : message.signer;
     return obj;
   },
   fromAminoMsg(object: MsgUpdateClientAminoMsg): MsgUpdateClient {
@@ -674,7 +808,7 @@ export const MsgUpdateClient = {
   toAminoMsg(message: MsgUpdateClient): MsgUpdateClientAminoMsg {
     return {
       type: "cosmos-sdk/MsgUpdateClient",
-      value: MsgUpdateClient.toAmino(message),
+      value: MsgUpdateClient.toAmino(message)
     };
   },
   fromProtoMsg(message: MsgUpdateClientProtoMsg): MsgUpdateClient {
@@ -686,15 +820,24 @@ export const MsgUpdateClient = {
   toProtoMsg(message: MsgUpdateClient): MsgUpdateClientProtoMsg {
     return {
       typeUrl: "/ibc.core.client.v1.MsgUpdateClient",
-      value: MsgUpdateClient.encode(message).finish(),
+      value: MsgUpdateClient.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(MsgUpdateClient.typeUrl, MsgUpdateClient);
+GlobalDecoderRegistry.registerAminoProtoMapping(MsgUpdateClient.aminoType, MsgUpdateClient.typeUrl);
 function createBaseMsgUpdateClientResponse(): MsgUpdateClientResponse {
   return {};
 }
 export const MsgUpdateClientResponse = {
   typeUrl: "/ibc.core.client.v1.MsgUpdateClientResponse",
+  aminoType: "cosmos-sdk/MsgUpdateClientResponse",
+  is(o: any): o is MsgUpdateClientResponse {
+    return o && o.$typeUrl === MsgUpdateClientResponse.typeUrl;
+  },
+  isAmino(o: any): o is MsgUpdateClientResponseAmino {
+    return o && o.$typeUrl === MsgUpdateClientResponse.typeUrl;
+  },
   encode(_: MsgUpdateClientResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
@@ -716,7 +859,7 @@ export const MsgUpdateClientResponse = {
     const obj = createBaseMsgUpdateClientResponse();
     return obj;
   },
-  toJSON(_: MsgUpdateClientResponse): unknown {
+  toJSON(_: MsgUpdateClientResponse): JsonSafe<MsgUpdateClientResponse> {
     const obj: any = {};
     return obj;
   },
@@ -738,7 +881,7 @@ export const MsgUpdateClientResponse = {
   toAminoMsg(message: MsgUpdateClientResponse): MsgUpdateClientResponseAminoMsg {
     return {
       type: "cosmos-sdk/MsgUpdateClientResponse",
-      value: MsgUpdateClientResponse.toAmino(message),
+      value: MsgUpdateClientResponse.toAmino(message)
     };
   },
   fromProtoMsg(message: MsgUpdateClientResponseProtoMsg): MsgUpdateClientResponse {
@@ -750,10 +893,12 @@ export const MsgUpdateClientResponse = {
   toProtoMsg(message: MsgUpdateClientResponse): MsgUpdateClientResponseProtoMsg {
     return {
       typeUrl: "/ibc.core.client.v1.MsgUpdateClientResponse",
-      value: MsgUpdateClientResponse.encode(message).finish(),
+      value: MsgUpdateClientResponse.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(MsgUpdateClientResponse.typeUrl, MsgUpdateClientResponse);
+GlobalDecoderRegistry.registerAminoProtoMapping(MsgUpdateClientResponse.aminoType, MsgUpdateClientResponse.typeUrl);
 function createBaseMsgUpgradeClient(): MsgUpgradeClient {
   return {
     clientId: "",
@@ -761,11 +906,18 @@ function createBaseMsgUpgradeClient(): MsgUpgradeClient {
     consensusState: undefined,
     proofUpgradeClient: new Uint8Array(),
     proofUpgradeConsensusState: new Uint8Array(),
-    signer: "",
+    signer: ""
   };
 }
 export const MsgUpgradeClient = {
   typeUrl: "/ibc.core.client.v1.MsgUpgradeClient",
+  aminoType: "cosmos-sdk/MsgUpgradeClient",
+  is(o: any): o is MsgUpgradeClient {
+    return o && (o.$typeUrl === MsgUpgradeClient.typeUrl || typeof o.clientId === "string" && (o.proofUpgradeClient instanceof Uint8Array || typeof o.proofUpgradeClient === "string") && (o.proofUpgradeConsensusState instanceof Uint8Array || typeof o.proofUpgradeConsensusState === "string") && typeof o.signer === "string");
+  },
+  isAmino(o: any): o is MsgUpgradeClientAmino {
+    return o && (o.$typeUrl === MsgUpgradeClient.typeUrl || typeof o.client_id === "string" && (o.proof_upgrade_client instanceof Uint8Array || typeof o.proof_upgrade_client === "string") && (o.proof_upgrade_consensus_state instanceof Uint8Array || typeof o.proof_upgrade_consensus_state === "string") && typeof o.signer === "string");
+  },
   encode(message: MsgUpgradeClient, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.clientId !== "") {
       writer.uint32(10).string(message.clientId);
@@ -825,28 +977,17 @@ export const MsgUpgradeClient = {
     if (isSet(object.clientState)) obj.clientState = Any.fromJSON(object.clientState);
     if (isSet(object.consensusState)) obj.consensusState = Any.fromJSON(object.consensusState);
     if (isSet(object.proofUpgradeClient)) obj.proofUpgradeClient = bytesFromBase64(object.proofUpgradeClient);
-    if (isSet(object.proofUpgradeConsensusState))
-      obj.proofUpgradeConsensusState = bytesFromBase64(object.proofUpgradeConsensusState);
+    if (isSet(object.proofUpgradeConsensusState)) obj.proofUpgradeConsensusState = bytesFromBase64(object.proofUpgradeConsensusState);
     if (isSet(object.signer)) obj.signer = String(object.signer);
     return obj;
   },
-  toJSON(message: MsgUpgradeClient): unknown {
+  toJSON(message: MsgUpgradeClient): JsonSafe<MsgUpgradeClient> {
     const obj: any = {};
     message.clientId !== undefined && (obj.clientId = message.clientId);
-    message.clientState !== undefined &&
-      (obj.clientState = message.clientState ? Any.toJSON(message.clientState) : undefined);
-    message.consensusState !== undefined &&
-      (obj.consensusState = message.consensusState ? Any.toJSON(message.consensusState) : undefined);
-    message.proofUpgradeClient !== undefined &&
-      (obj.proofUpgradeClient = base64FromBytes(
-        message.proofUpgradeClient !== undefined ? message.proofUpgradeClient : new Uint8Array(),
-      ));
-    message.proofUpgradeConsensusState !== undefined &&
-      (obj.proofUpgradeConsensusState = base64FromBytes(
-        message.proofUpgradeConsensusState !== undefined
-          ? message.proofUpgradeConsensusState
-          : new Uint8Array(),
-      ));
+    message.clientState !== undefined && (obj.clientState = message.clientState ? Any.toJSON(message.clientState) : undefined);
+    message.consensusState !== undefined && (obj.consensusState = message.consensusState ? Any.toJSON(message.consensusState) : undefined);
+    message.proofUpgradeClient !== undefined && (obj.proofUpgradeClient = base64FromBytes(message.proofUpgradeClient !== undefined ? message.proofUpgradeClient : new Uint8Array()));
+    message.proofUpgradeConsensusState !== undefined && (obj.proofUpgradeConsensusState = base64FromBytes(message.proofUpgradeConsensusState !== undefined ? message.proofUpgradeConsensusState : new Uint8Array()));
     message.signer !== undefined && (obj.signer = message.signer);
     return obj;
   },
@@ -888,16 +1029,12 @@ export const MsgUpgradeClient = {
   },
   toAmino(message: MsgUpgradeClient): MsgUpgradeClientAmino {
     const obj: any = {};
-    obj.client_id = message.clientId;
+    obj.client_id = message.clientId === "" ? undefined : message.clientId;
     obj.client_state = message.clientState ? Any.toAmino(message.clientState) : undefined;
     obj.consensus_state = message.consensusState ? Any.toAmino(message.consensusState) : undefined;
-    obj.proof_upgrade_client = message.proofUpgradeClient
-      ? base64FromBytes(message.proofUpgradeClient)
-      : undefined;
-    obj.proof_upgrade_consensus_state = message.proofUpgradeConsensusState
-      ? base64FromBytes(message.proofUpgradeConsensusState)
-      : undefined;
-    obj.signer = message.signer;
+    obj.proof_upgrade_client = message.proofUpgradeClient ? base64FromBytes(message.proofUpgradeClient) : undefined;
+    obj.proof_upgrade_consensus_state = message.proofUpgradeConsensusState ? base64FromBytes(message.proofUpgradeConsensusState) : undefined;
+    obj.signer = message.signer === "" ? undefined : message.signer;
     return obj;
   },
   fromAminoMsg(object: MsgUpgradeClientAminoMsg): MsgUpgradeClient {
@@ -906,7 +1043,7 @@ export const MsgUpgradeClient = {
   toAminoMsg(message: MsgUpgradeClient): MsgUpgradeClientAminoMsg {
     return {
       type: "cosmos-sdk/MsgUpgradeClient",
-      value: MsgUpgradeClient.toAmino(message),
+      value: MsgUpgradeClient.toAmino(message)
     };
   },
   fromProtoMsg(message: MsgUpgradeClientProtoMsg): MsgUpgradeClient {
@@ -918,15 +1055,24 @@ export const MsgUpgradeClient = {
   toProtoMsg(message: MsgUpgradeClient): MsgUpgradeClientProtoMsg {
     return {
       typeUrl: "/ibc.core.client.v1.MsgUpgradeClient",
-      value: MsgUpgradeClient.encode(message).finish(),
+      value: MsgUpgradeClient.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(MsgUpgradeClient.typeUrl, MsgUpgradeClient);
+GlobalDecoderRegistry.registerAminoProtoMapping(MsgUpgradeClient.aminoType, MsgUpgradeClient.typeUrl);
 function createBaseMsgUpgradeClientResponse(): MsgUpgradeClientResponse {
   return {};
 }
 export const MsgUpgradeClientResponse = {
   typeUrl: "/ibc.core.client.v1.MsgUpgradeClientResponse",
+  aminoType: "cosmos-sdk/MsgUpgradeClientResponse",
+  is(o: any): o is MsgUpgradeClientResponse {
+    return o && o.$typeUrl === MsgUpgradeClientResponse.typeUrl;
+  },
+  isAmino(o: any): o is MsgUpgradeClientResponseAmino {
+    return o && o.$typeUrl === MsgUpgradeClientResponse.typeUrl;
+  },
   encode(_: MsgUpgradeClientResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
@@ -948,7 +1094,7 @@ export const MsgUpgradeClientResponse = {
     const obj = createBaseMsgUpgradeClientResponse();
     return obj;
   },
-  toJSON(_: MsgUpgradeClientResponse): unknown {
+  toJSON(_: MsgUpgradeClientResponse): JsonSafe<MsgUpgradeClientResponse> {
     const obj: any = {};
     return obj;
   },
@@ -970,7 +1116,7 @@ export const MsgUpgradeClientResponse = {
   toAminoMsg(message: MsgUpgradeClientResponse): MsgUpgradeClientResponseAminoMsg {
     return {
       type: "cosmos-sdk/MsgUpgradeClientResponse",
-      value: MsgUpgradeClientResponse.toAmino(message),
+      value: MsgUpgradeClientResponse.toAmino(message)
     };
   },
   fromProtoMsg(message: MsgUpgradeClientResponseProtoMsg): MsgUpgradeClientResponse {
@@ -982,19 +1128,28 @@ export const MsgUpgradeClientResponse = {
   toProtoMsg(message: MsgUpgradeClientResponse): MsgUpgradeClientResponseProtoMsg {
     return {
       typeUrl: "/ibc.core.client.v1.MsgUpgradeClientResponse",
-      value: MsgUpgradeClientResponse.encode(message).finish(),
+      value: MsgUpgradeClientResponse.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(MsgUpgradeClientResponse.typeUrl, MsgUpgradeClientResponse);
+GlobalDecoderRegistry.registerAminoProtoMapping(MsgUpgradeClientResponse.aminoType, MsgUpgradeClientResponse.typeUrl);
 function createBaseMsgSubmitMisbehaviour(): MsgSubmitMisbehaviour {
   return {
     clientId: "",
     misbehaviour: undefined,
-    signer: "",
+    signer: ""
   };
 }
 export const MsgSubmitMisbehaviour = {
   typeUrl: "/ibc.core.client.v1.MsgSubmitMisbehaviour",
+  aminoType: "cosmos-sdk/MsgSubmitMisbehaviour",
+  is(o: any): o is MsgSubmitMisbehaviour {
+    return o && (o.$typeUrl === MsgSubmitMisbehaviour.typeUrl || typeof o.clientId === "string" && typeof o.signer === "string");
+  },
+  isAmino(o: any): o is MsgSubmitMisbehaviourAmino {
+    return o && (o.$typeUrl === MsgSubmitMisbehaviour.typeUrl || typeof o.client_id === "string" && typeof o.signer === "string");
+  },
   encode(message: MsgSubmitMisbehaviour, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.clientId !== "") {
       writer.uint32(10).string(message.clientId);
@@ -1037,11 +1192,10 @@ export const MsgSubmitMisbehaviour = {
     if (isSet(object.signer)) obj.signer = String(object.signer);
     return obj;
   },
-  toJSON(message: MsgSubmitMisbehaviour): unknown {
+  toJSON(message: MsgSubmitMisbehaviour): JsonSafe<MsgSubmitMisbehaviour> {
     const obj: any = {};
     message.clientId !== undefined && (obj.clientId = message.clientId);
-    message.misbehaviour !== undefined &&
-      (obj.misbehaviour = message.misbehaviour ? Any.toJSON(message.misbehaviour) : undefined);
+    message.misbehaviour !== undefined && (obj.misbehaviour = message.misbehaviour ? Any.toJSON(message.misbehaviour) : undefined);
     message.signer !== undefined && (obj.signer = message.signer);
     return obj;
   },
@@ -1069,9 +1223,9 @@ export const MsgSubmitMisbehaviour = {
   },
   toAmino(message: MsgSubmitMisbehaviour): MsgSubmitMisbehaviourAmino {
     const obj: any = {};
-    obj.client_id = message.clientId;
+    obj.client_id = message.clientId === "" ? undefined : message.clientId;
     obj.misbehaviour = message.misbehaviour ? Any.toAmino(message.misbehaviour) : undefined;
-    obj.signer = message.signer;
+    obj.signer = message.signer === "" ? undefined : message.signer;
     return obj;
   },
   fromAminoMsg(object: MsgSubmitMisbehaviourAminoMsg): MsgSubmitMisbehaviour {
@@ -1080,7 +1234,7 @@ export const MsgSubmitMisbehaviour = {
   toAminoMsg(message: MsgSubmitMisbehaviour): MsgSubmitMisbehaviourAminoMsg {
     return {
       type: "cosmos-sdk/MsgSubmitMisbehaviour",
-      value: MsgSubmitMisbehaviour.toAmino(message),
+      value: MsgSubmitMisbehaviour.toAmino(message)
     };
   },
   fromProtoMsg(message: MsgSubmitMisbehaviourProtoMsg): MsgSubmitMisbehaviour {
@@ -1092,15 +1246,24 @@ export const MsgSubmitMisbehaviour = {
   toProtoMsg(message: MsgSubmitMisbehaviour): MsgSubmitMisbehaviourProtoMsg {
     return {
       typeUrl: "/ibc.core.client.v1.MsgSubmitMisbehaviour",
-      value: MsgSubmitMisbehaviour.encode(message).finish(),
+      value: MsgSubmitMisbehaviour.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(MsgSubmitMisbehaviour.typeUrl, MsgSubmitMisbehaviour);
+GlobalDecoderRegistry.registerAminoProtoMapping(MsgSubmitMisbehaviour.aminoType, MsgSubmitMisbehaviour.typeUrl);
 function createBaseMsgSubmitMisbehaviourResponse(): MsgSubmitMisbehaviourResponse {
   return {};
 }
 export const MsgSubmitMisbehaviourResponse = {
   typeUrl: "/ibc.core.client.v1.MsgSubmitMisbehaviourResponse",
+  aminoType: "cosmos-sdk/MsgSubmitMisbehaviourResponse",
+  is(o: any): o is MsgSubmitMisbehaviourResponse {
+    return o && o.$typeUrl === MsgSubmitMisbehaviourResponse.typeUrl;
+  },
+  isAmino(o: any): o is MsgSubmitMisbehaviourResponseAmino {
+    return o && o.$typeUrl === MsgSubmitMisbehaviourResponse.typeUrl;
+  },
   encode(_: MsgSubmitMisbehaviourResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
@@ -1122,7 +1285,7 @@ export const MsgSubmitMisbehaviourResponse = {
     const obj = createBaseMsgSubmitMisbehaviourResponse();
     return obj;
   },
-  toJSON(_: MsgSubmitMisbehaviourResponse): unknown {
+  toJSON(_: MsgSubmitMisbehaviourResponse): JsonSafe<MsgSubmitMisbehaviourResponse> {
     const obj: any = {};
     return obj;
   },
@@ -1144,7 +1307,7 @@ export const MsgSubmitMisbehaviourResponse = {
   toAminoMsg(message: MsgSubmitMisbehaviourResponse): MsgSubmitMisbehaviourResponseAminoMsg {
     return {
       type: "cosmos-sdk/MsgSubmitMisbehaviourResponse",
-      value: MsgSubmitMisbehaviourResponse.toAmino(message),
+      value: MsgSubmitMisbehaviourResponse.toAmino(message)
     };
   },
   fromProtoMsg(message: MsgSubmitMisbehaviourResponseProtoMsg): MsgSubmitMisbehaviourResponse {
@@ -1156,19 +1319,28 @@ export const MsgSubmitMisbehaviourResponse = {
   toProtoMsg(message: MsgSubmitMisbehaviourResponse): MsgSubmitMisbehaviourResponseProtoMsg {
     return {
       typeUrl: "/ibc.core.client.v1.MsgSubmitMisbehaviourResponse",
-      value: MsgSubmitMisbehaviourResponse.encode(message).finish(),
+      value: MsgSubmitMisbehaviourResponse.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(MsgSubmitMisbehaviourResponse.typeUrl, MsgSubmitMisbehaviourResponse);
+GlobalDecoderRegistry.registerAminoProtoMapping(MsgSubmitMisbehaviourResponse.aminoType, MsgSubmitMisbehaviourResponse.typeUrl);
 function createBaseMsgRecoverClient(): MsgRecoverClient {
   return {
     subjectClientId: "",
     substituteClientId: "",
-    signer: "",
+    signer: ""
   };
 }
 export const MsgRecoverClient = {
   typeUrl: "/ibc.core.client.v1.MsgRecoverClient",
+  aminoType: "cosmos-sdk/MsgRecoverClient",
+  is(o: any): o is MsgRecoverClient {
+    return o && (o.$typeUrl === MsgRecoverClient.typeUrl || typeof o.subjectClientId === "string" && typeof o.substituteClientId === "string" && typeof o.signer === "string");
+  },
+  isAmino(o: any): o is MsgRecoverClientAmino {
+    return o && (o.$typeUrl === MsgRecoverClient.typeUrl || typeof o.subject_client_id === "string" && typeof o.substitute_client_id === "string" && typeof o.signer === "string");
+  },
   encode(message: MsgRecoverClient, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.subjectClientId !== "") {
       writer.uint32(10).string(message.subjectClientId);
@@ -1211,7 +1383,7 @@ export const MsgRecoverClient = {
     if (isSet(object.signer)) obj.signer = String(object.signer);
     return obj;
   },
-  toJSON(message: MsgRecoverClient): unknown {
+  toJSON(message: MsgRecoverClient): JsonSafe<MsgRecoverClient> {
     const obj: any = {};
     message.subjectClientId !== undefined && (obj.subjectClientId = message.subjectClientId);
     message.substituteClientId !== undefined && (obj.substituteClientId = message.substituteClientId);
@@ -1240,9 +1412,9 @@ export const MsgRecoverClient = {
   },
   toAmino(message: MsgRecoverClient): MsgRecoverClientAmino {
     const obj: any = {};
-    obj.subject_client_id = message.subjectClientId;
-    obj.substitute_client_id = message.substituteClientId;
-    obj.signer = message.signer;
+    obj.subject_client_id = message.subjectClientId === "" ? undefined : message.subjectClientId;
+    obj.substitute_client_id = message.substituteClientId === "" ? undefined : message.substituteClientId;
+    obj.signer = message.signer === "" ? undefined : message.signer;
     return obj;
   },
   fromAminoMsg(object: MsgRecoverClientAminoMsg): MsgRecoverClient {
@@ -1251,7 +1423,7 @@ export const MsgRecoverClient = {
   toAminoMsg(message: MsgRecoverClient): MsgRecoverClientAminoMsg {
     return {
       type: "cosmos-sdk/MsgRecoverClient",
-      value: MsgRecoverClient.toAmino(message),
+      value: MsgRecoverClient.toAmino(message)
     };
   },
   fromProtoMsg(message: MsgRecoverClientProtoMsg): MsgRecoverClient {
@@ -1263,15 +1435,24 @@ export const MsgRecoverClient = {
   toProtoMsg(message: MsgRecoverClient): MsgRecoverClientProtoMsg {
     return {
       typeUrl: "/ibc.core.client.v1.MsgRecoverClient",
-      value: MsgRecoverClient.encode(message).finish(),
+      value: MsgRecoverClient.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(MsgRecoverClient.typeUrl, MsgRecoverClient);
+GlobalDecoderRegistry.registerAminoProtoMapping(MsgRecoverClient.aminoType, MsgRecoverClient.typeUrl);
 function createBaseMsgRecoverClientResponse(): MsgRecoverClientResponse {
   return {};
 }
 export const MsgRecoverClientResponse = {
   typeUrl: "/ibc.core.client.v1.MsgRecoverClientResponse",
+  aminoType: "cosmos-sdk/MsgRecoverClientResponse",
+  is(o: any): o is MsgRecoverClientResponse {
+    return o && o.$typeUrl === MsgRecoverClientResponse.typeUrl;
+  },
+  isAmino(o: any): o is MsgRecoverClientResponseAmino {
+    return o && o.$typeUrl === MsgRecoverClientResponse.typeUrl;
+  },
   encode(_: MsgRecoverClientResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
@@ -1293,7 +1474,7 @@ export const MsgRecoverClientResponse = {
     const obj = createBaseMsgRecoverClientResponse();
     return obj;
   },
-  toJSON(_: MsgRecoverClientResponse): unknown {
+  toJSON(_: MsgRecoverClientResponse): JsonSafe<MsgRecoverClientResponse> {
     const obj: any = {};
     return obj;
   },
@@ -1315,7 +1496,7 @@ export const MsgRecoverClientResponse = {
   toAminoMsg(message: MsgRecoverClientResponse): MsgRecoverClientResponseAminoMsg {
     return {
       type: "cosmos-sdk/MsgRecoverClientResponse",
-      value: MsgRecoverClientResponse.toAmino(message),
+      value: MsgRecoverClientResponse.toAmino(message)
     };
   },
   fromProtoMsg(message: MsgRecoverClientResponseProtoMsg): MsgRecoverClientResponse {
@@ -1327,19 +1508,28 @@ export const MsgRecoverClientResponse = {
   toProtoMsg(message: MsgRecoverClientResponse): MsgRecoverClientResponseProtoMsg {
     return {
       typeUrl: "/ibc.core.client.v1.MsgRecoverClientResponse",
-      value: MsgRecoverClientResponse.encode(message).finish(),
+      value: MsgRecoverClientResponse.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(MsgRecoverClientResponse.typeUrl, MsgRecoverClientResponse);
+GlobalDecoderRegistry.registerAminoProtoMapping(MsgRecoverClientResponse.aminoType, MsgRecoverClientResponse.typeUrl);
 function createBaseMsgIBCSoftwareUpgrade(): MsgIBCSoftwareUpgrade {
   return {
     plan: Plan.fromPartial({}),
     upgradedClientState: undefined,
-    signer: "",
+    signer: ""
   };
 }
 export const MsgIBCSoftwareUpgrade = {
   typeUrl: "/ibc.core.client.v1.MsgIBCSoftwareUpgrade",
+  aminoType: "cosmos-sdk/MsgIBCSoftwareUpgrade",
+  is(o: any): o is MsgIBCSoftwareUpgrade {
+    return o && (o.$typeUrl === MsgIBCSoftwareUpgrade.typeUrl || Plan.is(o.plan) && typeof o.signer === "string");
+  },
+  isAmino(o: any): o is MsgIBCSoftwareUpgradeAmino {
+    return o && (o.$typeUrl === MsgIBCSoftwareUpgrade.typeUrl || Plan.isAmino(o.plan) && typeof o.signer === "string");
+  },
   encode(message: MsgIBCSoftwareUpgrade, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.plan !== undefined) {
       Plan.encode(message.plan, writer.uint32(10).fork()).ldelim();
@@ -1382,13 +1572,10 @@ export const MsgIBCSoftwareUpgrade = {
     if (isSet(object.signer)) obj.signer = String(object.signer);
     return obj;
   },
-  toJSON(message: MsgIBCSoftwareUpgrade): unknown {
+  toJSON(message: MsgIBCSoftwareUpgrade): JsonSafe<MsgIBCSoftwareUpgrade> {
     const obj: any = {};
     message.plan !== undefined && (obj.plan = message.plan ? Plan.toJSON(message.plan) : undefined);
-    message.upgradedClientState !== undefined &&
-      (obj.upgradedClientState = message.upgradedClientState
-        ? Any.toJSON(message.upgradedClientState)
-        : undefined);
+    message.upgradedClientState !== undefined && (obj.upgradedClientState = message.upgradedClientState ? Any.toJSON(message.upgradedClientState) : undefined);
     message.signer !== undefined && (obj.signer = message.signer);
     return obj;
   },
@@ -1419,10 +1606,8 @@ export const MsgIBCSoftwareUpgrade = {
   toAmino(message: MsgIBCSoftwareUpgrade): MsgIBCSoftwareUpgradeAmino {
     const obj: any = {};
     obj.plan = message.plan ? Plan.toAmino(message.plan) : undefined;
-    obj.upgraded_client_state = message.upgradedClientState
-      ? Any.toAmino(message.upgradedClientState)
-      : undefined;
-    obj.signer = message.signer;
+    obj.upgraded_client_state = message.upgradedClientState ? Any.toAmino(message.upgradedClientState) : undefined;
+    obj.signer = message.signer === "" ? undefined : message.signer;
     return obj;
   },
   fromAminoMsg(object: MsgIBCSoftwareUpgradeAminoMsg): MsgIBCSoftwareUpgrade {
@@ -1431,7 +1616,7 @@ export const MsgIBCSoftwareUpgrade = {
   toAminoMsg(message: MsgIBCSoftwareUpgrade): MsgIBCSoftwareUpgradeAminoMsg {
     return {
       type: "cosmos-sdk/MsgIBCSoftwareUpgrade",
-      value: MsgIBCSoftwareUpgrade.toAmino(message),
+      value: MsgIBCSoftwareUpgrade.toAmino(message)
     };
   },
   fromProtoMsg(message: MsgIBCSoftwareUpgradeProtoMsg): MsgIBCSoftwareUpgrade {
@@ -1443,15 +1628,24 @@ export const MsgIBCSoftwareUpgrade = {
   toProtoMsg(message: MsgIBCSoftwareUpgrade): MsgIBCSoftwareUpgradeProtoMsg {
     return {
       typeUrl: "/ibc.core.client.v1.MsgIBCSoftwareUpgrade",
-      value: MsgIBCSoftwareUpgrade.encode(message).finish(),
+      value: MsgIBCSoftwareUpgrade.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(MsgIBCSoftwareUpgrade.typeUrl, MsgIBCSoftwareUpgrade);
+GlobalDecoderRegistry.registerAminoProtoMapping(MsgIBCSoftwareUpgrade.aminoType, MsgIBCSoftwareUpgrade.typeUrl);
 function createBaseMsgIBCSoftwareUpgradeResponse(): MsgIBCSoftwareUpgradeResponse {
   return {};
 }
 export const MsgIBCSoftwareUpgradeResponse = {
   typeUrl: "/ibc.core.client.v1.MsgIBCSoftwareUpgradeResponse",
+  aminoType: "cosmos-sdk/MsgIBCSoftwareUpgradeResponse",
+  is(o: any): o is MsgIBCSoftwareUpgradeResponse {
+    return o && o.$typeUrl === MsgIBCSoftwareUpgradeResponse.typeUrl;
+  },
+  isAmino(o: any): o is MsgIBCSoftwareUpgradeResponseAmino {
+    return o && o.$typeUrl === MsgIBCSoftwareUpgradeResponse.typeUrl;
+  },
   encode(_: MsgIBCSoftwareUpgradeResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
@@ -1473,7 +1667,7 @@ export const MsgIBCSoftwareUpgradeResponse = {
     const obj = createBaseMsgIBCSoftwareUpgradeResponse();
     return obj;
   },
-  toJSON(_: MsgIBCSoftwareUpgradeResponse): unknown {
+  toJSON(_: MsgIBCSoftwareUpgradeResponse): JsonSafe<MsgIBCSoftwareUpgradeResponse> {
     const obj: any = {};
     return obj;
   },
@@ -1495,7 +1689,7 @@ export const MsgIBCSoftwareUpgradeResponse = {
   toAminoMsg(message: MsgIBCSoftwareUpgradeResponse): MsgIBCSoftwareUpgradeResponseAminoMsg {
     return {
       type: "cosmos-sdk/MsgIBCSoftwareUpgradeResponse",
-      value: MsgIBCSoftwareUpgradeResponse.toAmino(message),
+      value: MsgIBCSoftwareUpgradeResponse.toAmino(message)
     };
   },
   fromProtoMsg(message: MsgIBCSoftwareUpgradeResponseProtoMsg): MsgIBCSoftwareUpgradeResponse {
@@ -1507,18 +1701,27 @@ export const MsgIBCSoftwareUpgradeResponse = {
   toProtoMsg(message: MsgIBCSoftwareUpgradeResponse): MsgIBCSoftwareUpgradeResponseProtoMsg {
     return {
       typeUrl: "/ibc.core.client.v1.MsgIBCSoftwareUpgradeResponse",
-      value: MsgIBCSoftwareUpgradeResponse.encode(message).finish(),
+      value: MsgIBCSoftwareUpgradeResponse.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(MsgIBCSoftwareUpgradeResponse.typeUrl, MsgIBCSoftwareUpgradeResponse);
+GlobalDecoderRegistry.registerAminoProtoMapping(MsgIBCSoftwareUpgradeResponse.aminoType, MsgIBCSoftwareUpgradeResponse.typeUrl);
 function createBaseMsgUpdateParams(): MsgUpdateParams {
   return {
     signer: "",
-    params: Params.fromPartial({}),
+    params: Params.fromPartial({})
   };
 }
 export const MsgUpdateParams = {
   typeUrl: "/ibc.core.client.v1.MsgUpdateParams",
+  aminoType: "cosmos-sdk/MsgUpdateParams",
+  is(o: any): o is MsgUpdateParams {
+    return o && (o.$typeUrl === MsgUpdateParams.typeUrl || typeof o.signer === "string" && Params.is(o.params));
+  },
+  isAmino(o: any): o is MsgUpdateParamsAmino {
+    return o && (o.$typeUrl === MsgUpdateParams.typeUrl || typeof o.signer === "string" && Params.isAmino(o.params));
+  },
   encode(message: MsgUpdateParams, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.signer !== "") {
       writer.uint32(10).string(message.signer);
@@ -1554,7 +1757,7 @@ export const MsgUpdateParams = {
     if (isSet(object.params)) obj.params = Params.fromJSON(object.params);
     return obj;
   },
-  toJSON(message: MsgUpdateParams): unknown {
+  toJSON(message: MsgUpdateParams): JsonSafe<MsgUpdateParams> {
     const obj: any = {};
     message.signer !== undefined && (obj.signer = message.signer);
     message.params !== undefined && (obj.params = message.params ? Params.toJSON(message.params) : undefined);
@@ -1580,7 +1783,7 @@ export const MsgUpdateParams = {
   },
   toAmino(message: MsgUpdateParams): MsgUpdateParamsAmino {
     const obj: any = {};
-    obj.signer = message.signer;
+    obj.signer = message.signer === "" ? undefined : message.signer;
     obj.params = message.params ? Params.toAmino(message.params) : undefined;
     return obj;
   },
@@ -1590,7 +1793,7 @@ export const MsgUpdateParams = {
   toAminoMsg(message: MsgUpdateParams): MsgUpdateParamsAminoMsg {
     return {
       type: "cosmos-sdk/MsgUpdateParams",
-      value: MsgUpdateParams.toAmino(message),
+      value: MsgUpdateParams.toAmino(message)
     };
   },
   fromProtoMsg(message: MsgUpdateParamsProtoMsg): MsgUpdateParams {
@@ -1602,15 +1805,24 @@ export const MsgUpdateParams = {
   toProtoMsg(message: MsgUpdateParams): MsgUpdateParamsProtoMsg {
     return {
       typeUrl: "/ibc.core.client.v1.MsgUpdateParams",
-      value: MsgUpdateParams.encode(message).finish(),
+      value: MsgUpdateParams.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(MsgUpdateParams.typeUrl, MsgUpdateParams);
+GlobalDecoderRegistry.registerAminoProtoMapping(MsgUpdateParams.aminoType, MsgUpdateParams.typeUrl);
 function createBaseMsgUpdateParamsResponse(): MsgUpdateParamsResponse {
   return {};
 }
 export const MsgUpdateParamsResponse = {
   typeUrl: "/ibc.core.client.v1.MsgUpdateParamsResponse",
+  aminoType: "cosmos-sdk/MsgUpdateParamsResponse",
+  is(o: any): o is MsgUpdateParamsResponse {
+    return o && o.$typeUrl === MsgUpdateParamsResponse.typeUrl;
+  },
+  isAmino(o: any): o is MsgUpdateParamsResponseAmino {
+    return o && o.$typeUrl === MsgUpdateParamsResponse.typeUrl;
+  },
   encode(_: MsgUpdateParamsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
@@ -1632,7 +1844,7 @@ export const MsgUpdateParamsResponse = {
     const obj = createBaseMsgUpdateParamsResponse();
     return obj;
   },
-  toJSON(_: MsgUpdateParamsResponse): unknown {
+  toJSON(_: MsgUpdateParamsResponse): JsonSafe<MsgUpdateParamsResponse> {
     const obj: any = {};
     return obj;
   },
@@ -1654,7 +1866,7 @@ export const MsgUpdateParamsResponse = {
   toAminoMsg(message: MsgUpdateParamsResponse): MsgUpdateParamsResponseAminoMsg {
     return {
       type: "cosmos-sdk/MsgUpdateParamsResponse",
-      value: MsgUpdateParamsResponse.toAmino(message),
+      value: MsgUpdateParamsResponse.toAmino(message)
     };
   },
   fromProtoMsg(message: MsgUpdateParamsResponseProtoMsg): MsgUpdateParamsResponse {
@@ -1666,18 +1878,27 @@ export const MsgUpdateParamsResponse = {
   toProtoMsg(message: MsgUpdateParamsResponse): MsgUpdateParamsResponseProtoMsg {
     return {
       typeUrl: "/ibc.core.client.v1.MsgUpdateParamsResponse",
-      value: MsgUpdateParamsResponse.encode(message).finish(),
+      value: MsgUpdateParamsResponse.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(MsgUpdateParamsResponse.typeUrl, MsgUpdateParamsResponse);
+GlobalDecoderRegistry.registerAminoProtoMapping(MsgUpdateParamsResponse.aminoType, MsgUpdateParamsResponse.typeUrl);
 function createBaseMsgDeleteClientCreator(): MsgDeleteClientCreator {
   return {
     clientId: "",
-    signer: "",
+    signer: ""
   };
 }
 export const MsgDeleteClientCreator = {
   typeUrl: "/ibc.core.client.v1.MsgDeleteClientCreator",
+  aminoType: "cosmos-sdk/MsgDeleteClientCreator",
+  is(o: any): o is MsgDeleteClientCreator {
+    return o && (o.$typeUrl === MsgDeleteClientCreator.typeUrl || typeof o.clientId === "string" && typeof o.signer === "string");
+  },
+  isAmino(o: any): o is MsgDeleteClientCreatorAmino {
+    return o && (o.$typeUrl === MsgDeleteClientCreator.typeUrl || typeof o.client_id === "string" && typeof o.signer === "string");
+  },
   encode(message: MsgDeleteClientCreator, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.clientId !== "") {
       writer.uint32(10).string(message.clientId);
@@ -1713,7 +1934,7 @@ export const MsgDeleteClientCreator = {
     if (isSet(object.signer)) obj.signer = String(object.signer);
     return obj;
   },
-  toJSON(message: MsgDeleteClientCreator): unknown {
+  toJSON(message: MsgDeleteClientCreator): JsonSafe<MsgDeleteClientCreator> {
     const obj: any = {};
     message.clientId !== undefined && (obj.clientId = message.clientId);
     message.signer !== undefined && (obj.signer = message.signer);
@@ -1737,8 +1958,8 @@ export const MsgDeleteClientCreator = {
   },
   toAmino(message: MsgDeleteClientCreator): MsgDeleteClientCreatorAmino {
     const obj: any = {};
-    obj.client_id = message.clientId;
-    obj.signer = message.signer;
+    obj.client_id = message.clientId === "" ? undefined : message.clientId;
+    obj.signer = message.signer === "" ? undefined : message.signer;
     return obj;
   },
   fromAminoMsg(object: MsgDeleteClientCreatorAminoMsg): MsgDeleteClientCreator {
@@ -1747,7 +1968,7 @@ export const MsgDeleteClientCreator = {
   toAminoMsg(message: MsgDeleteClientCreator): MsgDeleteClientCreatorAminoMsg {
     return {
       type: "cosmos-sdk/MsgDeleteClientCreator",
-      value: MsgDeleteClientCreator.toAmino(message),
+      value: MsgDeleteClientCreator.toAmino(message)
     };
   },
   fromProtoMsg(message: MsgDeleteClientCreatorProtoMsg): MsgDeleteClientCreator {
@@ -1759,15 +1980,24 @@ export const MsgDeleteClientCreator = {
   toProtoMsg(message: MsgDeleteClientCreator): MsgDeleteClientCreatorProtoMsg {
     return {
       typeUrl: "/ibc.core.client.v1.MsgDeleteClientCreator",
-      value: MsgDeleteClientCreator.encode(message).finish(),
+      value: MsgDeleteClientCreator.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(MsgDeleteClientCreator.typeUrl, MsgDeleteClientCreator);
+GlobalDecoderRegistry.registerAminoProtoMapping(MsgDeleteClientCreator.aminoType, MsgDeleteClientCreator.typeUrl);
 function createBaseMsgDeleteClientCreatorResponse(): MsgDeleteClientCreatorResponse {
   return {};
 }
 export const MsgDeleteClientCreatorResponse = {
   typeUrl: "/ibc.core.client.v1.MsgDeleteClientCreatorResponse",
+  aminoType: "cosmos-sdk/MsgDeleteClientCreatorResponse",
+  is(o: any): o is MsgDeleteClientCreatorResponse {
+    return o && o.$typeUrl === MsgDeleteClientCreatorResponse.typeUrl;
+  },
+  isAmino(o: any): o is MsgDeleteClientCreatorResponseAmino {
+    return o && o.$typeUrl === MsgDeleteClientCreatorResponse.typeUrl;
+  },
   encode(_: MsgDeleteClientCreatorResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
@@ -1789,7 +2019,7 @@ export const MsgDeleteClientCreatorResponse = {
     const obj = createBaseMsgDeleteClientCreatorResponse();
     return obj;
   },
-  toJSON(_: MsgDeleteClientCreatorResponse): unknown {
+  toJSON(_: MsgDeleteClientCreatorResponse): JsonSafe<MsgDeleteClientCreatorResponse> {
     const obj: any = {};
     return obj;
   },
@@ -1811,7 +2041,7 @@ export const MsgDeleteClientCreatorResponse = {
   toAminoMsg(message: MsgDeleteClientCreatorResponse): MsgDeleteClientCreatorResponseAminoMsg {
     return {
       type: "cosmos-sdk/MsgDeleteClientCreatorResponse",
-      value: MsgDeleteClientCreatorResponse.toAmino(message),
+      value: MsgDeleteClientCreatorResponse.toAmino(message)
     };
   },
   fromProtoMsg(message: MsgDeleteClientCreatorResponseProtoMsg): MsgDeleteClientCreatorResponse {
@@ -1823,10 +2053,12 @@ export const MsgDeleteClientCreatorResponse = {
   toProtoMsg(message: MsgDeleteClientCreatorResponse): MsgDeleteClientCreatorResponseProtoMsg {
     return {
       typeUrl: "/ibc.core.client.v1.MsgDeleteClientCreatorResponse",
-      value: MsgDeleteClientCreatorResponse.encode(message).finish(),
+      value: MsgDeleteClientCreatorResponse.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(MsgDeleteClientCreatorResponse.typeUrl, MsgDeleteClientCreatorResponse);
+GlobalDecoderRegistry.registerAminoProtoMapping(MsgDeleteClientCreatorResponse.aminoType, MsgDeleteClientCreatorResponse.typeUrl);
 /** Msg defines the ibc/client Msg service. */
 export interface Msg {
   /** CreateClient defines a rpc handler method for MsgCreateClient. */
@@ -1862,41 +2094,41 @@ export class MsgClientImpl implements Msg {
   CreateClient(request: MsgCreateClient): Promise<MsgCreateClientResponse> {
     const data = MsgCreateClient.encode(request).finish();
     const promise = this.rpc.request("ibc.core.client.v1.Msg", "CreateClient", data);
-    return promise.then((data) => MsgCreateClientResponse.decode(new BinaryReader(data)));
+    return promise.then(data => MsgCreateClientResponse.decode(new BinaryReader(data)));
   }
   UpdateClient(request: MsgUpdateClient): Promise<MsgUpdateClientResponse> {
     const data = MsgUpdateClient.encode(request).finish();
     const promise = this.rpc.request("ibc.core.client.v1.Msg", "UpdateClient", data);
-    return promise.then((data) => MsgUpdateClientResponse.decode(new BinaryReader(data)));
+    return promise.then(data => MsgUpdateClientResponse.decode(new BinaryReader(data)));
   }
   UpgradeClient(request: MsgUpgradeClient): Promise<MsgUpgradeClientResponse> {
     const data = MsgUpgradeClient.encode(request).finish();
     const promise = this.rpc.request("ibc.core.client.v1.Msg", "UpgradeClient", data);
-    return promise.then((data) => MsgUpgradeClientResponse.decode(new BinaryReader(data)));
+    return promise.then(data => MsgUpgradeClientResponse.decode(new BinaryReader(data)));
   }
   SubmitMisbehaviour(request: MsgSubmitMisbehaviour): Promise<MsgSubmitMisbehaviourResponse> {
     const data = MsgSubmitMisbehaviour.encode(request).finish();
     const promise = this.rpc.request("ibc.core.client.v1.Msg", "SubmitMisbehaviour", data);
-    return promise.then((data) => MsgSubmitMisbehaviourResponse.decode(new BinaryReader(data)));
+    return promise.then(data => MsgSubmitMisbehaviourResponse.decode(new BinaryReader(data)));
   }
   RecoverClient(request: MsgRecoverClient): Promise<MsgRecoverClientResponse> {
     const data = MsgRecoverClient.encode(request).finish();
     const promise = this.rpc.request("ibc.core.client.v1.Msg", "RecoverClient", data);
-    return promise.then((data) => MsgRecoverClientResponse.decode(new BinaryReader(data)));
+    return promise.then(data => MsgRecoverClientResponse.decode(new BinaryReader(data)));
   }
   IBCSoftwareUpgrade(request: MsgIBCSoftwareUpgrade): Promise<MsgIBCSoftwareUpgradeResponse> {
     const data = MsgIBCSoftwareUpgrade.encode(request).finish();
     const promise = this.rpc.request("ibc.core.client.v1.Msg", "IBCSoftwareUpgrade", data);
-    return promise.then((data) => MsgIBCSoftwareUpgradeResponse.decode(new BinaryReader(data)));
+    return promise.then(data => MsgIBCSoftwareUpgradeResponse.decode(new BinaryReader(data)));
   }
   UpdateClientParams(request: MsgUpdateParams): Promise<MsgUpdateParamsResponse> {
     const data = MsgUpdateParams.encode(request).finish();
     const promise = this.rpc.request("ibc.core.client.v1.Msg", "UpdateClientParams", data);
-    return promise.then((data) => MsgUpdateParamsResponse.decode(new BinaryReader(data)));
+    return promise.then(data => MsgUpdateParamsResponse.decode(new BinaryReader(data)));
   }
   DeleteClientCreator(request: MsgDeleteClientCreator): Promise<MsgDeleteClientCreatorResponse> {
     const data = MsgDeleteClientCreator.encode(request).finish();
     const promise = this.rpc.request("ibc.core.client.v1.Msg", "DeleteClientCreator", data);
-    return promise.then((data) => MsgDeleteClientCreatorResponse.decode(new BinaryReader(data)));
+    return promise.then(data => MsgDeleteClientCreatorResponse.decode(new BinaryReader(data)));
   }
 }

@@ -1,6 +1,8 @@
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "../../../../binary";
 import { isSet } from "../../../../helpers";
+import { JsonSafe } from "../../../../json-safe";
+import { GlobalDecoderRegistry } from "../../../../registry";
 export const protobufPackage = "cosmos.auth.module.v1";
 /** Module is the config object for the auth module. */
 export interface Module {
@@ -15,13 +17,24 @@ export interface ModuleProtoMsg {
   typeUrl: "/cosmos.auth.module.v1.Module";
   value: Uint8Array;
 }
-/** Module is the config object for the auth module. */
+/**
+ * Module is the config object for the auth module.
+ * @name ModuleAmino
+ * @package cosmos.auth.module.v1
+ * @see proto type: cosmos.auth.module.v1.Module
+ */
 export interface ModuleAmino {
-  /** bech32_prefix is the bech32 account prefix for the app. */
+  /**
+   * bech32_prefix is the bech32 account prefix for the app.
+   */
   bech32_prefix?: string;
-  /** module_account_permissions are module account permissions. */
+  /**
+   * module_account_permissions are module account permissions.
+   */
   module_account_permissions?: ModuleAccountPermissionAmino[];
-  /** authority defines the custom module authority. If not set, defaults to the governance module. */
+  /**
+   * authority defines the custom module authority. If not set, defaults to the governance module.
+   */
   authority?: string;
 }
 export interface ModuleAminoMsg {
@@ -42,9 +55,16 @@ export interface ModuleAccountPermissionProtoMsg {
   typeUrl: "/cosmos.auth.module.v1.ModuleAccountPermission";
   value: Uint8Array;
 }
-/** ModuleAccountPermission represents permissions for a module account. */
+/**
+ * ModuleAccountPermission represents permissions for a module account.
+ * @name ModuleAccountPermissionAmino
+ * @package cosmos.auth.module.v1
+ * @see proto type: cosmos.auth.module.v1.ModuleAccountPermission
+ */
 export interface ModuleAccountPermissionAmino {
-  /** account is the name of the module. */
+  /**
+   * account is the name of the module.
+   */
   account?: string;
   /**
    * permissions are the permissions this module has. Currently recognized
@@ -60,11 +80,18 @@ function createBaseModule(): Module {
   return {
     bech32Prefix: "",
     moduleAccountPermissions: [],
-    authority: "",
+    authority: ""
   };
 }
 export const Module = {
   typeUrl: "/cosmos.auth.module.v1.Module",
+  aminoType: "cosmos-sdk/Module",
+  is(o: any): o is Module {
+    return o && (o.$typeUrl === Module.typeUrl || typeof o.bech32Prefix === "string" && Array.isArray(o.moduleAccountPermissions) && (!o.moduleAccountPermissions.length || ModuleAccountPermission.is(o.moduleAccountPermissions[0])) && typeof o.authority === "string");
+  },
+  isAmino(o: any): o is ModuleAmino {
+    return o && (o.$typeUrl === Module.typeUrl || typeof o.bech32_prefix === "string" && Array.isArray(o.module_account_permissions) && (!o.module_account_permissions.length || ModuleAccountPermission.isAmino(o.module_account_permissions[0])) && typeof o.authority === "string");
+  },
   encode(message: Module, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.bech32Prefix !== "") {
       writer.uint32(10).string(message.bech32Prefix);
@@ -103,20 +130,15 @@ export const Module = {
   fromJSON(object: any): Module {
     const obj = createBaseModule();
     if (isSet(object.bech32Prefix)) obj.bech32Prefix = String(object.bech32Prefix);
-    if (Array.isArray(object?.moduleAccountPermissions))
-      obj.moduleAccountPermissions = object.moduleAccountPermissions.map((e: any) =>
-        ModuleAccountPermission.fromJSON(e),
-      );
+    if (Array.isArray(object?.moduleAccountPermissions)) obj.moduleAccountPermissions = object.moduleAccountPermissions.map((e: any) => ModuleAccountPermission.fromJSON(e));
     if (isSet(object.authority)) obj.authority = String(object.authority);
     return obj;
   },
-  toJSON(message: Module): unknown {
+  toJSON(message: Module): JsonSafe<Module> {
     const obj: any = {};
     message.bech32Prefix !== undefined && (obj.bech32Prefix = message.bech32Prefix);
     if (message.moduleAccountPermissions) {
-      obj.moduleAccountPermissions = message.moduleAccountPermissions.map((e) =>
-        e ? ModuleAccountPermission.toJSON(e) : undefined,
-      );
+      obj.moduleAccountPermissions = message.moduleAccountPermissions.map(e => e ? ModuleAccountPermission.toJSON(e) : undefined);
     } else {
       obj.moduleAccountPermissions = [];
     }
@@ -126,8 +148,7 @@ export const Module = {
   fromPartial(object: Partial<Module>): Module {
     const message = createBaseModule();
     message.bech32Prefix = object.bech32Prefix ?? "";
-    message.moduleAccountPermissions =
-      object.moduleAccountPermissions?.map((e) => ModuleAccountPermission.fromPartial(e)) || [];
+    message.moduleAccountPermissions = object.moduleAccountPermissions?.map(e => ModuleAccountPermission.fromPartial(e)) || [];
     message.authority = object.authority ?? "";
     return message;
   },
@@ -136,8 +157,7 @@ export const Module = {
     if (object.bech32_prefix !== undefined && object.bech32_prefix !== null) {
       message.bech32Prefix = object.bech32_prefix;
     }
-    message.moduleAccountPermissions =
-      object.module_account_permissions?.map((e) => ModuleAccountPermission.fromAmino(e)) || [];
+    message.moduleAccountPermissions = object.module_account_permissions?.map(e => ModuleAccountPermission.fromAmino(e)) || [];
     if (object.authority !== undefined && object.authority !== null) {
       message.authority = object.authority;
     }
@@ -145,15 +165,13 @@ export const Module = {
   },
   toAmino(message: Module): ModuleAmino {
     const obj: any = {};
-    obj.bech32_prefix = message.bech32Prefix;
+    obj.bech32_prefix = message.bech32Prefix === "" ? undefined : message.bech32Prefix;
     if (message.moduleAccountPermissions) {
-      obj.module_account_permissions = message.moduleAccountPermissions.map((e) =>
-        e ? ModuleAccountPermission.toAmino(e) : undefined,
-      );
+      obj.module_account_permissions = message.moduleAccountPermissions.map(e => e ? ModuleAccountPermission.toAmino(e) : undefined);
     } else {
-      obj.module_account_permissions = [];
+      obj.module_account_permissions = message.moduleAccountPermissions;
     }
-    obj.authority = message.authority;
+    obj.authority = message.authority === "" ? undefined : message.authority;
     return obj;
   },
   fromAminoMsg(object: ModuleAminoMsg): Module {
@@ -162,7 +180,7 @@ export const Module = {
   toAminoMsg(message: Module): ModuleAminoMsg {
     return {
       type: "cosmos-sdk/Module",
-      value: Module.toAmino(message),
+      value: Module.toAmino(message)
     };
   },
   fromProtoMsg(message: ModuleProtoMsg): Module {
@@ -174,18 +192,27 @@ export const Module = {
   toProtoMsg(message: Module): ModuleProtoMsg {
     return {
       typeUrl: "/cosmos.auth.module.v1.Module",
-      value: Module.encode(message).finish(),
+      value: Module.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(Module.typeUrl, Module);
+GlobalDecoderRegistry.registerAminoProtoMapping(Module.aminoType, Module.typeUrl);
 function createBaseModuleAccountPermission(): ModuleAccountPermission {
   return {
     account: "",
-    permissions: [],
+    permissions: []
   };
 }
 export const ModuleAccountPermission = {
   typeUrl: "/cosmos.auth.module.v1.ModuleAccountPermission",
+  aminoType: "cosmos-sdk/ModuleAccountPermission",
+  is(o: any): o is ModuleAccountPermission {
+    return o && (o.$typeUrl === ModuleAccountPermission.typeUrl || typeof o.account === "string" && Array.isArray(o.permissions) && (!o.permissions.length || typeof o.permissions[0] === "string"));
+  },
+  isAmino(o: any): o is ModuleAccountPermissionAmino {
+    return o && (o.$typeUrl === ModuleAccountPermission.typeUrl || typeof o.account === "string" && Array.isArray(o.permissions) && (!o.permissions.length || typeof o.permissions[0] === "string"));
+  },
   encode(message: ModuleAccountPermission, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.account !== "") {
       writer.uint32(10).string(message.account);
@@ -221,11 +248,11 @@ export const ModuleAccountPermission = {
     if (Array.isArray(object?.permissions)) obj.permissions = object.permissions.map((e: any) => String(e));
     return obj;
   },
-  toJSON(message: ModuleAccountPermission): unknown {
+  toJSON(message: ModuleAccountPermission): JsonSafe<ModuleAccountPermission> {
     const obj: any = {};
     message.account !== undefined && (obj.account = message.account);
     if (message.permissions) {
-      obj.permissions = message.permissions.map((e) => e);
+      obj.permissions = message.permissions.map(e => e);
     } else {
       obj.permissions = [];
     }
@@ -234,7 +261,7 @@ export const ModuleAccountPermission = {
   fromPartial(object: Partial<ModuleAccountPermission>): ModuleAccountPermission {
     const message = createBaseModuleAccountPermission();
     message.account = object.account ?? "";
-    message.permissions = object.permissions?.map((e) => e) || [];
+    message.permissions = object.permissions?.map(e => e) || [];
     return message;
   },
   fromAmino(object: ModuleAccountPermissionAmino): ModuleAccountPermission {
@@ -242,16 +269,16 @@ export const ModuleAccountPermission = {
     if (object.account !== undefined && object.account !== null) {
       message.account = object.account;
     }
-    message.permissions = object.permissions?.map((e) => e) || [];
+    message.permissions = object.permissions?.map(e => e) || [];
     return message;
   },
   toAmino(message: ModuleAccountPermission): ModuleAccountPermissionAmino {
     const obj: any = {};
-    obj.account = message.account;
+    obj.account = message.account === "" ? undefined : message.account;
     if (message.permissions) {
-      obj.permissions = message.permissions.map((e) => e);
+      obj.permissions = message.permissions.map(e => e);
     } else {
-      obj.permissions = [];
+      obj.permissions = message.permissions;
     }
     return obj;
   },
@@ -261,7 +288,7 @@ export const ModuleAccountPermission = {
   toAminoMsg(message: ModuleAccountPermission): ModuleAccountPermissionAminoMsg {
     return {
       type: "cosmos-sdk/ModuleAccountPermission",
-      value: ModuleAccountPermission.toAmino(message),
+      value: ModuleAccountPermission.toAmino(message)
     };
   },
   fromProtoMsg(message: ModuleAccountPermissionProtoMsg): ModuleAccountPermission {
@@ -273,7 +300,9 @@ export const ModuleAccountPermission = {
   toProtoMsg(message: ModuleAccountPermission): ModuleAccountPermissionProtoMsg {
     return {
       typeUrl: "/cosmos.auth.module.v1.ModuleAccountPermission",
-      value: ModuleAccountPermission.encode(message).finish(),
+      value: ModuleAccountPermission.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(ModuleAccountPermission.typeUrl, ModuleAccountPermission);
+GlobalDecoderRegistry.registerAminoProtoMapping(ModuleAccountPermission.aminoType, ModuleAccountPermission.typeUrl);

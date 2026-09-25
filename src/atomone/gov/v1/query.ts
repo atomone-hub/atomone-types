@@ -1,39 +1,10 @@
 /* eslint-disable */
-import {
-  ProposalStatus,
-  Proposal,
-  ProposalAmino,
-  Vote,
-  VoteAmino,
-  VotingParams,
-  VotingParamsAmino,
-  DepositParams,
-  DepositParamsAmino,
-  TallyParams,
-  TallyParamsAmino,
-  Params,
-  ParamsAmino,
-  Deposit,
-  DepositAmino,
-  TallyResult,
-  TallyResultAmino,
-  Governor,
-  GovernorAmino,
-  GovernanceDelegation,
-  GovernanceDelegationAmino,
-  GovernorValShares,
-  GovernorValSharesAmino,
-  proposalStatusFromJSON,
-  proposalStatusToJSON,
-} from "./gov";
-import {
-  PageRequest,
-  PageRequestAmino,
-  PageResponse,
-  PageResponseAmino,
-} from "../../../cosmos/base/query/v1beta1/pagination";
+import { ProposalStatus, Proposal, ProposalAmino, Vote, VoteAmino, VotingParams, VotingParamsAmino, DepositParams, DepositParamsAmino, TallyParams, TallyParamsAmino, Params, ParamsAmino, Deposit, DepositAmino, TallyResult, TallyResultAmino, Governor, GovernorAmino, GovernanceDelegation, GovernanceDelegationAmino, GovernorValShares, GovernorValSharesAmino, proposalStatusFromJSON, proposalStatusToJSON } from "./gov";
+import { PageRequest, PageRequestAmino, PageResponse, PageResponseAmino } from "../../../cosmos/base/query/v1beta1/pagination";
 import { Coin, CoinAmino } from "../../../cosmos/base/v1beta1/coin";
 import { BinaryReader, BinaryWriter } from "../../../binary";
+import { JsonSafe } from "../../../json-safe";
+import { GlobalDecoderRegistry } from "../../../registry";
 import { isSet } from "../../../helpers";
 import { TxRpc } from "../../../types";
 export const protobufPackage = "atomone.gov.v1";
@@ -43,7 +14,12 @@ export interface QueryConstitutionRequestProtoMsg {
   typeUrl: "/atomone.gov.v1.QueryConstitutionRequest";
   value: Uint8Array;
 }
-/** QueryConstitutionRequest is the request type for the Query/Constitution RPC method */
+/**
+ * QueryConstitutionRequest is the request type for the Query/Constitution RPC method
+ * @name QueryConstitutionRequestAmino
+ * @package atomone.gov.v1
+ * @see proto type: atomone.gov.v1.QueryConstitutionRequest
+ */
 export interface QueryConstitutionRequestAmino {}
 export interface QueryConstitutionRequestAminoMsg {
   type: "/atomone.gov.v1.QueryConstitutionRequest";
@@ -57,7 +33,12 @@ export interface QueryConstitutionResponseProtoMsg {
   typeUrl: "/atomone.gov.v1.QueryConstitutionResponse";
   value: Uint8Array;
 }
-/** QueryConstitutionResponse is the response type for the Query/Constitution RPC method */
+/**
+ * QueryConstitutionResponse is the response type for the Query/Constitution RPC method
+ * @name QueryConstitutionResponseAmino
+ * @package atomone.gov.v1
+ * @see proto type: atomone.gov.v1.QueryConstitutionResponse
+ */
 export interface QueryConstitutionResponseAmino {
   constitution?: string;
 }
@@ -74,9 +55,16 @@ export interface QueryProposalRequestProtoMsg {
   typeUrl: "/atomone.gov.v1.QueryProposalRequest";
   value: Uint8Array;
 }
-/** QueryProposalRequest is the request type for the Query/Proposal RPC method. */
+/**
+ * QueryProposalRequest is the request type for the Query/Proposal RPC method.
+ * @name QueryProposalRequestAmino
+ * @package atomone.gov.v1
+ * @see proto type: atomone.gov.v1.QueryProposalRequest
+ */
 export interface QueryProposalRequestAmino {
-  /** proposal_id defines the unique id of the proposal. */
+  /**
+   * proposal_id defines the unique id of the proposal.
+   */
   proposal_id?: string;
 }
 export interface QueryProposalRequestAminoMsg {
@@ -92,9 +80,16 @@ export interface QueryProposalResponseProtoMsg {
   typeUrl: "/atomone.gov.v1.QueryProposalResponse";
   value: Uint8Array;
 }
-/** QueryProposalResponse is the response type for the Query/Proposal RPC method. */
+/**
+ * QueryProposalResponse is the response type for the Query/Proposal RPC method.
+ * @name QueryProposalResponseAmino
+ * @package atomone.gov.v1
+ * @see proto type: atomone.gov.v1.QueryProposalResponse
+ */
 export interface QueryProposalResponseAmino {
-  /** proposal is the requested governance proposal. */
+  /**
+   * proposal is the requested governance proposal.
+   */
   proposal?: ProposalAmino | undefined;
 }
 export interface QueryProposalResponseAminoMsg {
@@ -116,15 +111,28 @@ export interface QueryProposalsRequestProtoMsg {
   typeUrl: "/atomone.gov.v1.QueryProposalsRequest";
   value: Uint8Array;
 }
-/** QueryProposalsRequest is the request type for the Query/Proposals RPC method. */
+/**
+ * QueryProposalsRequest is the request type for the Query/Proposals RPC method.
+ * @name QueryProposalsRequestAmino
+ * @package atomone.gov.v1
+ * @see proto type: atomone.gov.v1.QueryProposalsRequest
+ */
 export interface QueryProposalsRequestAmino {
-  /** proposal_status defines the status of the proposals. */
+  /**
+   * proposal_status defines the status of the proposals.
+   */
   proposal_status?: ProposalStatus;
-  /** voter defines the voter address for the proposals. */
+  /**
+   * voter defines the voter address for the proposals.
+   */
   voter?: string;
-  /** depositor defines the deposit addresses from the proposals. */
+  /**
+   * depositor defines the deposit addresses from the proposals.
+   */
   depositor?: string;
-  /** pagination defines an optional pagination for the request. */
+  /**
+   * pagination defines an optional pagination for the request.
+   */
   pagination?: PageRequestAmino | undefined;
 }
 export interface QueryProposalsRequestAminoMsg {
@@ -148,11 +156,18 @@ export interface QueryProposalsResponseProtoMsg {
 /**
  * QueryProposalsResponse is the response type for the Query/Proposals RPC
  * method.
+ * @name QueryProposalsResponseAmino
+ * @package atomone.gov.v1
+ * @see proto type: atomone.gov.v1.QueryProposalsResponse
  */
 export interface QueryProposalsResponseAmino {
-  /** proposals defines all the requested governance proposals. */
+  /**
+   * proposals defines all the requested governance proposals.
+   */
   proposals?: ProposalAmino[];
-  /** pagination defines the pagination in the response. */
+  /**
+   * pagination defines the pagination in the response.
+   */
   pagination?: PageResponseAmino | undefined;
 }
 export interface QueryProposalsResponseAminoMsg {
@@ -170,11 +185,20 @@ export interface QueryVoteRequestProtoMsg {
   typeUrl: "/atomone.gov.v1.QueryVoteRequest";
   value: Uint8Array;
 }
-/** QueryVoteRequest is the request type for the Query/Vote RPC method. */
+/**
+ * QueryVoteRequest is the request type for the Query/Vote RPC method.
+ * @name QueryVoteRequestAmino
+ * @package atomone.gov.v1
+ * @see proto type: atomone.gov.v1.QueryVoteRequest
+ */
 export interface QueryVoteRequestAmino {
-  /** proposal_id defines the unique id of the proposal. */
+  /**
+   * proposal_id defines the unique id of the proposal.
+   */
   proposal_id?: string;
-  /** voter defines the voter address for the proposals. */
+  /**
+   * voter defines the voter address for the proposals.
+   */
   voter?: string;
 }
 export interface QueryVoteRequestAminoMsg {
@@ -190,9 +214,16 @@ export interface QueryVoteResponseProtoMsg {
   typeUrl: "/atomone.gov.v1.QueryVoteResponse";
   value: Uint8Array;
 }
-/** QueryVoteResponse is the response type for the Query/Vote RPC method. */
+/**
+ * QueryVoteResponse is the response type for the Query/Vote RPC method.
+ * @name QueryVoteResponseAmino
+ * @package atomone.gov.v1
+ * @see proto type: atomone.gov.v1.QueryVoteResponse
+ */
 export interface QueryVoteResponseAmino {
-  /** vote defines the queried vote. */
+  /**
+   * vote defines the queried vote.
+   */
   vote?: VoteAmino | undefined;
 }
 export interface QueryVoteResponseAminoMsg {
@@ -210,11 +241,20 @@ export interface QueryVotesRequestProtoMsg {
   typeUrl: "/atomone.gov.v1.QueryVotesRequest";
   value: Uint8Array;
 }
-/** QueryVotesRequest is the request type for the Query/Votes RPC method. */
+/**
+ * QueryVotesRequest is the request type for the Query/Votes RPC method.
+ * @name QueryVotesRequestAmino
+ * @package atomone.gov.v1
+ * @see proto type: atomone.gov.v1.QueryVotesRequest
+ */
 export interface QueryVotesRequestAmino {
-  /** proposal_id defines the unique id of the proposal. */
+  /**
+   * proposal_id defines the unique id of the proposal.
+   */
   proposal_id?: string;
-  /** pagination defines an optional pagination for the request. */
+  /**
+   * pagination defines an optional pagination for the request.
+   */
   pagination?: PageRequestAmino | undefined;
 }
 export interface QueryVotesRequestAminoMsg {
@@ -232,11 +272,20 @@ export interface QueryVotesResponseProtoMsg {
   typeUrl: "/atomone.gov.v1.QueryVotesResponse";
   value: Uint8Array;
 }
-/** QueryVotesResponse is the response type for the Query/Votes RPC method. */
+/**
+ * QueryVotesResponse is the response type for the Query/Votes RPC method.
+ * @name QueryVotesResponseAmino
+ * @package atomone.gov.v1
+ * @see proto type: atomone.gov.v1.QueryVotesResponse
+ */
 export interface QueryVotesResponseAmino {
-  /** votes defines the queried votes. */
+  /**
+   * votes defines the queried votes.
+   */
   votes?: VoteAmino[];
-  /** pagination defines the pagination in the response. */
+  /**
+   * pagination defines the pagination in the response.
+   */
   pagination?: PageResponseAmino | undefined;
 }
 export interface QueryVotesResponseAminoMsg {
@@ -255,7 +304,12 @@ export interface QueryParamsRequestProtoMsg {
   typeUrl: "/atomone.gov.v1.QueryParamsRequest";
   value: Uint8Array;
 }
-/** QueryParamsRequest is the request type for the Query/Params RPC method. */
+/**
+ * QueryParamsRequest is the request type for the Query/Params RPC method.
+ * @name QueryParamsRequestAmino
+ * @package atomone.gov.v1
+ * @see proto type: atomone.gov.v1.QueryParamsRequest
+ */
 export interface QueryParamsRequestAmino {
   /**
    * params_type defines which parameters to query for, can be one of "voting",
@@ -289,7 +343,7 @@ export interface QueryParamsResponse {
   tallyParams?: TallyParams | undefined;
   /**
    * params defines all the paramaters of x/gov module.
-   *
+   * 
    * Since: cosmos-sdk 0.47
    */
   params?: Params | undefined;
@@ -298,29 +352,34 @@ export interface QueryParamsResponseProtoMsg {
   typeUrl: "/atomone.gov.v1.QueryParamsResponse";
   value: Uint8Array;
 }
-/** QueryParamsResponse is the response type for the Query/Params RPC method. */
+/**
+ * QueryParamsResponse is the response type for the Query/Params RPC method.
+ * @name QueryParamsResponseAmino
+ * @package atomone.gov.v1
+ * @see proto type: atomone.gov.v1.QueryParamsResponse
+ */
 export interface QueryParamsResponseAmino {
   /**
    * Deprecated: Prefer to use `params` instead.
    * voting_params defines the parameters related to voting.
+   * @deprecated
    */
-  /** @deprecated */
   voting_params?: VotingParamsAmino | undefined;
   /**
    * Deprecated: Prefer to use `params` instead.
    * deposit_params defines the parameters related to deposit.
+   * @deprecated
    */
-  /** @deprecated */
   deposit_params?: DepositParamsAmino | undefined;
   /**
    * Deprecated: Prefer to use `params` instead.
    * tally_params defines the parameters related to tally.
+   * @deprecated
    */
-  /** @deprecated */
   tally_params?: TallyParamsAmino | undefined;
   /**
    * params defines all the paramaters of x/gov module.
-   *
+   * 
    * Since: cosmos-sdk 0.47
    */
   params?: ParamsAmino | undefined;
@@ -340,11 +399,20 @@ export interface QueryDepositRequestProtoMsg {
   typeUrl: "/atomone.gov.v1.QueryDepositRequest";
   value: Uint8Array;
 }
-/** QueryDepositRequest is the request type for the Query/Deposit RPC method. */
+/**
+ * QueryDepositRequest is the request type for the Query/Deposit RPC method.
+ * @name QueryDepositRequestAmino
+ * @package atomone.gov.v1
+ * @see proto type: atomone.gov.v1.QueryDepositRequest
+ */
 export interface QueryDepositRequestAmino {
-  /** proposal_id defines the unique id of the proposal. */
+  /**
+   * proposal_id defines the unique id of the proposal.
+   */
   proposal_id?: string;
-  /** depositor defines the deposit addresses from the proposals. */
+  /**
+   * depositor defines the deposit addresses from the proposals.
+   */
   depositor?: string;
 }
 export interface QueryDepositRequestAminoMsg {
@@ -360,9 +428,16 @@ export interface QueryDepositResponseProtoMsg {
   typeUrl: "/atomone.gov.v1.QueryDepositResponse";
   value: Uint8Array;
 }
-/** QueryDepositResponse is the response type for the Query/Deposit RPC method. */
+/**
+ * QueryDepositResponse is the response type for the Query/Deposit RPC method.
+ * @name QueryDepositResponseAmino
+ * @package atomone.gov.v1
+ * @see proto type: atomone.gov.v1.QueryDepositResponse
+ */
 export interface QueryDepositResponseAmino {
-  /** deposit defines the requested deposit. */
+  /**
+   * deposit defines the requested deposit.
+   */
   deposit?: DepositAmino | undefined;
 }
 export interface QueryDepositResponseAminoMsg {
@@ -380,11 +455,20 @@ export interface QueryDepositsRequestProtoMsg {
   typeUrl: "/atomone.gov.v1.QueryDepositsRequest";
   value: Uint8Array;
 }
-/** QueryDepositsRequest is the request type for the Query/Deposits RPC method. */
+/**
+ * QueryDepositsRequest is the request type for the Query/Deposits RPC method.
+ * @name QueryDepositsRequestAmino
+ * @package atomone.gov.v1
+ * @see proto type: atomone.gov.v1.QueryDepositsRequest
+ */
 export interface QueryDepositsRequestAmino {
-  /** proposal_id defines the unique id of the proposal. */
+  /**
+   * proposal_id defines the unique id of the proposal.
+   */
   proposal_id?: string;
-  /** pagination defines an optional pagination for the request. */
+  /**
+   * pagination defines an optional pagination for the request.
+   */
   pagination?: PageRequestAmino | undefined;
 }
 export interface QueryDepositsRequestAminoMsg {
@@ -402,11 +486,20 @@ export interface QueryDepositsResponseProtoMsg {
   typeUrl: "/atomone.gov.v1.QueryDepositsResponse";
   value: Uint8Array;
 }
-/** QueryDepositsResponse is the response type for the Query/Deposits RPC method. */
+/**
+ * QueryDepositsResponse is the response type for the Query/Deposits RPC method.
+ * @name QueryDepositsResponseAmino
+ * @package atomone.gov.v1
+ * @see proto type: atomone.gov.v1.QueryDepositsResponse
+ */
 export interface QueryDepositsResponseAmino {
-  /** deposits defines the requested deposits. */
+  /**
+   * deposits defines the requested deposits.
+   */
   deposits?: DepositAmino[];
-  /** pagination defines the pagination in the response. */
+  /**
+   * pagination defines the pagination in the response.
+   */
   pagination?: PageResponseAmino | undefined;
 }
 export interface QueryDepositsResponseAminoMsg {
@@ -422,9 +515,16 @@ export interface QueryTallyResultRequestProtoMsg {
   typeUrl: "/atomone.gov.v1.QueryTallyResultRequest";
   value: Uint8Array;
 }
-/** QueryTallyResultRequest is the request type for the Query/Tally RPC method. */
+/**
+ * QueryTallyResultRequest is the request type for the Query/Tally RPC method.
+ * @name QueryTallyResultRequestAmino
+ * @package atomone.gov.v1
+ * @see proto type: atomone.gov.v1.QueryTallyResultRequest
+ */
 export interface QueryTallyResultRequestAmino {
-  /** proposal_id defines the unique id of the proposal. */
+  /**
+   * proposal_id defines the unique id of the proposal.
+   */
   proposal_id?: string;
 }
 export interface QueryTallyResultRequestAminoMsg {
@@ -440,9 +540,16 @@ export interface QueryTallyResultResponseProtoMsg {
   typeUrl: "/atomone.gov.v1.QueryTallyResultResponse";
   value: Uint8Array;
 }
-/** QueryTallyResultResponse is the response type for the Query/Tally RPC method. */
+/**
+ * QueryTallyResultResponse is the response type for the Query/Tally RPC method.
+ * @name QueryTallyResultResponseAmino
+ * @package atomone.gov.v1
+ * @see proto type: atomone.gov.v1.QueryTallyResultResponse
+ */
 export interface QueryTallyResultResponseAmino {
-  /** tally defines the requested tally. */
+  /**
+   * tally defines the requested tally.
+   */
   tally?: TallyResultAmino | undefined;
 }
 export interface QueryTallyResultResponseAminoMsg {
@@ -455,7 +562,12 @@ export interface QueryMinDepositRequestProtoMsg {
   typeUrl: "/atomone.gov.v1.QueryMinDepositRequest";
   value: Uint8Array;
 }
-/** QueryMinDepositRequest is the request type for the Query/MinDeposit RPC method. */
+/**
+ * QueryMinDepositRequest is the request type for the Query/MinDeposit RPC method.
+ * @name QueryMinDepositRequestAmino
+ * @package atomone.gov.v1
+ * @see proto type: atomone.gov.v1.QueryMinDepositRequest
+ */
 export interface QueryMinDepositRequestAmino {}
 export interface QueryMinDepositRequestAminoMsg {
   type: "/atomone.gov.v1.QueryMinDepositRequest";
@@ -470,9 +582,16 @@ export interface QueryMinDepositResponseProtoMsg {
   typeUrl: "/atomone.gov.v1.QueryMinDepositResponse";
   value: Uint8Array;
 }
-/** QueryMinDepositResponse is the response type for the Query/MinDeposit RPC method. */
+/**
+ * QueryMinDepositResponse is the response type for the Query/MinDeposit RPC method.
+ * @name QueryMinDepositResponseAmino
+ * @package atomone.gov.v1
+ * @see proto type: atomone.gov.v1.QueryMinDepositResponse
+ */
 export interface QueryMinDepositResponseAmino {
-  /** min_deposit defines the minimum deposit required for a proposal to enter voting period. */
+  /**
+   * min_deposit defines the minimum deposit required for a proposal to enter voting period.
+   */
   min_deposit?: CoinAmino[];
 }
 export interface QueryMinDepositResponseAminoMsg {
@@ -485,7 +604,12 @@ export interface QueryMinInitialDepositRequestProtoMsg {
   typeUrl: "/atomone.gov.v1.QueryMinInitialDepositRequest";
   value: Uint8Array;
 }
-/** QueryMinInitialDepositRequest is the request type for the Query/MinInitialDeposit RPC method. */
+/**
+ * QueryMinInitialDepositRequest is the request type for the Query/MinInitialDeposit RPC method.
+ * @name QueryMinInitialDepositRequestAmino
+ * @package atomone.gov.v1
+ * @see proto type: atomone.gov.v1.QueryMinInitialDepositRequest
+ */
 export interface QueryMinInitialDepositRequestAmino {}
 export interface QueryMinInitialDepositRequestAminoMsg {
   type: "/atomone.gov.v1.QueryMinInitialDepositRequest";
@@ -500,9 +624,16 @@ export interface QueryMinInitialDepositResponseProtoMsg {
   typeUrl: "/atomone.gov.v1.QueryMinInitialDepositResponse";
   value: Uint8Array;
 }
-/** QueryMinInitialDepositResponse is the response type for the Query/MinInitialDeposit RPC method. */
+/**
+ * QueryMinInitialDepositResponse is the response type for the Query/MinInitialDeposit RPC method.
+ * @name QueryMinInitialDepositResponseAmino
+ * @package atomone.gov.v1
+ * @see proto type: atomone.gov.v1.QueryMinInitialDepositResponse
+ */
 export interface QueryMinInitialDepositResponseAmino {
-  /** min_initial_deposit defines the minimum initial deposit required for a proposal to be submitted. */
+  /**
+   * min_initial_deposit defines the minimum initial deposit required for a proposal to be submitted.
+   */
   min_initial_deposit?: CoinAmino[];
 }
 export interface QueryMinInitialDepositResponseAminoMsg {
@@ -515,7 +646,12 @@ export interface QueryQuorumsRequestProtoMsg {
   typeUrl: "/atomone.gov.v1.QueryQuorumsRequest";
   value: Uint8Array;
 }
-/** QueryQuorumsRequest is the request type for the Query/Quorums RPC method. */
+/**
+ * QueryQuorumsRequest is the request type for the Query/Quorums RPC method.
+ * @name QueryQuorumsRequestAmino
+ * @package atomone.gov.v1
+ * @see proto type: atomone.gov.v1.QueryQuorumsRequest
+ */
 export interface QueryQuorumsRequestAmino {}
 export interface QueryQuorumsRequestAminoMsg {
   type: "/atomone.gov.v1.QueryQuorumsRequest";
@@ -537,16 +673,25 @@ export interface QueryQuorumsResponseProtoMsg {
   typeUrl: "/atomone.gov.v1.QueryQuorumsResponse";
   value: Uint8Array;
 }
-/** QueryQuorumsResponse is the response type for the Query/Quorums RPC method. */
+/**
+ * QueryQuorumsResponse is the response type for the Query/Quorums RPC method.
+ * @name QueryQuorumsResponseAmino
+ * @package atomone.gov.v1
+ * @see proto type: atomone.gov.v1.QueryQuorumsResponse
+ */
 export interface QueryQuorumsResponseAmino {
-  /** quorum defines the requested quorum. */
+  /**
+   * quorum defines the requested quorum.
+   */
   quorum?: string;
   /**
    * constitution_amendment_quorum defines the requested quorum for
    * constitution amendment proposals.
    */
   constitution_amendment_quorum?: string;
-  /** law_quorum defines the requested quorum for law proposals. */
+  /**
+   * law_quorum defines the requested quorum for law proposals.
+   */
   law_quorum?: string;
 }
 export interface QueryQuorumsResponseAminoMsg {
@@ -559,7 +704,12 @@ export interface QueryParticipationEMAsRequestProtoMsg {
   typeUrl: "/atomone.gov.v1.QueryParticipationEMAsRequest";
   value: Uint8Array;
 }
-/** QueryParticipationEMAsRequest is the request type for the Query/ParticipationEMAs RPC method. */
+/**
+ * QueryParticipationEMAsRequest is the request type for the Query/ParticipationEMAs RPC method.
+ * @name QueryParticipationEMAsRequestAmino
+ * @package atomone.gov.v1
+ * @see proto type: atomone.gov.v1.QueryParticipationEMAsRequest
+ */
 export interface QueryParticipationEMAsRequestAmino {}
 export interface QueryParticipationEMAsRequestAminoMsg {
   type: "/atomone.gov.v1.QueryParticipationEMAsRequest";
@@ -581,16 +731,25 @@ export interface QueryParticipationEMAsResponseProtoMsg {
   typeUrl: "/atomone.gov.v1.QueryParticipationEMAsResponse";
   value: Uint8Array;
 }
-/** QueryParticipationEMAsResponse is the response type for the Query/ParticipationEMAs RPC method. */
+/**
+ * QueryParticipationEMAsResponse is the response type for the Query/ParticipationEMAs RPC method.
+ * @name QueryParticipationEMAsResponseAmino
+ * @package atomone.gov.v1
+ * @see proto type: atomone.gov.v1.QueryParticipationEMAsResponse
+ */
 export interface QueryParticipationEMAsResponseAmino {
-  /** participation_ema defines the requested participation EMA for proposals. */
+  /**
+   * participation_ema defines the requested participation EMA for proposals.
+   */
   participation_ema?: string;
   /**
    * constitution_amendment_participation_ema defines the requested participation EMA for
    * constitution amendment proposals.
    */
   constitution_amendment_participation_ema?: string;
-  /** law_participation_ema defines the requestedparticipation EMA for law proposals. */
+  /**
+   * law_participation_ema defines the requestedparticipation EMA for law proposals.
+   */
   law_participation_ema?: string;
 }
 export interface QueryParticipationEMAsResponseAminoMsg {
@@ -606,9 +765,16 @@ export interface QueryGovernorRequestProtoMsg {
   typeUrl: "/atomone.gov.v1.QueryGovernorRequest";
   value: Uint8Array;
 }
-/** QueryGovernorRequest is the request type for the Query/Governor RPC method. */
+/**
+ * QueryGovernorRequest is the request type for the Query/Governor RPC method.
+ * @name QueryGovernorRequestAmino
+ * @package atomone.gov.v1
+ * @see proto type: atomone.gov.v1.QueryGovernorRequest
+ */
 export interface QueryGovernorRequestAmino {
-  /** governor_address defines the address of the governor. */
+  /**
+   * governor_address defines the address of the governor.
+   */
   governor_address?: string;
 }
 export interface QueryGovernorRequestAminoMsg {
@@ -624,9 +790,16 @@ export interface QueryGovernorResponseProtoMsg {
   typeUrl: "/atomone.gov.v1.QueryGovernorResponse";
   value: Uint8Array;
 }
-/** QueryGovernorResponse is the response type for the Query/Governor RPC method. */
+/**
+ * QueryGovernorResponse is the response type for the Query/Governor RPC method.
+ * @name QueryGovernorResponseAmino
+ * @package atomone.gov.v1
+ * @see proto type: atomone.gov.v1.QueryGovernorResponse
+ */
 export interface QueryGovernorResponseAmino {
-  /** governor defines the requested governor. */
+  /**
+   * governor defines the requested governor.
+   */
   governor?: GovernorAmino | undefined;
 }
 export interface QueryGovernorResponseAminoMsg {
@@ -642,9 +815,16 @@ export interface QueryGovernorsRequestProtoMsg {
   typeUrl: "/atomone.gov.v1.QueryGovernorsRequest";
   value: Uint8Array;
 }
-/** QueryGovernorsRequest is the request type for the Query/Governors RPC method. */
+/**
+ * QueryGovernorsRequest is the request type for the Query/Governors RPC method.
+ * @name QueryGovernorsRequestAmino
+ * @package atomone.gov.v1
+ * @see proto type: atomone.gov.v1.QueryGovernorsRequest
+ */
 export interface QueryGovernorsRequestAmino {
-  /** pagination defines an optional pagination for the request. */
+  /**
+   * pagination defines an optional pagination for the request.
+   */
   pagination?: PageRequestAmino | undefined;
 }
 export interface QueryGovernorsRequestAminoMsg {
@@ -662,11 +842,20 @@ export interface QueryGovernorsResponseProtoMsg {
   typeUrl: "/atomone.gov.v1.QueryGovernorsResponse";
   value: Uint8Array;
 }
-/** QueryGovernorsResponse is the response type for the Query/Governors RPC method. */
+/**
+ * QueryGovernorsResponse is the response type for the Query/Governors RPC method.
+ * @name QueryGovernorsResponseAmino
+ * @package atomone.gov.v1
+ * @see proto type: atomone.gov.v1.QueryGovernorsResponse
+ */
 export interface QueryGovernorsResponseAmino {
-  /** governors defines the requested governors. */
+  /**
+   * governors defines the requested governors.
+   */
   governors?: GovernorAmino[];
-  /** pagination defines the pagination in the response. */
+  /**
+   * pagination defines the pagination in the response.
+   */
   pagination?: PageResponseAmino | undefined;
 }
 export interface QueryGovernorsResponseAminoMsg {
@@ -684,11 +873,20 @@ export interface QueryGovernanceDelegationsRequestProtoMsg {
   typeUrl: "/atomone.gov.v1.QueryGovernanceDelegationsRequest";
   value: Uint8Array;
 }
-/** QueryGovernanceDelegationsRequest is the request type for the Query/GovernanceDelegations RPC method. */
+/**
+ * QueryGovernanceDelegationsRequest is the request type for the Query/GovernanceDelegations RPC method.
+ * @name QueryGovernanceDelegationsRequestAmino
+ * @package atomone.gov.v1
+ * @see proto type: atomone.gov.v1.QueryGovernanceDelegationsRequest
+ */
 export interface QueryGovernanceDelegationsRequestAmino {
-  /** governor_address defines the address of the governor. */
+  /**
+   * governor_address defines the address of the governor.
+   */
   governor_address?: string;
-  /** pagination defines an optional pagination for the request. */
+  /**
+   * pagination defines an optional pagination for the request.
+   */
   pagination?: PageRequestAmino | undefined;
 }
 export interface QueryGovernanceDelegationsRequestAminoMsg {
@@ -706,11 +904,20 @@ export interface QueryGovernanceDelegationsResponseProtoMsg {
   typeUrl: "/atomone.gov.v1.QueryGovernanceDelegationsResponse";
   value: Uint8Array;
 }
-/** QueryGovernanceDelegationsResponse is the response type for the Query/GovernanceDelegations RPC method. */
+/**
+ * QueryGovernanceDelegationsResponse is the response type for the Query/GovernanceDelegations RPC method.
+ * @name QueryGovernanceDelegationsResponseAmino
+ * @package atomone.gov.v1
+ * @see proto type: atomone.gov.v1.QueryGovernanceDelegationsResponse
+ */
 export interface QueryGovernanceDelegationsResponseAmino {
-  /** delegations defines the requested delegations. */
+  /**
+   * delegations defines the requested delegations.
+   */
   delegations?: GovernanceDelegationAmino[];
-  /** pagination defines the pagination in the response. */
+  /**
+   * pagination defines the pagination in the response.
+   */
   pagination?: PageResponseAmino | undefined;
 }
 export interface QueryGovernanceDelegationsResponseAminoMsg {
@@ -726,9 +933,16 @@ export interface QueryGovernanceDelegationRequestProtoMsg {
   typeUrl: "/atomone.gov.v1.QueryGovernanceDelegationRequest";
   value: Uint8Array;
 }
-/** QueryGovernanceDelegationRequest is the request type for the Query/GovernanceDelegation RPC method. */
+/**
+ * QueryGovernanceDelegationRequest is the request type for the Query/GovernanceDelegation RPC method.
+ * @name QueryGovernanceDelegationRequestAmino
+ * @package atomone.gov.v1
+ * @see proto type: atomone.gov.v1.QueryGovernanceDelegationRequest
+ */
 export interface QueryGovernanceDelegationRequestAmino {
-  /** delegator_address defines the address of the delegator. */
+  /**
+   * delegator_address defines the address of the delegator.
+   */
   delegator_address?: string;
 }
 export interface QueryGovernanceDelegationRequestAminoMsg {
@@ -744,9 +958,16 @@ export interface QueryGovernanceDelegationResponseProtoMsg {
   typeUrl: "/atomone.gov.v1.QueryGovernanceDelegationResponse";
   value: Uint8Array;
 }
-/** QueryGovernanceDelegationResponse is the response type for the Query/GovernanceDelegation RPC method. */
+/**
+ * QueryGovernanceDelegationResponse is the response type for the Query/GovernanceDelegation RPC method.
+ * @name QueryGovernanceDelegationResponseAmino
+ * @package atomone.gov.v1
+ * @see proto type: atomone.gov.v1.QueryGovernanceDelegationResponse
+ */
 export interface QueryGovernanceDelegationResponseAmino {
-  /** governor_address defines the address of the governor. */
+  /**
+   * governor_address defines the address of the governor.
+   */
   governor_address?: string;
 }
 export interface QueryGovernanceDelegationResponseAminoMsg {
@@ -764,11 +985,20 @@ export interface QueryGovernorValSharesRequestProtoMsg {
   typeUrl: "/atomone.gov.v1.QueryGovernorValSharesRequest";
   value: Uint8Array;
 }
-/** QueryGovernorValSharesRequest is the request type for the Query/GovernorValShares RPC method. */
+/**
+ * QueryGovernorValSharesRequest is the request type for the Query/GovernorValShares RPC method.
+ * @name QueryGovernorValSharesRequestAmino
+ * @package atomone.gov.v1
+ * @see proto type: atomone.gov.v1.QueryGovernorValSharesRequest
+ */
 export interface QueryGovernorValSharesRequestAmino {
-  /** governor_address defines the address of the governor. */
+  /**
+   * governor_address defines the address of the governor.
+   */
   governor_address?: string;
-  /** pagination defines the pagination in the request. */
+  /**
+   * pagination defines the pagination in the request.
+   */
   pagination?: PageRequestAmino | undefined;
 }
 export interface QueryGovernorValSharesRequestAminoMsg {
@@ -786,11 +1016,20 @@ export interface QueryGovernorValSharesResponseProtoMsg {
   typeUrl: "/atomone.gov.v1.QueryGovernorValSharesResponse";
   value: Uint8Array;
 }
-/** QueryGovernorValSharesResponse is the response type for the Query/GovernorValShares RPC method. */
+/**
+ * QueryGovernorValSharesResponse is the response type for the Query/GovernorValShares RPC method.
+ * @name QueryGovernorValSharesResponseAmino
+ * @package atomone.gov.v1
+ * @see proto type: atomone.gov.v1.QueryGovernorValSharesResponse
+ */
 export interface QueryGovernorValSharesResponseAmino {
-  /** val_shares defines the requested validator shares. */
+  /**
+   * val_shares defines the requested validator shares.
+   */
   val_shares?: GovernorValSharesAmino[];
-  /** pagination defines the pagination in the response. */
+  /**
+   * pagination defines the pagination in the response.
+   */
   pagination?: PageResponseAmino | undefined;
 }
 export interface QueryGovernorValSharesResponseAminoMsg {
@@ -802,6 +1041,12 @@ function createBaseQueryConstitutionRequest(): QueryConstitutionRequest {
 }
 export const QueryConstitutionRequest = {
   typeUrl: "/atomone.gov.v1.QueryConstitutionRequest",
+  is(o: any): o is QueryConstitutionRequest {
+    return o && o.$typeUrl === QueryConstitutionRequest.typeUrl;
+  },
+  isAmino(o: any): o is QueryConstitutionRequestAmino {
+    return o && o.$typeUrl === QueryConstitutionRequest.typeUrl;
+  },
   encode(_: QueryConstitutionRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
@@ -823,7 +1068,7 @@ export const QueryConstitutionRequest = {
     const obj = createBaseQueryConstitutionRequest();
     return obj;
   },
-  toJSON(_: QueryConstitutionRequest): unknown {
+  toJSON(_: QueryConstitutionRequest): JsonSafe<QueryConstitutionRequest> {
     const obj: any = {};
     return obj;
   },
@@ -851,17 +1096,24 @@ export const QueryConstitutionRequest = {
   toProtoMsg(message: QueryConstitutionRequest): QueryConstitutionRequestProtoMsg {
     return {
       typeUrl: "/atomone.gov.v1.QueryConstitutionRequest",
-      value: QueryConstitutionRequest.encode(message).finish(),
+      value: QueryConstitutionRequest.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(QueryConstitutionRequest.typeUrl, QueryConstitutionRequest);
 function createBaseQueryConstitutionResponse(): QueryConstitutionResponse {
   return {
-    constitution: "",
+    constitution: ""
   };
 }
 export const QueryConstitutionResponse = {
   typeUrl: "/atomone.gov.v1.QueryConstitutionResponse",
+  is(o: any): o is QueryConstitutionResponse {
+    return o && (o.$typeUrl === QueryConstitutionResponse.typeUrl || typeof o.constitution === "string");
+  },
+  isAmino(o: any): o is QueryConstitutionResponseAmino {
+    return o && (o.$typeUrl === QueryConstitutionResponse.typeUrl || typeof o.constitution === "string");
+  },
   encode(message: QueryConstitutionResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.constitution !== "") {
       writer.uint32(10).string(message.constitution);
@@ -890,7 +1142,7 @@ export const QueryConstitutionResponse = {
     if (isSet(object.constitution)) obj.constitution = String(object.constitution);
     return obj;
   },
-  toJSON(message: QueryConstitutionResponse): unknown {
+  toJSON(message: QueryConstitutionResponse): JsonSafe<QueryConstitutionResponse> {
     const obj: any = {};
     message.constitution !== undefined && (obj.constitution = message.constitution);
     return obj;
@@ -909,7 +1161,7 @@ export const QueryConstitutionResponse = {
   },
   toAmino(message: QueryConstitutionResponse): QueryConstitutionResponseAmino {
     const obj: any = {};
-    obj.constitution = message.constitution;
+    obj.constitution = message.constitution === "" ? undefined : message.constitution;
     return obj;
   },
   fromAminoMsg(object: QueryConstitutionResponseAminoMsg): QueryConstitutionResponse {
@@ -924,17 +1176,24 @@ export const QueryConstitutionResponse = {
   toProtoMsg(message: QueryConstitutionResponse): QueryConstitutionResponseProtoMsg {
     return {
       typeUrl: "/atomone.gov.v1.QueryConstitutionResponse",
-      value: QueryConstitutionResponse.encode(message).finish(),
+      value: QueryConstitutionResponse.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(QueryConstitutionResponse.typeUrl, QueryConstitutionResponse);
 function createBaseQueryProposalRequest(): QueryProposalRequest {
   return {
-    proposalId: BigInt(0),
+    proposalId: BigInt(0)
   };
 }
 export const QueryProposalRequest = {
   typeUrl: "/atomone.gov.v1.QueryProposalRequest",
+  is(o: any): o is QueryProposalRequest {
+    return o && (o.$typeUrl === QueryProposalRequest.typeUrl || typeof o.proposalId === "bigint");
+  },
+  isAmino(o: any): o is QueryProposalRequestAmino {
+    return o && (o.$typeUrl === QueryProposalRequest.typeUrl || typeof o.proposal_id === "bigint");
+  },
   encode(message: QueryProposalRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.proposalId !== BigInt(0)) {
       writer.uint32(8).uint64(message.proposalId);
@@ -963,7 +1222,7 @@ export const QueryProposalRequest = {
     if (isSet(object.proposalId)) obj.proposalId = BigInt(object.proposalId.toString());
     return obj;
   },
-  toJSON(message: QueryProposalRequest): unknown {
+  toJSON(message: QueryProposalRequest): JsonSafe<QueryProposalRequest> {
     const obj: any = {};
     message.proposalId !== undefined && (obj.proposalId = (message.proposalId || BigInt(0)).toString());
     return obj;
@@ -984,7 +1243,7 @@ export const QueryProposalRequest = {
   },
   toAmino(message: QueryProposalRequest): QueryProposalRequestAmino {
     const obj: any = {};
-    obj.proposal_id = message.proposalId ? message.proposalId.toString() : undefined;
+    obj.proposal_id = message.proposalId !== BigInt(0) ? message.proposalId?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: QueryProposalRequestAminoMsg): QueryProposalRequest {
@@ -999,17 +1258,24 @@ export const QueryProposalRequest = {
   toProtoMsg(message: QueryProposalRequest): QueryProposalRequestProtoMsg {
     return {
       typeUrl: "/atomone.gov.v1.QueryProposalRequest",
-      value: QueryProposalRequest.encode(message).finish(),
+      value: QueryProposalRequest.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(QueryProposalRequest.typeUrl, QueryProposalRequest);
 function createBaseQueryProposalResponse(): QueryProposalResponse {
   return {
-    proposal: undefined,
+    proposal: undefined
   };
 }
 export const QueryProposalResponse = {
   typeUrl: "/atomone.gov.v1.QueryProposalResponse",
+  is(o: any): o is QueryProposalResponse {
+    return o && o.$typeUrl === QueryProposalResponse.typeUrl;
+  },
+  isAmino(o: any): o is QueryProposalResponseAmino {
+    return o && o.$typeUrl === QueryProposalResponse.typeUrl;
+  },
   encode(message: QueryProposalResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.proposal !== undefined) {
       Proposal.encode(message.proposal, writer.uint32(10).fork()).ldelim();
@@ -1038,10 +1304,9 @@ export const QueryProposalResponse = {
     if (isSet(object.proposal)) obj.proposal = Proposal.fromJSON(object.proposal);
     return obj;
   },
-  toJSON(message: QueryProposalResponse): unknown {
+  toJSON(message: QueryProposalResponse): JsonSafe<QueryProposalResponse> {
     const obj: any = {};
-    message.proposal !== undefined &&
-      (obj.proposal = message.proposal ? Proposal.toJSON(message.proposal) : undefined);
+    message.proposal !== undefined && (obj.proposal = message.proposal ? Proposal.toJSON(message.proposal) : undefined);
     return obj;
   },
   fromPartial(object: Partial<QueryProposalResponse>): QueryProposalResponse {
@@ -1075,20 +1340,27 @@ export const QueryProposalResponse = {
   toProtoMsg(message: QueryProposalResponse): QueryProposalResponseProtoMsg {
     return {
       typeUrl: "/atomone.gov.v1.QueryProposalResponse",
-      value: QueryProposalResponse.encode(message).finish(),
+      value: QueryProposalResponse.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(QueryProposalResponse.typeUrl, QueryProposalResponse);
 function createBaseQueryProposalsRequest(): QueryProposalsRequest {
   return {
     proposalStatus: 0,
     voter: "",
     depositor: "",
-    pagination: undefined,
+    pagination: undefined
   };
 }
 export const QueryProposalsRequest = {
   typeUrl: "/atomone.gov.v1.QueryProposalsRequest",
+  is(o: any): o is QueryProposalsRequest {
+    return o && (o.$typeUrl === QueryProposalsRequest.typeUrl || isSet(o.proposalStatus) && typeof o.voter === "string" && typeof o.depositor === "string");
+  },
+  isAmino(o: any): o is QueryProposalsRequestAmino {
+    return o && (o.$typeUrl === QueryProposalsRequest.typeUrl || isSet(o.proposal_status) && typeof o.voter === "string" && typeof o.depositor === "string");
+  },
   encode(message: QueryProposalsRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.proposalStatus !== 0) {
       writer.uint32(8).int32(message.proposalStatus);
@@ -1138,14 +1410,12 @@ export const QueryProposalsRequest = {
     if (isSet(object.pagination)) obj.pagination = PageRequest.fromJSON(object.pagination);
     return obj;
   },
-  toJSON(message: QueryProposalsRequest): unknown {
+  toJSON(message: QueryProposalsRequest): JsonSafe<QueryProposalsRequest> {
     const obj: any = {};
-    message.proposalStatus !== undefined &&
-      (obj.proposalStatus = proposalStatusToJSON(message.proposalStatus));
+    message.proposalStatus !== undefined && (obj.proposalStatus = proposalStatusToJSON(message.proposalStatus));
     message.voter !== undefined && (obj.voter = message.voter);
     message.depositor !== undefined && (obj.depositor = message.depositor);
-    message.pagination !== undefined &&
-      (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
+    message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
     return obj;
   },
   fromPartial(object: Partial<QueryProposalsRequest>): QueryProposalsRequest {
@@ -1161,7 +1431,7 @@ export const QueryProposalsRequest = {
   fromAmino(object: QueryProposalsRequestAmino): QueryProposalsRequest {
     const message = createBaseQueryProposalsRequest();
     if (object.proposal_status !== undefined && object.proposal_status !== null) {
-      message.proposalStatus = proposalStatusFromJSON(object.proposal_status);
+      message.proposalStatus = object.proposal_status;
     }
     if (object.voter !== undefined && object.voter !== null) {
       message.voter = object.voter;
@@ -1176,9 +1446,9 @@ export const QueryProposalsRequest = {
   },
   toAmino(message: QueryProposalsRequest): QueryProposalsRequestAmino {
     const obj: any = {};
-    obj.proposal_status = message.proposalStatus;
-    obj.voter = message.voter;
-    obj.depositor = message.depositor;
+    obj.proposal_status = message.proposalStatus === 0 ? undefined : message.proposalStatus;
+    obj.voter = message.voter === "" ? undefined : message.voter;
+    obj.depositor = message.depositor === "" ? undefined : message.depositor;
     obj.pagination = message.pagination ? PageRequest.toAmino(message.pagination) : undefined;
     return obj;
   },
@@ -1194,18 +1464,25 @@ export const QueryProposalsRequest = {
   toProtoMsg(message: QueryProposalsRequest): QueryProposalsRequestProtoMsg {
     return {
       typeUrl: "/atomone.gov.v1.QueryProposalsRequest",
-      value: QueryProposalsRequest.encode(message).finish(),
+      value: QueryProposalsRequest.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(QueryProposalsRequest.typeUrl, QueryProposalsRequest);
 function createBaseQueryProposalsResponse(): QueryProposalsResponse {
   return {
     proposals: [],
-    pagination: undefined,
+    pagination: undefined
   };
 }
 export const QueryProposalsResponse = {
   typeUrl: "/atomone.gov.v1.QueryProposalsResponse",
+  is(o: any): o is QueryProposalsResponse {
+    return o && (o.$typeUrl === QueryProposalsResponse.typeUrl || Array.isArray(o.proposals) && (!o.proposals.length || Proposal.is(o.proposals[0])));
+  },
+  isAmino(o: any): o is QueryProposalsResponseAmino {
+    return o && (o.$typeUrl === QueryProposalsResponse.typeUrl || Array.isArray(o.proposals) && (!o.proposals.length || Proposal.isAmino(o.proposals[0])));
+  },
   encode(message: QueryProposalsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.proposals) {
       Proposal.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -1237,25 +1514,23 @@ export const QueryProposalsResponse = {
   },
   fromJSON(object: any): QueryProposalsResponse {
     const obj = createBaseQueryProposalsResponse();
-    if (Array.isArray(object?.proposals))
-      obj.proposals = object.proposals.map((e: any) => Proposal.fromJSON(e));
+    if (Array.isArray(object?.proposals)) obj.proposals = object.proposals.map((e: any) => Proposal.fromJSON(e));
     if (isSet(object.pagination)) obj.pagination = PageResponse.fromJSON(object.pagination);
     return obj;
   },
-  toJSON(message: QueryProposalsResponse): unknown {
+  toJSON(message: QueryProposalsResponse): JsonSafe<QueryProposalsResponse> {
     const obj: any = {};
     if (message.proposals) {
-      obj.proposals = message.proposals.map((e) => (e ? Proposal.toJSON(e) : undefined));
+      obj.proposals = message.proposals.map(e => e ? Proposal.toJSON(e) : undefined);
     } else {
       obj.proposals = [];
     }
-    message.pagination !== undefined &&
-      (obj.pagination = message.pagination ? PageResponse.toJSON(message.pagination) : undefined);
+    message.pagination !== undefined && (obj.pagination = message.pagination ? PageResponse.toJSON(message.pagination) : undefined);
     return obj;
   },
   fromPartial(object: Partial<QueryProposalsResponse>): QueryProposalsResponse {
     const message = createBaseQueryProposalsResponse();
-    message.proposals = object.proposals?.map((e) => Proposal.fromPartial(e)) || [];
+    message.proposals = object.proposals?.map(e => Proposal.fromPartial(e)) || [];
     if (object.pagination !== undefined && object.pagination !== null) {
       message.pagination = PageResponse.fromPartial(object.pagination);
     }
@@ -1263,7 +1538,7 @@ export const QueryProposalsResponse = {
   },
   fromAmino(object: QueryProposalsResponseAmino): QueryProposalsResponse {
     const message = createBaseQueryProposalsResponse();
-    message.proposals = object.proposals?.map((e) => Proposal.fromAmino(e)) || [];
+    message.proposals = object.proposals?.map(e => Proposal.fromAmino(e)) || [];
     if (object.pagination !== undefined && object.pagination !== null) {
       message.pagination = PageResponse.fromAmino(object.pagination);
     }
@@ -1272,9 +1547,9 @@ export const QueryProposalsResponse = {
   toAmino(message: QueryProposalsResponse): QueryProposalsResponseAmino {
     const obj: any = {};
     if (message.proposals) {
-      obj.proposals = message.proposals.map((e) => (e ? Proposal.toAmino(e) : undefined));
+      obj.proposals = message.proposals.map(e => e ? Proposal.toAmino(e) : undefined);
     } else {
-      obj.proposals = [];
+      obj.proposals = message.proposals;
     }
     obj.pagination = message.pagination ? PageResponse.toAmino(message.pagination) : undefined;
     return obj;
@@ -1291,18 +1566,25 @@ export const QueryProposalsResponse = {
   toProtoMsg(message: QueryProposalsResponse): QueryProposalsResponseProtoMsg {
     return {
       typeUrl: "/atomone.gov.v1.QueryProposalsResponse",
-      value: QueryProposalsResponse.encode(message).finish(),
+      value: QueryProposalsResponse.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(QueryProposalsResponse.typeUrl, QueryProposalsResponse);
 function createBaseQueryVoteRequest(): QueryVoteRequest {
   return {
     proposalId: BigInt(0),
-    voter: "",
+    voter: ""
   };
 }
 export const QueryVoteRequest = {
   typeUrl: "/atomone.gov.v1.QueryVoteRequest",
+  is(o: any): o is QueryVoteRequest {
+    return o && (o.$typeUrl === QueryVoteRequest.typeUrl || typeof o.proposalId === "bigint" && typeof o.voter === "string");
+  },
+  isAmino(o: any): o is QueryVoteRequestAmino {
+    return o && (o.$typeUrl === QueryVoteRequest.typeUrl || typeof o.proposal_id === "bigint" && typeof o.voter === "string");
+  },
   encode(message: QueryVoteRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.proposalId !== BigInt(0)) {
       writer.uint32(8).uint64(message.proposalId);
@@ -1338,7 +1620,7 @@ export const QueryVoteRequest = {
     if (isSet(object.voter)) obj.voter = String(object.voter);
     return obj;
   },
-  toJSON(message: QueryVoteRequest): unknown {
+  toJSON(message: QueryVoteRequest): JsonSafe<QueryVoteRequest> {
     const obj: any = {};
     message.proposalId !== undefined && (obj.proposalId = (message.proposalId || BigInt(0)).toString());
     message.voter !== undefined && (obj.voter = message.voter);
@@ -1364,8 +1646,8 @@ export const QueryVoteRequest = {
   },
   toAmino(message: QueryVoteRequest): QueryVoteRequestAmino {
     const obj: any = {};
-    obj.proposal_id = message.proposalId ? message.proposalId.toString() : undefined;
-    obj.voter = message.voter;
+    obj.proposal_id = message.proposalId !== BigInt(0) ? message.proposalId?.toString() : undefined;
+    obj.voter = message.voter === "" ? undefined : message.voter;
     return obj;
   },
   fromAminoMsg(object: QueryVoteRequestAminoMsg): QueryVoteRequest {
@@ -1380,17 +1662,24 @@ export const QueryVoteRequest = {
   toProtoMsg(message: QueryVoteRequest): QueryVoteRequestProtoMsg {
     return {
       typeUrl: "/atomone.gov.v1.QueryVoteRequest",
-      value: QueryVoteRequest.encode(message).finish(),
+      value: QueryVoteRequest.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(QueryVoteRequest.typeUrl, QueryVoteRequest);
 function createBaseQueryVoteResponse(): QueryVoteResponse {
   return {
-    vote: undefined,
+    vote: undefined
   };
 }
 export const QueryVoteResponse = {
   typeUrl: "/atomone.gov.v1.QueryVoteResponse",
+  is(o: any): o is QueryVoteResponse {
+    return o && o.$typeUrl === QueryVoteResponse.typeUrl;
+  },
+  isAmino(o: any): o is QueryVoteResponseAmino {
+    return o && o.$typeUrl === QueryVoteResponse.typeUrl;
+  },
   encode(message: QueryVoteResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.vote !== undefined) {
       Vote.encode(message.vote, writer.uint32(10).fork()).ldelim();
@@ -1419,7 +1708,7 @@ export const QueryVoteResponse = {
     if (isSet(object.vote)) obj.vote = Vote.fromJSON(object.vote);
     return obj;
   },
-  toJSON(message: QueryVoteResponse): unknown {
+  toJSON(message: QueryVoteResponse): JsonSafe<QueryVoteResponse> {
     const obj: any = {};
     message.vote !== undefined && (obj.vote = message.vote ? Vote.toJSON(message.vote) : undefined);
     return obj;
@@ -1455,18 +1744,25 @@ export const QueryVoteResponse = {
   toProtoMsg(message: QueryVoteResponse): QueryVoteResponseProtoMsg {
     return {
       typeUrl: "/atomone.gov.v1.QueryVoteResponse",
-      value: QueryVoteResponse.encode(message).finish(),
+      value: QueryVoteResponse.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(QueryVoteResponse.typeUrl, QueryVoteResponse);
 function createBaseQueryVotesRequest(): QueryVotesRequest {
   return {
     proposalId: BigInt(0),
-    pagination: undefined,
+    pagination: undefined
   };
 }
 export const QueryVotesRequest = {
   typeUrl: "/atomone.gov.v1.QueryVotesRequest",
+  is(o: any): o is QueryVotesRequest {
+    return o && (o.$typeUrl === QueryVotesRequest.typeUrl || typeof o.proposalId === "bigint");
+  },
+  isAmino(o: any): o is QueryVotesRequestAmino {
+    return o && (o.$typeUrl === QueryVotesRequest.typeUrl || typeof o.proposal_id === "bigint");
+  },
   encode(message: QueryVotesRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.proposalId !== BigInt(0)) {
       writer.uint32(8).uint64(message.proposalId);
@@ -1502,11 +1798,10 @@ export const QueryVotesRequest = {
     if (isSet(object.pagination)) obj.pagination = PageRequest.fromJSON(object.pagination);
     return obj;
   },
-  toJSON(message: QueryVotesRequest): unknown {
+  toJSON(message: QueryVotesRequest): JsonSafe<QueryVotesRequest> {
     const obj: any = {};
     message.proposalId !== undefined && (obj.proposalId = (message.proposalId || BigInt(0)).toString());
-    message.pagination !== undefined &&
-      (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
+    message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
     return obj;
   },
   fromPartial(object: Partial<QueryVotesRequest>): QueryVotesRequest {
@@ -1531,7 +1826,7 @@ export const QueryVotesRequest = {
   },
   toAmino(message: QueryVotesRequest): QueryVotesRequestAmino {
     const obj: any = {};
-    obj.proposal_id = message.proposalId ? message.proposalId.toString() : undefined;
+    obj.proposal_id = message.proposalId !== BigInt(0) ? message.proposalId?.toString() : undefined;
     obj.pagination = message.pagination ? PageRequest.toAmino(message.pagination) : undefined;
     return obj;
   },
@@ -1547,18 +1842,25 @@ export const QueryVotesRequest = {
   toProtoMsg(message: QueryVotesRequest): QueryVotesRequestProtoMsg {
     return {
       typeUrl: "/atomone.gov.v1.QueryVotesRequest",
-      value: QueryVotesRequest.encode(message).finish(),
+      value: QueryVotesRequest.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(QueryVotesRequest.typeUrl, QueryVotesRequest);
 function createBaseQueryVotesResponse(): QueryVotesResponse {
   return {
     votes: [],
-    pagination: undefined,
+    pagination: undefined
   };
 }
 export const QueryVotesResponse = {
   typeUrl: "/atomone.gov.v1.QueryVotesResponse",
+  is(o: any): o is QueryVotesResponse {
+    return o && (o.$typeUrl === QueryVotesResponse.typeUrl || Array.isArray(o.votes) && (!o.votes.length || Vote.is(o.votes[0])));
+  },
+  isAmino(o: any): o is QueryVotesResponseAmino {
+    return o && (o.$typeUrl === QueryVotesResponse.typeUrl || Array.isArray(o.votes) && (!o.votes.length || Vote.isAmino(o.votes[0])));
+  },
   encode(message: QueryVotesResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.votes) {
       Vote.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -1594,20 +1896,19 @@ export const QueryVotesResponse = {
     if (isSet(object.pagination)) obj.pagination = PageResponse.fromJSON(object.pagination);
     return obj;
   },
-  toJSON(message: QueryVotesResponse): unknown {
+  toJSON(message: QueryVotesResponse): JsonSafe<QueryVotesResponse> {
     const obj: any = {};
     if (message.votes) {
-      obj.votes = message.votes.map((e) => (e ? Vote.toJSON(e) : undefined));
+      obj.votes = message.votes.map(e => e ? Vote.toJSON(e) : undefined);
     } else {
       obj.votes = [];
     }
-    message.pagination !== undefined &&
-      (obj.pagination = message.pagination ? PageResponse.toJSON(message.pagination) : undefined);
+    message.pagination !== undefined && (obj.pagination = message.pagination ? PageResponse.toJSON(message.pagination) : undefined);
     return obj;
   },
   fromPartial(object: Partial<QueryVotesResponse>): QueryVotesResponse {
     const message = createBaseQueryVotesResponse();
-    message.votes = object.votes?.map((e) => Vote.fromPartial(e)) || [];
+    message.votes = object.votes?.map(e => Vote.fromPartial(e)) || [];
     if (object.pagination !== undefined && object.pagination !== null) {
       message.pagination = PageResponse.fromPartial(object.pagination);
     }
@@ -1615,7 +1916,7 @@ export const QueryVotesResponse = {
   },
   fromAmino(object: QueryVotesResponseAmino): QueryVotesResponse {
     const message = createBaseQueryVotesResponse();
-    message.votes = object.votes?.map((e) => Vote.fromAmino(e)) || [];
+    message.votes = object.votes?.map(e => Vote.fromAmino(e)) || [];
     if (object.pagination !== undefined && object.pagination !== null) {
       message.pagination = PageResponse.fromAmino(object.pagination);
     }
@@ -1624,9 +1925,9 @@ export const QueryVotesResponse = {
   toAmino(message: QueryVotesResponse): QueryVotesResponseAmino {
     const obj: any = {};
     if (message.votes) {
-      obj.votes = message.votes.map((e) => (e ? Vote.toAmino(e) : undefined));
+      obj.votes = message.votes.map(e => e ? Vote.toAmino(e) : undefined);
     } else {
-      obj.votes = [];
+      obj.votes = message.votes;
     }
     obj.pagination = message.pagination ? PageResponse.toAmino(message.pagination) : undefined;
     return obj;
@@ -1643,17 +1944,24 @@ export const QueryVotesResponse = {
   toProtoMsg(message: QueryVotesResponse): QueryVotesResponseProtoMsg {
     return {
       typeUrl: "/atomone.gov.v1.QueryVotesResponse",
-      value: QueryVotesResponse.encode(message).finish(),
+      value: QueryVotesResponse.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(QueryVotesResponse.typeUrl, QueryVotesResponse);
 function createBaseQueryParamsRequest(): QueryParamsRequest {
   return {
-    paramsType: "",
+    paramsType: ""
   };
 }
 export const QueryParamsRequest = {
   typeUrl: "/atomone.gov.v1.QueryParamsRequest",
+  is(o: any): o is QueryParamsRequest {
+    return o && (o.$typeUrl === QueryParamsRequest.typeUrl || typeof o.paramsType === "string");
+  },
+  isAmino(o: any): o is QueryParamsRequestAmino {
+    return o && (o.$typeUrl === QueryParamsRequest.typeUrl || typeof o.params_type === "string");
+  },
   encode(message: QueryParamsRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.paramsType !== "") {
       writer.uint32(10).string(message.paramsType);
@@ -1682,7 +1990,7 @@ export const QueryParamsRequest = {
     if (isSet(object.paramsType)) obj.paramsType = String(object.paramsType);
     return obj;
   },
-  toJSON(message: QueryParamsRequest): unknown {
+  toJSON(message: QueryParamsRequest): JsonSafe<QueryParamsRequest> {
     const obj: any = {};
     message.paramsType !== undefined && (obj.paramsType = message.paramsType);
     return obj;
@@ -1701,7 +2009,7 @@ export const QueryParamsRequest = {
   },
   toAmino(message: QueryParamsRequest): QueryParamsRequestAmino {
     const obj: any = {};
-    obj.params_type = message.paramsType;
+    obj.params_type = message.paramsType === "" ? undefined : message.paramsType;
     return obj;
   },
   fromAminoMsg(object: QueryParamsRequestAminoMsg): QueryParamsRequest {
@@ -1716,20 +2024,27 @@ export const QueryParamsRequest = {
   toProtoMsg(message: QueryParamsRequest): QueryParamsRequestProtoMsg {
     return {
       typeUrl: "/atomone.gov.v1.QueryParamsRequest",
-      value: QueryParamsRequest.encode(message).finish(),
+      value: QueryParamsRequest.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(QueryParamsRequest.typeUrl, QueryParamsRequest);
 function createBaseQueryParamsResponse(): QueryParamsResponse {
   return {
     votingParams: undefined,
     depositParams: undefined,
     tallyParams: undefined,
-    params: undefined,
+    params: undefined
   };
 }
 export const QueryParamsResponse = {
   typeUrl: "/atomone.gov.v1.QueryParamsResponse",
+  is(o: any): o is QueryParamsResponse {
+    return o && o.$typeUrl === QueryParamsResponse.typeUrl;
+  },
+  isAmino(o: any): o is QueryParamsResponseAmino {
+    return o && o.$typeUrl === QueryParamsResponse.typeUrl;
+  },
   encode(message: QueryParamsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.votingParams !== undefined) {
       VotingParams.encode(message.votingParams, writer.uint32(10).fork()).ldelim();
@@ -1779,14 +2094,11 @@ export const QueryParamsResponse = {
     if (isSet(object.params)) obj.params = Params.fromJSON(object.params);
     return obj;
   },
-  toJSON(message: QueryParamsResponse): unknown {
+  toJSON(message: QueryParamsResponse): JsonSafe<QueryParamsResponse> {
     const obj: any = {};
-    message.votingParams !== undefined &&
-      (obj.votingParams = message.votingParams ? VotingParams.toJSON(message.votingParams) : undefined);
-    message.depositParams !== undefined &&
-      (obj.depositParams = message.depositParams ? DepositParams.toJSON(message.depositParams) : undefined);
-    message.tallyParams !== undefined &&
-      (obj.tallyParams = message.tallyParams ? TallyParams.toJSON(message.tallyParams) : undefined);
+    message.votingParams !== undefined && (obj.votingParams = message.votingParams ? VotingParams.toJSON(message.votingParams) : undefined);
+    message.depositParams !== undefined && (obj.depositParams = message.depositParams ? DepositParams.toJSON(message.depositParams) : undefined);
+    message.tallyParams !== undefined && (obj.tallyParams = message.tallyParams ? TallyParams.toJSON(message.tallyParams) : undefined);
     message.params !== undefined && (obj.params = message.params ? Params.toJSON(message.params) : undefined);
     return obj;
   },
@@ -1842,18 +2154,25 @@ export const QueryParamsResponse = {
   toProtoMsg(message: QueryParamsResponse): QueryParamsResponseProtoMsg {
     return {
       typeUrl: "/atomone.gov.v1.QueryParamsResponse",
-      value: QueryParamsResponse.encode(message).finish(),
+      value: QueryParamsResponse.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(QueryParamsResponse.typeUrl, QueryParamsResponse);
 function createBaseQueryDepositRequest(): QueryDepositRequest {
   return {
     proposalId: BigInt(0),
-    depositor: "",
+    depositor: ""
   };
 }
 export const QueryDepositRequest = {
   typeUrl: "/atomone.gov.v1.QueryDepositRequest",
+  is(o: any): o is QueryDepositRequest {
+    return o && (o.$typeUrl === QueryDepositRequest.typeUrl || typeof o.proposalId === "bigint" && typeof o.depositor === "string");
+  },
+  isAmino(o: any): o is QueryDepositRequestAmino {
+    return o && (o.$typeUrl === QueryDepositRequest.typeUrl || typeof o.proposal_id === "bigint" && typeof o.depositor === "string");
+  },
   encode(message: QueryDepositRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.proposalId !== BigInt(0)) {
       writer.uint32(8).uint64(message.proposalId);
@@ -1889,7 +2208,7 @@ export const QueryDepositRequest = {
     if (isSet(object.depositor)) obj.depositor = String(object.depositor);
     return obj;
   },
-  toJSON(message: QueryDepositRequest): unknown {
+  toJSON(message: QueryDepositRequest): JsonSafe<QueryDepositRequest> {
     const obj: any = {};
     message.proposalId !== undefined && (obj.proposalId = (message.proposalId || BigInt(0)).toString());
     message.depositor !== undefined && (obj.depositor = message.depositor);
@@ -1915,8 +2234,8 @@ export const QueryDepositRequest = {
   },
   toAmino(message: QueryDepositRequest): QueryDepositRequestAmino {
     const obj: any = {};
-    obj.proposal_id = message.proposalId ? message.proposalId.toString() : undefined;
-    obj.depositor = message.depositor;
+    obj.proposal_id = message.proposalId !== BigInt(0) ? message.proposalId?.toString() : undefined;
+    obj.depositor = message.depositor === "" ? undefined : message.depositor;
     return obj;
   },
   fromAminoMsg(object: QueryDepositRequestAminoMsg): QueryDepositRequest {
@@ -1931,17 +2250,24 @@ export const QueryDepositRequest = {
   toProtoMsg(message: QueryDepositRequest): QueryDepositRequestProtoMsg {
     return {
       typeUrl: "/atomone.gov.v1.QueryDepositRequest",
-      value: QueryDepositRequest.encode(message).finish(),
+      value: QueryDepositRequest.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(QueryDepositRequest.typeUrl, QueryDepositRequest);
 function createBaseQueryDepositResponse(): QueryDepositResponse {
   return {
-    deposit: undefined,
+    deposit: undefined
   };
 }
 export const QueryDepositResponse = {
   typeUrl: "/atomone.gov.v1.QueryDepositResponse",
+  is(o: any): o is QueryDepositResponse {
+    return o && o.$typeUrl === QueryDepositResponse.typeUrl;
+  },
+  isAmino(o: any): o is QueryDepositResponseAmino {
+    return o && o.$typeUrl === QueryDepositResponse.typeUrl;
+  },
   encode(message: QueryDepositResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.deposit !== undefined) {
       Deposit.encode(message.deposit, writer.uint32(10).fork()).ldelim();
@@ -1970,10 +2296,9 @@ export const QueryDepositResponse = {
     if (isSet(object.deposit)) obj.deposit = Deposit.fromJSON(object.deposit);
     return obj;
   },
-  toJSON(message: QueryDepositResponse): unknown {
+  toJSON(message: QueryDepositResponse): JsonSafe<QueryDepositResponse> {
     const obj: any = {};
-    message.deposit !== undefined &&
-      (obj.deposit = message.deposit ? Deposit.toJSON(message.deposit) : undefined);
+    message.deposit !== undefined && (obj.deposit = message.deposit ? Deposit.toJSON(message.deposit) : undefined);
     return obj;
   },
   fromPartial(object: Partial<QueryDepositResponse>): QueryDepositResponse {
@@ -2007,18 +2332,25 @@ export const QueryDepositResponse = {
   toProtoMsg(message: QueryDepositResponse): QueryDepositResponseProtoMsg {
     return {
       typeUrl: "/atomone.gov.v1.QueryDepositResponse",
-      value: QueryDepositResponse.encode(message).finish(),
+      value: QueryDepositResponse.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(QueryDepositResponse.typeUrl, QueryDepositResponse);
 function createBaseQueryDepositsRequest(): QueryDepositsRequest {
   return {
     proposalId: BigInt(0),
-    pagination: undefined,
+    pagination: undefined
   };
 }
 export const QueryDepositsRequest = {
   typeUrl: "/atomone.gov.v1.QueryDepositsRequest",
+  is(o: any): o is QueryDepositsRequest {
+    return o && (o.$typeUrl === QueryDepositsRequest.typeUrl || typeof o.proposalId === "bigint");
+  },
+  isAmino(o: any): o is QueryDepositsRequestAmino {
+    return o && (o.$typeUrl === QueryDepositsRequest.typeUrl || typeof o.proposal_id === "bigint");
+  },
   encode(message: QueryDepositsRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.proposalId !== BigInt(0)) {
       writer.uint32(8).uint64(message.proposalId);
@@ -2054,11 +2386,10 @@ export const QueryDepositsRequest = {
     if (isSet(object.pagination)) obj.pagination = PageRequest.fromJSON(object.pagination);
     return obj;
   },
-  toJSON(message: QueryDepositsRequest): unknown {
+  toJSON(message: QueryDepositsRequest): JsonSafe<QueryDepositsRequest> {
     const obj: any = {};
     message.proposalId !== undefined && (obj.proposalId = (message.proposalId || BigInt(0)).toString());
-    message.pagination !== undefined &&
-      (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
+    message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
     return obj;
   },
   fromPartial(object: Partial<QueryDepositsRequest>): QueryDepositsRequest {
@@ -2083,7 +2414,7 @@ export const QueryDepositsRequest = {
   },
   toAmino(message: QueryDepositsRequest): QueryDepositsRequestAmino {
     const obj: any = {};
-    obj.proposal_id = message.proposalId ? message.proposalId.toString() : undefined;
+    obj.proposal_id = message.proposalId !== BigInt(0) ? message.proposalId?.toString() : undefined;
     obj.pagination = message.pagination ? PageRequest.toAmino(message.pagination) : undefined;
     return obj;
   },
@@ -2099,18 +2430,25 @@ export const QueryDepositsRequest = {
   toProtoMsg(message: QueryDepositsRequest): QueryDepositsRequestProtoMsg {
     return {
       typeUrl: "/atomone.gov.v1.QueryDepositsRequest",
-      value: QueryDepositsRequest.encode(message).finish(),
+      value: QueryDepositsRequest.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(QueryDepositsRequest.typeUrl, QueryDepositsRequest);
 function createBaseQueryDepositsResponse(): QueryDepositsResponse {
   return {
     deposits: [],
-    pagination: undefined,
+    pagination: undefined
   };
 }
 export const QueryDepositsResponse = {
   typeUrl: "/atomone.gov.v1.QueryDepositsResponse",
+  is(o: any): o is QueryDepositsResponse {
+    return o && (o.$typeUrl === QueryDepositsResponse.typeUrl || Array.isArray(o.deposits) && (!o.deposits.length || Deposit.is(o.deposits[0])));
+  },
+  isAmino(o: any): o is QueryDepositsResponseAmino {
+    return o && (o.$typeUrl === QueryDepositsResponse.typeUrl || Array.isArray(o.deposits) && (!o.deposits.length || Deposit.isAmino(o.deposits[0])));
+  },
   encode(message: QueryDepositsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.deposits) {
       Deposit.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -2146,20 +2484,19 @@ export const QueryDepositsResponse = {
     if (isSet(object.pagination)) obj.pagination = PageResponse.fromJSON(object.pagination);
     return obj;
   },
-  toJSON(message: QueryDepositsResponse): unknown {
+  toJSON(message: QueryDepositsResponse): JsonSafe<QueryDepositsResponse> {
     const obj: any = {};
     if (message.deposits) {
-      obj.deposits = message.deposits.map((e) => (e ? Deposit.toJSON(e) : undefined));
+      obj.deposits = message.deposits.map(e => e ? Deposit.toJSON(e) : undefined);
     } else {
       obj.deposits = [];
     }
-    message.pagination !== undefined &&
-      (obj.pagination = message.pagination ? PageResponse.toJSON(message.pagination) : undefined);
+    message.pagination !== undefined && (obj.pagination = message.pagination ? PageResponse.toJSON(message.pagination) : undefined);
     return obj;
   },
   fromPartial(object: Partial<QueryDepositsResponse>): QueryDepositsResponse {
     const message = createBaseQueryDepositsResponse();
-    message.deposits = object.deposits?.map((e) => Deposit.fromPartial(e)) || [];
+    message.deposits = object.deposits?.map(e => Deposit.fromPartial(e)) || [];
     if (object.pagination !== undefined && object.pagination !== null) {
       message.pagination = PageResponse.fromPartial(object.pagination);
     }
@@ -2167,7 +2504,7 @@ export const QueryDepositsResponse = {
   },
   fromAmino(object: QueryDepositsResponseAmino): QueryDepositsResponse {
     const message = createBaseQueryDepositsResponse();
-    message.deposits = object.deposits?.map((e) => Deposit.fromAmino(e)) || [];
+    message.deposits = object.deposits?.map(e => Deposit.fromAmino(e)) || [];
     if (object.pagination !== undefined && object.pagination !== null) {
       message.pagination = PageResponse.fromAmino(object.pagination);
     }
@@ -2176,9 +2513,9 @@ export const QueryDepositsResponse = {
   toAmino(message: QueryDepositsResponse): QueryDepositsResponseAmino {
     const obj: any = {};
     if (message.deposits) {
-      obj.deposits = message.deposits.map((e) => (e ? Deposit.toAmino(e) : undefined));
+      obj.deposits = message.deposits.map(e => e ? Deposit.toAmino(e) : undefined);
     } else {
-      obj.deposits = [];
+      obj.deposits = message.deposits;
     }
     obj.pagination = message.pagination ? PageResponse.toAmino(message.pagination) : undefined;
     return obj;
@@ -2195,17 +2532,24 @@ export const QueryDepositsResponse = {
   toProtoMsg(message: QueryDepositsResponse): QueryDepositsResponseProtoMsg {
     return {
       typeUrl: "/atomone.gov.v1.QueryDepositsResponse",
-      value: QueryDepositsResponse.encode(message).finish(),
+      value: QueryDepositsResponse.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(QueryDepositsResponse.typeUrl, QueryDepositsResponse);
 function createBaseQueryTallyResultRequest(): QueryTallyResultRequest {
   return {
-    proposalId: BigInt(0),
+    proposalId: BigInt(0)
   };
 }
 export const QueryTallyResultRequest = {
   typeUrl: "/atomone.gov.v1.QueryTallyResultRequest",
+  is(o: any): o is QueryTallyResultRequest {
+    return o && (o.$typeUrl === QueryTallyResultRequest.typeUrl || typeof o.proposalId === "bigint");
+  },
+  isAmino(o: any): o is QueryTallyResultRequestAmino {
+    return o && (o.$typeUrl === QueryTallyResultRequest.typeUrl || typeof o.proposal_id === "bigint");
+  },
   encode(message: QueryTallyResultRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.proposalId !== BigInt(0)) {
       writer.uint32(8).uint64(message.proposalId);
@@ -2234,7 +2578,7 @@ export const QueryTallyResultRequest = {
     if (isSet(object.proposalId)) obj.proposalId = BigInt(object.proposalId.toString());
     return obj;
   },
-  toJSON(message: QueryTallyResultRequest): unknown {
+  toJSON(message: QueryTallyResultRequest): JsonSafe<QueryTallyResultRequest> {
     const obj: any = {};
     message.proposalId !== undefined && (obj.proposalId = (message.proposalId || BigInt(0)).toString());
     return obj;
@@ -2255,7 +2599,7 @@ export const QueryTallyResultRequest = {
   },
   toAmino(message: QueryTallyResultRequest): QueryTallyResultRequestAmino {
     const obj: any = {};
-    obj.proposal_id = message.proposalId ? message.proposalId.toString() : undefined;
+    obj.proposal_id = message.proposalId !== BigInt(0) ? message.proposalId?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: QueryTallyResultRequestAminoMsg): QueryTallyResultRequest {
@@ -2270,17 +2614,24 @@ export const QueryTallyResultRequest = {
   toProtoMsg(message: QueryTallyResultRequest): QueryTallyResultRequestProtoMsg {
     return {
       typeUrl: "/atomone.gov.v1.QueryTallyResultRequest",
-      value: QueryTallyResultRequest.encode(message).finish(),
+      value: QueryTallyResultRequest.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(QueryTallyResultRequest.typeUrl, QueryTallyResultRequest);
 function createBaseQueryTallyResultResponse(): QueryTallyResultResponse {
   return {
-    tally: undefined,
+    tally: undefined
   };
 }
 export const QueryTallyResultResponse = {
   typeUrl: "/atomone.gov.v1.QueryTallyResultResponse",
+  is(o: any): o is QueryTallyResultResponse {
+    return o && o.$typeUrl === QueryTallyResultResponse.typeUrl;
+  },
+  isAmino(o: any): o is QueryTallyResultResponseAmino {
+    return o && o.$typeUrl === QueryTallyResultResponse.typeUrl;
+  },
   encode(message: QueryTallyResultResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.tally !== undefined) {
       TallyResult.encode(message.tally, writer.uint32(10).fork()).ldelim();
@@ -2309,10 +2660,9 @@ export const QueryTallyResultResponse = {
     if (isSet(object.tally)) obj.tally = TallyResult.fromJSON(object.tally);
     return obj;
   },
-  toJSON(message: QueryTallyResultResponse): unknown {
+  toJSON(message: QueryTallyResultResponse): JsonSafe<QueryTallyResultResponse> {
     const obj: any = {};
-    message.tally !== undefined &&
-      (obj.tally = message.tally ? TallyResult.toJSON(message.tally) : undefined);
+    message.tally !== undefined && (obj.tally = message.tally ? TallyResult.toJSON(message.tally) : undefined);
     return obj;
   },
   fromPartial(object: Partial<QueryTallyResultResponse>): QueryTallyResultResponse {
@@ -2346,15 +2696,22 @@ export const QueryTallyResultResponse = {
   toProtoMsg(message: QueryTallyResultResponse): QueryTallyResultResponseProtoMsg {
     return {
       typeUrl: "/atomone.gov.v1.QueryTallyResultResponse",
-      value: QueryTallyResultResponse.encode(message).finish(),
+      value: QueryTallyResultResponse.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(QueryTallyResultResponse.typeUrl, QueryTallyResultResponse);
 function createBaseQueryMinDepositRequest(): QueryMinDepositRequest {
   return {};
 }
 export const QueryMinDepositRequest = {
   typeUrl: "/atomone.gov.v1.QueryMinDepositRequest",
+  is(o: any): o is QueryMinDepositRequest {
+    return o && o.$typeUrl === QueryMinDepositRequest.typeUrl;
+  },
+  isAmino(o: any): o is QueryMinDepositRequestAmino {
+    return o && o.$typeUrl === QueryMinDepositRequest.typeUrl;
+  },
   encode(_: QueryMinDepositRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
@@ -2376,7 +2733,7 @@ export const QueryMinDepositRequest = {
     const obj = createBaseQueryMinDepositRequest();
     return obj;
   },
-  toJSON(_: QueryMinDepositRequest): unknown {
+  toJSON(_: QueryMinDepositRequest): JsonSafe<QueryMinDepositRequest> {
     const obj: any = {};
     return obj;
   },
@@ -2404,17 +2761,24 @@ export const QueryMinDepositRequest = {
   toProtoMsg(message: QueryMinDepositRequest): QueryMinDepositRequestProtoMsg {
     return {
       typeUrl: "/atomone.gov.v1.QueryMinDepositRequest",
-      value: QueryMinDepositRequest.encode(message).finish(),
+      value: QueryMinDepositRequest.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(QueryMinDepositRequest.typeUrl, QueryMinDepositRequest);
 function createBaseQueryMinDepositResponse(): QueryMinDepositResponse {
   return {
-    minDeposit: [],
+    minDeposit: []
   };
 }
 export const QueryMinDepositResponse = {
   typeUrl: "/atomone.gov.v1.QueryMinDepositResponse",
+  is(o: any): o is QueryMinDepositResponse {
+    return o && (o.$typeUrl === QueryMinDepositResponse.typeUrl || Array.isArray(o.minDeposit) && (!o.minDeposit.length || Coin.is(o.minDeposit[0])));
+  },
+  isAmino(o: any): o is QueryMinDepositResponseAmino {
+    return o && (o.$typeUrl === QueryMinDepositResponse.typeUrl || Array.isArray(o.min_deposit) && (!o.min_deposit.length || Coin.isAmino(o.min_deposit[0])));
+  },
   encode(message: QueryMinDepositResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.minDeposit) {
       Coin.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -2440,14 +2804,13 @@ export const QueryMinDepositResponse = {
   },
   fromJSON(object: any): QueryMinDepositResponse {
     const obj = createBaseQueryMinDepositResponse();
-    if (Array.isArray(object?.minDeposit))
-      obj.minDeposit = object.minDeposit.map((e: any) => Coin.fromJSON(e));
+    if (Array.isArray(object?.minDeposit)) obj.minDeposit = object.minDeposit.map((e: any) => Coin.fromJSON(e));
     return obj;
   },
-  toJSON(message: QueryMinDepositResponse): unknown {
+  toJSON(message: QueryMinDepositResponse): JsonSafe<QueryMinDepositResponse> {
     const obj: any = {};
     if (message.minDeposit) {
-      obj.minDeposit = message.minDeposit.map((e) => (e ? Coin.toJSON(e) : undefined));
+      obj.minDeposit = message.minDeposit.map(e => e ? Coin.toJSON(e) : undefined);
     } else {
       obj.minDeposit = [];
     }
@@ -2455,20 +2818,20 @@ export const QueryMinDepositResponse = {
   },
   fromPartial(object: Partial<QueryMinDepositResponse>): QueryMinDepositResponse {
     const message = createBaseQueryMinDepositResponse();
-    message.minDeposit = object.minDeposit?.map((e) => Coin.fromPartial(e)) || [];
+    message.minDeposit = object.minDeposit?.map(e => Coin.fromPartial(e)) || [];
     return message;
   },
   fromAmino(object: QueryMinDepositResponseAmino): QueryMinDepositResponse {
     const message = createBaseQueryMinDepositResponse();
-    message.minDeposit = object.min_deposit?.map((e) => Coin.fromAmino(e)) || [];
+    message.minDeposit = object.min_deposit?.map(e => Coin.fromAmino(e)) || [];
     return message;
   },
   toAmino(message: QueryMinDepositResponse): QueryMinDepositResponseAmino {
     const obj: any = {};
     if (message.minDeposit) {
-      obj.min_deposit = message.minDeposit.map((e) => (e ? Coin.toAmino(e) : undefined));
+      obj.min_deposit = message.minDeposit.map(e => e ? Coin.toAmino(e) : undefined);
     } else {
-      obj.min_deposit = [];
+      obj.min_deposit = message.minDeposit;
     }
     return obj;
   },
@@ -2484,15 +2847,22 @@ export const QueryMinDepositResponse = {
   toProtoMsg(message: QueryMinDepositResponse): QueryMinDepositResponseProtoMsg {
     return {
       typeUrl: "/atomone.gov.v1.QueryMinDepositResponse",
-      value: QueryMinDepositResponse.encode(message).finish(),
+      value: QueryMinDepositResponse.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(QueryMinDepositResponse.typeUrl, QueryMinDepositResponse);
 function createBaseQueryMinInitialDepositRequest(): QueryMinInitialDepositRequest {
   return {};
 }
 export const QueryMinInitialDepositRequest = {
   typeUrl: "/atomone.gov.v1.QueryMinInitialDepositRequest",
+  is(o: any): o is QueryMinInitialDepositRequest {
+    return o && o.$typeUrl === QueryMinInitialDepositRequest.typeUrl;
+  },
+  isAmino(o: any): o is QueryMinInitialDepositRequestAmino {
+    return o && o.$typeUrl === QueryMinInitialDepositRequest.typeUrl;
+  },
   encode(_: QueryMinInitialDepositRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
@@ -2514,7 +2884,7 @@ export const QueryMinInitialDepositRequest = {
     const obj = createBaseQueryMinInitialDepositRequest();
     return obj;
   },
-  toJSON(_: QueryMinInitialDepositRequest): unknown {
+  toJSON(_: QueryMinInitialDepositRequest): JsonSafe<QueryMinInitialDepositRequest> {
     const obj: any = {};
     return obj;
   },
@@ -2542,21 +2912,25 @@ export const QueryMinInitialDepositRequest = {
   toProtoMsg(message: QueryMinInitialDepositRequest): QueryMinInitialDepositRequestProtoMsg {
     return {
       typeUrl: "/atomone.gov.v1.QueryMinInitialDepositRequest",
-      value: QueryMinInitialDepositRequest.encode(message).finish(),
+      value: QueryMinInitialDepositRequest.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(QueryMinInitialDepositRequest.typeUrl, QueryMinInitialDepositRequest);
 function createBaseQueryMinInitialDepositResponse(): QueryMinInitialDepositResponse {
   return {
-    minInitialDeposit: [],
+    minInitialDeposit: []
   };
 }
 export const QueryMinInitialDepositResponse = {
   typeUrl: "/atomone.gov.v1.QueryMinInitialDepositResponse",
-  encode(
-    message: QueryMinInitialDepositResponse,
-    writer: BinaryWriter = BinaryWriter.create(),
-  ): BinaryWriter {
+  is(o: any): o is QueryMinInitialDepositResponse {
+    return o && (o.$typeUrl === QueryMinInitialDepositResponse.typeUrl || Array.isArray(o.minInitialDeposit) && (!o.minInitialDeposit.length || Coin.is(o.minInitialDeposit[0])));
+  },
+  isAmino(o: any): o is QueryMinInitialDepositResponseAmino {
+    return o && (o.$typeUrl === QueryMinInitialDepositResponse.typeUrl || Array.isArray(o.min_initial_deposit) && (!o.min_initial_deposit.length || Coin.isAmino(o.min_initial_deposit[0])));
+  },
+  encode(message: QueryMinInitialDepositResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.minInitialDeposit) {
       Coin.encode(v!, writer.uint32(10).fork()).ldelim();
     }
@@ -2581,14 +2955,13 @@ export const QueryMinInitialDepositResponse = {
   },
   fromJSON(object: any): QueryMinInitialDepositResponse {
     const obj = createBaseQueryMinInitialDepositResponse();
-    if (Array.isArray(object?.minInitialDeposit))
-      obj.minInitialDeposit = object.minInitialDeposit.map((e: any) => Coin.fromJSON(e));
+    if (Array.isArray(object?.minInitialDeposit)) obj.minInitialDeposit = object.minInitialDeposit.map((e: any) => Coin.fromJSON(e));
     return obj;
   },
-  toJSON(message: QueryMinInitialDepositResponse): unknown {
+  toJSON(message: QueryMinInitialDepositResponse): JsonSafe<QueryMinInitialDepositResponse> {
     const obj: any = {};
     if (message.minInitialDeposit) {
-      obj.minInitialDeposit = message.minInitialDeposit.map((e) => (e ? Coin.toJSON(e) : undefined));
+      obj.minInitialDeposit = message.minInitialDeposit.map(e => e ? Coin.toJSON(e) : undefined);
     } else {
       obj.minInitialDeposit = [];
     }
@@ -2596,20 +2969,20 @@ export const QueryMinInitialDepositResponse = {
   },
   fromPartial(object: Partial<QueryMinInitialDepositResponse>): QueryMinInitialDepositResponse {
     const message = createBaseQueryMinInitialDepositResponse();
-    message.minInitialDeposit = object.minInitialDeposit?.map((e) => Coin.fromPartial(e)) || [];
+    message.minInitialDeposit = object.minInitialDeposit?.map(e => Coin.fromPartial(e)) || [];
     return message;
   },
   fromAmino(object: QueryMinInitialDepositResponseAmino): QueryMinInitialDepositResponse {
     const message = createBaseQueryMinInitialDepositResponse();
-    message.minInitialDeposit = object.min_initial_deposit?.map((e) => Coin.fromAmino(e)) || [];
+    message.minInitialDeposit = object.min_initial_deposit?.map(e => Coin.fromAmino(e)) || [];
     return message;
   },
   toAmino(message: QueryMinInitialDepositResponse): QueryMinInitialDepositResponseAmino {
     const obj: any = {};
     if (message.minInitialDeposit) {
-      obj.min_initial_deposit = message.minInitialDeposit.map((e) => (e ? Coin.toAmino(e) : undefined));
+      obj.min_initial_deposit = message.minInitialDeposit.map(e => e ? Coin.toAmino(e) : undefined);
     } else {
-      obj.min_initial_deposit = [];
+      obj.min_initial_deposit = message.minInitialDeposit;
     }
     return obj;
   },
@@ -2625,15 +2998,22 @@ export const QueryMinInitialDepositResponse = {
   toProtoMsg(message: QueryMinInitialDepositResponse): QueryMinInitialDepositResponseProtoMsg {
     return {
       typeUrl: "/atomone.gov.v1.QueryMinInitialDepositResponse",
-      value: QueryMinInitialDepositResponse.encode(message).finish(),
+      value: QueryMinInitialDepositResponse.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(QueryMinInitialDepositResponse.typeUrl, QueryMinInitialDepositResponse);
 function createBaseQueryQuorumsRequest(): QueryQuorumsRequest {
   return {};
 }
 export const QueryQuorumsRequest = {
   typeUrl: "/atomone.gov.v1.QueryQuorumsRequest",
+  is(o: any): o is QueryQuorumsRequest {
+    return o && o.$typeUrl === QueryQuorumsRequest.typeUrl;
+  },
+  isAmino(o: any): o is QueryQuorumsRequestAmino {
+    return o && o.$typeUrl === QueryQuorumsRequest.typeUrl;
+  },
   encode(_: QueryQuorumsRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
@@ -2655,7 +3035,7 @@ export const QueryQuorumsRequest = {
     const obj = createBaseQueryQuorumsRequest();
     return obj;
   },
-  toJSON(_: QueryQuorumsRequest): unknown {
+  toJSON(_: QueryQuorumsRequest): JsonSafe<QueryQuorumsRequest> {
     const obj: any = {};
     return obj;
   },
@@ -2683,19 +3063,26 @@ export const QueryQuorumsRequest = {
   toProtoMsg(message: QueryQuorumsRequest): QueryQuorumsRequestProtoMsg {
     return {
       typeUrl: "/atomone.gov.v1.QueryQuorumsRequest",
-      value: QueryQuorumsRequest.encode(message).finish(),
+      value: QueryQuorumsRequest.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(QueryQuorumsRequest.typeUrl, QueryQuorumsRequest);
 function createBaseQueryQuorumsResponse(): QueryQuorumsResponse {
   return {
     quorum: "",
     constitutionAmendmentQuorum: "",
-    lawQuorum: "",
+    lawQuorum: ""
   };
 }
 export const QueryQuorumsResponse = {
   typeUrl: "/atomone.gov.v1.QueryQuorumsResponse",
+  is(o: any): o is QueryQuorumsResponse {
+    return o && (o.$typeUrl === QueryQuorumsResponse.typeUrl || typeof o.quorum === "string" && typeof o.constitutionAmendmentQuorum === "string" && typeof o.lawQuorum === "string");
+  },
+  isAmino(o: any): o is QueryQuorumsResponseAmino {
+    return o && (o.$typeUrl === QueryQuorumsResponse.typeUrl || typeof o.quorum === "string" && typeof o.constitution_amendment_quorum === "string" && typeof o.law_quorum === "string");
+  },
   encode(message: QueryQuorumsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.quorum !== "") {
       writer.uint32(10).string(message.quorum);
@@ -2734,16 +3121,14 @@ export const QueryQuorumsResponse = {
   fromJSON(object: any): QueryQuorumsResponse {
     const obj = createBaseQueryQuorumsResponse();
     if (isSet(object.quorum)) obj.quorum = String(object.quorum);
-    if (isSet(object.constitutionAmendmentQuorum))
-      obj.constitutionAmendmentQuorum = String(object.constitutionAmendmentQuorum);
+    if (isSet(object.constitutionAmendmentQuorum)) obj.constitutionAmendmentQuorum = String(object.constitutionAmendmentQuorum);
     if (isSet(object.lawQuorum)) obj.lawQuorum = String(object.lawQuorum);
     return obj;
   },
-  toJSON(message: QueryQuorumsResponse): unknown {
+  toJSON(message: QueryQuorumsResponse): JsonSafe<QueryQuorumsResponse> {
     const obj: any = {};
     message.quorum !== undefined && (obj.quorum = message.quorum);
-    message.constitutionAmendmentQuorum !== undefined &&
-      (obj.constitutionAmendmentQuorum = message.constitutionAmendmentQuorum);
+    message.constitutionAmendmentQuorum !== undefined && (obj.constitutionAmendmentQuorum = message.constitutionAmendmentQuorum);
     message.lawQuorum !== undefined && (obj.lawQuorum = message.lawQuorum);
     return obj;
   },
@@ -2769,9 +3154,9 @@ export const QueryQuorumsResponse = {
   },
   toAmino(message: QueryQuorumsResponse): QueryQuorumsResponseAmino {
     const obj: any = {};
-    obj.quorum = message.quorum;
-    obj.constitution_amendment_quorum = message.constitutionAmendmentQuorum;
-    obj.law_quorum = message.lawQuorum;
+    obj.quorum = message.quorum === "" ? undefined : message.quorum;
+    obj.constitution_amendment_quorum = message.constitutionAmendmentQuorum === "" ? undefined : message.constitutionAmendmentQuorum;
+    obj.law_quorum = message.lawQuorum === "" ? undefined : message.lawQuorum;
     return obj;
   },
   fromAminoMsg(object: QueryQuorumsResponseAminoMsg): QueryQuorumsResponse {
@@ -2786,15 +3171,22 @@ export const QueryQuorumsResponse = {
   toProtoMsg(message: QueryQuorumsResponse): QueryQuorumsResponseProtoMsg {
     return {
       typeUrl: "/atomone.gov.v1.QueryQuorumsResponse",
-      value: QueryQuorumsResponse.encode(message).finish(),
+      value: QueryQuorumsResponse.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(QueryQuorumsResponse.typeUrl, QueryQuorumsResponse);
 function createBaseQueryParticipationEMAsRequest(): QueryParticipationEMAsRequest {
   return {};
 }
 export const QueryParticipationEMAsRequest = {
   typeUrl: "/atomone.gov.v1.QueryParticipationEMAsRequest",
+  is(o: any): o is QueryParticipationEMAsRequest {
+    return o && o.$typeUrl === QueryParticipationEMAsRequest.typeUrl;
+  },
+  isAmino(o: any): o is QueryParticipationEMAsRequestAmino {
+    return o && o.$typeUrl === QueryParticipationEMAsRequest.typeUrl;
+  },
   encode(_: QueryParticipationEMAsRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
@@ -2816,7 +3208,7 @@ export const QueryParticipationEMAsRequest = {
     const obj = createBaseQueryParticipationEMAsRequest();
     return obj;
   },
-  toJSON(_: QueryParticipationEMAsRequest): unknown {
+  toJSON(_: QueryParticipationEMAsRequest): JsonSafe<QueryParticipationEMAsRequest> {
     const obj: any = {};
     return obj;
   },
@@ -2844,23 +3236,27 @@ export const QueryParticipationEMAsRequest = {
   toProtoMsg(message: QueryParticipationEMAsRequest): QueryParticipationEMAsRequestProtoMsg {
     return {
       typeUrl: "/atomone.gov.v1.QueryParticipationEMAsRequest",
-      value: QueryParticipationEMAsRequest.encode(message).finish(),
+      value: QueryParticipationEMAsRequest.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(QueryParticipationEMAsRequest.typeUrl, QueryParticipationEMAsRequest);
 function createBaseQueryParticipationEMAsResponse(): QueryParticipationEMAsResponse {
   return {
     participationEma: "",
     constitutionAmendmentParticipationEma: "",
-    lawParticipationEma: "",
+    lawParticipationEma: ""
   };
 }
 export const QueryParticipationEMAsResponse = {
   typeUrl: "/atomone.gov.v1.QueryParticipationEMAsResponse",
-  encode(
-    message: QueryParticipationEMAsResponse,
-    writer: BinaryWriter = BinaryWriter.create(),
-  ): BinaryWriter {
+  is(o: any): o is QueryParticipationEMAsResponse {
+    return o && (o.$typeUrl === QueryParticipationEMAsResponse.typeUrl || typeof o.participationEma === "string" && typeof o.constitutionAmendmentParticipationEma === "string" && typeof o.lawParticipationEma === "string");
+  },
+  isAmino(o: any): o is QueryParticipationEMAsResponseAmino {
+    return o && (o.$typeUrl === QueryParticipationEMAsResponse.typeUrl || typeof o.participation_ema === "string" && typeof o.constitution_amendment_participation_ema === "string" && typeof o.law_participation_ema === "string");
+  },
+  encode(message: QueryParticipationEMAsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.participationEma !== "") {
       writer.uint32(10).string(message.participationEma);
     }
@@ -2898,16 +3294,14 @@ export const QueryParticipationEMAsResponse = {
   fromJSON(object: any): QueryParticipationEMAsResponse {
     const obj = createBaseQueryParticipationEMAsResponse();
     if (isSet(object.participationEma)) obj.participationEma = String(object.participationEma);
-    if (isSet(object.constitutionAmendmentParticipationEma))
-      obj.constitutionAmendmentParticipationEma = String(object.constitutionAmendmentParticipationEma);
+    if (isSet(object.constitutionAmendmentParticipationEma)) obj.constitutionAmendmentParticipationEma = String(object.constitutionAmendmentParticipationEma);
     if (isSet(object.lawParticipationEma)) obj.lawParticipationEma = String(object.lawParticipationEma);
     return obj;
   },
-  toJSON(message: QueryParticipationEMAsResponse): unknown {
+  toJSON(message: QueryParticipationEMAsResponse): JsonSafe<QueryParticipationEMAsResponse> {
     const obj: any = {};
     message.participationEma !== undefined && (obj.participationEma = message.participationEma);
-    message.constitutionAmendmentParticipationEma !== undefined &&
-      (obj.constitutionAmendmentParticipationEma = message.constitutionAmendmentParticipationEma);
+    message.constitutionAmendmentParticipationEma !== undefined && (obj.constitutionAmendmentParticipationEma = message.constitutionAmendmentParticipationEma);
     message.lawParticipationEma !== undefined && (obj.lawParticipationEma = message.lawParticipationEma);
     return obj;
   },
@@ -2923,10 +3317,7 @@ export const QueryParticipationEMAsResponse = {
     if (object.participation_ema !== undefined && object.participation_ema !== null) {
       message.participationEma = object.participation_ema;
     }
-    if (
-      object.constitution_amendment_participation_ema !== undefined &&
-      object.constitution_amendment_participation_ema !== null
-    ) {
+    if (object.constitution_amendment_participation_ema !== undefined && object.constitution_amendment_participation_ema !== null) {
       message.constitutionAmendmentParticipationEma = object.constitution_amendment_participation_ema;
     }
     if (object.law_participation_ema !== undefined && object.law_participation_ema !== null) {
@@ -2936,9 +3327,9 @@ export const QueryParticipationEMAsResponse = {
   },
   toAmino(message: QueryParticipationEMAsResponse): QueryParticipationEMAsResponseAmino {
     const obj: any = {};
-    obj.participation_ema = message.participationEma;
-    obj.constitution_amendment_participation_ema = message.constitutionAmendmentParticipationEma;
-    obj.law_participation_ema = message.lawParticipationEma;
+    obj.participation_ema = message.participationEma === "" ? undefined : message.participationEma;
+    obj.constitution_amendment_participation_ema = message.constitutionAmendmentParticipationEma === "" ? undefined : message.constitutionAmendmentParticipationEma;
+    obj.law_participation_ema = message.lawParticipationEma === "" ? undefined : message.lawParticipationEma;
     return obj;
   },
   fromAminoMsg(object: QueryParticipationEMAsResponseAminoMsg): QueryParticipationEMAsResponse {
@@ -2953,17 +3344,24 @@ export const QueryParticipationEMAsResponse = {
   toProtoMsg(message: QueryParticipationEMAsResponse): QueryParticipationEMAsResponseProtoMsg {
     return {
       typeUrl: "/atomone.gov.v1.QueryParticipationEMAsResponse",
-      value: QueryParticipationEMAsResponse.encode(message).finish(),
+      value: QueryParticipationEMAsResponse.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(QueryParticipationEMAsResponse.typeUrl, QueryParticipationEMAsResponse);
 function createBaseQueryGovernorRequest(): QueryGovernorRequest {
   return {
-    governorAddress: "",
+    governorAddress: ""
   };
 }
 export const QueryGovernorRequest = {
   typeUrl: "/atomone.gov.v1.QueryGovernorRequest",
+  is(o: any): o is QueryGovernorRequest {
+    return o && (o.$typeUrl === QueryGovernorRequest.typeUrl || typeof o.governorAddress === "string");
+  },
+  isAmino(o: any): o is QueryGovernorRequestAmino {
+    return o && (o.$typeUrl === QueryGovernorRequest.typeUrl || typeof o.governor_address === "string");
+  },
   encode(message: QueryGovernorRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.governorAddress !== "") {
       writer.uint32(10).string(message.governorAddress);
@@ -2992,7 +3390,7 @@ export const QueryGovernorRequest = {
     if (isSet(object.governorAddress)) obj.governorAddress = String(object.governorAddress);
     return obj;
   },
-  toJSON(message: QueryGovernorRequest): unknown {
+  toJSON(message: QueryGovernorRequest): JsonSafe<QueryGovernorRequest> {
     const obj: any = {};
     message.governorAddress !== undefined && (obj.governorAddress = message.governorAddress);
     return obj;
@@ -3011,7 +3409,7 @@ export const QueryGovernorRequest = {
   },
   toAmino(message: QueryGovernorRequest): QueryGovernorRequestAmino {
     const obj: any = {};
-    obj.governor_address = message.governorAddress;
+    obj.governor_address = message.governorAddress === "" ? undefined : message.governorAddress;
     return obj;
   },
   fromAminoMsg(object: QueryGovernorRequestAminoMsg): QueryGovernorRequest {
@@ -3026,17 +3424,24 @@ export const QueryGovernorRequest = {
   toProtoMsg(message: QueryGovernorRequest): QueryGovernorRequestProtoMsg {
     return {
       typeUrl: "/atomone.gov.v1.QueryGovernorRequest",
-      value: QueryGovernorRequest.encode(message).finish(),
+      value: QueryGovernorRequest.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(QueryGovernorRequest.typeUrl, QueryGovernorRequest);
 function createBaseQueryGovernorResponse(): QueryGovernorResponse {
   return {
-    governor: undefined,
+    governor: undefined
   };
 }
 export const QueryGovernorResponse = {
   typeUrl: "/atomone.gov.v1.QueryGovernorResponse",
+  is(o: any): o is QueryGovernorResponse {
+    return o && o.$typeUrl === QueryGovernorResponse.typeUrl;
+  },
+  isAmino(o: any): o is QueryGovernorResponseAmino {
+    return o && o.$typeUrl === QueryGovernorResponse.typeUrl;
+  },
   encode(message: QueryGovernorResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.governor !== undefined) {
       Governor.encode(message.governor, writer.uint32(10).fork()).ldelim();
@@ -3065,10 +3470,9 @@ export const QueryGovernorResponse = {
     if (isSet(object.governor)) obj.governor = Governor.fromJSON(object.governor);
     return obj;
   },
-  toJSON(message: QueryGovernorResponse): unknown {
+  toJSON(message: QueryGovernorResponse): JsonSafe<QueryGovernorResponse> {
     const obj: any = {};
-    message.governor !== undefined &&
-      (obj.governor = message.governor ? Governor.toJSON(message.governor) : undefined);
+    message.governor !== undefined && (obj.governor = message.governor ? Governor.toJSON(message.governor) : undefined);
     return obj;
   },
   fromPartial(object: Partial<QueryGovernorResponse>): QueryGovernorResponse {
@@ -3102,17 +3506,24 @@ export const QueryGovernorResponse = {
   toProtoMsg(message: QueryGovernorResponse): QueryGovernorResponseProtoMsg {
     return {
       typeUrl: "/atomone.gov.v1.QueryGovernorResponse",
-      value: QueryGovernorResponse.encode(message).finish(),
+      value: QueryGovernorResponse.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(QueryGovernorResponse.typeUrl, QueryGovernorResponse);
 function createBaseQueryGovernorsRequest(): QueryGovernorsRequest {
   return {
-    pagination: undefined,
+    pagination: undefined
   };
 }
 export const QueryGovernorsRequest = {
   typeUrl: "/atomone.gov.v1.QueryGovernorsRequest",
+  is(o: any): o is QueryGovernorsRequest {
+    return o && o.$typeUrl === QueryGovernorsRequest.typeUrl;
+  },
+  isAmino(o: any): o is QueryGovernorsRequestAmino {
+    return o && o.$typeUrl === QueryGovernorsRequest.typeUrl;
+  },
   encode(message: QueryGovernorsRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.pagination !== undefined) {
       PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
@@ -3141,10 +3552,9 @@ export const QueryGovernorsRequest = {
     if (isSet(object.pagination)) obj.pagination = PageRequest.fromJSON(object.pagination);
     return obj;
   },
-  toJSON(message: QueryGovernorsRequest): unknown {
+  toJSON(message: QueryGovernorsRequest): JsonSafe<QueryGovernorsRequest> {
     const obj: any = {};
-    message.pagination !== undefined &&
-      (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
+    message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
     return obj;
   },
   fromPartial(object: Partial<QueryGovernorsRequest>): QueryGovernorsRequest {
@@ -3178,18 +3588,25 @@ export const QueryGovernorsRequest = {
   toProtoMsg(message: QueryGovernorsRequest): QueryGovernorsRequestProtoMsg {
     return {
       typeUrl: "/atomone.gov.v1.QueryGovernorsRequest",
-      value: QueryGovernorsRequest.encode(message).finish(),
+      value: QueryGovernorsRequest.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(QueryGovernorsRequest.typeUrl, QueryGovernorsRequest);
 function createBaseQueryGovernorsResponse(): QueryGovernorsResponse {
   return {
     governors: [],
-    pagination: undefined,
+    pagination: undefined
   };
 }
 export const QueryGovernorsResponse = {
   typeUrl: "/atomone.gov.v1.QueryGovernorsResponse",
+  is(o: any): o is QueryGovernorsResponse {
+    return o && (o.$typeUrl === QueryGovernorsResponse.typeUrl || Array.isArray(o.governors) && (!o.governors.length || Governor.is(o.governors[0])));
+  },
+  isAmino(o: any): o is QueryGovernorsResponseAmino {
+    return o && (o.$typeUrl === QueryGovernorsResponse.typeUrl || Array.isArray(o.governors) && (!o.governors.length || Governor.isAmino(o.governors[0])));
+  },
   encode(message: QueryGovernorsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.governors) {
       Governor.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -3221,25 +3638,23 @@ export const QueryGovernorsResponse = {
   },
   fromJSON(object: any): QueryGovernorsResponse {
     const obj = createBaseQueryGovernorsResponse();
-    if (Array.isArray(object?.governors))
-      obj.governors = object.governors.map((e: any) => Governor.fromJSON(e));
+    if (Array.isArray(object?.governors)) obj.governors = object.governors.map((e: any) => Governor.fromJSON(e));
     if (isSet(object.pagination)) obj.pagination = PageResponse.fromJSON(object.pagination);
     return obj;
   },
-  toJSON(message: QueryGovernorsResponse): unknown {
+  toJSON(message: QueryGovernorsResponse): JsonSafe<QueryGovernorsResponse> {
     const obj: any = {};
     if (message.governors) {
-      obj.governors = message.governors.map((e) => (e ? Governor.toJSON(e) : undefined));
+      obj.governors = message.governors.map(e => e ? Governor.toJSON(e) : undefined);
     } else {
       obj.governors = [];
     }
-    message.pagination !== undefined &&
-      (obj.pagination = message.pagination ? PageResponse.toJSON(message.pagination) : undefined);
+    message.pagination !== undefined && (obj.pagination = message.pagination ? PageResponse.toJSON(message.pagination) : undefined);
     return obj;
   },
   fromPartial(object: Partial<QueryGovernorsResponse>): QueryGovernorsResponse {
     const message = createBaseQueryGovernorsResponse();
-    message.governors = object.governors?.map((e) => Governor.fromPartial(e)) || [];
+    message.governors = object.governors?.map(e => Governor.fromPartial(e)) || [];
     if (object.pagination !== undefined && object.pagination !== null) {
       message.pagination = PageResponse.fromPartial(object.pagination);
     }
@@ -3247,7 +3662,7 @@ export const QueryGovernorsResponse = {
   },
   fromAmino(object: QueryGovernorsResponseAmino): QueryGovernorsResponse {
     const message = createBaseQueryGovernorsResponse();
-    message.governors = object.governors?.map((e) => Governor.fromAmino(e)) || [];
+    message.governors = object.governors?.map(e => Governor.fromAmino(e)) || [];
     if (object.pagination !== undefined && object.pagination !== null) {
       message.pagination = PageResponse.fromAmino(object.pagination);
     }
@@ -3256,9 +3671,9 @@ export const QueryGovernorsResponse = {
   toAmino(message: QueryGovernorsResponse): QueryGovernorsResponseAmino {
     const obj: any = {};
     if (message.governors) {
-      obj.governors = message.governors.map((e) => (e ? Governor.toAmino(e) : undefined));
+      obj.governors = message.governors.map(e => e ? Governor.toAmino(e) : undefined);
     } else {
-      obj.governors = [];
+      obj.governors = message.governors;
     }
     obj.pagination = message.pagination ? PageResponse.toAmino(message.pagination) : undefined;
     return obj;
@@ -3275,22 +3690,26 @@ export const QueryGovernorsResponse = {
   toProtoMsg(message: QueryGovernorsResponse): QueryGovernorsResponseProtoMsg {
     return {
       typeUrl: "/atomone.gov.v1.QueryGovernorsResponse",
-      value: QueryGovernorsResponse.encode(message).finish(),
+      value: QueryGovernorsResponse.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(QueryGovernorsResponse.typeUrl, QueryGovernorsResponse);
 function createBaseQueryGovernanceDelegationsRequest(): QueryGovernanceDelegationsRequest {
   return {
     governorAddress: "",
-    pagination: undefined,
+    pagination: undefined
   };
 }
 export const QueryGovernanceDelegationsRequest = {
   typeUrl: "/atomone.gov.v1.QueryGovernanceDelegationsRequest",
-  encode(
-    message: QueryGovernanceDelegationsRequest,
-    writer: BinaryWriter = BinaryWriter.create(),
-  ): BinaryWriter {
+  is(o: any): o is QueryGovernanceDelegationsRequest {
+    return o && (o.$typeUrl === QueryGovernanceDelegationsRequest.typeUrl || typeof o.governorAddress === "string");
+  },
+  isAmino(o: any): o is QueryGovernanceDelegationsRequestAmino {
+    return o && (o.$typeUrl === QueryGovernanceDelegationsRequest.typeUrl || typeof o.governor_address === "string");
+  },
+  encode(message: QueryGovernanceDelegationsRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.governorAddress !== "") {
       writer.uint32(10).string(message.governorAddress);
     }
@@ -3325,11 +3744,10 @@ export const QueryGovernanceDelegationsRequest = {
     if (isSet(object.pagination)) obj.pagination = PageRequest.fromJSON(object.pagination);
     return obj;
   },
-  toJSON(message: QueryGovernanceDelegationsRequest): unknown {
+  toJSON(message: QueryGovernanceDelegationsRequest): JsonSafe<QueryGovernanceDelegationsRequest> {
     const obj: any = {};
     message.governorAddress !== undefined && (obj.governorAddress = message.governorAddress);
-    message.pagination !== undefined &&
-      (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
+    message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
     return obj;
   },
   fromPartial(object: Partial<QueryGovernanceDelegationsRequest>): QueryGovernanceDelegationsRequest {
@@ -3352,7 +3770,7 @@ export const QueryGovernanceDelegationsRequest = {
   },
   toAmino(message: QueryGovernanceDelegationsRequest): QueryGovernanceDelegationsRequestAmino {
     const obj: any = {};
-    obj.governor_address = message.governorAddress;
+    obj.governor_address = message.governorAddress === "" ? undefined : message.governorAddress;
     obj.pagination = message.pagination ? PageRequest.toAmino(message.pagination) : undefined;
     return obj;
   },
@@ -3368,22 +3786,26 @@ export const QueryGovernanceDelegationsRequest = {
   toProtoMsg(message: QueryGovernanceDelegationsRequest): QueryGovernanceDelegationsRequestProtoMsg {
     return {
       typeUrl: "/atomone.gov.v1.QueryGovernanceDelegationsRequest",
-      value: QueryGovernanceDelegationsRequest.encode(message).finish(),
+      value: QueryGovernanceDelegationsRequest.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(QueryGovernanceDelegationsRequest.typeUrl, QueryGovernanceDelegationsRequest);
 function createBaseQueryGovernanceDelegationsResponse(): QueryGovernanceDelegationsResponse {
   return {
     delegations: [],
-    pagination: undefined,
+    pagination: undefined
   };
 }
 export const QueryGovernanceDelegationsResponse = {
   typeUrl: "/atomone.gov.v1.QueryGovernanceDelegationsResponse",
-  encode(
-    message: QueryGovernanceDelegationsResponse,
-    writer: BinaryWriter = BinaryWriter.create(),
-  ): BinaryWriter {
+  is(o: any): o is QueryGovernanceDelegationsResponse {
+    return o && (o.$typeUrl === QueryGovernanceDelegationsResponse.typeUrl || Array.isArray(o.delegations) && (!o.delegations.length || GovernanceDelegation.is(o.delegations[0])));
+  },
+  isAmino(o: any): o is QueryGovernanceDelegationsResponseAmino {
+    return o && (o.$typeUrl === QueryGovernanceDelegationsResponse.typeUrl || Array.isArray(o.delegations) && (!o.delegations.length || GovernanceDelegation.isAmino(o.delegations[0])));
+  },
+  encode(message: QueryGovernanceDelegationsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.delegations) {
       GovernanceDelegation.encode(v!, writer.uint32(10).fork()).ldelim();
     }
@@ -3414,25 +3836,23 @@ export const QueryGovernanceDelegationsResponse = {
   },
   fromJSON(object: any): QueryGovernanceDelegationsResponse {
     const obj = createBaseQueryGovernanceDelegationsResponse();
-    if (Array.isArray(object?.delegations))
-      obj.delegations = object.delegations.map((e: any) => GovernanceDelegation.fromJSON(e));
+    if (Array.isArray(object?.delegations)) obj.delegations = object.delegations.map((e: any) => GovernanceDelegation.fromJSON(e));
     if (isSet(object.pagination)) obj.pagination = PageResponse.fromJSON(object.pagination);
     return obj;
   },
-  toJSON(message: QueryGovernanceDelegationsResponse): unknown {
+  toJSON(message: QueryGovernanceDelegationsResponse): JsonSafe<QueryGovernanceDelegationsResponse> {
     const obj: any = {};
     if (message.delegations) {
-      obj.delegations = message.delegations.map((e) => (e ? GovernanceDelegation.toJSON(e) : undefined));
+      obj.delegations = message.delegations.map(e => e ? GovernanceDelegation.toJSON(e) : undefined);
     } else {
       obj.delegations = [];
     }
-    message.pagination !== undefined &&
-      (obj.pagination = message.pagination ? PageResponse.toJSON(message.pagination) : undefined);
+    message.pagination !== undefined && (obj.pagination = message.pagination ? PageResponse.toJSON(message.pagination) : undefined);
     return obj;
   },
   fromPartial(object: Partial<QueryGovernanceDelegationsResponse>): QueryGovernanceDelegationsResponse {
     const message = createBaseQueryGovernanceDelegationsResponse();
-    message.delegations = object.delegations?.map((e) => GovernanceDelegation.fromPartial(e)) || [];
+    message.delegations = object.delegations?.map(e => GovernanceDelegation.fromPartial(e)) || [];
     if (object.pagination !== undefined && object.pagination !== null) {
       message.pagination = PageResponse.fromPartial(object.pagination);
     }
@@ -3440,7 +3860,7 @@ export const QueryGovernanceDelegationsResponse = {
   },
   fromAmino(object: QueryGovernanceDelegationsResponseAmino): QueryGovernanceDelegationsResponse {
     const message = createBaseQueryGovernanceDelegationsResponse();
-    message.delegations = object.delegations?.map((e) => GovernanceDelegation.fromAmino(e)) || [];
+    message.delegations = object.delegations?.map(e => GovernanceDelegation.fromAmino(e)) || [];
     if (object.pagination !== undefined && object.pagination !== null) {
       message.pagination = PageResponse.fromAmino(object.pagination);
     }
@@ -3449,9 +3869,9 @@ export const QueryGovernanceDelegationsResponse = {
   toAmino(message: QueryGovernanceDelegationsResponse): QueryGovernanceDelegationsResponseAmino {
     const obj: any = {};
     if (message.delegations) {
-      obj.delegations = message.delegations.map((e) => (e ? GovernanceDelegation.toAmino(e) : undefined));
+      obj.delegations = message.delegations.map(e => e ? GovernanceDelegation.toAmino(e) : undefined);
     } else {
-      obj.delegations = [];
+      obj.delegations = message.delegations;
     }
     obj.pagination = message.pagination ? PageResponse.toAmino(message.pagination) : undefined;
     return obj;
@@ -3468,21 +3888,25 @@ export const QueryGovernanceDelegationsResponse = {
   toProtoMsg(message: QueryGovernanceDelegationsResponse): QueryGovernanceDelegationsResponseProtoMsg {
     return {
       typeUrl: "/atomone.gov.v1.QueryGovernanceDelegationsResponse",
-      value: QueryGovernanceDelegationsResponse.encode(message).finish(),
+      value: QueryGovernanceDelegationsResponse.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(QueryGovernanceDelegationsResponse.typeUrl, QueryGovernanceDelegationsResponse);
 function createBaseQueryGovernanceDelegationRequest(): QueryGovernanceDelegationRequest {
   return {
-    delegatorAddress: "",
+    delegatorAddress: ""
   };
 }
 export const QueryGovernanceDelegationRequest = {
   typeUrl: "/atomone.gov.v1.QueryGovernanceDelegationRequest",
-  encode(
-    message: QueryGovernanceDelegationRequest,
-    writer: BinaryWriter = BinaryWriter.create(),
-  ): BinaryWriter {
+  is(o: any): o is QueryGovernanceDelegationRequest {
+    return o && (o.$typeUrl === QueryGovernanceDelegationRequest.typeUrl || typeof o.delegatorAddress === "string");
+  },
+  isAmino(o: any): o is QueryGovernanceDelegationRequestAmino {
+    return o && (o.$typeUrl === QueryGovernanceDelegationRequest.typeUrl || typeof o.delegator_address === "string");
+  },
+  encode(message: QueryGovernanceDelegationRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.delegatorAddress !== "") {
       writer.uint32(10).string(message.delegatorAddress);
     }
@@ -3510,7 +3934,7 @@ export const QueryGovernanceDelegationRequest = {
     if (isSet(object.delegatorAddress)) obj.delegatorAddress = String(object.delegatorAddress);
     return obj;
   },
-  toJSON(message: QueryGovernanceDelegationRequest): unknown {
+  toJSON(message: QueryGovernanceDelegationRequest): JsonSafe<QueryGovernanceDelegationRequest> {
     const obj: any = {};
     message.delegatorAddress !== undefined && (obj.delegatorAddress = message.delegatorAddress);
     return obj;
@@ -3529,7 +3953,7 @@ export const QueryGovernanceDelegationRequest = {
   },
   toAmino(message: QueryGovernanceDelegationRequest): QueryGovernanceDelegationRequestAmino {
     const obj: any = {};
-    obj.delegator_address = message.delegatorAddress;
+    obj.delegator_address = message.delegatorAddress === "" ? undefined : message.delegatorAddress;
     return obj;
   },
   fromAminoMsg(object: QueryGovernanceDelegationRequestAminoMsg): QueryGovernanceDelegationRequest {
@@ -3544,21 +3968,25 @@ export const QueryGovernanceDelegationRequest = {
   toProtoMsg(message: QueryGovernanceDelegationRequest): QueryGovernanceDelegationRequestProtoMsg {
     return {
       typeUrl: "/atomone.gov.v1.QueryGovernanceDelegationRequest",
-      value: QueryGovernanceDelegationRequest.encode(message).finish(),
+      value: QueryGovernanceDelegationRequest.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(QueryGovernanceDelegationRequest.typeUrl, QueryGovernanceDelegationRequest);
 function createBaseQueryGovernanceDelegationResponse(): QueryGovernanceDelegationResponse {
   return {
-    governorAddress: "",
+    governorAddress: ""
   };
 }
 export const QueryGovernanceDelegationResponse = {
   typeUrl: "/atomone.gov.v1.QueryGovernanceDelegationResponse",
-  encode(
-    message: QueryGovernanceDelegationResponse,
-    writer: BinaryWriter = BinaryWriter.create(),
-  ): BinaryWriter {
+  is(o: any): o is QueryGovernanceDelegationResponse {
+    return o && (o.$typeUrl === QueryGovernanceDelegationResponse.typeUrl || typeof o.governorAddress === "string");
+  },
+  isAmino(o: any): o is QueryGovernanceDelegationResponseAmino {
+    return o && (o.$typeUrl === QueryGovernanceDelegationResponse.typeUrl || typeof o.governor_address === "string");
+  },
+  encode(message: QueryGovernanceDelegationResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.governorAddress !== "") {
       writer.uint32(10).string(message.governorAddress);
     }
@@ -3586,7 +4014,7 @@ export const QueryGovernanceDelegationResponse = {
     if (isSet(object.governorAddress)) obj.governorAddress = String(object.governorAddress);
     return obj;
   },
-  toJSON(message: QueryGovernanceDelegationResponse): unknown {
+  toJSON(message: QueryGovernanceDelegationResponse): JsonSafe<QueryGovernanceDelegationResponse> {
     const obj: any = {};
     message.governorAddress !== undefined && (obj.governorAddress = message.governorAddress);
     return obj;
@@ -3605,7 +4033,7 @@ export const QueryGovernanceDelegationResponse = {
   },
   toAmino(message: QueryGovernanceDelegationResponse): QueryGovernanceDelegationResponseAmino {
     const obj: any = {};
-    obj.governor_address = message.governorAddress;
+    obj.governor_address = message.governorAddress === "" ? undefined : message.governorAddress;
     return obj;
   },
   fromAminoMsg(object: QueryGovernanceDelegationResponseAminoMsg): QueryGovernanceDelegationResponse {
@@ -3620,18 +4048,25 @@ export const QueryGovernanceDelegationResponse = {
   toProtoMsg(message: QueryGovernanceDelegationResponse): QueryGovernanceDelegationResponseProtoMsg {
     return {
       typeUrl: "/atomone.gov.v1.QueryGovernanceDelegationResponse",
-      value: QueryGovernanceDelegationResponse.encode(message).finish(),
+      value: QueryGovernanceDelegationResponse.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(QueryGovernanceDelegationResponse.typeUrl, QueryGovernanceDelegationResponse);
 function createBaseQueryGovernorValSharesRequest(): QueryGovernorValSharesRequest {
   return {
     governorAddress: "",
-    pagination: undefined,
+    pagination: undefined
   };
 }
 export const QueryGovernorValSharesRequest = {
   typeUrl: "/atomone.gov.v1.QueryGovernorValSharesRequest",
+  is(o: any): o is QueryGovernorValSharesRequest {
+    return o && (o.$typeUrl === QueryGovernorValSharesRequest.typeUrl || typeof o.governorAddress === "string");
+  },
+  isAmino(o: any): o is QueryGovernorValSharesRequestAmino {
+    return o && (o.$typeUrl === QueryGovernorValSharesRequest.typeUrl || typeof o.governor_address === "string");
+  },
   encode(message: QueryGovernorValSharesRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.governorAddress !== "") {
       writer.uint32(10).string(message.governorAddress);
@@ -3667,11 +4102,10 @@ export const QueryGovernorValSharesRequest = {
     if (isSet(object.pagination)) obj.pagination = PageRequest.fromJSON(object.pagination);
     return obj;
   },
-  toJSON(message: QueryGovernorValSharesRequest): unknown {
+  toJSON(message: QueryGovernorValSharesRequest): JsonSafe<QueryGovernorValSharesRequest> {
     const obj: any = {};
     message.governorAddress !== undefined && (obj.governorAddress = message.governorAddress);
-    message.pagination !== undefined &&
-      (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
+    message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
     return obj;
   },
   fromPartial(object: Partial<QueryGovernorValSharesRequest>): QueryGovernorValSharesRequest {
@@ -3694,7 +4128,7 @@ export const QueryGovernorValSharesRequest = {
   },
   toAmino(message: QueryGovernorValSharesRequest): QueryGovernorValSharesRequestAmino {
     const obj: any = {};
-    obj.governor_address = message.governorAddress;
+    obj.governor_address = message.governorAddress === "" ? undefined : message.governorAddress;
     obj.pagination = message.pagination ? PageRequest.toAmino(message.pagination) : undefined;
     return obj;
   },
@@ -3710,22 +4144,26 @@ export const QueryGovernorValSharesRequest = {
   toProtoMsg(message: QueryGovernorValSharesRequest): QueryGovernorValSharesRequestProtoMsg {
     return {
       typeUrl: "/atomone.gov.v1.QueryGovernorValSharesRequest",
-      value: QueryGovernorValSharesRequest.encode(message).finish(),
+      value: QueryGovernorValSharesRequest.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(QueryGovernorValSharesRequest.typeUrl, QueryGovernorValSharesRequest);
 function createBaseQueryGovernorValSharesResponse(): QueryGovernorValSharesResponse {
   return {
     valShares: [],
-    pagination: undefined,
+    pagination: undefined
   };
 }
 export const QueryGovernorValSharesResponse = {
   typeUrl: "/atomone.gov.v1.QueryGovernorValSharesResponse",
-  encode(
-    message: QueryGovernorValSharesResponse,
-    writer: BinaryWriter = BinaryWriter.create(),
-  ): BinaryWriter {
+  is(o: any): o is QueryGovernorValSharesResponse {
+    return o && (o.$typeUrl === QueryGovernorValSharesResponse.typeUrl || Array.isArray(o.valShares) && (!o.valShares.length || GovernorValShares.is(o.valShares[0])));
+  },
+  isAmino(o: any): o is QueryGovernorValSharesResponseAmino {
+    return o && (o.$typeUrl === QueryGovernorValSharesResponse.typeUrl || Array.isArray(o.val_shares) && (!o.val_shares.length || GovernorValShares.isAmino(o.val_shares[0])));
+  },
+  encode(message: QueryGovernorValSharesResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.valShares) {
       GovernorValShares.encode(v!, writer.uint32(10).fork()).ldelim();
     }
@@ -3756,25 +4194,23 @@ export const QueryGovernorValSharesResponse = {
   },
   fromJSON(object: any): QueryGovernorValSharesResponse {
     const obj = createBaseQueryGovernorValSharesResponse();
-    if (Array.isArray(object?.valShares))
-      obj.valShares = object.valShares.map((e: any) => GovernorValShares.fromJSON(e));
+    if (Array.isArray(object?.valShares)) obj.valShares = object.valShares.map((e: any) => GovernorValShares.fromJSON(e));
     if (isSet(object.pagination)) obj.pagination = PageResponse.fromJSON(object.pagination);
     return obj;
   },
-  toJSON(message: QueryGovernorValSharesResponse): unknown {
+  toJSON(message: QueryGovernorValSharesResponse): JsonSafe<QueryGovernorValSharesResponse> {
     const obj: any = {};
     if (message.valShares) {
-      obj.valShares = message.valShares.map((e) => (e ? GovernorValShares.toJSON(e) : undefined));
+      obj.valShares = message.valShares.map(e => e ? GovernorValShares.toJSON(e) : undefined);
     } else {
       obj.valShares = [];
     }
-    message.pagination !== undefined &&
-      (obj.pagination = message.pagination ? PageResponse.toJSON(message.pagination) : undefined);
+    message.pagination !== undefined && (obj.pagination = message.pagination ? PageResponse.toJSON(message.pagination) : undefined);
     return obj;
   },
   fromPartial(object: Partial<QueryGovernorValSharesResponse>): QueryGovernorValSharesResponse {
     const message = createBaseQueryGovernorValSharesResponse();
-    message.valShares = object.valShares?.map((e) => GovernorValShares.fromPartial(e)) || [];
+    message.valShares = object.valShares?.map(e => GovernorValShares.fromPartial(e)) || [];
     if (object.pagination !== undefined && object.pagination !== null) {
       message.pagination = PageResponse.fromPartial(object.pagination);
     }
@@ -3782,7 +4218,7 @@ export const QueryGovernorValSharesResponse = {
   },
   fromAmino(object: QueryGovernorValSharesResponseAmino): QueryGovernorValSharesResponse {
     const message = createBaseQueryGovernorValSharesResponse();
-    message.valShares = object.val_shares?.map((e) => GovernorValShares.fromAmino(e)) || [];
+    message.valShares = object.val_shares?.map(e => GovernorValShares.fromAmino(e)) || [];
     if (object.pagination !== undefined && object.pagination !== null) {
       message.pagination = PageResponse.fromAmino(object.pagination);
     }
@@ -3791,9 +4227,9 @@ export const QueryGovernorValSharesResponse = {
   toAmino(message: QueryGovernorValSharesResponse): QueryGovernorValSharesResponseAmino {
     const obj: any = {};
     if (message.valShares) {
-      obj.val_shares = message.valShares.map((e) => (e ? GovernorValShares.toAmino(e) : undefined));
+      obj.val_shares = message.valShares.map(e => e ? GovernorValShares.toAmino(e) : undefined);
     } else {
-      obj.val_shares = [];
+      obj.val_shares = message.valShares;
     }
     obj.pagination = message.pagination ? PageResponse.toAmino(message.pagination) : undefined;
     return obj;
@@ -3810,10 +4246,11 @@ export const QueryGovernorValSharesResponse = {
   toProtoMsg(message: QueryGovernorValSharesResponse): QueryGovernorValSharesResponseProtoMsg {
     return {
       typeUrl: "/atomone.gov.v1.QueryGovernorValSharesResponse",
-      value: QueryGovernorValSharesResponse.encode(message).finish(),
+      value: QueryGovernorValSharesResponse.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(QueryGovernorValSharesResponse.typeUrl, QueryGovernorValSharesResponse);
 /** Query defines the gRPC querier service for gov module */
 export interface Query {
   /** Constitution queries the chain's constitution. */
@@ -3853,9 +4290,7 @@ export interface Query {
   /** Governors queries all governors. */
   Governors(request?: QueryGovernorsRequest): Promise<QueryGovernorsResponse>;
   /** GovernanceDelegations queries all delegations of a governor. */
-  GovernanceDelegations(
-    request: QueryGovernanceDelegationsRequest,
-  ): Promise<QueryGovernanceDelegationsResponse>;
+  GovernanceDelegations(request: QueryGovernanceDelegationsRequest): Promise<QueryGovernanceDelegationsResponse>;
   /** GovernanceDelegation queries a delegation */
   GovernanceDelegation(request: QueryGovernanceDelegationRequest): Promise<QueryGovernanceDelegationResponse>;
   /** GovernorValShares queries all governor virtual validator shares resulting from all governance delegations. */
@@ -3887,99 +4322,93 @@ export class QueryClientImpl implements Query {
   Constitution(request: QueryConstitutionRequest = {}): Promise<QueryConstitutionResponse> {
     const data = QueryConstitutionRequest.encode(request).finish();
     const promise = this.rpc.request("atomone.gov.v1.Query", "Constitution", data);
-    return promise.then((data) => QueryConstitutionResponse.decode(new BinaryReader(data)));
+    return promise.then(data => QueryConstitutionResponse.decode(new BinaryReader(data)));
   }
   Proposal(request: QueryProposalRequest): Promise<QueryProposalResponse> {
     const data = QueryProposalRequest.encode(request).finish();
     const promise = this.rpc.request("atomone.gov.v1.Query", "Proposal", data);
-    return promise.then((data) => QueryProposalResponse.decode(new BinaryReader(data)));
+    return promise.then(data => QueryProposalResponse.decode(new BinaryReader(data)));
   }
   Proposals(request: QueryProposalsRequest): Promise<QueryProposalsResponse> {
     const data = QueryProposalsRequest.encode(request).finish();
     const promise = this.rpc.request("atomone.gov.v1.Query", "Proposals", data);
-    return promise.then((data) => QueryProposalsResponse.decode(new BinaryReader(data)));
+    return promise.then(data => QueryProposalsResponse.decode(new BinaryReader(data)));
   }
   Vote(request: QueryVoteRequest): Promise<QueryVoteResponse> {
     const data = QueryVoteRequest.encode(request).finish();
     const promise = this.rpc.request("atomone.gov.v1.Query", "Vote", data);
-    return promise.then((data) => QueryVoteResponse.decode(new BinaryReader(data)));
+    return promise.then(data => QueryVoteResponse.decode(new BinaryReader(data)));
   }
   Votes(request: QueryVotesRequest): Promise<QueryVotesResponse> {
     const data = QueryVotesRequest.encode(request).finish();
     const promise = this.rpc.request("atomone.gov.v1.Query", "Votes", data);
-    return promise.then((data) => QueryVotesResponse.decode(new BinaryReader(data)));
+    return promise.then(data => QueryVotesResponse.decode(new BinaryReader(data)));
   }
   Params(request: QueryParamsRequest): Promise<QueryParamsResponse> {
     const data = QueryParamsRequest.encode(request).finish();
     const promise = this.rpc.request("atomone.gov.v1.Query", "Params", data);
-    return promise.then((data) => QueryParamsResponse.decode(new BinaryReader(data)));
+    return promise.then(data => QueryParamsResponse.decode(new BinaryReader(data)));
   }
   Deposit(request: QueryDepositRequest): Promise<QueryDepositResponse> {
     const data = QueryDepositRequest.encode(request).finish();
     const promise = this.rpc.request("atomone.gov.v1.Query", "Deposit", data);
-    return promise.then((data) => QueryDepositResponse.decode(new BinaryReader(data)));
+    return promise.then(data => QueryDepositResponse.decode(new BinaryReader(data)));
   }
   Deposits(request: QueryDepositsRequest): Promise<QueryDepositsResponse> {
     const data = QueryDepositsRequest.encode(request).finish();
     const promise = this.rpc.request("atomone.gov.v1.Query", "Deposits", data);
-    return promise.then((data) => QueryDepositsResponse.decode(new BinaryReader(data)));
+    return promise.then(data => QueryDepositsResponse.decode(new BinaryReader(data)));
   }
   TallyResult(request: QueryTallyResultRequest): Promise<QueryTallyResultResponse> {
     const data = QueryTallyResultRequest.encode(request).finish();
     const promise = this.rpc.request("atomone.gov.v1.Query", "TallyResult", data);
-    return promise.then((data) => QueryTallyResultResponse.decode(new BinaryReader(data)));
+    return promise.then(data => QueryTallyResultResponse.decode(new BinaryReader(data)));
   }
   MinDeposit(request: QueryMinDepositRequest = {}): Promise<QueryMinDepositResponse> {
     const data = QueryMinDepositRequest.encode(request).finish();
     const promise = this.rpc.request("atomone.gov.v1.Query", "MinDeposit", data);
-    return promise.then((data) => QueryMinDepositResponse.decode(new BinaryReader(data)));
+    return promise.then(data => QueryMinDepositResponse.decode(new BinaryReader(data)));
   }
   MinInitialDeposit(request: QueryMinInitialDepositRequest = {}): Promise<QueryMinInitialDepositResponse> {
     const data = QueryMinInitialDepositRequest.encode(request).finish();
     const promise = this.rpc.request("atomone.gov.v1.Query", "MinInitialDeposit", data);
-    return promise.then((data) => QueryMinInitialDepositResponse.decode(new BinaryReader(data)));
+    return promise.then(data => QueryMinInitialDepositResponse.decode(new BinaryReader(data)));
   }
   Quorums(request: QueryQuorumsRequest = {}): Promise<QueryQuorumsResponse> {
     const data = QueryQuorumsRequest.encode(request).finish();
     const promise = this.rpc.request("atomone.gov.v1.Query", "Quorums", data);
-    return promise.then((data) => QueryQuorumsResponse.decode(new BinaryReader(data)));
+    return promise.then(data => QueryQuorumsResponse.decode(new BinaryReader(data)));
   }
   ParticipationEMAs(request: QueryParticipationEMAsRequest = {}): Promise<QueryParticipationEMAsResponse> {
     const data = QueryParticipationEMAsRequest.encode(request).finish();
     const promise = this.rpc.request("atomone.gov.v1.Query", "ParticipationEMAs", data);
-    return promise.then((data) => QueryParticipationEMAsResponse.decode(new BinaryReader(data)));
+    return promise.then(data => QueryParticipationEMAsResponse.decode(new BinaryReader(data)));
   }
   Governor(request: QueryGovernorRequest): Promise<QueryGovernorResponse> {
     const data = QueryGovernorRequest.encode(request).finish();
     const promise = this.rpc.request("atomone.gov.v1.Query", "Governor", data);
-    return promise.then((data) => QueryGovernorResponse.decode(new BinaryReader(data)));
+    return promise.then(data => QueryGovernorResponse.decode(new BinaryReader(data)));
   }
-  Governors(
-    request: QueryGovernorsRequest = {
-      pagination: PageRequest.fromPartial({}),
-    },
-  ): Promise<QueryGovernorsResponse> {
+  Governors(request: QueryGovernorsRequest = {
+    pagination: PageRequest.fromPartial({})
+  }): Promise<QueryGovernorsResponse> {
     const data = QueryGovernorsRequest.encode(request).finish();
     const promise = this.rpc.request("atomone.gov.v1.Query", "Governors", data);
-    return promise.then((data) => QueryGovernorsResponse.decode(new BinaryReader(data)));
+    return promise.then(data => QueryGovernorsResponse.decode(new BinaryReader(data)));
   }
-  GovernanceDelegations(
-    request: QueryGovernanceDelegationsRequest,
-  ): Promise<QueryGovernanceDelegationsResponse> {
+  GovernanceDelegations(request: QueryGovernanceDelegationsRequest): Promise<QueryGovernanceDelegationsResponse> {
     const data = QueryGovernanceDelegationsRequest.encode(request).finish();
     const promise = this.rpc.request("atomone.gov.v1.Query", "GovernanceDelegations", data);
-    return promise.then((data) => QueryGovernanceDelegationsResponse.decode(new BinaryReader(data)));
+    return promise.then(data => QueryGovernanceDelegationsResponse.decode(new BinaryReader(data)));
   }
-  GovernanceDelegation(
-    request: QueryGovernanceDelegationRequest,
-  ): Promise<QueryGovernanceDelegationResponse> {
+  GovernanceDelegation(request: QueryGovernanceDelegationRequest): Promise<QueryGovernanceDelegationResponse> {
     const data = QueryGovernanceDelegationRequest.encode(request).finish();
     const promise = this.rpc.request("atomone.gov.v1.Query", "GovernanceDelegation", data);
-    return promise.then((data) => QueryGovernanceDelegationResponse.decode(new BinaryReader(data)));
+    return promise.then(data => QueryGovernanceDelegationResponse.decode(new BinaryReader(data)));
   }
   GovernorValShares(request: QueryGovernorValSharesRequest): Promise<QueryGovernorValSharesResponse> {
     const data = QueryGovernorValSharesRequest.encode(request).finish();
     const promise = this.rpc.request("atomone.gov.v1.Query", "GovernorValShares", data);
-    return promise.then((data) => QueryGovernorValSharesResponse.decode(new BinaryReader(data)));
+    return promise.then(data => QueryGovernorValSharesResponse.decode(new BinaryReader(data)));
   }
 }

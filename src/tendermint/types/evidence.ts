@@ -3,7 +3,9 @@ import { Vote, VoteAmino, LightBlock, LightBlockAmino } from "./types";
 import { Timestamp } from "../../google/protobuf/timestamp";
 import { Validator, ValidatorAmino } from "./validator";
 import { BinaryReader, BinaryWriter } from "../../binary";
+import { GlobalDecoderRegistry } from "../../registry";
 import { isSet, fromJsonTimestamp, fromTimestamp } from "../../helpers";
+import { JsonSafe } from "../../json-safe";
 export const protobufPackage = "tendermint.types";
 export interface Evidence {
   duplicateVoteEvidence?: DuplicateVoteEvidence | undefined;
@@ -13,6 +15,11 @@ export interface EvidenceProtoMsg {
   typeUrl: "/tendermint.types.Evidence";
   value: Uint8Array;
 }
+/**
+ * @name EvidenceAmino
+ * @package tendermint.types
+ * @see proto type: tendermint.types.Evidence
+ */
 export interface EvidenceAmino {
   duplicate_vote_evidence?: DuplicateVoteEvidenceAmino | undefined;
   light_client_attack_evidence?: LightClientAttackEvidenceAmino | undefined;
@@ -33,7 +40,12 @@ export interface DuplicateVoteEvidenceProtoMsg {
   typeUrl: "/tendermint.types.DuplicateVoteEvidence";
   value: Uint8Array;
 }
-/** DuplicateVoteEvidence contains evidence of a validator signed two conflicting votes. */
+/**
+ * DuplicateVoteEvidence contains evidence of a validator signed two conflicting votes.
+ * @name DuplicateVoteEvidenceAmino
+ * @package tendermint.types
+ * @see proto type: tendermint.types.DuplicateVoteEvidence
+ */
 export interface DuplicateVoteEvidenceAmino {
   vote_a?: VoteAmino | undefined;
   vote_b?: VoteAmino | undefined;
@@ -57,7 +69,12 @@ export interface LightClientAttackEvidenceProtoMsg {
   typeUrl: "/tendermint.types.LightClientAttackEvidence";
   value: Uint8Array;
 }
-/** LightClientAttackEvidence contains evidence of a set of validators attempting to mislead a light client. */
+/**
+ * LightClientAttackEvidence contains evidence of a set of validators attempting to mislead a light client.
+ * @name LightClientAttackEvidenceAmino
+ * @package tendermint.types
+ * @see proto type: tendermint.types.LightClientAttackEvidence
+ */
 export interface LightClientAttackEvidenceAmino {
   conflicting_block?: LightBlockAmino | undefined;
   common_height?: string;
@@ -76,6 +93,11 @@ export interface EvidenceListProtoMsg {
   typeUrl: "/tendermint.types.EvidenceList";
   value: Uint8Array;
 }
+/**
+ * @name EvidenceListAmino
+ * @package tendermint.types
+ * @see proto type: tendermint.types.EvidenceList
+ */
 export interface EvidenceListAmino {
   evidence?: EvidenceAmino[];
 }
@@ -86,11 +108,17 @@ export interface EvidenceListAminoMsg {
 function createBaseEvidence(): Evidence {
   return {
     duplicateVoteEvidence: undefined,
-    lightClientAttackEvidence: undefined,
+    lightClientAttackEvidence: undefined
   };
 }
 export const Evidence = {
   typeUrl: "/tendermint.types.Evidence",
+  is(o: any): o is Evidence {
+    return o && o.$typeUrl === Evidence.typeUrl;
+  },
+  isAmino(o: any): o is EvidenceAmino {
+    return o && o.$typeUrl === Evidence.typeUrl;
+  },
   encode(message: Evidence, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.duplicateVoteEvidence !== undefined) {
       DuplicateVoteEvidence.encode(message.duplicateVoteEvidence, writer.uint32(10).fork()).ldelim();
@@ -122,22 +150,14 @@ export const Evidence = {
   },
   fromJSON(object: any): Evidence {
     const obj = createBaseEvidence();
-    if (isSet(object.duplicateVoteEvidence))
-      obj.duplicateVoteEvidence = DuplicateVoteEvidence.fromJSON(object.duplicateVoteEvidence);
-    if (isSet(object.lightClientAttackEvidence))
-      obj.lightClientAttackEvidence = LightClientAttackEvidence.fromJSON(object.lightClientAttackEvidence);
+    if (isSet(object.duplicateVoteEvidence)) obj.duplicateVoteEvidence = DuplicateVoteEvidence.fromJSON(object.duplicateVoteEvidence);
+    if (isSet(object.lightClientAttackEvidence)) obj.lightClientAttackEvidence = LightClientAttackEvidence.fromJSON(object.lightClientAttackEvidence);
     return obj;
   },
-  toJSON(message: Evidence): unknown {
+  toJSON(message: Evidence): JsonSafe<Evidence> {
     const obj: any = {};
-    message.duplicateVoteEvidence !== undefined &&
-      (obj.duplicateVoteEvidence = message.duplicateVoteEvidence
-        ? DuplicateVoteEvidence.toJSON(message.duplicateVoteEvidence)
-        : undefined);
-    message.lightClientAttackEvidence !== undefined &&
-      (obj.lightClientAttackEvidence = message.lightClientAttackEvidence
-        ? LightClientAttackEvidence.toJSON(message.lightClientAttackEvidence)
-        : undefined);
+    message.duplicateVoteEvidence !== undefined && (obj.duplicateVoteEvidence = message.duplicateVoteEvidence ? DuplicateVoteEvidence.toJSON(message.duplicateVoteEvidence) : undefined);
+    message.lightClientAttackEvidence !== undefined && (obj.lightClientAttackEvidence = message.lightClientAttackEvidence ? LightClientAttackEvidence.toJSON(message.lightClientAttackEvidence) : undefined);
     return obj;
   },
   fromPartial(object: Partial<Evidence>): Evidence {
@@ -146,9 +166,7 @@ export const Evidence = {
       message.duplicateVoteEvidence = DuplicateVoteEvidence.fromPartial(object.duplicateVoteEvidence);
     }
     if (object.lightClientAttackEvidence !== undefined && object.lightClientAttackEvidence !== null) {
-      message.lightClientAttackEvidence = LightClientAttackEvidence.fromPartial(
-        object.lightClientAttackEvidence,
-      );
+      message.lightClientAttackEvidence = LightClientAttackEvidence.fromPartial(object.lightClientAttackEvidence);
     }
     return message;
   },
@@ -158,20 +176,14 @@ export const Evidence = {
       message.duplicateVoteEvidence = DuplicateVoteEvidence.fromAmino(object.duplicate_vote_evidence);
     }
     if (object.light_client_attack_evidence !== undefined && object.light_client_attack_evidence !== null) {
-      message.lightClientAttackEvidence = LightClientAttackEvidence.fromAmino(
-        object.light_client_attack_evidence,
-      );
+      message.lightClientAttackEvidence = LightClientAttackEvidence.fromAmino(object.light_client_attack_evidence);
     }
     return message;
   },
   toAmino(message: Evidence): EvidenceAmino {
     const obj: any = {};
-    obj.duplicate_vote_evidence = message.duplicateVoteEvidence
-      ? DuplicateVoteEvidence.toAmino(message.duplicateVoteEvidence)
-      : undefined;
-    obj.light_client_attack_evidence = message.lightClientAttackEvidence
-      ? LightClientAttackEvidence.toAmino(message.lightClientAttackEvidence)
-      : undefined;
+    obj.duplicate_vote_evidence = message.duplicateVoteEvidence ? DuplicateVoteEvidence.toAmino(message.duplicateVoteEvidence) : undefined;
+    obj.light_client_attack_evidence = message.lightClientAttackEvidence ? LightClientAttackEvidence.toAmino(message.lightClientAttackEvidence) : undefined;
     return obj;
   },
   fromAminoMsg(object: EvidenceAminoMsg): Evidence {
@@ -186,21 +198,28 @@ export const Evidence = {
   toProtoMsg(message: Evidence): EvidenceProtoMsg {
     return {
       typeUrl: "/tendermint.types.Evidence",
-      value: Evidence.encode(message).finish(),
+      value: Evidence.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(Evidence.typeUrl, Evidence);
 function createBaseDuplicateVoteEvidence(): DuplicateVoteEvidence {
   return {
     voteA: undefined,
     voteB: undefined,
     totalVotingPower: BigInt(0),
     validatorPower: BigInt(0),
-    timestamp: undefined,
+    timestamp: undefined
   };
 }
 export const DuplicateVoteEvidence = {
   typeUrl: "/tendermint.types.DuplicateVoteEvidence",
+  is(o: any): o is DuplicateVoteEvidence {
+    return o && (o.$typeUrl === DuplicateVoteEvidence.typeUrl || typeof o.totalVotingPower === "bigint" && typeof o.validatorPower === "bigint" && Timestamp.is(o.timestamp));
+  },
+  isAmino(o: any): o is DuplicateVoteEvidenceAmino {
+    return o && (o.$typeUrl === DuplicateVoteEvidence.typeUrl || typeof o.total_voting_power === "bigint" && typeof o.validator_power === "bigint" && Timestamp.isAmino(o.timestamp));
+  },
   encode(message: DuplicateVoteEvidence, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.voteA !== undefined) {
       Vote.encode(message.voteA, writer.uint32(10).fork()).ldelim();
@@ -257,14 +276,12 @@ export const DuplicateVoteEvidence = {
     if (isSet(object.timestamp)) obj.timestamp = fromJsonTimestamp(object.timestamp);
     return obj;
   },
-  toJSON(message: DuplicateVoteEvidence): unknown {
+  toJSON(message: DuplicateVoteEvidence): JsonSafe<DuplicateVoteEvidence> {
     const obj: any = {};
     message.voteA !== undefined && (obj.voteA = message.voteA ? Vote.toJSON(message.voteA) : undefined);
     message.voteB !== undefined && (obj.voteB = message.voteB ? Vote.toJSON(message.voteB) : undefined);
-    message.totalVotingPower !== undefined &&
-      (obj.totalVotingPower = (message.totalVotingPower || BigInt(0)).toString());
-    message.validatorPower !== undefined &&
-      (obj.validatorPower = (message.validatorPower || BigInt(0)).toString());
+    message.totalVotingPower !== undefined && (obj.totalVotingPower = (message.totalVotingPower || BigInt(0)).toString());
+    message.validatorPower !== undefined && (obj.validatorPower = (message.validatorPower || BigInt(0)).toString());
     message.timestamp !== undefined && (obj.timestamp = fromTimestamp(message.timestamp).toISOString());
     return obj;
   },
@@ -310,8 +327,8 @@ export const DuplicateVoteEvidence = {
     const obj: any = {};
     obj.vote_a = message.voteA ? Vote.toAmino(message.voteA) : undefined;
     obj.vote_b = message.voteB ? Vote.toAmino(message.voteB) : undefined;
-    obj.total_voting_power = message.totalVotingPower ? message.totalVotingPower.toString() : undefined;
-    obj.validator_power = message.validatorPower ? message.validatorPower.toString() : undefined;
+    obj.total_voting_power = message.totalVotingPower !== BigInt(0) ? message.totalVotingPower?.toString() : undefined;
+    obj.validator_power = message.validatorPower !== BigInt(0) ? message.validatorPower?.toString() : undefined;
     obj.timestamp = message.timestamp ? Timestamp.toAmino(message.timestamp) : undefined;
     return obj;
   },
@@ -327,21 +344,28 @@ export const DuplicateVoteEvidence = {
   toProtoMsg(message: DuplicateVoteEvidence): DuplicateVoteEvidenceProtoMsg {
     return {
       typeUrl: "/tendermint.types.DuplicateVoteEvidence",
-      value: DuplicateVoteEvidence.encode(message).finish(),
+      value: DuplicateVoteEvidence.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(DuplicateVoteEvidence.typeUrl, DuplicateVoteEvidence);
 function createBaseLightClientAttackEvidence(): LightClientAttackEvidence {
   return {
     conflictingBlock: undefined,
     commonHeight: BigInt(0),
     byzantineValidators: [],
     totalVotingPower: BigInt(0),
-    timestamp: undefined,
+    timestamp: undefined
   };
 }
 export const LightClientAttackEvidence = {
   typeUrl: "/tendermint.types.LightClientAttackEvidence",
+  is(o: any): o is LightClientAttackEvidence {
+    return o && (o.$typeUrl === LightClientAttackEvidence.typeUrl || typeof o.commonHeight === "bigint" && Array.isArray(o.byzantineValidators) && (!o.byzantineValidators.length || Validator.is(o.byzantineValidators[0])) && typeof o.totalVotingPower === "bigint" && Timestamp.is(o.timestamp));
+  },
+  isAmino(o: any): o is LightClientAttackEvidenceAmino {
+    return o && (o.$typeUrl === LightClientAttackEvidence.typeUrl || typeof o.common_height === "bigint" && Array.isArray(o.byzantine_validators) && (!o.byzantine_validators.length || Validator.isAmino(o.byzantine_validators[0])) && typeof o.total_voting_power === "bigint" && Timestamp.isAmino(o.timestamp));
+  },
   encode(message: LightClientAttackEvidence, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.conflictingBlock !== undefined) {
       LightBlock.encode(message.conflictingBlock, writer.uint32(10).fork()).ldelim();
@@ -393,26 +417,21 @@ export const LightClientAttackEvidence = {
     const obj = createBaseLightClientAttackEvidence();
     if (isSet(object.conflictingBlock)) obj.conflictingBlock = LightBlock.fromJSON(object.conflictingBlock);
     if (isSet(object.commonHeight)) obj.commonHeight = BigInt(object.commonHeight.toString());
-    if (Array.isArray(object?.byzantineValidators))
-      obj.byzantineValidators = object.byzantineValidators.map((e: any) => Validator.fromJSON(e));
+    if (Array.isArray(object?.byzantineValidators)) obj.byzantineValidators = object.byzantineValidators.map((e: any) => Validator.fromJSON(e));
     if (isSet(object.totalVotingPower)) obj.totalVotingPower = BigInt(object.totalVotingPower.toString());
     if (isSet(object.timestamp)) obj.timestamp = fromJsonTimestamp(object.timestamp);
     return obj;
   },
-  toJSON(message: LightClientAttackEvidence): unknown {
+  toJSON(message: LightClientAttackEvidence): JsonSafe<LightClientAttackEvidence> {
     const obj: any = {};
-    message.conflictingBlock !== undefined &&
-      (obj.conflictingBlock = message.conflictingBlock
-        ? LightBlock.toJSON(message.conflictingBlock)
-        : undefined);
+    message.conflictingBlock !== undefined && (obj.conflictingBlock = message.conflictingBlock ? LightBlock.toJSON(message.conflictingBlock) : undefined);
     message.commonHeight !== undefined && (obj.commonHeight = (message.commonHeight || BigInt(0)).toString());
     if (message.byzantineValidators) {
-      obj.byzantineValidators = message.byzantineValidators.map((e) => (e ? Validator.toJSON(e) : undefined));
+      obj.byzantineValidators = message.byzantineValidators.map(e => e ? Validator.toJSON(e) : undefined);
     } else {
       obj.byzantineValidators = [];
     }
-    message.totalVotingPower !== undefined &&
-      (obj.totalVotingPower = (message.totalVotingPower || BigInt(0)).toString());
+    message.totalVotingPower !== undefined && (obj.totalVotingPower = (message.totalVotingPower || BigInt(0)).toString());
     message.timestamp !== undefined && (obj.timestamp = fromTimestamp(message.timestamp).toISOString());
     return obj;
   },
@@ -424,7 +443,7 @@ export const LightClientAttackEvidence = {
     if (object.commonHeight !== undefined && object.commonHeight !== null) {
       message.commonHeight = BigInt(object.commonHeight.toString());
     }
-    message.byzantineValidators = object.byzantineValidators?.map((e) => Validator.fromPartial(e)) || [];
+    message.byzantineValidators = object.byzantineValidators?.map(e => Validator.fromPartial(e)) || [];
     if (object.totalVotingPower !== undefined && object.totalVotingPower !== null) {
       message.totalVotingPower = BigInt(object.totalVotingPower.toString());
     }
@@ -441,7 +460,7 @@ export const LightClientAttackEvidence = {
     if (object.common_height !== undefined && object.common_height !== null) {
       message.commonHeight = BigInt(object.common_height);
     }
-    message.byzantineValidators = object.byzantine_validators?.map((e) => Validator.fromAmino(e)) || [];
+    message.byzantineValidators = object.byzantine_validators?.map(e => Validator.fromAmino(e)) || [];
     if (object.total_voting_power !== undefined && object.total_voting_power !== null) {
       message.totalVotingPower = BigInt(object.total_voting_power);
     }
@@ -452,18 +471,14 @@ export const LightClientAttackEvidence = {
   },
   toAmino(message: LightClientAttackEvidence): LightClientAttackEvidenceAmino {
     const obj: any = {};
-    obj.conflicting_block = message.conflictingBlock
-      ? LightBlock.toAmino(message.conflictingBlock)
-      : undefined;
-    obj.common_height = message.commonHeight ? message.commonHeight.toString() : undefined;
+    obj.conflicting_block = message.conflictingBlock ? LightBlock.toAmino(message.conflictingBlock) : undefined;
+    obj.common_height = message.commonHeight !== BigInt(0) ? message.commonHeight?.toString() : undefined;
     if (message.byzantineValidators) {
-      obj.byzantine_validators = message.byzantineValidators.map((e) =>
-        e ? Validator.toAmino(e) : undefined,
-      );
+      obj.byzantine_validators = message.byzantineValidators.map(e => e ? Validator.toAmino(e) : undefined);
     } else {
-      obj.byzantine_validators = [];
+      obj.byzantine_validators = message.byzantineValidators;
     }
-    obj.total_voting_power = message.totalVotingPower ? message.totalVotingPower.toString() : undefined;
+    obj.total_voting_power = message.totalVotingPower !== BigInt(0) ? message.totalVotingPower?.toString() : undefined;
     obj.timestamp = message.timestamp ? Timestamp.toAmino(message.timestamp) : undefined;
     return obj;
   },
@@ -479,17 +494,24 @@ export const LightClientAttackEvidence = {
   toProtoMsg(message: LightClientAttackEvidence): LightClientAttackEvidenceProtoMsg {
     return {
       typeUrl: "/tendermint.types.LightClientAttackEvidence",
-      value: LightClientAttackEvidence.encode(message).finish(),
+      value: LightClientAttackEvidence.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(LightClientAttackEvidence.typeUrl, LightClientAttackEvidence);
 function createBaseEvidenceList(): EvidenceList {
   return {
-    evidence: [],
+    evidence: []
   };
 }
 export const EvidenceList = {
   typeUrl: "/tendermint.types.EvidenceList",
+  is(o: any): o is EvidenceList {
+    return o && (o.$typeUrl === EvidenceList.typeUrl || Array.isArray(o.evidence) && (!o.evidence.length || Evidence.is(o.evidence[0])));
+  },
+  isAmino(o: any): o is EvidenceListAmino {
+    return o && (o.$typeUrl === EvidenceList.typeUrl || Array.isArray(o.evidence) && (!o.evidence.length || Evidence.isAmino(o.evidence[0])));
+  },
   encode(message: EvidenceList, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.evidence) {
       Evidence.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -518,10 +540,10 @@ export const EvidenceList = {
     if (Array.isArray(object?.evidence)) obj.evidence = object.evidence.map((e: any) => Evidence.fromJSON(e));
     return obj;
   },
-  toJSON(message: EvidenceList): unknown {
+  toJSON(message: EvidenceList): JsonSafe<EvidenceList> {
     const obj: any = {};
     if (message.evidence) {
-      obj.evidence = message.evidence.map((e) => (e ? Evidence.toJSON(e) : undefined));
+      obj.evidence = message.evidence.map(e => e ? Evidence.toJSON(e) : undefined);
     } else {
       obj.evidence = [];
     }
@@ -529,20 +551,20 @@ export const EvidenceList = {
   },
   fromPartial(object: Partial<EvidenceList>): EvidenceList {
     const message = createBaseEvidenceList();
-    message.evidence = object.evidence?.map((e) => Evidence.fromPartial(e)) || [];
+    message.evidence = object.evidence?.map(e => Evidence.fromPartial(e)) || [];
     return message;
   },
   fromAmino(object: EvidenceListAmino): EvidenceList {
     const message = createBaseEvidenceList();
-    message.evidence = object.evidence?.map((e) => Evidence.fromAmino(e)) || [];
+    message.evidence = object.evidence?.map(e => Evidence.fromAmino(e)) || [];
     return message;
   },
   toAmino(message: EvidenceList): EvidenceListAmino {
     const obj: any = {};
     if (message.evidence) {
-      obj.evidence = message.evidence.map((e) => (e ? Evidence.toAmino(e) : undefined));
+      obj.evidence = message.evidence.map(e => e ? Evidence.toAmino(e) : undefined);
     } else {
-      obj.evidence = [];
+      obj.evidence = message.evidence;
     }
     return obj;
   },
@@ -558,7 +580,8 @@ export const EvidenceList = {
   toProtoMsg(message: EvidenceList): EvidenceListProtoMsg {
     return {
       typeUrl: "/tendermint.types.EvidenceList",
-      value: EvidenceList.encode(message).finish(),
+      value: EvidenceList.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(EvidenceList.typeUrl, EvidenceList);

@@ -1,0 +1,14 @@
+# This repo is a single package, not a workspace. The file exists to carry the
+# settings below, with the root listed as the sole "member" so that pnpm and
+# anything else reading these globs both stay happy.
+packages:
+  - "."
+
+# pnpm 12 refuses to run a dependency's install scripts unless it is named here,
+# so each one is a deliberate decision.
+allowBuilds:
+  # telescope parses the protos through its protobufjs fork, whose postinstall
+  # comes from upstream protobufjs.
+  "@cosmology/protobufjs": true
+  # es5-ext's postinstall only prints a funding notice.
+  es5-ext: false

@@ -2,6 +2,8 @@
 import { Params, ParamsAmino } from "./slashing";
 import { BinaryReader, BinaryWriter } from "../../../binary";
 import { isSet } from "../../../helpers";
+import { JsonSafe } from "../../../json-safe";
+import { GlobalDecoderRegistry } from "../../../registry";
 import { TxRpc } from "../../../types";
 export const protobufPackage = "cosmos.slashing.v1beta1";
 /** MsgUnjail defines the Msg/Unjail request type */
@@ -12,7 +14,12 @@ export interface MsgUnjailProtoMsg {
   typeUrl: "/cosmos.slashing.v1beta1.MsgUnjail";
   value: Uint8Array;
 }
-/** MsgUnjail defines the Msg/Unjail request type */
+/**
+ * MsgUnjail defines the Msg/Unjail request type
+ * @name MsgUnjailAmino
+ * @package cosmos.slashing.v1beta1
+ * @see proto type: cosmos.slashing.v1beta1.MsgUnjail
+ */
 export interface MsgUnjailAmino {
   validator_addr: string;
 }
@@ -26,7 +33,12 @@ export interface MsgUnjailResponseProtoMsg {
   typeUrl: "/cosmos.slashing.v1beta1.MsgUnjailResponse";
   value: Uint8Array;
 }
-/** MsgUnjailResponse defines the Msg/Unjail response type */
+/**
+ * MsgUnjailResponse defines the Msg/Unjail response type
+ * @name MsgUnjailResponseAmino
+ * @package cosmos.slashing.v1beta1
+ * @see proto type: cosmos.slashing.v1beta1.MsgUnjailResponse
+ */
 export interface MsgUnjailResponseAmino {}
 export interface MsgUnjailResponseAminoMsg {
   type: "cosmos-sdk/MsgUnjailResponse";
@@ -34,7 +46,7 @@ export interface MsgUnjailResponseAminoMsg {
 }
 /**
  * MsgUpdateParams is the Msg/UpdateParams request type.
- *
+ * 
  * Since: cosmos-sdk 0.47
  */
 export interface MsgUpdateParams {
@@ -42,7 +54,7 @@ export interface MsgUpdateParams {
   authority: string;
   /**
    * params defines the x/slashing parameters to update.
-   *
+   * 
    * NOTE: All parameters must be supplied.
    */
   params: Params | undefined;
@@ -53,15 +65,20 @@ export interface MsgUpdateParamsProtoMsg {
 }
 /**
  * MsgUpdateParams is the Msg/UpdateParams request type.
- *
+ * 
  * Since: cosmos-sdk 0.47
+ * @name MsgUpdateParamsAmino
+ * @package cosmos.slashing.v1beta1
+ * @see proto type: cosmos.slashing.v1beta1.MsgUpdateParams
  */
 export interface MsgUpdateParamsAmino {
-  /** authority is the address that controls the module (defaults to x/gov unless overwritten). */
+  /**
+   * authority is the address that controls the module (defaults to x/gov unless overwritten).
+   */
   authority?: string;
   /**
    * params defines the x/slashing parameters to update.
-   *
+   * 
    * NOTE: All parameters must be supplied.
    */
   params: ParamsAmino | undefined;
@@ -73,7 +90,7 @@ export interface MsgUpdateParamsAminoMsg {
 /**
  * MsgUpdateParamsResponse defines the response structure for executing a
  * MsgUpdateParams message.
- *
+ * 
  * Since: cosmos-sdk 0.47
  */
 export interface MsgUpdateParamsResponse {}
@@ -84,8 +101,11 @@ export interface MsgUpdateParamsResponseProtoMsg {
 /**
  * MsgUpdateParamsResponse defines the response structure for executing a
  * MsgUpdateParams message.
- *
+ * 
  * Since: cosmos-sdk 0.47
+ * @name MsgUpdateParamsResponseAmino
+ * @package cosmos.slashing.v1beta1
+ * @see proto type: cosmos.slashing.v1beta1.MsgUpdateParamsResponse
  */
 export interface MsgUpdateParamsResponseAmino {}
 export interface MsgUpdateParamsResponseAminoMsg {
@@ -94,11 +114,18 @@ export interface MsgUpdateParamsResponseAminoMsg {
 }
 function createBaseMsgUnjail(): MsgUnjail {
   return {
-    validatorAddr: "",
+    validatorAddr: ""
   };
 }
 export const MsgUnjail = {
   typeUrl: "/cosmos.slashing.v1beta1.MsgUnjail",
+  aminoType: "cosmos-sdk/MsgUnjail",
+  is(o: any): o is MsgUnjail {
+    return o && (o.$typeUrl === MsgUnjail.typeUrl || typeof o.validatorAddr === "string");
+  },
+  isAmino(o: any): o is MsgUnjailAmino {
+    return o && (o.$typeUrl === MsgUnjail.typeUrl || typeof o.validator_addr === "string");
+  },
   encode(message: MsgUnjail, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.validatorAddr !== "") {
       writer.uint32(10).string(message.validatorAddr);
@@ -127,7 +154,7 @@ export const MsgUnjail = {
     if (isSet(object.validatorAddr)) obj.validatorAddr = String(object.validatorAddr);
     return obj;
   },
-  toJSON(message: MsgUnjail): unknown {
+  toJSON(message: MsgUnjail): JsonSafe<MsgUnjail> {
     const obj: any = {};
     message.validatorAddr !== undefined && (obj.validatorAddr = message.validatorAddr);
     return obj;
@@ -155,7 +182,7 @@ export const MsgUnjail = {
   toAminoMsg(message: MsgUnjail): MsgUnjailAminoMsg {
     return {
       type: "cosmos-sdk/MsgUnjail",
-      value: MsgUnjail.toAmino(message),
+      value: MsgUnjail.toAmino(message)
     };
   },
   fromProtoMsg(message: MsgUnjailProtoMsg): MsgUnjail {
@@ -167,15 +194,24 @@ export const MsgUnjail = {
   toProtoMsg(message: MsgUnjail): MsgUnjailProtoMsg {
     return {
       typeUrl: "/cosmos.slashing.v1beta1.MsgUnjail",
-      value: MsgUnjail.encode(message).finish(),
+      value: MsgUnjail.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(MsgUnjail.typeUrl, MsgUnjail);
+GlobalDecoderRegistry.registerAminoProtoMapping(MsgUnjail.aminoType, MsgUnjail.typeUrl);
 function createBaseMsgUnjailResponse(): MsgUnjailResponse {
   return {};
 }
 export const MsgUnjailResponse = {
   typeUrl: "/cosmos.slashing.v1beta1.MsgUnjailResponse",
+  aminoType: "cosmos-sdk/MsgUnjailResponse",
+  is(o: any): o is MsgUnjailResponse {
+    return o && o.$typeUrl === MsgUnjailResponse.typeUrl;
+  },
+  isAmino(o: any): o is MsgUnjailResponseAmino {
+    return o && o.$typeUrl === MsgUnjailResponse.typeUrl;
+  },
   encode(_: MsgUnjailResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
@@ -197,7 +233,7 @@ export const MsgUnjailResponse = {
     const obj = createBaseMsgUnjailResponse();
     return obj;
   },
-  toJSON(_: MsgUnjailResponse): unknown {
+  toJSON(_: MsgUnjailResponse): JsonSafe<MsgUnjailResponse> {
     const obj: any = {};
     return obj;
   },
@@ -219,7 +255,7 @@ export const MsgUnjailResponse = {
   toAminoMsg(message: MsgUnjailResponse): MsgUnjailResponseAminoMsg {
     return {
       type: "cosmos-sdk/MsgUnjailResponse",
-      value: MsgUnjailResponse.toAmino(message),
+      value: MsgUnjailResponse.toAmino(message)
     };
   },
   fromProtoMsg(message: MsgUnjailResponseProtoMsg): MsgUnjailResponse {
@@ -231,18 +267,27 @@ export const MsgUnjailResponse = {
   toProtoMsg(message: MsgUnjailResponse): MsgUnjailResponseProtoMsg {
     return {
       typeUrl: "/cosmos.slashing.v1beta1.MsgUnjailResponse",
-      value: MsgUnjailResponse.encode(message).finish(),
+      value: MsgUnjailResponse.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(MsgUnjailResponse.typeUrl, MsgUnjailResponse);
+GlobalDecoderRegistry.registerAminoProtoMapping(MsgUnjailResponse.aminoType, MsgUnjailResponse.typeUrl);
 function createBaseMsgUpdateParams(): MsgUpdateParams {
   return {
     authority: "",
-    params: Params.fromPartial({}),
+    params: Params.fromPartial({})
   };
 }
 export const MsgUpdateParams = {
   typeUrl: "/cosmos.slashing.v1beta1.MsgUpdateParams",
+  aminoType: "cosmos-sdk/x/slashing/MsgUpdateParams",
+  is(o: any): o is MsgUpdateParams {
+    return o && (o.$typeUrl === MsgUpdateParams.typeUrl || typeof o.authority === "string" && Params.is(o.params));
+  },
+  isAmino(o: any): o is MsgUpdateParamsAmino {
+    return o && (o.$typeUrl === MsgUpdateParams.typeUrl || typeof o.authority === "string" && Params.isAmino(o.params));
+  },
   encode(message: MsgUpdateParams, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.authority !== "") {
       writer.uint32(10).string(message.authority);
@@ -278,7 +323,7 @@ export const MsgUpdateParams = {
     if (isSet(object.params)) obj.params = Params.fromJSON(object.params);
     return obj;
   },
-  toJSON(message: MsgUpdateParams): unknown {
+  toJSON(message: MsgUpdateParams): JsonSafe<MsgUpdateParams> {
     const obj: any = {};
     message.authority !== undefined && (obj.authority = message.authority);
     message.params !== undefined && (obj.params = message.params ? Params.toJSON(message.params) : undefined);
@@ -304,8 +349,8 @@ export const MsgUpdateParams = {
   },
   toAmino(message: MsgUpdateParams): MsgUpdateParamsAmino {
     const obj: any = {};
-    obj.authority = message.authority;
-    obj.params = message.params ? Params.toAmino(message.params) : Params.fromPartial({});
+    obj.authority = message.authority === "" ? undefined : message.authority;
+    obj.params = message.params ? Params.toAmino(message.params) : Params.toAmino(Params.fromPartial({}));
     return obj;
   },
   fromAminoMsg(object: MsgUpdateParamsAminoMsg): MsgUpdateParams {
@@ -314,7 +359,7 @@ export const MsgUpdateParams = {
   toAminoMsg(message: MsgUpdateParams): MsgUpdateParamsAminoMsg {
     return {
       type: "cosmos-sdk/x/slashing/MsgUpdateParams",
-      value: MsgUpdateParams.toAmino(message),
+      value: MsgUpdateParams.toAmino(message)
     };
   },
   fromProtoMsg(message: MsgUpdateParamsProtoMsg): MsgUpdateParams {
@@ -326,15 +371,24 @@ export const MsgUpdateParams = {
   toProtoMsg(message: MsgUpdateParams): MsgUpdateParamsProtoMsg {
     return {
       typeUrl: "/cosmos.slashing.v1beta1.MsgUpdateParams",
-      value: MsgUpdateParams.encode(message).finish(),
+      value: MsgUpdateParams.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(MsgUpdateParams.typeUrl, MsgUpdateParams);
+GlobalDecoderRegistry.registerAminoProtoMapping(MsgUpdateParams.aminoType, MsgUpdateParams.typeUrl);
 function createBaseMsgUpdateParamsResponse(): MsgUpdateParamsResponse {
   return {};
 }
 export const MsgUpdateParamsResponse = {
   typeUrl: "/cosmos.slashing.v1beta1.MsgUpdateParamsResponse",
+  aminoType: "cosmos-sdk/MsgUpdateParamsResponse",
+  is(o: any): o is MsgUpdateParamsResponse {
+    return o && o.$typeUrl === MsgUpdateParamsResponse.typeUrl;
+  },
+  isAmino(o: any): o is MsgUpdateParamsResponseAmino {
+    return o && o.$typeUrl === MsgUpdateParamsResponse.typeUrl;
+  },
   encode(_: MsgUpdateParamsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
@@ -356,7 +410,7 @@ export const MsgUpdateParamsResponse = {
     const obj = createBaseMsgUpdateParamsResponse();
     return obj;
   },
-  toJSON(_: MsgUpdateParamsResponse): unknown {
+  toJSON(_: MsgUpdateParamsResponse): JsonSafe<MsgUpdateParamsResponse> {
     const obj: any = {};
     return obj;
   },
@@ -378,7 +432,7 @@ export const MsgUpdateParamsResponse = {
   toAminoMsg(message: MsgUpdateParamsResponse): MsgUpdateParamsResponseAminoMsg {
     return {
       type: "cosmos-sdk/MsgUpdateParamsResponse",
-      value: MsgUpdateParamsResponse.toAmino(message),
+      value: MsgUpdateParamsResponse.toAmino(message)
     };
   },
   fromProtoMsg(message: MsgUpdateParamsResponseProtoMsg): MsgUpdateParamsResponse {
@@ -390,10 +444,12 @@ export const MsgUpdateParamsResponse = {
   toProtoMsg(message: MsgUpdateParamsResponse): MsgUpdateParamsResponseProtoMsg {
     return {
       typeUrl: "/cosmos.slashing.v1beta1.MsgUpdateParamsResponse",
-      value: MsgUpdateParamsResponse.encode(message).finish(),
+      value: MsgUpdateParamsResponse.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(MsgUpdateParamsResponse.typeUrl, MsgUpdateParamsResponse);
+GlobalDecoderRegistry.registerAminoProtoMapping(MsgUpdateParamsResponse.aminoType, MsgUpdateParamsResponse.typeUrl);
 /** Msg defines the slashing Msg service. */
 export interface Msg {
   /**
@@ -405,7 +461,7 @@ export interface Msg {
   /**
    * UpdateParams defines a governance operation for updating the x/slashing module
    * parameters. The authority defaults to the x/gov module account.
-   *
+   * 
    * Since: cosmos-sdk 0.47
    */
   UpdateParams(request: MsgUpdateParams): Promise<MsgUpdateParamsResponse>;
@@ -420,11 +476,11 @@ export class MsgClientImpl implements Msg {
   Unjail(request: MsgUnjail): Promise<MsgUnjailResponse> {
     const data = MsgUnjail.encode(request).finish();
     const promise = this.rpc.request("cosmos.slashing.v1beta1.Msg", "Unjail", data);
-    return promise.then((data) => MsgUnjailResponse.decode(new BinaryReader(data)));
+    return promise.then(data => MsgUnjailResponse.decode(new BinaryReader(data)));
   }
   UpdateParams(request: MsgUpdateParams): Promise<MsgUpdateParamsResponse> {
     const data = MsgUpdateParams.encode(request).finish();
     const promise = this.rpc.request("cosmos.slashing.v1beta1.Msg", "UpdateParams", data);
-    return promise.then((data) => MsgUpdateParamsResponse.decode(new BinaryReader(data)));
+    return promise.then(data => MsgUpdateParamsResponse.decode(new BinaryReader(data)));
   }
 }

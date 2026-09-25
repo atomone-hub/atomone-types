@@ -1,0 +1,40 @@
+version: 2
+updates:
+  # GitHub Actions updates
+  - package-ecosystem: 'github-actions'
+    directory: '/'
+    schedule:
+      interval: 'daily'
+    groups:
+      actions:
+        patterns:
+          - '*'
+
+  # Dependency updates
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    ignore:
+      # ignore all patch upgrades
+      - dependency-name: '*'
+        update-types: ['version-update:semver-patch']
+    open-pull-requests-limit: 10
+    versioning-strategy: increase
+    pull-request-branch-name:
+      separator: '-'
+    groups:
+      # Telescope generates everything under src/, so its updates arrive on
+      # their own: they need `npm run codegen` and a review of the diff.
+      telescope:
+        patterns:
+          - '@cosmology/*'
+      cosmjs:
+        patterns:
+          - '@cosmjs/*'
+      types:
+        patterns:
+          - '@types/*'
+      everything-else:
+        patterns:
+          - '*'

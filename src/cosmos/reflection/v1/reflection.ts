@@ -1,6 +1,8 @@
 /* eslint-disable */
 import { FileDescriptorProto, FileDescriptorProtoAmino } from "../../../google/protobuf/descriptor";
 import { BinaryReader, BinaryWriter } from "../../../binary";
+import { JsonSafe } from "../../../json-safe";
+import { GlobalDecoderRegistry } from "../../../registry";
 import { TxRpc } from "../../../types";
 export const protobufPackage = "cosmos.reflection.v1";
 /** FileDescriptorsRequest is the Query/FileDescriptors request type. */
@@ -9,7 +11,12 @@ export interface FileDescriptorsRequestProtoMsg {
   typeUrl: "/cosmos.reflection.v1.FileDescriptorsRequest";
   value: Uint8Array;
 }
-/** FileDescriptorsRequest is the Query/FileDescriptors request type. */
+/**
+ * FileDescriptorsRequest is the Query/FileDescriptors request type.
+ * @name FileDescriptorsRequestAmino
+ * @package cosmos.reflection.v1
+ * @see proto type: cosmos.reflection.v1.FileDescriptorsRequest
+ */
 export interface FileDescriptorsRequestAmino {}
 export interface FileDescriptorsRequestAminoMsg {
   type: "cosmos-sdk/FileDescriptorsRequest";
@@ -24,9 +31,16 @@ export interface FileDescriptorsResponseProtoMsg {
   typeUrl: "/cosmos.reflection.v1.FileDescriptorsResponse";
   value: Uint8Array;
 }
-/** FileDescriptorsResponse is the Query/FileDescriptors response type. */
+/**
+ * FileDescriptorsResponse is the Query/FileDescriptors response type.
+ * @name FileDescriptorsResponseAmino
+ * @package cosmos.reflection.v1
+ * @see proto type: cosmos.reflection.v1.FileDescriptorsResponse
+ */
 export interface FileDescriptorsResponseAmino {
-  /** files is the file descriptors. */
+  /**
+   * files is the file descriptors.
+   */
   files?: FileDescriptorProtoAmino[];
 }
 export interface FileDescriptorsResponseAminoMsg {
@@ -38,6 +52,13 @@ function createBaseFileDescriptorsRequest(): FileDescriptorsRequest {
 }
 export const FileDescriptorsRequest = {
   typeUrl: "/cosmos.reflection.v1.FileDescriptorsRequest",
+  aminoType: "cosmos-sdk/FileDescriptorsRequest",
+  is(o: any): o is FileDescriptorsRequest {
+    return o && o.$typeUrl === FileDescriptorsRequest.typeUrl;
+  },
+  isAmino(o: any): o is FileDescriptorsRequestAmino {
+    return o && o.$typeUrl === FileDescriptorsRequest.typeUrl;
+  },
   encode(_: FileDescriptorsRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
@@ -59,7 +80,7 @@ export const FileDescriptorsRequest = {
     const obj = createBaseFileDescriptorsRequest();
     return obj;
   },
-  toJSON(_: FileDescriptorsRequest): unknown {
+  toJSON(_: FileDescriptorsRequest): JsonSafe<FileDescriptorsRequest> {
     const obj: any = {};
     return obj;
   },
@@ -81,7 +102,7 @@ export const FileDescriptorsRequest = {
   toAminoMsg(message: FileDescriptorsRequest): FileDescriptorsRequestAminoMsg {
     return {
       type: "cosmos-sdk/FileDescriptorsRequest",
-      value: FileDescriptorsRequest.toAmino(message),
+      value: FileDescriptorsRequest.toAmino(message)
     };
   },
   fromProtoMsg(message: FileDescriptorsRequestProtoMsg): FileDescriptorsRequest {
@@ -93,17 +114,26 @@ export const FileDescriptorsRequest = {
   toProtoMsg(message: FileDescriptorsRequest): FileDescriptorsRequestProtoMsg {
     return {
       typeUrl: "/cosmos.reflection.v1.FileDescriptorsRequest",
-      value: FileDescriptorsRequest.encode(message).finish(),
+      value: FileDescriptorsRequest.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(FileDescriptorsRequest.typeUrl, FileDescriptorsRequest);
+GlobalDecoderRegistry.registerAminoProtoMapping(FileDescriptorsRequest.aminoType, FileDescriptorsRequest.typeUrl);
 function createBaseFileDescriptorsResponse(): FileDescriptorsResponse {
   return {
-    files: [],
+    files: []
   };
 }
 export const FileDescriptorsResponse = {
   typeUrl: "/cosmos.reflection.v1.FileDescriptorsResponse",
+  aminoType: "cosmos-sdk/FileDescriptorsResponse",
+  is(o: any): o is FileDescriptorsResponse {
+    return o && (o.$typeUrl === FileDescriptorsResponse.typeUrl || Array.isArray(o.files) && (!o.files.length || FileDescriptorProto.is(o.files[0])));
+  },
+  isAmino(o: any): o is FileDescriptorsResponseAmino {
+    return o && (o.$typeUrl === FileDescriptorsResponse.typeUrl || Array.isArray(o.files) && (!o.files.length || FileDescriptorProto.isAmino(o.files[0])));
+  },
   encode(message: FileDescriptorsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.files) {
       FileDescriptorProto.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -129,14 +159,13 @@ export const FileDescriptorsResponse = {
   },
   fromJSON(object: any): FileDescriptorsResponse {
     const obj = createBaseFileDescriptorsResponse();
-    if (Array.isArray(object?.files))
-      obj.files = object.files.map((e: any) => FileDescriptorProto.fromJSON(e));
+    if (Array.isArray(object?.files)) obj.files = object.files.map((e: any) => FileDescriptorProto.fromJSON(e));
     return obj;
   },
-  toJSON(message: FileDescriptorsResponse): unknown {
+  toJSON(message: FileDescriptorsResponse): JsonSafe<FileDescriptorsResponse> {
     const obj: any = {};
     if (message.files) {
-      obj.files = message.files.map((e) => (e ? FileDescriptorProto.toJSON(e) : undefined));
+      obj.files = message.files.map(e => e ? FileDescriptorProto.toJSON(e) : undefined);
     } else {
       obj.files = [];
     }
@@ -144,20 +173,20 @@ export const FileDescriptorsResponse = {
   },
   fromPartial(object: Partial<FileDescriptorsResponse>): FileDescriptorsResponse {
     const message = createBaseFileDescriptorsResponse();
-    message.files = object.files?.map((e) => FileDescriptorProto.fromPartial(e)) || [];
+    message.files = object.files?.map(e => FileDescriptorProto.fromPartial(e)) || [];
     return message;
   },
   fromAmino(object: FileDescriptorsResponseAmino): FileDescriptorsResponse {
     const message = createBaseFileDescriptorsResponse();
-    message.files = object.files?.map((e) => FileDescriptorProto.fromAmino(e)) || [];
+    message.files = object.files?.map(e => FileDescriptorProto.fromAmino(e)) || [];
     return message;
   },
   toAmino(message: FileDescriptorsResponse): FileDescriptorsResponseAmino {
     const obj: any = {};
     if (message.files) {
-      obj.files = message.files.map((e) => (e ? FileDescriptorProto.toAmino(e) : undefined));
+      obj.files = message.files.map(e => e ? FileDescriptorProto.toAmino(e) : undefined);
     } else {
-      obj.files = [];
+      obj.files = message.files;
     }
     return obj;
   },
@@ -167,7 +196,7 @@ export const FileDescriptorsResponse = {
   toAminoMsg(message: FileDescriptorsResponse): FileDescriptorsResponseAminoMsg {
     return {
       type: "cosmos-sdk/FileDescriptorsResponse",
-      value: FileDescriptorsResponse.toAmino(message),
+      value: FileDescriptorsResponse.toAmino(message)
     };
   },
   fromProtoMsg(message: FileDescriptorsResponseProtoMsg): FileDescriptorsResponse {
@@ -179,10 +208,12 @@ export const FileDescriptorsResponse = {
   toProtoMsg(message: FileDescriptorsResponse): FileDescriptorsResponseProtoMsg {
     return {
       typeUrl: "/cosmos.reflection.v1.FileDescriptorsResponse",
-      value: FileDescriptorsResponse.encode(message).finish(),
+      value: FileDescriptorsResponse.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(FileDescriptorsResponse.typeUrl, FileDescriptorsResponse);
+GlobalDecoderRegistry.registerAminoProtoMapping(FileDescriptorsResponse.aminoType, FileDescriptorsResponse.typeUrl);
 /** Package cosmos.reflection.v1 provides support for inspecting protobuf
  file descriptors. */
 export interface ReflectionService {
@@ -201,6 +232,6 @@ export class ReflectionServiceClientImpl implements ReflectionService {
   FileDescriptors(request: FileDescriptorsRequest = {}): Promise<FileDescriptorsResponse> {
     const data = FileDescriptorsRequest.encode(request).finish();
     const promise = this.rpc.request("cosmos.reflection.v1.ReflectionService", "FileDescriptors", data);
-    return promise.then((data) => FileDescriptorsResponse.decode(new BinaryReader(data)));
+    return promise.then(data => FileDescriptorsResponse.decode(new BinaryReader(data)));
   }
 }

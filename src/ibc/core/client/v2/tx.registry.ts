@@ -2,10 +2,7 @@
 import { TelescopeGeneratedType } from "../../../../types";
 import { Registry } from "@cosmjs/proto-signing";
 import { MsgRegisterCounterparty, MsgUpdateClientConfig } from "./tx";
-export const registry: ReadonlyArray<[string, TelescopeGeneratedType<any, any, any>]> = [
-  ["/ibc.core.client.v2.MsgRegisterCounterparty", MsgRegisterCounterparty],
-  ["/ibc.core.client.v2.MsgUpdateClientConfig", MsgUpdateClientConfig],
-];
+export const registry: ReadonlyArray<[string, TelescopeGeneratedType<any, any, any>]> = [["/ibc.core.client.v2.MsgRegisterCounterparty", MsgRegisterCounterparty], ["/ibc.core.client.v2.MsgUpdateClientConfig", MsgUpdateClientConfig]];
 export const load = (protoRegistry: Registry) => {
   registry.forEach(([typeUrl, mod]) => {
     protoRegistry.register(typeUrl, mod);
@@ -16,70 +13,70 @@ export const MessageComposer = {
     registerCounterparty(value: MsgRegisterCounterparty) {
       return {
         typeUrl: "/ibc.core.client.v2.MsgRegisterCounterparty",
-        value: MsgRegisterCounterparty.encode(value).finish(),
+        value: MsgRegisterCounterparty.encode(value).finish()
       };
     },
     updateClientConfig(value: MsgUpdateClientConfig) {
       return {
         typeUrl: "/ibc.core.client.v2.MsgUpdateClientConfig",
-        value: MsgUpdateClientConfig.encode(value).finish(),
+        value: MsgUpdateClientConfig.encode(value).finish()
       };
-    },
+    }
   },
   withTypeUrl: {
     registerCounterparty(value: MsgRegisterCounterparty) {
       return {
         typeUrl: "/ibc.core.client.v2.MsgRegisterCounterparty",
-        value,
+        value
       };
     },
     updateClientConfig(value: MsgUpdateClientConfig) {
       return {
         typeUrl: "/ibc.core.client.v2.MsgUpdateClientConfig",
-        value,
+        value
       };
-    },
+    }
   },
   toJSON: {
     registerCounterparty(value: MsgRegisterCounterparty) {
       return {
         typeUrl: "/ibc.core.client.v2.MsgRegisterCounterparty",
-        value: MsgRegisterCounterparty.toJSON(value),
+        value: MsgRegisterCounterparty.toJSON(value)
       };
     },
     updateClientConfig(value: MsgUpdateClientConfig) {
       return {
         typeUrl: "/ibc.core.client.v2.MsgUpdateClientConfig",
-        value: MsgUpdateClientConfig.toJSON(value),
+        value: MsgUpdateClientConfig.toJSON(value)
       };
-    },
+    }
   },
   fromJSON: {
     registerCounterparty(value: any) {
       return {
         typeUrl: "/ibc.core.client.v2.MsgRegisterCounterparty",
-        value: MsgRegisterCounterparty.fromJSON(value),
+        value: MsgRegisterCounterparty.fromJSON(value)
       };
     },
     updateClientConfig(value: any) {
       return {
         typeUrl: "/ibc.core.client.v2.MsgUpdateClientConfig",
-        value: MsgUpdateClientConfig.fromJSON(value),
+        value: MsgUpdateClientConfig.fromJSON(value)
       };
-    },
+    }
   },
   fromPartial: {
     registerCounterparty(value: MsgRegisterCounterparty) {
       return {
         typeUrl: "/ibc.core.client.v2.MsgRegisterCounterparty",
-        value: MsgRegisterCounterparty.fromPartial(value),
+        value: MsgRegisterCounterparty.fromPartial(value)
       };
     },
     updateClientConfig(value: MsgUpdateClientConfig) {
       return {
         typeUrl: "/ibc.core.client.v2.MsgUpdateClientConfig",
-        value: MsgUpdateClientConfig.fromPartial(value),
+        value: MsgUpdateClientConfig.fromPartial(value)
       };
-    },
-  },
+    }
+  }
 };

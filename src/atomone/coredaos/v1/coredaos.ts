@@ -1,7 +1,9 @@
 /* eslint-disable */
 import { Duration, DurationAmino } from "../../../google/protobuf/duration";
 import { BinaryReader, BinaryWriter } from "../../../binary";
+import { GlobalDecoderRegistry } from "../../../registry";
 import { isSet } from "../../../helpers";
+import { JsonSafe } from "../../../json-safe";
 export const protobufPackage = "atomone.coredaos.v1";
 /** Params defines the parameters for the x/coredaos module. */
 export interface Params {
@@ -30,7 +32,12 @@ export interface ParamsProtoMsg {
   typeUrl: "/atomone.coredaos.v1.Params";
   value: Uint8Array;
 }
-/** Params defines the parameters for the x/coredaos module. */
+/**
+ * Params defines the parameters for the x/coredaos module.
+ * @name ParamsAmino
+ * @package atomone.coredaos.v1
+ * @see proto type: atomone.coredaos.v1.Params
+ */
 export interface ParamsAmino {
   /**
    * steering_dao_address defines the address which has authority
@@ -62,11 +69,17 @@ function createBaseParams(): Params {
     steeringDaoAddress: "",
     oversightDaoAddress: "",
     votingPeriodExtensionsLimit: 0,
-    votingPeriodExtensionDuration: undefined,
+    votingPeriodExtensionDuration: undefined
   };
 }
 export const Params = {
   typeUrl: "/atomone.coredaos.v1.Params",
+  is(o: any): o is Params {
+    return o && (o.$typeUrl === Params.typeUrl || typeof o.steeringDaoAddress === "string" && typeof o.oversightDaoAddress === "string" && typeof o.votingPeriodExtensionsLimit === "number");
+  },
+  isAmino(o: any): o is ParamsAmino {
+    return o && (o.$typeUrl === Params.typeUrl || typeof o.steering_dao_address === "string" && typeof o.oversight_dao_address === "string" && typeof o.voting_period_extensions_limit === "number");
+  },
   encode(message: Params, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.steeringDaoAddress !== "") {
       writer.uint32(10).string(message.steeringDaoAddress);
@@ -112,22 +125,16 @@ export const Params = {
     const obj = createBaseParams();
     if (isSet(object.steeringDaoAddress)) obj.steeringDaoAddress = String(object.steeringDaoAddress);
     if (isSet(object.oversightDaoAddress)) obj.oversightDaoAddress = String(object.oversightDaoAddress);
-    if (isSet(object.votingPeriodExtensionsLimit))
-      obj.votingPeriodExtensionsLimit = Number(object.votingPeriodExtensionsLimit);
-    if (isSet(object.votingPeriodExtensionDuration))
-      obj.votingPeriodExtensionDuration = Duration.fromJSON(object.votingPeriodExtensionDuration);
+    if (isSet(object.votingPeriodExtensionsLimit)) obj.votingPeriodExtensionsLimit = Number(object.votingPeriodExtensionsLimit);
+    if (isSet(object.votingPeriodExtensionDuration)) obj.votingPeriodExtensionDuration = Duration.fromJSON(object.votingPeriodExtensionDuration);
     return obj;
   },
-  toJSON(message: Params): unknown {
+  toJSON(message: Params): JsonSafe<Params> {
     const obj: any = {};
     message.steeringDaoAddress !== undefined && (obj.steeringDaoAddress = message.steeringDaoAddress);
     message.oversightDaoAddress !== undefined && (obj.oversightDaoAddress = message.oversightDaoAddress);
-    message.votingPeriodExtensionsLimit !== undefined &&
-      (obj.votingPeriodExtensionsLimit = Math.round(message.votingPeriodExtensionsLimit));
-    message.votingPeriodExtensionDuration !== undefined &&
-      (obj.votingPeriodExtensionDuration = message.votingPeriodExtensionDuration
-        ? Duration.toJSON(message.votingPeriodExtensionDuration)
-        : undefined);
+    message.votingPeriodExtensionsLimit !== undefined && (obj.votingPeriodExtensionsLimit = Math.round(message.votingPeriodExtensionsLimit));
+    message.votingPeriodExtensionDuration !== undefined && (obj.votingPeriodExtensionDuration = message.votingPeriodExtensionDuration ? Duration.toJSON(message.votingPeriodExtensionDuration) : undefined);
     return obj;
   },
   fromPartial(object: Partial<Params>): Params {
@@ -148,28 +155,20 @@ export const Params = {
     if (object.oversight_dao_address !== undefined && object.oversight_dao_address !== null) {
       message.oversightDaoAddress = object.oversight_dao_address;
     }
-    if (
-      object.voting_period_extensions_limit !== undefined &&
-      object.voting_period_extensions_limit !== null
-    ) {
+    if (object.voting_period_extensions_limit !== undefined && object.voting_period_extensions_limit !== null) {
       message.votingPeriodExtensionsLimit = object.voting_period_extensions_limit;
     }
-    if (
-      object.voting_period_extension_duration !== undefined &&
-      object.voting_period_extension_duration !== null
-    ) {
+    if (object.voting_period_extension_duration !== undefined && object.voting_period_extension_duration !== null) {
       message.votingPeriodExtensionDuration = Duration.fromAmino(object.voting_period_extension_duration);
     }
     return message;
   },
   toAmino(message: Params): ParamsAmino {
     const obj: any = {};
-    obj.steering_dao_address = message.steeringDaoAddress;
-    obj.oversight_dao_address = message.oversightDaoAddress;
-    obj.voting_period_extensions_limit = message.votingPeriodExtensionsLimit;
-    obj.voting_period_extension_duration = message.votingPeriodExtensionDuration
-      ? Duration.toAmino(message.votingPeriodExtensionDuration)
-      : undefined;
+    obj.steering_dao_address = message.steeringDaoAddress === "" ? undefined : message.steeringDaoAddress;
+    obj.oversight_dao_address = message.oversightDaoAddress === "" ? undefined : message.oversightDaoAddress;
+    obj.voting_period_extensions_limit = message.votingPeriodExtensionsLimit === 0 ? undefined : message.votingPeriodExtensionsLimit;
+    obj.voting_period_extension_duration = message.votingPeriodExtensionDuration ? Duration.toAmino(message.votingPeriodExtensionDuration) : undefined;
     return obj;
   },
   fromAminoMsg(object: ParamsAminoMsg): Params {
@@ -184,7 +183,8 @@ export const Params = {
   toProtoMsg(message: Params): ParamsProtoMsg {
     return {
       typeUrl: "/atomone.coredaos.v1.Params",
-      value: Params.encode(message).finish(),
+      value: Params.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(Params.typeUrl, Params);

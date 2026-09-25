@@ -1,6 +1,8 @@
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "../../../../binary";
 import { isSet } from "../../../../helpers";
+import { JsonSafe } from "../../../../json-safe";
+import { GlobalDecoderRegistry } from "../../../../registry";
 export const protobufPackage = "ibc.applications.transfer.v1";
 /**
  * FungibleTokenPacketData defines a struct for the packet payload
@@ -27,17 +29,30 @@ export interface FungibleTokenPacketDataProtoMsg {
  * FungibleTokenPacketData defines a struct for the packet payload
  * See FungibleTokenPacketData spec:
  * https://github.com/cosmos/ibc/tree/master/spec/app/ics-020-fungible-token-transfer#data-structures
+ * @name FungibleTokenPacketDataAmino
+ * @package ibc.applications.transfer.v1
+ * @see proto type: ibc.applications.transfer.v1.FungibleTokenPacketData
  */
 export interface FungibleTokenPacketDataAmino {
-  /** the token denomination to be transferred */
+  /**
+   * the token denomination to be transferred
+   */
   denom?: string;
-  /** the token amount to be transferred */
+  /**
+   * the token amount to be transferred
+   */
   amount?: string;
-  /** the sender address */
+  /**
+   * the sender address
+   */
   sender?: string;
-  /** the recipient address on the destination chain */
+  /**
+   * the recipient address on the destination chain
+   */
   receiver?: string;
-  /** optional memo */
+  /**
+   * optional memo
+   */
   memo?: string;
 }
 export interface FungibleTokenPacketDataAminoMsg {
@@ -50,11 +65,18 @@ function createBaseFungibleTokenPacketData(): FungibleTokenPacketData {
     amount: "",
     sender: "",
     receiver: "",
-    memo: "",
+    memo: ""
   };
 }
 export const FungibleTokenPacketData = {
   typeUrl: "/ibc.applications.transfer.v1.FungibleTokenPacketData",
+  aminoType: "cosmos-sdk/FungibleTokenPacketData",
+  is(o: any): o is FungibleTokenPacketData {
+    return o && (o.$typeUrl === FungibleTokenPacketData.typeUrl || typeof o.denom === "string" && typeof o.amount === "string" && typeof o.sender === "string" && typeof o.receiver === "string" && typeof o.memo === "string");
+  },
+  isAmino(o: any): o is FungibleTokenPacketDataAmino {
+    return o && (o.$typeUrl === FungibleTokenPacketData.typeUrl || typeof o.denom === "string" && typeof o.amount === "string" && typeof o.sender === "string" && typeof o.receiver === "string" && typeof o.memo === "string");
+  },
   encode(message: FungibleTokenPacketData, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.denom !== "") {
       writer.uint32(10).string(message.denom);
@@ -111,7 +133,7 @@ export const FungibleTokenPacketData = {
     if (isSet(object.memo)) obj.memo = String(object.memo);
     return obj;
   },
-  toJSON(message: FungibleTokenPacketData): unknown {
+  toJSON(message: FungibleTokenPacketData): JsonSafe<FungibleTokenPacketData> {
     const obj: any = {};
     message.denom !== undefined && (obj.denom = message.denom);
     message.amount !== undefined && (obj.amount = message.amount);
@@ -150,11 +172,11 @@ export const FungibleTokenPacketData = {
   },
   toAmino(message: FungibleTokenPacketData): FungibleTokenPacketDataAmino {
     const obj: any = {};
-    obj.denom = message.denom;
-    obj.amount = message.amount;
-    obj.sender = message.sender;
-    obj.receiver = message.receiver;
-    obj.memo = message.memo;
+    obj.denom = message.denom === "" ? undefined : message.denom;
+    obj.amount = message.amount === "" ? undefined : message.amount;
+    obj.sender = message.sender === "" ? undefined : message.sender;
+    obj.receiver = message.receiver === "" ? undefined : message.receiver;
+    obj.memo = message.memo === "" ? undefined : message.memo;
     return obj;
   },
   fromAminoMsg(object: FungibleTokenPacketDataAminoMsg): FungibleTokenPacketData {
@@ -163,7 +185,7 @@ export const FungibleTokenPacketData = {
   toAminoMsg(message: FungibleTokenPacketData): FungibleTokenPacketDataAminoMsg {
     return {
       type: "cosmos-sdk/FungibleTokenPacketData",
-      value: FungibleTokenPacketData.toAmino(message),
+      value: FungibleTokenPacketData.toAmino(message)
     };
   },
   fromProtoMsg(message: FungibleTokenPacketDataProtoMsg): FungibleTokenPacketData {
@@ -175,7 +197,9 @@ export const FungibleTokenPacketData = {
   toProtoMsg(message: FungibleTokenPacketData): FungibleTokenPacketDataProtoMsg {
     return {
       typeUrl: "/ibc.applications.transfer.v1.FungibleTokenPacketData",
-      value: FungibleTokenPacketData.encode(message).finish(),
+      value: FungibleTokenPacketData.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(FungibleTokenPacketData.typeUrl, FungibleTokenPacketData);
+GlobalDecoderRegistry.registerAminoProtoMapping(FungibleTokenPacketData.aminoType, FungibleTokenPacketData.typeUrl);

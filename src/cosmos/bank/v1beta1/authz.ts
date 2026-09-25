@@ -1,11 +1,13 @@
 /* eslint-disable */
 import { Coin, CoinAmino } from "../../base/v1beta1/coin";
 import { BinaryReader, BinaryWriter } from "../../../binary";
+import { JsonSafe } from "../../../json-safe";
+import { GlobalDecoderRegistry } from "../../../registry";
 export const protobufPackage = "cosmos.bank.v1beta1";
 /**
  * SendAuthorization allows the grantee to spend up to spend_limit coins from
  * the granter's account.
- *
+ * 
  * Since: cosmos-sdk 0.43
  */
 export interface SendAuthorization {
@@ -13,7 +15,7 @@ export interface SendAuthorization {
   /**
    * allow_list specifies an optional list of addresses to whom the grantee can send tokens on behalf of the
    * granter. If omitted, any recipient is allowed.
-   *
+   * 
    * Since: cosmos-sdk 0.47
    */
   allowList: string[];
@@ -25,15 +27,18 @@ export interface SendAuthorizationProtoMsg {
 /**
  * SendAuthorization allows the grantee to spend up to spend_limit coins from
  * the granter's account.
- *
+ * 
  * Since: cosmos-sdk 0.43
+ * @name SendAuthorizationAmino
+ * @package cosmos.bank.v1beta1
+ * @see proto type: cosmos.bank.v1beta1.SendAuthorization
  */
 export interface SendAuthorizationAmino {
   spend_limit: CoinAmino[];
   /**
    * allow_list specifies an optional list of addresses to whom the grantee can send tokens on behalf of the
    * granter. If omitted, any recipient is allowed.
-   *
+   * 
    * Since: cosmos-sdk 0.47
    */
   allow_list?: string[];
@@ -45,11 +50,18 @@ export interface SendAuthorizationAminoMsg {
 function createBaseSendAuthorization(): SendAuthorization {
   return {
     spendLimit: [],
-    allowList: [],
+    allowList: []
   };
 }
 export const SendAuthorization = {
   typeUrl: "/cosmos.bank.v1beta1.SendAuthorization",
+  aminoType: "cosmos-sdk/SendAuthorization",
+  is(o: any): o is SendAuthorization {
+    return o && (o.$typeUrl === SendAuthorization.typeUrl || Array.isArray(o.spendLimit) && (!o.spendLimit.length || Coin.is(o.spendLimit[0])) && Array.isArray(o.allowList) && (!o.allowList.length || typeof o.allowList[0] === "string"));
+  },
+  isAmino(o: any): o is SendAuthorizationAmino {
+    return o && (o.$typeUrl === SendAuthorization.typeUrl || Array.isArray(o.spend_limit) && (!o.spend_limit.length || Coin.isAmino(o.spend_limit[0])) && Array.isArray(o.allow_list) && (!o.allow_list.length || typeof o.allow_list[0] === "string"));
+  },
   encode(message: SendAuthorization, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.spendLimit) {
       Coin.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -81,20 +93,19 @@ export const SendAuthorization = {
   },
   fromJSON(object: any): SendAuthorization {
     const obj = createBaseSendAuthorization();
-    if (Array.isArray(object?.spendLimit))
-      obj.spendLimit = object.spendLimit.map((e: any) => Coin.fromJSON(e));
+    if (Array.isArray(object?.spendLimit)) obj.spendLimit = object.spendLimit.map((e: any) => Coin.fromJSON(e));
     if (Array.isArray(object?.allowList)) obj.allowList = object.allowList.map((e: any) => String(e));
     return obj;
   },
-  toJSON(message: SendAuthorization): unknown {
+  toJSON(message: SendAuthorization): JsonSafe<SendAuthorization> {
     const obj: any = {};
     if (message.spendLimit) {
-      obj.spendLimit = message.spendLimit.map((e) => (e ? Coin.toJSON(e) : undefined));
+      obj.spendLimit = message.spendLimit.map(e => e ? Coin.toJSON(e) : undefined);
     } else {
       obj.spendLimit = [];
     }
     if (message.allowList) {
-      obj.allowList = message.allowList.map((e) => e);
+      obj.allowList = message.allowList.map(e => e);
     } else {
       obj.allowList = [];
     }
@@ -102,27 +113,27 @@ export const SendAuthorization = {
   },
   fromPartial(object: Partial<SendAuthorization>): SendAuthorization {
     const message = createBaseSendAuthorization();
-    message.spendLimit = object.spendLimit?.map((e) => Coin.fromPartial(e)) || [];
-    message.allowList = object.allowList?.map((e) => e) || [];
+    message.spendLimit = object.spendLimit?.map(e => Coin.fromPartial(e)) || [];
+    message.allowList = object.allowList?.map(e => e) || [];
     return message;
   },
   fromAmino(object: SendAuthorizationAmino): SendAuthorization {
     const message = createBaseSendAuthorization();
-    message.spendLimit = object.spend_limit?.map((e) => Coin.fromAmino(e)) || [];
-    message.allowList = object.allow_list?.map((e) => e) || [];
+    message.spendLimit = object.spend_limit?.map(e => Coin.fromAmino(e)) || [];
+    message.allowList = object.allow_list?.map(e => e) || [];
     return message;
   },
   toAmino(message: SendAuthorization): SendAuthorizationAmino {
     const obj: any = {};
     if (message.spendLimit) {
-      obj.spend_limit = message.spendLimit.map((e) => (e ? Coin.toAmino(e) : undefined));
+      obj.spend_limit = message.spendLimit.map(e => e ? Coin.toAmino(e) : undefined);
     } else {
-      obj.spend_limit = [];
+      obj.spend_limit = message.spendLimit;
     }
     if (message.allowList) {
-      obj.allow_list = message.allowList.map((e) => e);
+      obj.allow_list = message.allowList.map(e => e);
     } else {
-      obj.allow_list = [];
+      obj.allow_list = message.allowList;
     }
     return obj;
   },
@@ -132,7 +143,7 @@ export const SendAuthorization = {
   toAminoMsg(message: SendAuthorization): SendAuthorizationAminoMsg {
     return {
       type: "cosmos-sdk/SendAuthorization",
-      value: SendAuthorization.toAmino(message),
+      value: SendAuthorization.toAmino(message)
     };
   },
   fromProtoMsg(message: SendAuthorizationProtoMsg): SendAuthorization {
@@ -144,7 +155,9 @@ export const SendAuthorization = {
   toProtoMsg(message: SendAuthorization): SendAuthorizationProtoMsg {
     return {
       typeUrl: "/cosmos.bank.v1beta1.SendAuthorization",
-      value: SendAuthorization.encode(message).finish(),
+      value: SendAuthorization.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(SendAuthorization.typeUrl, SendAuthorization);
+GlobalDecoderRegistry.registerAminoProtoMapping(SendAuthorization.aminoType, SendAuthorization.typeUrl);

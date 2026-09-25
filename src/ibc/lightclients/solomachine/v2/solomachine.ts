@@ -3,7 +3,9 @@ import { Any, AnyAmino } from "../../../../google/protobuf/any";
 import { ConnectionEnd, ConnectionEndAmino } from "../../../core/connection/v1/connection";
 import { Channel, ChannelAmino } from "../../../core/channel/v1/channel";
 import { BinaryReader, BinaryWriter } from "../../../../binary";
+import { GlobalDecoderRegistry } from "../../../../registry";
 import { isSet, bytesFromBase64, base64FromBytes } from "../../../../helpers";
+import { JsonSafe } from "../../../../json-safe";
 export const protobufPackage = "ibc.lightclients.solomachine.v2";
 /**
  * DataType defines the type of solo machine proof being created. This is done
@@ -121,11 +123,18 @@ export interface ClientStateProtoMsg {
 /**
  * ClientState defines a solo machine client that tracks the current consensus
  * state and if the client is frozen.
+ * @name ClientStateAmino
+ * @package ibc.lightclients.solomachine.v2
+ * @see proto type: ibc.lightclients.solomachine.v2.ClientState
  */
 export interface ClientStateAmino {
-  /** latest sequence of the client state */
+  /**
+   * latest sequence of the client state
+   */
   sequence?: string;
-  /** frozen sequence of the solo machine */
+  /**
+   * frozen sequence of the solo machine
+   */
   is_frozen?: boolean;
   consensus_state?: ConsensusStateAmino | undefined;
   /**
@@ -162,9 +171,14 @@ export interface ConsensusStateProtoMsg {
  * ConsensusState defines a solo machine consensus state. The sequence of a
  * consensus state is contained in the "height" key used in storing the
  * consensus state.
+ * @name ConsensusStateAmino
+ * @package ibc.lightclients.solomachine.v2
+ * @see proto type: ibc.lightclients.solomachine.v2.ConsensusState
  */
 export interface ConsensusStateAmino {
-  /** public key of the solo machine */
+  /**
+   * public key of the solo machine
+   */
   public_key?: AnyAmino | undefined;
   /**
    * diversifier allows the same public key to be reused across different solo
@@ -191,9 +205,16 @@ export interface HeaderProtoMsg {
   typeUrl: "/ibc.lightclients.solomachine.v2.Header";
   value: Uint8Array;
 }
-/** Header defines a solo machine consensus header */
+/**
+ * Header defines a solo machine consensus header
+ * @name HeaderAmino
+ * @package ibc.lightclients.solomachine.v2
+ * @see proto type: ibc.lightclients.solomachine.v2.Header
+ */
 export interface HeaderAmino {
-  /** sequence to update solo machine public key at */
+  /**
+   * sequence to update solo machine public key at
+   */
   sequence?: string;
   timestamp?: string;
   signature?: string;
@@ -221,6 +242,9 @@ export interface MisbehaviourProtoMsg {
 /**
  * Misbehaviour defines misbehaviour for a solo machine which consists
  * of a sequence and two signatures over different messages at that sequence.
+ * @name MisbehaviourAmino
+ * @package ibc.lightclients.solomachine.v2
+ * @see proto type: ibc.lightclients.solomachine.v2.Misbehaviour
  */
 export interface MisbehaviourAmino {
   client_id?: string;
@@ -249,6 +273,9 @@ export interface SignatureAndDataProtoMsg {
 /**
  * SignatureAndData contains a signature and the data signed over to create that
  * signature.
+ * @name SignatureAndDataAmino
+ * @package ibc.lightclients.solomachine.v2
+ * @see proto type: ibc.lightclients.solomachine.v2.SignatureAndData
  */
 export interface SignatureAndDataAmino {
   signature?: string;
@@ -275,6 +302,9 @@ export interface TimestampedSignatureDataProtoMsg {
 /**
  * TimestampedSignatureData contains the signature data and the timestamp of the
  * signature.
+ * @name TimestampedSignatureDataAmino
+ * @package ibc.lightclients.solomachine.v2
+ * @see proto type: ibc.lightclients.solomachine.v2.TimestampedSignatureData
  */
 export interface TimestampedSignatureDataAmino {
   signature_data?: string;
@@ -298,14 +328,23 @@ export interface SignBytesProtoMsg {
   typeUrl: "/ibc.lightclients.solomachine.v2.SignBytes";
   value: Uint8Array;
 }
-/** SignBytes defines the signed bytes used for signature verification. */
+/**
+ * SignBytes defines the signed bytes used for signature verification.
+ * @name SignBytesAmino
+ * @package ibc.lightclients.solomachine.v2
+ * @see proto type: ibc.lightclients.solomachine.v2.SignBytes
+ */
 export interface SignBytesAmino {
   sequence?: string;
   timestamp?: string;
   diversifier?: string;
-  /** type of the data used */
+  /**
+   * type of the data used
+   */
   data_type?: DataType;
-  /** marshaled data */
+  /**
+   * marshaled data
+   */
   data?: string;
 }
 export interface SignBytesAminoMsg {
@@ -323,11 +362,20 @@ export interface HeaderDataProtoMsg {
   typeUrl: "/ibc.lightclients.solomachine.v2.HeaderData";
   value: Uint8Array;
 }
-/** HeaderData returns the SignBytes data for update verification. */
+/**
+ * HeaderData returns the SignBytes data for update verification.
+ * @name HeaderDataAmino
+ * @package ibc.lightclients.solomachine.v2
+ * @see proto type: ibc.lightclients.solomachine.v2.HeaderData
+ */
 export interface HeaderDataAmino {
-  /** header public key */
+  /**
+   * header public key
+   */
   new_pub_key?: AnyAmino | undefined;
-  /** header diversifier */
+  /**
+   * header diversifier
+   */
   new_diversifier?: string;
 }
 export interface HeaderDataAminoMsg {
@@ -343,7 +391,12 @@ export interface ClientStateDataProtoMsg {
   typeUrl: "/ibc.lightclients.solomachine.v2.ClientStateData";
   value: Uint8Array;
 }
-/** ClientStateData returns the SignBytes data for client state verification. */
+/**
+ * ClientStateData returns the SignBytes data for client state verification.
+ * @name ClientStateDataAmino
+ * @package ibc.lightclients.solomachine.v2
+ * @see proto type: ibc.lightclients.solomachine.v2.ClientStateData
+ */
 export interface ClientStateDataAmino {
   path?: string;
   client_state?: AnyAmino | undefined;
@@ -367,6 +420,9 @@ export interface ConsensusStateDataProtoMsg {
 /**
  * ConsensusStateData returns the SignBytes data for consensus state
  * verification.
+ * @name ConsensusStateDataAmino
+ * @package ibc.lightclients.solomachine.v2
+ * @see proto type: ibc.lightclients.solomachine.v2.ConsensusStateData
  */
 export interface ConsensusStateDataAmino {
   path?: string;
@@ -391,6 +447,9 @@ export interface ConnectionStateDataProtoMsg {
 /**
  * ConnectionStateData returns the SignBytes data for connection state
  * verification.
+ * @name ConnectionStateDataAmino
+ * @package ibc.lightclients.solomachine.v2
+ * @see proto type: ibc.lightclients.solomachine.v2.ConnectionStateData
  */
 export interface ConnectionStateDataAmino {
   path?: string;
@@ -415,6 +474,9 @@ export interface ChannelStateDataProtoMsg {
 /**
  * ChannelStateData returns the SignBytes data for channel state
  * verification.
+ * @name ChannelStateDataAmino
+ * @package ibc.lightclients.solomachine.v2
+ * @see proto type: ibc.lightclients.solomachine.v2.ChannelStateData
  */
 export interface ChannelStateDataAmino {
   path?: string;
@@ -439,6 +501,9 @@ export interface PacketCommitmentDataProtoMsg {
 /**
  * PacketCommitmentData returns the SignBytes data for packet commitment
  * verification.
+ * @name PacketCommitmentDataAmino
+ * @package ibc.lightclients.solomachine.v2
+ * @see proto type: ibc.lightclients.solomachine.v2.PacketCommitmentData
  */
 export interface PacketCommitmentDataAmino {
   path?: string;
@@ -463,6 +528,9 @@ export interface PacketAcknowledgementDataProtoMsg {
 /**
  * PacketAcknowledgementData returns the SignBytes data for acknowledgement
  * verification.
+ * @name PacketAcknowledgementDataAmino
+ * @package ibc.lightclients.solomachine.v2
+ * @see proto type: ibc.lightclients.solomachine.v2.PacketAcknowledgementData
  */
 export interface PacketAcknowledgementDataAmino {
   path?: string;
@@ -486,6 +554,9 @@ export interface PacketReceiptAbsenceDataProtoMsg {
 /**
  * PacketReceiptAbsenceData returns the SignBytes data for
  * packet receipt absence verification.
+ * @name PacketReceiptAbsenceDataAmino
+ * @package ibc.lightclients.solomachine.v2
+ * @see proto type: ibc.lightclients.solomachine.v2.PacketReceiptAbsenceData
  */
 export interface PacketReceiptAbsenceDataAmino {
   path?: string;
@@ -509,6 +580,9 @@ export interface NextSequenceRecvDataProtoMsg {
 /**
  * NextSequenceRecvData returns the SignBytes data for verification of the next
  * sequence to be received.
+ * @name NextSequenceRecvDataAmino
+ * @package ibc.lightclients.solomachine.v2
+ * @see proto type: ibc.lightclients.solomachine.v2.NextSequenceRecvData
  */
 export interface NextSequenceRecvDataAmino {
   path?: string;
@@ -523,11 +597,18 @@ function createBaseClientState(): ClientState {
     sequence: BigInt(0),
     isFrozen: false,
     consensusState: undefined,
-    allowUpdateAfterProposal: false,
+    allowUpdateAfterProposal: false
   };
 }
 export const ClientState = {
   typeUrl: "/ibc.lightclients.solomachine.v2.ClientState",
+  aminoType: "cosmos-sdk/ClientState",
+  is(o: any): o is ClientState {
+    return o && (o.$typeUrl === ClientState.typeUrl || typeof o.sequence === "bigint" && typeof o.isFrozen === "boolean" && typeof o.allowUpdateAfterProposal === "boolean");
+  },
+  isAmino(o: any): o is ClientStateAmino {
+    return o && (o.$typeUrl === ClientState.typeUrl || typeof o.sequence === "bigint" && typeof o.is_frozen === "boolean" && typeof o.allow_update_after_proposal === "boolean");
+  },
   encode(message: ClientState, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.sequence !== BigInt(0)) {
       writer.uint32(8).uint64(message.sequence);
@@ -574,20 +655,15 @@ export const ClientState = {
     if (isSet(object.sequence)) obj.sequence = BigInt(object.sequence.toString());
     if (isSet(object.isFrozen)) obj.isFrozen = Boolean(object.isFrozen);
     if (isSet(object.consensusState)) obj.consensusState = ConsensusState.fromJSON(object.consensusState);
-    if (isSet(object.allowUpdateAfterProposal))
-      obj.allowUpdateAfterProposal = Boolean(object.allowUpdateAfterProposal);
+    if (isSet(object.allowUpdateAfterProposal)) obj.allowUpdateAfterProposal = Boolean(object.allowUpdateAfterProposal);
     return obj;
   },
-  toJSON(message: ClientState): unknown {
+  toJSON(message: ClientState): JsonSafe<ClientState> {
     const obj: any = {};
     message.sequence !== undefined && (obj.sequence = (message.sequence || BigInt(0)).toString());
     message.isFrozen !== undefined && (obj.isFrozen = message.isFrozen);
-    message.consensusState !== undefined &&
-      (obj.consensusState = message.consensusState
-        ? ConsensusState.toJSON(message.consensusState)
-        : undefined);
-    message.allowUpdateAfterProposal !== undefined &&
-      (obj.allowUpdateAfterProposal = message.allowUpdateAfterProposal);
+    message.consensusState !== undefined && (obj.consensusState = message.consensusState ? ConsensusState.toJSON(message.consensusState) : undefined);
+    message.allowUpdateAfterProposal !== undefined && (obj.allowUpdateAfterProposal = message.allowUpdateAfterProposal);
     return obj;
   },
   fromPartial(object: Partial<ClientState>): ClientState {
@@ -620,10 +696,10 @@ export const ClientState = {
   },
   toAmino(message: ClientState): ClientStateAmino {
     const obj: any = {};
-    obj.sequence = message.sequence ? message.sequence.toString() : undefined;
-    obj.is_frozen = message.isFrozen;
+    obj.sequence = message.sequence !== BigInt(0) ? message.sequence?.toString() : undefined;
+    obj.is_frozen = message.isFrozen === false ? undefined : message.isFrozen;
     obj.consensus_state = message.consensusState ? ConsensusState.toAmino(message.consensusState) : undefined;
-    obj.allow_update_after_proposal = message.allowUpdateAfterProposal;
+    obj.allow_update_after_proposal = message.allowUpdateAfterProposal === false ? undefined : message.allowUpdateAfterProposal;
     return obj;
   },
   fromAminoMsg(object: ClientStateAminoMsg): ClientState {
@@ -632,7 +708,7 @@ export const ClientState = {
   toAminoMsg(message: ClientState): ClientStateAminoMsg {
     return {
       type: "cosmos-sdk/ClientState",
-      value: ClientState.toAmino(message),
+      value: ClientState.toAmino(message)
     };
   },
   fromProtoMsg(message: ClientStateProtoMsg): ClientState {
@@ -644,19 +720,28 @@ export const ClientState = {
   toProtoMsg(message: ClientState): ClientStateProtoMsg {
     return {
       typeUrl: "/ibc.lightclients.solomachine.v2.ClientState",
-      value: ClientState.encode(message).finish(),
+      value: ClientState.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(ClientState.typeUrl, ClientState);
+GlobalDecoderRegistry.registerAminoProtoMapping(ClientState.aminoType, ClientState.typeUrl);
 function createBaseConsensusState(): ConsensusState {
   return {
     publicKey: undefined,
     diversifier: "",
-    timestamp: BigInt(0),
+    timestamp: BigInt(0)
   };
 }
 export const ConsensusState = {
   typeUrl: "/ibc.lightclients.solomachine.v2.ConsensusState",
+  aminoType: "cosmos-sdk/ConsensusState",
+  is(o: any): o is ConsensusState {
+    return o && (o.$typeUrl === ConsensusState.typeUrl || typeof o.diversifier === "string" && typeof o.timestamp === "bigint");
+  },
+  isAmino(o: any): o is ConsensusStateAmino {
+    return o && (o.$typeUrl === ConsensusState.typeUrl || typeof o.diversifier === "string" && typeof o.timestamp === "bigint");
+  },
   encode(message: ConsensusState, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.publicKey !== undefined) {
       Any.encode(message.publicKey, writer.uint32(10).fork()).ldelim();
@@ -699,10 +784,9 @@ export const ConsensusState = {
     if (isSet(object.timestamp)) obj.timestamp = BigInt(object.timestamp.toString());
     return obj;
   },
-  toJSON(message: ConsensusState): unknown {
+  toJSON(message: ConsensusState): JsonSafe<ConsensusState> {
     const obj: any = {};
-    message.publicKey !== undefined &&
-      (obj.publicKey = message.publicKey ? Any.toJSON(message.publicKey) : undefined);
+    message.publicKey !== undefined && (obj.publicKey = message.publicKey ? Any.toJSON(message.publicKey) : undefined);
     message.diversifier !== undefined && (obj.diversifier = message.diversifier);
     message.timestamp !== undefined && (obj.timestamp = (message.timestamp || BigInt(0)).toString());
     return obj;
@@ -734,8 +818,8 @@ export const ConsensusState = {
   toAmino(message: ConsensusState): ConsensusStateAmino {
     const obj: any = {};
     obj.public_key = message.publicKey ? Any.toAmino(message.publicKey) : undefined;
-    obj.diversifier = message.diversifier;
-    obj.timestamp = message.timestamp ? message.timestamp.toString() : undefined;
+    obj.diversifier = message.diversifier === "" ? undefined : message.diversifier;
+    obj.timestamp = message.timestamp !== BigInt(0) ? message.timestamp?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: ConsensusStateAminoMsg): ConsensusState {
@@ -744,7 +828,7 @@ export const ConsensusState = {
   toAminoMsg(message: ConsensusState): ConsensusStateAminoMsg {
     return {
       type: "cosmos-sdk/ConsensusState",
-      value: ConsensusState.toAmino(message),
+      value: ConsensusState.toAmino(message)
     };
   },
   fromProtoMsg(message: ConsensusStateProtoMsg): ConsensusState {
@@ -756,21 +840,30 @@ export const ConsensusState = {
   toProtoMsg(message: ConsensusState): ConsensusStateProtoMsg {
     return {
       typeUrl: "/ibc.lightclients.solomachine.v2.ConsensusState",
-      value: ConsensusState.encode(message).finish(),
+      value: ConsensusState.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(ConsensusState.typeUrl, ConsensusState);
+GlobalDecoderRegistry.registerAminoProtoMapping(ConsensusState.aminoType, ConsensusState.typeUrl);
 function createBaseHeader(): Header {
   return {
     sequence: BigInt(0),
     timestamp: BigInt(0),
     signature: new Uint8Array(),
     newPublicKey: undefined,
-    newDiversifier: "",
+    newDiversifier: ""
   };
 }
 export const Header = {
   typeUrl: "/ibc.lightclients.solomachine.v2.Header",
+  aminoType: "cosmos-sdk/Header",
+  is(o: any): o is Header {
+    return o && (o.$typeUrl === Header.typeUrl || typeof o.sequence === "bigint" && typeof o.timestamp === "bigint" && (o.signature instanceof Uint8Array || typeof o.signature === "string") && typeof o.newDiversifier === "string");
+  },
+  isAmino(o: any): o is HeaderAmino {
+    return o && (o.$typeUrl === Header.typeUrl || typeof o.sequence === "bigint" && typeof o.timestamp === "bigint" && (o.signature instanceof Uint8Array || typeof o.signature === "string") && typeof o.new_diversifier === "string");
+  },
   encode(message: Header, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.sequence !== BigInt(0)) {
       writer.uint32(8).uint64(message.sequence);
@@ -827,16 +920,12 @@ export const Header = {
     if (isSet(object.newDiversifier)) obj.newDiversifier = String(object.newDiversifier);
     return obj;
   },
-  toJSON(message: Header): unknown {
+  toJSON(message: Header): JsonSafe<Header> {
     const obj: any = {};
     message.sequence !== undefined && (obj.sequence = (message.sequence || BigInt(0)).toString());
     message.timestamp !== undefined && (obj.timestamp = (message.timestamp || BigInt(0)).toString());
-    message.signature !== undefined &&
-      (obj.signature = base64FromBytes(
-        message.signature !== undefined ? message.signature : new Uint8Array(),
-      ));
-    message.newPublicKey !== undefined &&
-      (obj.newPublicKey = message.newPublicKey ? Any.toJSON(message.newPublicKey) : undefined);
+    message.signature !== undefined && (obj.signature = base64FromBytes(message.signature !== undefined ? message.signature : new Uint8Array()));
+    message.newPublicKey !== undefined && (obj.newPublicKey = message.newPublicKey ? Any.toJSON(message.newPublicKey) : undefined);
     message.newDiversifier !== undefined && (obj.newDiversifier = message.newDiversifier);
     return obj;
   },
@@ -876,11 +965,11 @@ export const Header = {
   },
   toAmino(message: Header): HeaderAmino {
     const obj: any = {};
-    obj.sequence = message.sequence ? message.sequence.toString() : undefined;
-    obj.timestamp = message.timestamp ? message.timestamp.toString() : undefined;
+    obj.sequence = message.sequence !== BigInt(0) ? message.sequence?.toString() : undefined;
+    obj.timestamp = message.timestamp !== BigInt(0) ? message.timestamp?.toString() : undefined;
     obj.signature = message.signature ? base64FromBytes(message.signature) : undefined;
     obj.new_public_key = message.newPublicKey ? Any.toAmino(message.newPublicKey) : undefined;
-    obj.new_diversifier = message.newDiversifier;
+    obj.new_diversifier = message.newDiversifier === "" ? undefined : message.newDiversifier;
     return obj;
   },
   fromAminoMsg(object: HeaderAminoMsg): Header {
@@ -889,7 +978,7 @@ export const Header = {
   toAminoMsg(message: Header): HeaderAminoMsg {
     return {
       type: "cosmos-sdk/Header",
-      value: Header.toAmino(message),
+      value: Header.toAmino(message)
     };
   },
   fromProtoMsg(message: HeaderProtoMsg): Header {
@@ -901,20 +990,29 @@ export const Header = {
   toProtoMsg(message: Header): HeaderProtoMsg {
     return {
       typeUrl: "/ibc.lightclients.solomachine.v2.Header",
-      value: Header.encode(message).finish(),
+      value: Header.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(Header.typeUrl, Header);
+GlobalDecoderRegistry.registerAminoProtoMapping(Header.aminoType, Header.typeUrl);
 function createBaseMisbehaviour(): Misbehaviour {
   return {
     clientId: "",
     sequence: BigInt(0),
     signatureOne: undefined,
-    signatureTwo: undefined,
+    signatureTwo: undefined
   };
 }
 export const Misbehaviour = {
   typeUrl: "/ibc.lightclients.solomachine.v2.Misbehaviour",
+  aminoType: "cosmos-sdk/Misbehaviour",
+  is(o: any): o is Misbehaviour {
+    return o && (o.$typeUrl === Misbehaviour.typeUrl || typeof o.clientId === "string" && typeof o.sequence === "bigint");
+  },
+  isAmino(o: any): o is MisbehaviourAmino {
+    return o && (o.$typeUrl === Misbehaviour.typeUrl || typeof o.client_id === "string" && typeof o.sequence === "bigint");
+  },
   encode(message: Misbehaviour, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.clientId !== "") {
       writer.uint32(10).string(message.clientId);
@@ -964,14 +1062,12 @@ export const Misbehaviour = {
     if (isSet(object.signatureTwo)) obj.signatureTwo = SignatureAndData.fromJSON(object.signatureTwo);
     return obj;
   },
-  toJSON(message: Misbehaviour): unknown {
+  toJSON(message: Misbehaviour): JsonSafe<Misbehaviour> {
     const obj: any = {};
     message.clientId !== undefined && (obj.clientId = message.clientId);
     message.sequence !== undefined && (obj.sequence = (message.sequence || BigInt(0)).toString());
-    message.signatureOne !== undefined &&
-      (obj.signatureOne = message.signatureOne ? SignatureAndData.toJSON(message.signatureOne) : undefined);
-    message.signatureTwo !== undefined &&
-      (obj.signatureTwo = message.signatureTwo ? SignatureAndData.toJSON(message.signatureTwo) : undefined);
+    message.signatureOne !== undefined && (obj.signatureOne = message.signatureOne ? SignatureAndData.toJSON(message.signatureOne) : undefined);
+    message.signatureTwo !== undefined && (obj.signatureTwo = message.signatureTwo ? SignatureAndData.toJSON(message.signatureTwo) : undefined);
     return obj;
   },
   fromPartial(object: Partial<Misbehaviour>): Misbehaviour {
@@ -1006,8 +1102,8 @@ export const Misbehaviour = {
   },
   toAmino(message: Misbehaviour): MisbehaviourAmino {
     const obj: any = {};
-    obj.client_id = message.clientId;
-    obj.sequence = message.sequence ? message.sequence.toString() : undefined;
+    obj.client_id = message.clientId === "" ? undefined : message.clientId;
+    obj.sequence = message.sequence !== BigInt(0) ? message.sequence?.toString() : undefined;
     obj.signature_one = message.signatureOne ? SignatureAndData.toAmino(message.signatureOne) : undefined;
     obj.signature_two = message.signatureTwo ? SignatureAndData.toAmino(message.signatureTwo) : undefined;
     return obj;
@@ -1018,7 +1114,7 @@ export const Misbehaviour = {
   toAminoMsg(message: Misbehaviour): MisbehaviourAminoMsg {
     return {
       type: "cosmos-sdk/Misbehaviour",
-      value: Misbehaviour.toAmino(message),
+      value: Misbehaviour.toAmino(message)
     };
   },
   fromProtoMsg(message: MisbehaviourProtoMsg): Misbehaviour {
@@ -1030,20 +1126,29 @@ export const Misbehaviour = {
   toProtoMsg(message: Misbehaviour): MisbehaviourProtoMsg {
     return {
       typeUrl: "/ibc.lightclients.solomachine.v2.Misbehaviour",
-      value: Misbehaviour.encode(message).finish(),
+      value: Misbehaviour.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(Misbehaviour.typeUrl, Misbehaviour);
+GlobalDecoderRegistry.registerAminoProtoMapping(Misbehaviour.aminoType, Misbehaviour.typeUrl);
 function createBaseSignatureAndData(): SignatureAndData {
   return {
     signature: new Uint8Array(),
     dataType: 0,
     data: new Uint8Array(),
-    timestamp: BigInt(0),
+    timestamp: BigInt(0)
   };
 }
 export const SignatureAndData = {
   typeUrl: "/ibc.lightclients.solomachine.v2.SignatureAndData",
+  aminoType: "cosmos-sdk/SignatureAndData",
+  is(o: any): o is SignatureAndData {
+    return o && (o.$typeUrl === SignatureAndData.typeUrl || (o.signature instanceof Uint8Array || typeof o.signature === "string") && isSet(o.dataType) && (o.data instanceof Uint8Array || typeof o.data === "string") && typeof o.timestamp === "bigint");
+  },
+  isAmino(o: any): o is SignatureAndDataAmino {
+    return o && (o.$typeUrl === SignatureAndData.typeUrl || (o.signature instanceof Uint8Array || typeof o.signature === "string") && isSet(o.data_type) && (o.data instanceof Uint8Array || typeof o.data === "string") && typeof o.timestamp === "bigint");
+  },
   encode(message: SignatureAndData, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.signature.length !== 0) {
       writer.uint32(10).bytes(message.signature);
@@ -1093,15 +1198,11 @@ export const SignatureAndData = {
     if (isSet(object.timestamp)) obj.timestamp = BigInt(object.timestamp.toString());
     return obj;
   },
-  toJSON(message: SignatureAndData): unknown {
+  toJSON(message: SignatureAndData): JsonSafe<SignatureAndData> {
     const obj: any = {};
-    message.signature !== undefined &&
-      (obj.signature = base64FromBytes(
-        message.signature !== undefined ? message.signature : new Uint8Array(),
-      ));
+    message.signature !== undefined && (obj.signature = base64FromBytes(message.signature !== undefined ? message.signature : new Uint8Array()));
     message.dataType !== undefined && (obj.dataType = dataTypeToJSON(message.dataType));
-    message.data !== undefined &&
-      (obj.data = base64FromBytes(message.data !== undefined ? message.data : new Uint8Array()));
+    message.data !== undefined && (obj.data = base64FromBytes(message.data !== undefined ? message.data : new Uint8Array()));
     message.timestamp !== undefined && (obj.timestamp = (message.timestamp || BigInt(0)).toString());
     return obj;
   },
@@ -1121,7 +1222,7 @@ export const SignatureAndData = {
       message.signature = bytesFromBase64(object.signature);
     }
     if (object.data_type !== undefined && object.data_type !== null) {
-      message.dataType = dataTypeFromJSON(object.data_type);
+      message.dataType = object.data_type;
     }
     if (object.data !== undefined && object.data !== null) {
       message.data = bytesFromBase64(object.data);
@@ -1134,9 +1235,9 @@ export const SignatureAndData = {
   toAmino(message: SignatureAndData): SignatureAndDataAmino {
     const obj: any = {};
     obj.signature = message.signature ? base64FromBytes(message.signature) : undefined;
-    obj.data_type = message.dataType;
+    obj.data_type = message.dataType === 0 ? undefined : message.dataType;
     obj.data = message.data ? base64FromBytes(message.data) : undefined;
-    obj.timestamp = message.timestamp ? message.timestamp.toString() : undefined;
+    obj.timestamp = message.timestamp !== BigInt(0) ? message.timestamp?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: SignatureAndDataAminoMsg): SignatureAndData {
@@ -1145,7 +1246,7 @@ export const SignatureAndData = {
   toAminoMsg(message: SignatureAndData): SignatureAndDataAminoMsg {
     return {
       type: "cosmos-sdk/SignatureAndData",
-      value: SignatureAndData.toAmino(message),
+      value: SignatureAndData.toAmino(message)
     };
   },
   fromProtoMsg(message: SignatureAndDataProtoMsg): SignatureAndData {
@@ -1157,18 +1258,27 @@ export const SignatureAndData = {
   toProtoMsg(message: SignatureAndData): SignatureAndDataProtoMsg {
     return {
       typeUrl: "/ibc.lightclients.solomachine.v2.SignatureAndData",
-      value: SignatureAndData.encode(message).finish(),
+      value: SignatureAndData.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(SignatureAndData.typeUrl, SignatureAndData);
+GlobalDecoderRegistry.registerAminoProtoMapping(SignatureAndData.aminoType, SignatureAndData.typeUrl);
 function createBaseTimestampedSignatureData(): TimestampedSignatureData {
   return {
     signatureData: new Uint8Array(),
-    timestamp: BigInt(0),
+    timestamp: BigInt(0)
   };
 }
 export const TimestampedSignatureData = {
   typeUrl: "/ibc.lightclients.solomachine.v2.TimestampedSignatureData",
+  aminoType: "cosmos-sdk/TimestampedSignatureData",
+  is(o: any): o is TimestampedSignatureData {
+    return o && (o.$typeUrl === TimestampedSignatureData.typeUrl || (o.signatureData instanceof Uint8Array || typeof o.signatureData === "string") && typeof o.timestamp === "bigint");
+  },
+  isAmino(o: any): o is TimestampedSignatureDataAmino {
+    return o && (o.$typeUrl === TimestampedSignatureData.typeUrl || (o.signature_data instanceof Uint8Array || typeof o.signature_data === "string") && typeof o.timestamp === "bigint");
+  },
   encode(message: TimestampedSignatureData, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.signatureData.length !== 0) {
       writer.uint32(10).bytes(message.signatureData);
@@ -1204,12 +1314,9 @@ export const TimestampedSignatureData = {
     if (isSet(object.timestamp)) obj.timestamp = BigInt(object.timestamp.toString());
     return obj;
   },
-  toJSON(message: TimestampedSignatureData): unknown {
+  toJSON(message: TimestampedSignatureData): JsonSafe<TimestampedSignatureData> {
     const obj: any = {};
-    message.signatureData !== undefined &&
-      (obj.signatureData = base64FromBytes(
-        message.signatureData !== undefined ? message.signatureData : new Uint8Array(),
-      ));
+    message.signatureData !== undefined && (obj.signatureData = base64FromBytes(message.signatureData !== undefined ? message.signatureData : new Uint8Array()));
     message.timestamp !== undefined && (obj.timestamp = (message.timestamp || BigInt(0)).toString());
     return obj;
   },
@@ -1234,7 +1341,7 @@ export const TimestampedSignatureData = {
   toAmino(message: TimestampedSignatureData): TimestampedSignatureDataAmino {
     const obj: any = {};
     obj.signature_data = message.signatureData ? base64FromBytes(message.signatureData) : undefined;
-    obj.timestamp = message.timestamp ? message.timestamp.toString() : undefined;
+    obj.timestamp = message.timestamp !== BigInt(0) ? message.timestamp?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: TimestampedSignatureDataAminoMsg): TimestampedSignatureData {
@@ -1243,7 +1350,7 @@ export const TimestampedSignatureData = {
   toAminoMsg(message: TimestampedSignatureData): TimestampedSignatureDataAminoMsg {
     return {
       type: "cosmos-sdk/TimestampedSignatureData",
-      value: TimestampedSignatureData.toAmino(message),
+      value: TimestampedSignatureData.toAmino(message)
     };
   },
   fromProtoMsg(message: TimestampedSignatureDataProtoMsg): TimestampedSignatureData {
@@ -1255,21 +1362,30 @@ export const TimestampedSignatureData = {
   toProtoMsg(message: TimestampedSignatureData): TimestampedSignatureDataProtoMsg {
     return {
       typeUrl: "/ibc.lightclients.solomachine.v2.TimestampedSignatureData",
-      value: TimestampedSignatureData.encode(message).finish(),
+      value: TimestampedSignatureData.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(TimestampedSignatureData.typeUrl, TimestampedSignatureData);
+GlobalDecoderRegistry.registerAminoProtoMapping(TimestampedSignatureData.aminoType, TimestampedSignatureData.typeUrl);
 function createBaseSignBytes(): SignBytes {
   return {
     sequence: BigInt(0),
     timestamp: BigInt(0),
     diversifier: "",
     dataType: 0,
-    data: new Uint8Array(),
+    data: new Uint8Array()
   };
 }
 export const SignBytes = {
   typeUrl: "/ibc.lightclients.solomachine.v2.SignBytes",
+  aminoType: "cosmos-sdk/SignBytes",
+  is(o: any): o is SignBytes {
+    return o && (o.$typeUrl === SignBytes.typeUrl || typeof o.sequence === "bigint" && typeof o.timestamp === "bigint" && typeof o.diversifier === "string" && isSet(o.dataType) && (o.data instanceof Uint8Array || typeof o.data === "string"));
+  },
+  isAmino(o: any): o is SignBytesAmino {
+    return o && (o.$typeUrl === SignBytes.typeUrl || typeof o.sequence === "bigint" && typeof o.timestamp === "bigint" && typeof o.diversifier === "string" && isSet(o.data_type) && (o.data instanceof Uint8Array || typeof o.data === "string"));
+  },
   encode(message: SignBytes, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.sequence !== BigInt(0)) {
       writer.uint32(8).uint64(message.sequence);
@@ -1326,14 +1442,13 @@ export const SignBytes = {
     if (isSet(object.data)) obj.data = bytesFromBase64(object.data);
     return obj;
   },
-  toJSON(message: SignBytes): unknown {
+  toJSON(message: SignBytes): JsonSafe<SignBytes> {
     const obj: any = {};
     message.sequence !== undefined && (obj.sequence = (message.sequence || BigInt(0)).toString());
     message.timestamp !== undefined && (obj.timestamp = (message.timestamp || BigInt(0)).toString());
     message.diversifier !== undefined && (obj.diversifier = message.diversifier);
     message.dataType !== undefined && (obj.dataType = dataTypeToJSON(message.dataType));
-    message.data !== undefined &&
-      (obj.data = base64FromBytes(message.data !== undefined ? message.data : new Uint8Array()));
+    message.data !== undefined && (obj.data = base64FromBytes(message.data !== undefined ? message.data : new Uint8Array()));
     return obj;
   },
   fromPartial(object: Partial<SignBytes>): SignBytes {
@@ -1361,7 +1476,7 @@ export const SignBytes = {
       message.diversifier = object.diversifier;
     }
     if (object.data_type !== undefined && object.data_type !== null) {
-      message.dataType = dataTypeFromJSON(object.data_type);
+      message.dataType = object.data_type;
     }
     if (object.data !== undefined && object.data !== null) {
       message.data = bytesFromBase64(object.data);
@@ -1370,10 +1485,10 @@ export const SignBytes = {
   },
   toAmino(message: SignBytes): SignBytesAmino {
     const obj: any = {};
-    obj.sequence = message.sequence ? message.sequence.toString() : undefined;
-    obj.timestamp = message.timestamp ? message.timestamp.toString() : undefined;
-    obj.diversifier = message.diversifier;
-    obj.data_type = message.dataType;
+    obj.sequence = message.sequence !== BigInt(0) ? message.sequence?.toString() : undefined;
+    obj.timestamp = message.timestamp !== BigInt(0) ? message.timestamp?.toString() : undefined;
+    obj.diversifier = message.diversifier === "" ? undefined : message.diversifier;
+    obj.data_type = message.dataType === 0 ? undefined : message.dataType;
     obj.data = message.data ? base64FromBytes(message.data) : undefined;
     return obj;
   },
@@ -1383,7 +1498,7 @@ export const SignBytes = {
   toAminoMsg(message: SignBytes): SignBytesAminoMsg {
     return {
       type: "cosmos-sdk/SignBytes",
-      value: SignBytes.toAmino(message),
+      value: SignBytes.toAmino(message)
     };
   },
   fromProtoMsg(message: SignBytesProtoMsg): SignBytes {
@@ -1395,18 +1510,27 @@ export const SignBytes = {
   toProtoMsg(message: SignBytes): SignBytesProtoMsg {
     return {
       typeUrl: "/ibc.lightclients.solomachine.v2.SignBytes",
-      value: SignBytes.encode(message).finish(),
+      value: SignBytes.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(SignBytes.typeUrl, SignBytes);
+GlobalDecoderRegistry.registerAminoProtoMapping(SignBytes.aminoType, SignBytes.typeUrl);
 function createBaseHeaderData(): HeaderData {
   return {
     newPubKey: undefined,
-    newDiversifier: "",
+    newDiversifier: ""
   };
 }
 export const HeaderData = {
   typeUrl: "/ibc.lightclients.solomachine.v2.HeaderData",
+  aminoType: "cosmos-sdk/HeaderData",
+  is(o: any): o is HeaderData {
+    return o && (o.$typeUrl === HeaderData.typeUrl || typeof o.newDiversifier === "string");
+  },
+  isAmino(o: any): o is HeaderDataAmino {
+    return o && (o.$typeUrl === HeaderData.typeUrl || typeof o.new_diversifier === "string");
+  },
   encode(message: HeaderData, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.newPubKey !== undefined) {
       Any.encode(message.newPubKey, writer.uint32(10).fork()).ldelim();
@@ -1442,10 +1566,9 @@ export const HeaderData = {
     if (isSet(object.newDiversifier)) obj.newDiversifier = String(object.newDiversifier);
     return obj;
   },
-  toJSON(message: HeaderData): unknown {
+  toJSON(message: HeaderData): JsonSafe<HeaderData> {
     const obj: any = {};
-    message.newPubKey !== undefined &&
-      (obj.newPubKey = message.newPubKey ? Any.toJSON(message.newPubKey) : undefined);
+    message.newPubKey !== undefined && (obj.newPubKey = message.newPubKey ? Any.toJSON(message.newPubKey) : undefined);
     message.newDiversifier !== undefined && (obj.newDiversifier = message.newDiversifier);
     return obj;
   },
@@ -1470,7 +1593,7 @@ export const HeaderData = {
   toAmino(message: HeaderData): HeaderDataAmino {
     const obj: any = {};
     obj.new_pub_key = message.newPubKey ? Any.toAmino(message.newPubKey) : undefined;
-    obj.new_diversifier = message.newDiversifier;
+    obj.new_diversifier = message.newDiversifier === "" ? undefined : message.newDiversifier;
     return obj;
   },
   fromAminoMsg(object: HeaderDataAminoMsg): HeaderData {
@@ -1479,7 +1602,7 @@ export const HeaderData = {
   toAminoMsg(message: HeaderData): HeaderDataAminoMsg {
     return {
       type: "cosmos-sdk/HeaderData",
-      value: HeaderData.toAmino(message),
+      value: HeaderData.toAmino(message)
     };
   },
   fromProtoMsg(message: HeaderDataProtoMsg): HeaderData {
@@ -1491,18 +1614,27 @@ export const HeaderData = {
   toProtoMsg(message: HeaderData): HeaderDataProtoMsg {
     return {
       typeUrl: "/ibc.lightclients.solomachine.v2.HeaderData",
-      value: HeaderData.encode(message).finish(),
+      value: HeaderData.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(HeaderData.typeUrl, HeaderData);
+GlobalDecoderRegistry.registerAminoProtoMapping(HeaderData.aminoType, HeaderData.typeUrl);
 function createBaseClientStateData(): ClientStateData {
   return {
     path: new Uint8Array(),
-    clientState: undefined,
+    clientState: undefined
   };
 }
 export const ClientStateData = {
   typeUrl: "/ibc.lightclients.solomachine.v2.ClientStateData",
+  aminoType: "cosmos-sdk/ClientStateData",
+  is(o: any): o is ClientStateData {
+    return o && (o.$typeUrl === ClientStateData.typeUrl || o.path instanceof Uint8Array || typeof o.path === "string");
+  },
+  isAmino(o: any): o is ClientStateDataAmino {
+    return o && (o.$typeUrl === ClientStateData.typeUrl || o.path instanceof Uint8Array || typeof o.path === "string");
+  },
   encode(message: ClientStateData, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.path.length !== 0) {
       writer.uint32(10).bytes(message.path);
@@ -1538,12 +1670,10 @@ export const ClientStateData = {
     if (isSet(object.clientState)) obj.clientState = Any.fromJSON(object.clientState);
     return obj;
   },
-  toJSON(message: ClientStateData): unknown {
+  toJSON(message: ClientStateData): JsonSafe<ClientStateData> {
     const obj: any = {};
-    message.path !== undefined &&
-      (obj.path = base64FromBytes(message.path !== undefined ? message.path : new Uint8Array()));
-    message.clientState !== undefined &&
-      (obj.clientState = message.clientState ? Any.toJSON(message.clientState) : undefined);
+    message.path !== undefined && (obj.path = base64FromBytes(message.path !== undefined ? message.path : new Uint8Array()));
+    message.clientState !== undefined && (obj.clientState = message.clientState ? Any.toJSON(message.clientState) : undefined);
     return obj;
   },
   fromPartial(object: Partial<ClientStateData>): ClientStateData {
@@ -1576,7 +1706,7 @@ export const ClientStateData = {
   toAminoMsg(message: ClientStateData): ClientStateDataAminoMsg {
     return {
       type: "cosmos-sdk/ClientStateData",
-      value: ClientStateData.toAmino(message),
+      value: ClientStateData.toAmino(message)
     };
   },
   fromProtoMsg(message: ClientStateDataProtoMsg): ClientStateData {
@@ -1588,18 +1718,27 @@ export const ClientStateData = {
   toProtoMsg(message: ClientStateData): ClientStateDataProtoMsg {
     return {
       typeUrl: "/ibc.lightclients.solomachine.v2.ClientStateData",
-      value: ClientStateData.encode(message).finish(),
+      value: ClientStateData.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(ClientStateData.typeUrl, ClientStateData);
+GlobalDecoderRegistry.registerAminoProtoMapping(ClientStateData.aminoType, ClientStateData.typeUrl);
 function createBaseConsensusStateData(): ConsensusStateData {
   return {
     path: new Uint8Array(),
-    consensusState: undefined,
+    consensusState: undefined
   };
 }
 export const ConsensusStateData = {
   typeUrl: "/ibc.lightclients.solomachine.v2.ConsensusStateData",
+  aminoType: "cosmos-sdk/ConsensusStateData",
+  is(o: any): o is ConsensusStateData {
+    return o && (o.$typeUrl === ConsensusStateData.typeUrl || o.path instanceof Uint8Array || typeof o.path === "string");
+  },
+  isAmino(o: any): o is ConsensusStateDataAmino {
+    return o && (o.$typeUrl === ConsensusStateData.typeUrl || o.path instanceof Uint8Array || typeof o.path === "string");
+  },
   encode(message: ConsensusStateData, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.path.length !== 0) {
       writer.uint32(10).bytes(message.path);
@@ -1635,12 +1774,10 @@ export const ConsensusStateData = {
     if (isSet(object.consensusState)) obj.consensusState = Any.fromJSON(object.consensusState);
     return obj;
   },
-  toJSON(message: ConsensusStateData): unknown {
+  toJSON(message: ConsensusStateData): JsonSafe<ConsensusStateData> {
     const obj: any = {};
-    message.path !== undefined &&
-      (obj.path = base64FromBytes(message.path !== undefined ? message.path : new Uint8Array()));
-    message.consensusState !== undefined &&
-      (obj.consensusState = message.consensusState ? Any.toJSON(message.consensusState) : undefined);
+    message.path !== undefined && (obj.path = base64FromBytes(message.path !== undefined ? message.path : new Uint8Array()));
+    message.consensusState !== undefined && (obj.consensusState = message.consensusState ? Any.toJSON(message.consensusState) : undefined);
     return obj;
   },
   fromPartial(object: Partial<ConsensusStateData>): ConsensusStateData {
@@ -1673,7 +1810,7 @@ export const ConsensusStateData = {
   toAminoMsg(message: ConsensusStateData): ConsensusStateDataAminoMsg {
     return {
       type: "cosmos-sdk/ConsensusStateData",
-      value: ConsensusStateData.toAmino(message),
+      value: ConsensusStateData.toAmino(message)
     };
   },
   fromProtoMsg(message: ConsensusStateDataProtoMsg): ConsensusStateData {
@@ -1685,18 +1822,27 @@ export const ConsensusStateData = {
   toProtoMsg(message: ConsensusStateData): ConsensusStateDataProtoMsg {
     return {
       typeUrl: "/ibc.lightclients.solomachine.v2.ConsensusStateData",
-      value: ConsensusStateData.encode(message).finish(),
+      value: ConsensusStateData.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(ConsensusStateData.typeUrl, ConsensusStateData);
+GlobalDecoderRegistry.registerAminoProtoMapping(ConsensusStateData.aminoType, ConsensusStateData.typeUrl);
 function createBaseConnectionStateData(): ConnectionStateData {
   return {
     path: new Uint8Array(),
-    connection: undefined,
+    connection: undefined
   };
 }
 export const ConnectionStateData = {
   typeUrl: "/ibc.lightclients.solomachine.v2.ConnectionStateData",
+  aminoType: "cosmos-sdk/ConnectionStateData",
+  is(o: any): o is ConnectionStateData {
+    return o && (o.$typeUrl === ConnectionStateData.typeUrl || o.path instanceof Uint8Array || typeof o.path === "string");
+  },
+  isAmino(o: any): o is ConnectionStateDataAmino {
+    return o && (o.$typeUrl === ConnectionStateData.typeUrl || o.path instanceof Uint8Array || typeof o.path === "string");
+  },
   encode(message: ConnectionStateData, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.path.length !== 0) {
       writer.uint32(10).bytes(message.path);
@@ -1732,12 +1878,10 @@ export const ConnectionStateData = {
     if (isSet(object.connection)) obj.connection = ConnectionEnd.fromJSON(object.connection);
     return obj;
   },
-  toJSON(message: ConnectionStateData): unknown {
+  toJSON(message: ConnectionStateData): JsonSafe<ConnectionStateData> {
     const obj: any = {};
-    message.path !== undefined &&
-      (obj.path = base64FromBytes(message.path !== undefined ? message.path : new Uint8Array()));
-    message.connection !== undefined &&
-      (obj.connection = message.connection ? ConnectionEnd.toJSON(message.connection) : undefined);
+    message.path !== undefined && (obj.path = base64FromBytes(message.path !== undefined ? message.path : new Uint8Array()));
+    message.connection !== undefined && (obj.connection = message.connection ? ConnectionEnd.toJSON(message.connection) : undefined);
     return obj;
   },
   fromPartial(object: Partial<ConnectionStateData>): ConnectionStateData {
@@ -1770,7 +1914,7 @@ export const ConnectionStateData = {
   toAminoMsg(message: ConnectionStateData): ConnectionStateDataAminoMsg {
     return {
       type: "cosmos-sdk/ConnectionStateData",
-      value: ConnectionStateData.toAmino(message),
+      value: ConnectionStateData.toAmino(message)
     };
   },
   fromProtoMsg(message: ConnectionStateDataProtoMsg): ConnectionStateData {
@@ -1782,18 +1926,27 @@ export const ConnectionStateData = {
   toProtoMsg(message: ConnectionStateData): ConnectionStateDataProtoMsg {
     return {
       typeUrl: "/ibc.lightclients.solomachine.v2.ConnectionStateData",
-      value: ConnectionStateData.encode(message).finish(),
+      value: ConnectionStateData.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(ConnectionStateData.typeUrl, ConnectionStateData);
+GlobalDecoderRegistry.registerAminoProtoMapping(ConnectionStateData.aminoType, ConnectionStateData.typeUrl);
 function createBaseChannelStateData(): ChannelStateData {
   return {
     path: new Uint8Array(),
-    channel: undefined,
+    channel: undefined
   };
 }
 export const ChannelStateData = {
   typeUrl: "/ibc.lightclients.solomachine.v2.ChannelStateData",
+  aminoType: "cosmos-sdk/ChannelStateData",
+  is(o: any): o is ChannelStateData {
+    return o && (o.$typeUrl === ChannelStateData.typeUrl || o.path instanceof Uint8Array || typeof o.path === "string");
+  },
+  isAmino(o: any): o is ChannelStateDataAmino {
+    return o && (o.$typeUrl === ChannelStateData.typeUrl || o.path instanceof Uint8Array || typeof o.path === "string");
+  },
   encode(message: ChannelStateData, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.path.length !== 0) {
       writer.uint32(10).bytes(message.path);
@@ -1829,12 +1982,10 @@ export const ChannelStateData = {
     if (isSet(object.channel)) obj.channel = Channel.fromJSON(object.channel);
     return obj;
   },
-  toJSON(message: ChannelStateData): unknown {
+  toJSON(message: ChannelStateData): JsonSafe<ChannelStateData> {
     const obj: any = {};
-    message.path !== undefined &&
-      (obj.path = base64FromBytes(message.path !== undefined ? message.path : new Uint8Array()));
-    message.channel !== undefined &&
-      (obj.channel = message.channel ? Channel.toJSON(message.channel) : undefined);
+    message.path !== undefined && (obj.path = base64FromBytes(message.path !== undefined ? message.path : new Uint8Array()));
+    message.channel !== undefined && (obj.channel = message.channel ? Channel.toJSON(message.channel) : undefined);
     return obj;
   },
   fromPartial(object: Partial<ChannelStateData>): ChannelStateData {
@@ -1867,7 +2018,7 @@ export const ChannelStateData = {
   toAminoMsg(message: ChannelStateData): ChannelStateDataAminoMsg {
     return {
       type: "cosmos-sdk/ChannelStateData",
-      value: ChannelStateData.toAmino(message),
+      value: ChannelStateData.toAmino(message)
     };
   },
   fromProtoMsg(message: ChannelStateDataProtoMsg): ChannelStateData {
@@ -1879,18 +2030,27 @@ export const ChannelStateData = {
   toProtoMsg(message: ChannelStateData): ChannelStateDataProtoMsg {
     return {
       typeUrl: "/ibc.lightclients.solomachine.v2.ChannelStateData",
-      value: ChannelStateData.encode(message).finish(),
+      value: ChannelStateData.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(ChannelStateData.typeUrl, ChannelStateData);
+GlobalDecoderRegistry.registerAminoProtoMapping(ChannelStateData.aminoType, ChannelStateData.typeUrl);
 function createBasePacketCommitmentData(): PacketCommitmentData {
   return {
     path: new Uint8Array(),
-    commitment: new Uint8Array(),
+    commitment: new Uint8Array()
   };
 }
 export const PacketCommitmentData = {
   typeUrl: "/ibc.lightclients.solomachine.v2.PacketCommitmentData",
+  aminoType: "cosmos-sdk/PacketCommitmentData",
+  is(o: any): o is PacketCommitmentData {
+    return o && (o.$typeUrl === PacketCommitmentData.typeUrl || (o.path instanceof Uint8Array || typeof o.path === "string") && (o.commitment instanceof Uint8Array || typeof o.commitment === "string"));
+  },
+  isAmino(o: any): o is PacketCommitmentDataAmino {
+    return o && (o.$typeUrl === PacketCommitmentData.typeUrl || (o.path instanceof Uint8Array || typeof o.path === "string") && (o.commitment instanceof Uint8Array || typeof o.commitment === "string"));
+  },
   encode(message: PacketCommitmentData, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.path.length !== 0) {
       writer.uint32(10).bytes(message.path);
@@ -1926,14 +2086,10 @@ export const PacketCommitmentData = {
     if (isSet(object.commitment)) obj.commitment = bytesFromBase64(object.commitment);
     return obj;
   },
-  toJSON(message: PacketCommitmentData): unknown {
+  toJSON(message: PacketCommitmentData): JsonSafe<PacketCommitmentData> {
     const obj: any = {};
-    message.path !== undefined &&
-      (obj.path = base64FromBytes(message.path !== undefined ? message.path : new Uint8Array()));
-    message.commitment !== undefined &&
-      (obj.commitment = base64FromBytes(
-        message.commitment !== undefined ? message.commitment : new Uint8Array(),
-      ));
+    message.path !== undefined && (obj.path = base64FromBytes(message.path !== undefined ? message.path : new Uint8Array()));
+    message.commitment !== undefined && (obj.commitment = base64FromBytes(message.commitment !== undefined ? message.commitment : new Uint8Array()));
     return obj;
   },
   fromPartial(object: Partial<PacketCommitmentData>): PacketCommitmentData {
@@ -1964,7 +2120,7 @@ export const PacketCommitmentData = {
   toAminoMsg(message: PacketCommitmentData): PacketCommitmentDataAminoMsg {
     return {
       type: "cosmos-sdk/PacketCommitmentData",
-      value: PacketCommitmentData.toAmino(message),
+      value: PacketCommitmentData.toAmino(message)
     };
   },
   fromProtoMsg(message: PacketCommitmentDataProtoMsg): PacketCommitmentData {
@@ -1976,18 +2132,27 @@ export const PacketCommitmentData = {
   toProtoMsg(message: PacketCommitmentData): PacketCommitmentDataProtoMsg {
     return {
       typeUrl: "/ibc.lightclients.solomachine.v2.PacketCommitmentData",
-      value: PacketCommitmentData.encode(message).finish(),
+      value: PacketCommitmentData.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(PacketCommitmentData.typeUrl, PacketCommitmentData);
+GlobalDecoderRegistry.registerAminoProtoMapping(PacketCommitmentData.aminoType, PacketCommitmentData.typeUrl);
 function createBasePacketAcknowledgementData(): PacketAcknowledgementData {
   return {
     path: new Uint8Array(),
-    acknowledgement: new Uint8Array(),
+    acknowledgement: new Uint8Array()
   };
 }
 export const PacketAcknowledgementData = {
   typeUrl: "/ibc.lightclients.solomachine.v2.PacketAcknowledgementData",
+  aminoType: "cosmos-sdk/PacketAcknowledgementData",
+  is(o: any): o is PacketAcknowledgementData {
+    return o && (o.$typeUrl === PacketAcknowledgementData.typeUrl || (o.path instanceof Uint8Array || typeof o.path === "string") && (o.acknowledgement instanceof Uint8Array || typeof o.acknowledgement === "string"));
+  },
+  isAmino(o: any): o is PacketAcknowledgementDataAmino {
+    return o && (o.$typeUrl === PacketAcknowledgementData.typeUrl || (o.path instanceof Uint8Array || typeof o.path === "string") && (o.acknowledgement instanceof Uint8Array || typeof o.acknowledgement === "string"));
+  },
   encode(message: PacketAcknowledgementData, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.path.length !== 0) {
       writer.uint32(10).bytes(message.path);
@@ -2023,14 +2188,10 @@ export const PacketAcknowledgementData = {
     if (isSet(object.acknowledgement)) obj.acknowledgement = bytesFromBase64(object.acknowledgement);
     return obj;
   },
-  toJSON(message: PacketAcknowledgementData): unknown {
+  toJSON(message: PacketAcknowledgementData): JsonSafe<PacketAcknowledgementData> {
     const obj: any = {};
-    message.path !== undefined &&
-      (obj.path = base64FromBytes(message.path !== undefined ? message.path : new Uint8Array()));
-    message.acknowledgement !== undefined &&
-      (obj.acknowledgement = base64FromBytes(
-        message.acknowledgement !== undefined ? message.acknowledgement : new Uint8Array(),
-      ));
+    message.path !== undefined && (obj.path = base64FromBytes(message.path !== undefined ? message.path : new Uint8Array()));
+    message.acknowledgement !== undefined && (obj.acknowledgement = base64FromBytes(message.acknowledgement !== undefined ? message.acknowledgement : new Uint8Array()));
     return obj;
   },
   fromPartial(object: Partial<PacketAcknowledgementData>): PacketAcknowledgementData {
@@ -2061,7 +2222,7 @@ export const PacketAcknowledgementData = {
   toAminoMsg(message: PacketAcknowledgementData): PacketAcknowledgementDataAminoMsg {
     return {
       type: "cosmos-sdk/PacketAcknowledgementData",
-      value: PacketAcknowledgementData.toAmino(message),
+      value: PacketAcknowledgementData.toAmino(message)
     };
   },
   fromProtoMsg(message: PacketAcknowledgementDataProtoMsg): PacketAcknowledgementData {
@@ -2073,17 +2234,26 @@ export const PacketAcknowledgementData = {
   toProtoMsg(message: PacketAcknowledgementData): PacketAcknowledgementDataProtoMsg {
     return {
       typeUrl: "/ibc.lightclients.solomachine.v2.PacketAcknowledgementData",
-      value: PacketAcknowledgementData.encode(message).finish(),
+      value: PacketAcknowledgementData.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(PacketAcknowledgementData.typeUrl, PacketAcknowledgementData);
+GlobalDecoderRegistry.registerAminoProtoMapping(PacketAcknowledgementData.aminoType, PacketAcknowledgementData.typeUrl);
 function createBasePacketReceiptAbsenceData(): PacketReceiptAbsenceData {
   return {
-    path: new Uint8Array(),
+    path: new Uint8Array()
   };
 }
 export const PacketReceiptAbsenceData = {
   typeUrl: "/ibc.lightclients.solomachine.v2.PacketReceiptAbsenceData",
+  aminoType: "cosmos-sdk/PacketReceiptAbsenceData",
+  is(o: any): o is PacketReceiptAbsenceData {
+    return o && (o.$typeUrl === PacketReceiptAbsenceData.typeUrl || o.path instanceof Uint8Array || typeof o.path === "string");
+  },
+  isAmino(o: any): o is PacketReceiptAbsenceDataAmino {
+    return o && (o.$typeUrl === PacketReceiptAbsenceData.typeUrl || o.path instanceof Uint8Array || typeof o.path === "string");
+  },
   encode(message: PacketReceiptAbsenceData, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.path.length !== 0) {
       writer.uint32(10).bytes(message.path);
@@ -2112,10 +2282,9 @@ export const PacketReceiptAbsenceData = {
     if (isSet(object.path)) obj.path = bytesFromBase64(object.path);
     return obj;
   },
-  toJSON(message: PacketReceiptAbsenceData): unknown {
+  toJSON(message: PacketReceiptAbsenceData): JsonSafe<PacketReceiptAbsenceData> {
     const obj: any = {};
-    message.path !== undefined &&
-      (obj.path = base64FromBytes(message.path !== undefined ? message.path : new Uint8Array()));
+    message.path !== undefined && (obj.path = base64FromBytes(message.path !== undefined ? message.path : new Uint8Array()));
     return obj;
   },
   fromPartial(object: Partial<PacketReceiptAbsenceData>): PacketReceiptAbsenceData {
@@ -2141,7 +2310,7 @@ export const PacketReceiptAbsenceData = {
   toAminoMsg(message: PacketReceiptAbsenceData): PacketReceiptAbsenceDataAminoMsg {
     return {
       type: "cosmos-sdk/PacketReceiptAbsenceData",
-      value: PacketReceiptAbsenceData.toAmino(message),
+      value: PacketReceiptAbsenceData.toAmino(message)
     };
   },
   fromProtoMsg(message: PacketReceiptAbsenceDataProtoMsg): PacketReceiptAbsenceData {
@@ -2153,18 +2322,27 @@ export const PacketReceiptAbsenceData = {
   toProtoMsg(message: PacketReceiptAbsenceData): PacketReceiptAbsenceDataProtoMsg {
     return {
       typeUrl: "/ibc.lightclients.solomachine.v2.PacketReceiptAbsenceData",
-      value: PacketReceiptAbsenceData.encode(message).finish(),
+      value: PacketReceiptAbsenceData.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(PacketReceiptAbsenceData.typeUrl, PacketReceiptAbsenceData);
+GlobalDecoderRegistry.registerAminoProtoMapping(PacketReceiptAbsenceData.aminoType, PacketReceiptAbsenceData.typeUrl);
 function createBaseNextSequenceRecvData(): NextSequenceRecvData {
   return {
     path: new Uint8Array(),
-    nextSeqRecv: BigInt(0),
+    nextSeqRecv: BigInt(0)
   };
 }
 export const NextSequenceRecvData = {
   typeUrl: "/ibc.lightclients.solomachine.v2.NextSequenceRecvData",
+  aminoType: "cosmos-sdk/NextSequenceRecvData",
+  is(o: any): o is NextSequenceRecvData {
+    return o && (o.$typeUrl === NextSequenceRecvData.typeUrl || (o.path instanceof Uint8Array || typeof o.path === "string") && typeof o.nextSeqRecv === "bigint");
+  },
+  isAmino(o: any): o is NextSequenceRecvDataAmino {
+    return o && (o.$typeUrl === NextSequenceRecvData.typeUrl || (o.path instanceof Uint8Array || typeof o.path === "string") && typeof o.next_seq_recv === "bigint");
+  },
   encode(message: NextSequenceRecvData, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.path.length !== 0) {
       writer.uint32(10).bytes(message.path);
@@ -2200,10 +2378,9 @@ export const NextSequenceRecvData = {
     if (isSet(object.nextSeqRecv)) obj.nextSeqRecv = BigInt(object.nextSeqRecv.toString());
     return obj;
   },
-  toJSON(message: NextSequenceRecvData): unknown {
+  toJSON(message: NextSequenceRecvData): JsonSafe<NextSequenceRecvData> {
     const obj: any = {};
-    message.path !== undefined &&
-      (obj.path = base64FromBytes(message.path !== undefined ? message.path : new Uint8Array()));
+    message.path !== undefined && (obj.path = base64FromBytes(message.path !== undefined ? message.path : new Uint8Array()));
     message.nextSeqRecv !== undefined && (obj.nextSeqRecv = (message.nextSeqRecv || BigInt(0)).toString());
     return obj;
   },
@@ -2228,7 +2405,7 @@ export const NextSequenceRecvData = {
   toAmino(message: NextSequenceRecvData): NextSequenceRecvDataAmino {
     const obj: any = {};
     obj.path = message.path ? base64FromBytes(message.path) : undefined;
-    obj.next_seq_recv = message.nextSeqRecv ? message.nextSeqRecv.toString() : undefined;
+    obj.next_seq_recv = message.nextSeqRecv !== BigInt(0) ? message.nextSeqRecv?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: NextSequenceRecvDataAminoMsg): NextSequenceRecvData {
@@ -2237,7 +2414,7 @@ export const NextSequenceRecvData = {
   toAminoMsg(message: NextSequenceRecvData): NextSequenceRecvDataAminoMsg {
     return {
       type: "cosmos-sdk/NextSequenceRecvData",
-      value: NextSequenceRecvData.toAmino(message),
+      value: NextSequenceRecvData.toAmino(message)
     };
   },
   fromProtoMsg(message: NextSequenceRecvDataProtoMsg): NextSequenceRecvData {
@@ -2249,7 +2426,9 @@ export const NextSequenceRecvData = {
   toProtoMsg(message: NextSequenceRecvData): NextSequenceRecvDataProtoMsg {
     return {
       typeUrl: "/ibc.lightclients.solomachine.v2.NextSequenceRecvData",
-      value: NextSequenceRecvData.encode(message).finish(),
+      value: NextSequenceRecvData.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(NextSequenceRecvData.typeUrl, NextSequenceRecvData);
+GlobalDecoderRegistry.registerAminoProtoMapping(NextSequenceRecvData.aminoType, NextSequenceRecvData.typeUrl);

@@ -1,19 +1,19 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
     "declaration": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "lib": ["es2020"],
-    "module": "commonjs",
-    "moduleResolution": "node",
+    "types": ["node"],
+    "module": "node16",
+    "moduleResolution": "node16",
     "newLine": "LF",
     "noEmitOnError": true,
     "noFallthroughCasesInSwitch": true,
     "noImplicitReturns": true,
     "noUnusedLocals": false,
     "noUnusedParameters": false,
-    "outDir": "build",
+    "outDir": "dist",
     "pretty": true,
     // We want comments in the .d.ts files. TS does not allow us to remove comments
     // from .js output only (https://github.com/microsoft/TypeScript/issues/45187, https://github.com/microsoft/TypeScript/issues/13318).
@@ -21,6 +21,7 @@
     "removeComments": false,
     "resolveJsonModule": true,
     "rootDir": "src",
+    "skipLibCheck": true,
     "sourceMap": true,
     "strict": false,
     "target": "es2020"

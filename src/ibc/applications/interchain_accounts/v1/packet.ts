@@ -1,7 +1,9 @@
 /* eslint-disable */
 import { Any, AnyAmino } from "../../../../google/protobuf/any";
-import { BinaryReader, BinaryWriter } from "../../../../binary";
 import { isSet, bytesFromBase64, base64FromBytes } from "../../../../helpers";
+import { BinaryReader, BinaryWriter } from "../../../../binary";
+import { JsonSafe } from "../../../../json-safe";
+import { GlobalDecoderRegistry } from "../../../../registry";
 export const protobufPackage = "ibc.applications.interchain_accounts.v1";
 /**
  * Type defines a classification of message issued from a controller chain to its associated interchain accounts
@@ -50,7 +52,12 @@ export interface InterchainAccountPacketDataProtoMsg {
   typeUrl: "/ibc.applications.interchain_accounts.v1.InterchainAccountPacketData";
   value: Uint8Array;
 }
-/** InterchainAccountPacketData is comprised of a raw transaction, type of transaction and optional memo field. */
+/**
+ * InterchainAccountPacketData is comprised of a raw transaction, type of transaction and optional memo field.
+ * @name InterchainAccountPacketDataAmino
+ * @package ibc.applications.interchain_accounts.v1
+ * @see proto type: ibc.applications.interchain_accounts.v1.InterchainAccountPacketData
+ */
 export interface InterchainAccountPacketDataAmino {
   type?: Type;
   data?: string;
@@ -68,7 +75,12 @@ export interface CosmosTxProtoMsg {
   typeUrl: "/ibc.applications.interchain_accounts.v1.CosmosTx";
   value: Uint8Array;
 }
-/** CosmosTx contains a list of sdk.Msg's. It should be used when sending transactions to an SDK host chain. */
+/**
+ * CosmosTx contains a list of sdk.Msg's. It should be used when sending transactions to an SDK host chain.
+ * @name CosmosTxAmino
+ * @package ibc.applications.interchain_accounts.v1
+ * @see proto type: ibc.applications.interchain_accounts.v1.CosmosTx
+ */
 export interface CosmosTxAmino {
   messages?: AnyAmino[];
 }
@@ -80,11 +92,18 @@ function createBaseInterchainAccountPacketData(): InterchainAccountPacketData {
   return {
     type: 0,
     data: new Uint8Array(),
-    memo: "",
+    memo: ""
   };
 }
 export const InterchainAccountPacketData = {
   typeUrl: "/ibc.applications.interchain_accounts.v1.InterchainAccountPacketData",
+  aminoType: "cosmos-sdk/InterchainAccountPacketData",
+  is(o: any): o is InterchainAccountPacketData {
+    return o && (o.$typeUrl === InterchainAccountPacketData.typeUrl || isSet(o.type) && (o.data instanceof Uint8Array || typeof o.data === "string") && typeof o.memo === "string");
+  },
+  isAmino(o: any): o is InterchainAccountPacketDataAmino {
+    return o && (o.$typeUrl === InterchainAccountPacketData.typeUrl || isSet(o.type) && (o.data instanceof Uint8Array || typeof o.data === "string") && typeof o.memo === "string");
+  },
   encode(message: InterchainAccountPacketData, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.type !== 0) {
       writer.uint32(8).int32(message.type);
@@ -127,11 +146,10 @@ export const InterchainAccountPacketData = {
     if (isSet(object.memo)) obj.memo = String(object.memo);
     return obj;
   },
-  toJSON(message: InterchainAccountPacketData): unknown {
+  toJSON(message: InterchainAccountPacketData): JsonSafe<InterchainAccountPacketData> {
     const obj: any = {};
     message.type !== undefined && (obj.type = typeToJSON(message.type));
-    message.data !== undefined &&
-      (obj.data = base64FromBytes(message.data !== undefined ? message.data : new Uint8Array()));
+    message.data !== undefined && (obj.data = base64FromBytes(message.data !== undefined ? message.data : new Uint8Array()));
     message.memo !== undefined && (obj.memo = message.memo);
     return obj;
   },
@@ -145,7 +163,7 @@ export const InterchainAccountPacketData = {
   fromAmino(object: InterchainAccountPacketDataAmino): InterchainAccountPacketData {
     const message = createBaseInterchainAccountPacketData();
     if (object.type !== undefined && object.type !== null) {
-      message.type = typeFromJSON(object.type);
+      message.type = object.type;
     }
     if (object.data !== undefined && object.data !== null) {
       message.data = bytesFromBase64(object.data);
@@ -157,9 +175,9 @@ export const InterchainAccountPacketData = {
   },
   toAmino(message: InterchainAccountPacketData): InterchainAccountPacketDataAmino {
     const obj: any = {};
-    obj.type = message.type;
+    obj.type = message.type === 0 ? undefined : message.type;
     obj.data = message.data ? base64FromBytes(message.data) : undefined;
-    obj.memo = message.memo;
+    obj.memo = message.memo === "" ? undefined : message.memo;
     return obj;
   },
   fromAminoMsg(object: InterchainAccountPacketDataAminoMsg): InterchainAccountPacketData {
@@ -168,7 +186,7 @@ export const InterchainAccountPacketData = {
   toAminoMsg(message: InterchainAccountPacketData): InterchainAccountPacketDataAminoMsg {
     return {
       type: "cosmos-sdk/InterchainAccountPacketData",
-      value: InterchainAccountPacketData.toAmino(message),
+      value: InterchainAccountPacketData.toAmino(message)
     };
   },
   fromProtoMsg(message: InterchainAccountPacketDataProtoMsg): InterchainAccountPacketData {
@@ -180,17 +198,26 @@ export const InterchainAccountPacketData = {
   toProtoMsg(message: InterchainAccountPacketData): InterchainAccountPacketDataProtoMsg {
     return {
       typeUrl: "/ibc.applications.interchain_accounts.v1.InterchainAccountPacketData",
-      value: InterchainAccountPacketData.encode(message).finish(),
+      value: InterchainAccountPacketData.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(InterchainAccountPacketData.typeUrl, InterchainAccountPacketData);
+GlobalDecoderRegistry.registerAminoProtoMapping(InterchainAccountPacketData.aminoType, InterchainAccountPacketData.typeUrl);
 function createBaseCosmosTx(): CosmosTx {
   return {
-    messages: [],
+    messages: []
   };
 }
 export const CosmosTx = {
   typeUrl: "/ibc.applications.interchain_accounts.v1.CosmosTx",
+  aminoType: "cosmos-sdk/CosmosTx",
+  is(o: any): o is CosmosTx {
+    return o && (o.$typeUrl === CosmosTx.typeUrl || Array.isArray(o.messages) && (!o.messages.length || Any.is(o.messages[0])));
+  },
+  isAmino(o: any): o is CosmosTxAmino {
+    return o && (o.$typeUrl === CosmosTx.typeUrl || Array.isArray(o.messages) && (!o.messages.length || Any.isAmino(o.messages[0])));
+  },
   encode(message: CosmosTx, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.messages) {
       Any.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -219,10 +246,10 @@ export const CosmosTx = {
     if (Array.isArray(object?.messages)) obj.messages = object.messages.map((e: any) => Any.fromJSON(e));
     return obj;
   },
-  toJSON(message: CosmosTx): unknown {
+  toJSON(message: CosmosTx): JsonSafe<CosmosTx> {
     const obj: any = {};
     if (message.messages) {
-      obj.messages = message.messages.map((e) => (e ? Any.toJSON(e) : undefined));
+      obj.messages = message.messages.map(e => e ? Any.toJSON(e) : undefined);
     } else {
       obj.messages = [];
     }
@@ -230,20 +257,20 @@ export const CosmosTx = {
   },
   fromPartial(object: Partial<CosmosTx>): CosmosTx {
     const message = createBaseCosmosTx();
-    message.messages = object.messages?.map((e) => Any.fromPartial(e)) || [];
+    message.messages = object.messages?.map(e => Any.fromPartial(e)) || [];
     return message;
   },
   fromAmino(object: CosmosTxAmino): CosmosTx {
     const message = createBaseCosmosTx();
-    message.messages = object.messages?.map((e) => Any.fromAmino(e)) || [];
+    message.messages = object.messages?.map(e => Any.fromAmino(e)) || [];
     return message;
   },
   toAmino(message: CosmosTx): CosmosTxAmino {
     const obj: any = {};
     if (message.messages) {
-      obj.messages = message.messages.map((e) => (e ? Any.toAmino(e) : undefined));
+      obj.messages = message.messages.map(e => e ? Any.toAmino(e) : undefined);
     } else {
-      obj.messages = [];
+      obj.messages = message.messages;
     }
     return obj;
   },
@@ -253,7 +280,7 @@ export const CosmosTx = {
   toAminoMsg(message: CosmosTx): CosmosTxAminoMsg {
     return {
       type: "cosmos-sdk/CosmosTx",
-      value: CosmosTx.toAmino(message),
+      value: CosmosTx.toAmino(message)
     };
   },
   fromProtoMsg(message: CosmosTxProtoMsg): CosmosTx {
@@ -265,7 +292,9 @@ export const CosmosTx = {
   toProtoMsg(message: CosmosTx): CosmosTxProtoMsg {
     return {
       typeUrl: "/ibc.applications.interchain_accounts.v1.CosmosTx",
-      value: CosmosTx.encode(message).finish(),
+      value: CosmosTx.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(CosmosTx.typeUrl, CosmosTx);
+GlobalDecoderRegistry.registerAminoProtoMapping(CosmosTx.aminoType, CosmosTx.typeUrl);

@@ -3,6 +3,8 @@ import { CounterpartyInfo, CounterpartyInfoAmino } from "./counterparty";
 import { Config, ConfigAmino } from "./config";
 import { BinaryReader, BinaryWriter } from "../../../../binary";
 import { isSet } from "../../../../helpers";
+import { JsonSafe } from "../../../../json-safe";
+import { GlobalDecoderRegistry } from "../../../../registry";
 import { TxRpc } from "../../../../types";
 export const protobufPackage = "ibc.core.client.v2";
 /**
@@ -20,9 +22,14 @@ export interface QueryCounterpartyInfoRequestProtoMsg {
 /**
  * QueryCounterpartyInfoRequest is the request type for the Query/CounterpartyInfo RPC
  * method
+ * @name QueryCounterpartyInfoRequestAmino
+ * @package ibc.core.client.v2
+ * @see proto type: ibc.core.client.v2.QueryCounterpartyInfoRequest
  */
 export interface QueryCounterpartyInfoRequestAmino {
-  /** client state unique identifier */
+  /**
+   * client state unique identifier
+   */
   client_id?: string;
 }
 export interface QueryCounterpartyInfoRequestAminoMsg {
@@ -43,6 +50,9 @@ export interface QueryCounterpartyInfoResponseProtoMsg {
 /**
  * QueryCounterpartyInfoResponse is the response type for the
  * Query/CounterpartyInfo RPC method.
+ * @name QueryCounterpartyInfoResponseAmino
+ * @package ibc.core.client.v2
+ * @see proto type: ibc.core.client.v2.QueryCounterpartyInfoResponse
  */
 export interface QueryCounterpartyInfoResponseAmino {
   counterparty_info?: CounterpartyInfoAmino | undefined;
@@ -60,9 +70,16 @@ export interface QueryConfigRequestProtoMsg {
   typeUrl: "/ibc.core.client.v2.QueryConfigRequest";
   value: Uint8Array;
 }
-/** QueryConfigRequest is the request type for the Query/Config RPC method */
+/**
+ * QueryConfigRequest is the request type for the Query/Config RPC method
+ * @name QueryConfigRequestAmino
+ * @package ibc.core.client.v2
+ * @see proto type: ibc.core.client.v2.QueryConfigRequest
+ */
 export interface QueryConfigRequestAmino {
-  /** client state unique identifier */
+  /**
+   * client state unique identifier
+   */
   client_id?: string;
 }
 export interface QueryConfigRequestAminoMsg {
@@ -77,7 +94,12 @@ export interface QueryConfigResponseProtoMsg {
   typeUrl: "/ibc.core.client.v2.QueryConfigResponse";
   value: Uint8Array;
 }
-/** QueryConfigResponse is the response type for the Query/Config RPC method */
+/**
+ * QueryConfigResponse is the response type for the Query/Config RPC method
+ * @name QueryConfigResponseAmino
+ * @package ibc.core.client.v2
+ * @see proto type: ibc.core.client.v2.QueryConfigResponse
+ */
 export interface QueryConfigResponseAmino {
   config?: ConfigAmino | undefined;
 }
@@ -87,11 +109,18 @@ export interface QueryConfigResponseAminoMsg {
 }
 function createBaseQueryCounterpartyInfoRequest(): QueryCounterpartyInfoRequest {
   return {
-    clientId: "",
+    clientId: ""
   };
 }
 export const QueryCounterpartyInfoRequest = {
   typeUrl: "/ibc.core.client.v2.QueryCounterpartyInfoRequest",
+  aminoType: "cosmos-sdk/QueryCounterpartyInfoRequest",
+  is(o: any): o is QueryCounterpartyInfoRequest {
+    return o && (o.$typeUrl === QueryCounterpartyInfoRequest.typeUrl || typeof o.clientId === "string");
+  },
+  isAmino(o: any): o is QueryCounterpartyInfoRequestAmino {
+    return o && (o.$typeUrl === QueryCounterpartyInfoRequest.typeUrl || typeof o.client_id === "string");
+  },
   encode(message: QueryCounterpartyInfoRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.clientId !== "") {
       writer.uint32(10).string(message.clientId);
@@ -120,7 +149,7 @@ export const QueryCounterpartyInfoRequest = {
     if (isSet(object.clientId)) obj.clientId = String(object.clientId);
     return obj;
   },
-  toJSON(message: QueryCounterpartyInfoRequest): unknown {
+  toJSON(message: QueryCounterpartyInfoRequest): JsonSafe<QueryCounterpartyInfoRequest> {
     const obj: any = {};
     message.clientId !== undefined && (obj.clientId = message.clientId);
     return obj;
@@ -139,7 +168,7 @@ export const QueryCounterpartyInfoRequest = {
   },
   toAmino(message: QueryCounterpartyInfoRequest): QueryCounterpartyInfoRequestAmino {
     const obj: any = {};
-    obj.client_id = message.clientId;
+    obj.client_id = message.clientId === "" ? undefined : message.clientId;
     return obj;
   },
   fromAminoMsg(object: QueryCounterpartyInfoRequestAminoMsg): QueryCounterpartyInfoRequest {
@@ -148,7 +177,7 @@ export const QueryCounterpartyInfoRequest = {
   toAminoMsg(message: QueryCounterpartyInfoRequest): QueryCounterpartyInfoRequestAminoMsg {
     return {
       type: "cosmos-sdk/QueryCounterpartyInfoRequest",
-      value: QueryCounterpartyInfoRequest.toAmino(message),
+      value: QueryCounterpartyInfoRequest.toAmino(message)
     };
   },
   fromProtoMsg(message: QueryCounterpartyInfoRequestProtoMsg): QueryCounterpartyInfoRequest {
@@ -160,17 +189,26 @@ export const QueryCounterpartyInfoRequest = {
   toProtoMsg(message: QueryCounterpartyInfoRequest): QueryCounterpartyInfoRequestProtoMsg {
     return {
       typeUrl: "/ibc.core.client.v2.QueryCounterpartyInfoRequest",
-      value: QueryCounterpartyInfoRequest.encode(message).finish(),
+      value: QueryCounterpartyInfoRequest.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(QueryCounterpartyInfoRequest.typeUrl, QueryCounterpartyInfoRequest);
+GlobalDecoderRegistry.registerAminoProtoMapping(QueryCounterpartyInfoRequest.aminoType, QueryCounterpartyInfoRequest.typeUrl);
 function createBaseQueryCounterpartyInfoResponse(): QueryCounterpartyInfoResponse {
   return {
-    counterpartyInfo: undefined,
+    counterpartyInfo: undefined
   };
 }
 export const QueryCounterpartyInfoResponse = {
   typeUrl: "/ibc.core.client.v2.QueryCounterpartyInfoResponse",
+  aminoType: "cosmos-sdk/QueryCounterpartyInfoResponse",
+  is(o: any): o is QueryCounterpartyInfoResponse {
+    return o && o.$typeUrl === QueryCounterpartyInfoResponse.typeUrl;
+  },
+  isAmino(o: any): o is QueryCounterpartyInfoResponseAmino {
+    return o && o.$typeUrl === QueryCounterpartyInfoResponse.typeUrl;
+  },
   encode(message: QueryCounterpartyInfoResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.counterpartyInfo !== undefined) {
       CounterpartyInfo.encode(message.counterpartyInfo, writer.uint32(10).fork()).ldelim();
@@ -196,16 +234,12 @@ export const QueryCounterpartyInfoResponse = {
   },
   fromJSON(object: any): QueryCounterpartyInfoResponse {
     const obj = createBaseQueryCounterpartyInfoResponse();
-    if (isSet(object.counterpartyInfo))
-      obj.counterpartyInfo = CounterpartyInfo.fromJSON(object.counterpartyInfo);
+    if (isSet(object.counterpartyInfo)) obj.counterpartyInfo = CounterpartyInfo.fromJSON(object.counterpartyInfo);
     return obj;
   },
-  toJSON(message: QueryCounterpartyInfoResponse): unknown {
+  toJSON(message: QueryCounterpartyInfoResponse): JsonSafe<QueryCounterpartyInfoResponse> {
     const obj: any = {};
-    message.counterpartyInfo !== undefined &&
-      (obj.counterpartyInfo = message.counterpartyInfo
-        ? CounterpartyInfo.toJSON(message.counterpartyInfo)
-        : undefined);
+    message.counterpartyInfo !== undefined && (obj.counterpartyInfo = message.counterpartyInfo ? CounterpartyInfo.toJSON(message.counterpartyInfo) : undefined);
     return obj;
   },
   fromPartial(object: Partial<QueryCounterpartyInfoResponse>): QueryCounterpartyInfoResponse {
@@ -224,9 +258,7 @@ export const QueryCounterpartyInfoResponse = {
   },
   toAmino(message: QueryCounterpartyInfoResponse): QueryCounterpartyInfoResponseAmino {
     const obj: any = {};
-    obj.counterparty_info = message.counterpartyInfo
-      ? CounterpartyInfo.toAmino(message.counterpartyInfo)
-      : undefined;
+    obj.counterparty_info = message.counterpartyInfo ? CounterpartyInfo.toAmino(message.counterpartyInfo) : undefined;
     return obj;
   },
   fromAminoMsg(object: QueryCounterpartyInfoResponseAminoMsg): QueryCounterpartyInfoResponse {
@@ -235,7 +267,7 @@ export const QueryCounterpartyInfoResponse = {
   toAminoMsg(message: QueryCounterpartyInfoResponse): QueryCounterpartyInfoResponseAminoMsg {
     return {
       type: "cosmos-sdk/QueryCounterpartyInfoResponse",
-      value: QueryCounterpartyInfoResponse.toAmino(message),
+      value: QueryCounterpartyInfoResponse.toAmino(message)
     };
   },
   fromProtoMsg(message: QueryCounterpartyInfoResponseProtoMsg): QueryCounterpartyInfoResponse {
@@ -247,17 +279,26 @@ export const QueryCounterpartyInfoResponse = {
   toProtoMsg(message: QueryCounterpartyInfoResponse): QueryCounterpartyInfoResponseProtoMsg {
     return {
       typeUrl: "/ibc.core.client.v2.QueryCounterpartyInfoResponse",
-      value: QueryCounterpartyInfoResponse.encode(message).finish(),
+      value: QueryCounterpartyInfoResponse.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(QueryCounterpartyInfoResponse.typeUrl, QueryCounterpartyInfoResponse);
+GlobalDecoderRegistry.registerAminoProtoMapping(QueryCounterpartyInfoResponse.aminoType, QueryCounterpartyInfoResponse.typeUrl);
 function createBaseQueryConfigRequest(): QueryConfigRequest {
   return {
-    clientId: "",
+    clientId: ""
   };
 }
 export const QueryConfigRequest = {
   typeUrl: "/ibc.core.client.v2.QueryConfigRequest",
+  aminoType: "cosmos-sdk/QueryConfigRequest",
+  is(o: any): o is QueryConfigRequest {
+    return o && (o.$typeUrl === QueryConfigRequest.typeUrl || typeof o.clientId === "string");
+  },
+  isAmino(o: any): o is QueryConfigRequestAmino {
+    return o && (o.$typeUrl === QueryConfigRequest.typeUrl || typeof o.client_id === "string");
+  },
   encode(message: QueryConfigRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.clientId !== "") {
       writer.uint32(10).string(message.clientId);
@@ -286,7 +327,7 @@ export const QueryConfigRequest = {
     if (isSet(object.clientId)) obj.clientId = String(object.clientId);
     return obj;
   },
-  toJSON(message: QueryConfigRequest): unknown {
+  toJSON(message: QueryConfigRequest): JsonSafe<QueryConfigRequest> {
     const obj: any = {};
     message.clientId !== undefined && (obj.clientId = message.clientId);
     return obj;
@@ -305,7 +346,7 @@ export const QueryConfigRequest = {
   },
   toAmino(message: QueryConfigRequest): QueryConfigRequestAmino {
     const obj: any = {};
-    obj.client_id = message.clientId;
+    obj.client_id = message.clientId === "" ? undefined : message.clientId;
     return obj;
   },
   fromAminoMsg(object: QueryConfigRequestAminoMsg): QueryConfigRequest {
@@ -314,7 +355,7 @@ export const QueryConfigRequest = {
   toAminoMsg(message: QueryConfigRequest): QueryConfigRequestAminoMsg {
     return {
       type: "cosmos-sdk/QueryConfigRequest",
-      value: QueryConfigRequest.toAmino(message),
+      value: QueryConfigRequest.toAmino(message)
     };
   },
   fromProtoMsg(message: QueryConfigRequestProtoMsg): QueryConfigRequest {
@@ -326,17 +367,26 @@ export const QueryConfigRequest = {
   toProtoMsg(message: QueryConfigRequest): QueryConfigRequestProtoMsg {
     return {
       typeUrl: "/ibc.core.client.v2.QueryConfigRequest",
-      value: QueryConfigRequest.encode(message).finish(),
+      value: QueryConfigRequest.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(QueryConfigRequest.typeUrl, QueryConfigRequest);
+GlobalDecoderRegistry.registerAminoProtoMapping(QueryConfigRequest.aminoType, QueryConfigRequest.typeUrl);
 function createBaseQueryConfigResponse(): QueryConfigResponse {
   return {
-    config: undefined,
+    config: undefined
   };
 }
 export const QueryConfigResponse = {
   typeUrl: "/ibc.core.client.v2.QueryConfigResponse",
+  aminoType: "cosmos-sdk/QueryConfigResponse",
+  is(o: any): o is QueryConfigResponse {
+    return o && o.$typeUrl === QueryConfigResponse.typeUrl;
+  },
+  isAmino(o: any): o is QueryConfigResponseAmino {
+    return o && o.$typeUrl === QueryConfigResponse.typeUrl;
+  },
   encode(message: QueryConfigResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.config !== undefined) {
       Config.encode(message.config, writer.uint32(10).fork()).ldelim();
@@ -365,7 +415,7 @@ export const QueryConfigResponse = {
     if (isSet(object.config)) obj.config = Config.fromJSON(object.config);
     return obj;
   },
-  toJSON(message: QueryConfigResponse): unknown {
+  toJSON(message: QueryConfigResponse): JsonSafe<QueryConfigResponse> {
     const obj: any = {};
     message.config !== undefined && (obj.config = message.config ? Config.toJSON(message.config) : undefined);
     return obj;
@@ -395,7 +445,7 @@ export const QueryConfigResponse = {
   toAminoMsg(message: QueryConfigResponse): QueryConfigResponseAminoMsg {
     return {
       type: "cosmos-sdk/QueryConfigResponse",
-      value: QueryConfigResponse.toAmino(message),
+      value: QueryConfigResponse.toAmino(message)
     };
   },
   fromProtoMsg(message: QueryConfigResponseProtoMsg): QueryConfigResponse {
@@ -407,10 +457,12 @@ export const QueryConfigResponse = {
   toProtoMsg(message: QueryConfigResponse): QueryConfigResponseProtoMsg {
     return {
       typeUrl: "/ibc.core.client.v2.QueryConfigResponse",
-      value: QueryConfigResponse.encode(message).finish(),
+      value: QueryConfigResponse.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(QueryConfigResponse.typeUrl, QueryConfigResponse);
+GlobalDecoderRegistry.registerAminoProtoMapping(QueryConfigResponse.aminoType, QueryConfigResponse.typeUrl);
 /** Query provides defines the gRPC querier service */
 export interface Query {
   /** CounterpartyInfo queries an IBC light counter party info. */
@@ -428,11 +480,11 @@ export class QueryClientImpl implements Query {
   CounterpartyInfo(request: QueryCounterpartyInfoRequest): Promise<QueryCounterpartyInfoResponse> {
     const data = QueryCounterpartyInfoRequest.encode(request).finish();
     const promise = this.rpc.request("ibc.core.client.v2.Query", "CounterpartyInfo", data);
-    return promise.then((data) => QueryCounterpartyInfoResponse.decode(new BinaryReader(data)));
+    return promise.then(data => QueryCounterpartyInfoResponse.decode(new BinaryReader(data)));
   }
   Config(request: QueryConfigRequest): Promise<QueryConfigResponse> {
     const data = QueryConfigRequest.encode(request).finish();
     const promise = this.rpc.request("ibc.core.client.v2.Query", "Config", data);
-    return promise.then((data) => QueryConfigResponse.decode(new BinaryReader(data)));
+    return promise.then(data => QueryConfigResponse.decode(new BinaryReader(data)));
   }
 }

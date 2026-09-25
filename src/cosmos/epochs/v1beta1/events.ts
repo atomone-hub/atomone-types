@@ -1,6 +1,8 @@
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "../../../binary";
 import { isSet } from "../../../helpers";
+import { JsonSafe } from "../../../json-safe";
+import { GlobalDecoderRegistry } from "../../../registry";
 export const protobufPackage = "cosmos.epochs.v1beta1";
 /** EventEpochEnd is an event emitted when an epoch end. */
 export interface EventEpochEnd {
@@ -10,7 +12,12 @@ export interface EventEpochEndProtoMsg {
   typeUrl: "/cosmos.epochs.v1beta1.EventEpochEnd";
   value: Uint8Array;
 }
-/** EventEpochEnd is an event emitted when an epoch end. */
+/**
+ * EventEpochEnd is an event emitted when an epoch end.
+ * @name EventEpochEndAmino
+ * @package cosmos.epochs.v1beta1
+ * @see proto type: cosmos.epochs.v1beta1.EventEpochEnd
+ */
 export interface EventEpochEndAmino {
   epoch_number?: string;
 }
@@ -27,7 +34,12 @@ export interface EventEpochStartProtoMsg {
   typeUrl: "/cosmos.epochs.v1beta1.EventEpochStart";
   value: Uint8Array;
 }
-/** EventEpochStart is an event emitted when an epoch start. */
+/**
+ * EventEpochStart is an event emitted when an epoch start.
+ * @name EventEpochStartAmino
+ * @package cosmos.epochs.v1beta1
+ * @see proto type: cosmos.epochs.v1beta1.EventEpochStart
+ */
 export interface EventEpochStartAmino {
   epoch_number?: string;
   epoch_start_time?: string;
@@ -38,11 +50,18 @@ export interface EventEpochStartAminoMsg {
 }
 function createBaseEventEpochEnd(): EventEpochEnd {
   return {
-    epochNumber: BigInt(0),
+    epochNumber: BigInt(0)
   };
 }
 export const EventEpochEnd = {
   typeUrl: "/cosmos.epochs.v1beta1.EventEpochEnd",
+  aminoType: "cosmos-sdk/EventEpochEnd",
+  is(o: any): o is EventEpochEnd {
+    return o && (o.$typeUrl === EventEpochEnd.typeUrl || typeof o.epochNumber === "bigint");
+  },
+  isAmino(o: any): o is EventEpochEndAmino {
+    return o && (o.$typeUrl === EventEpochEnd.typeUrl || typeof o.epoch_number === "bigint");
+  },
   encode(message: EventEpochEnd, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.epochNumber !== BigInt(0)) {
       writer.uint32(8).int64(message.epochNumber);
@@ -71,7 +90,7 @@ export const EventEpochEnd = {
     if (isSet(object.epochNumber)) obj.epochNumber = BigInt(object.epochNumber.toString());
     return obj;
   },
-  toJSON(message: EventEpochEnd): unknown {
+  toJSON(message: EventEpochEnd): JsonSafe<EventEpochEnd> {
     const obj: any = {};
     message.epochNumber !== undefined && (obj.epochNumber = (message.epochNumber || BigInt(0)).toString());
     return obj;
@@ -92,7 +111,7 @@ export const EventEpochEnd = {
   },
   toAmino(message: EventEpochEnd): EventEpochEndAmino {
     const obj: any = {};
-    obj.epoch_number = message.epochNumber ? message.epochNumber.toString() : undefined;
+    obj.epoch_number = message.epochNumber !== BigInt(0) ? message.epochNumber?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: EventEpochEndAminoMsg): EventEpochEnd {
@@ -101,7 +120,7 @@ export const EventEpochEnd = {
   toAminoMsg(message: EventEpochEnd): EventEpochEndAminoMsg {
     return {
       type: "cosmos-sdk/EventEpochEnd",
-      value: EventEpochEnd.toAmino(message),
+      value: EventEpochEnd.toAmino(message)
     };
   },
   fromProtoMsg(message: EventEpochEndProtoMsg): EventEpochEnd {
@@ -113,18 +132,27 @@ export const EventEpochEnd = {
   toProtoMsg(message: EventEpochEnd): EventEpochEndProtoMsg {
     return {
       typeUrl: "/cosmos.epochs.v1beta1.EventEpochEnd",
-      value: EventEpochEnd.encode(message).finish(),
+      value: EventEpochEnd.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(EventEpochEnd.typeUrl, EventEpochEnd);
+GlobalDecoderRegistry.registerAminoProtoMapping(EventEpochEnd.aminoType, EventEpochEnd.typeUrl);
 function createBaseEventEpochStart(): EventEpochStart {
   return {
     epochNumber: BigInt(0),
-    epochStartTime: BigInt(0),
+    epochStartTime: BigInt(0)
   };
 }
 export const EventEpochStart = {
   typeUrl: "/cosmos.epochs.v1beta1.EventEpochStart",
+  aminoType: "cosmos-sdk/EventEpochStart",
+  is(o: any): o is EventEpochStart {
+    return o && (o.$typeUrl === EventEpochStart.typeUrl || typeof o.epochNumber === "bigint" && typeof o.epochStartTime === "bigint");
+  },
+  isAmino(o: any): o is EventEpochStartAmino {
+    return o && (o.$typeUrl === EventEpochStart.typeUrl || typeof o.epoch_number === "bigint" && typeof o.epoch_start_time === "bigint");
+  },
   encode(message: EventEpochStart, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.epochNumber !== BigInt(0)) {
       writer.uint32(8).int64(message.epochNumber);
@@ -160,11 +188,10 @@ export const EventEpochStart = {
     if (isSet(object.epochStartTime)) obj.epochStartTime = BigInt(object.epochStartTime.toString());
     return obj;
   },
-  toJSON(message: EventEpochStart): unknown {
+  toJSON(message: EventEpochStart): JsonSafe<EventEpochStart> {
     const obj: any = {};
     message.epochNumber !== undefined && (obj.epochNumber = (message.epochNumber || BigInt(0)).toString());
-    message.epochStartTime !== undefined &&
-      (obj.epochStartTime = (message.epochStartTime || BigInt(0)).toString());
+    message.epochStartTime !== undefined && (obj.epochStartTime = (message.epochStartTime || BigInt(0)).toString());
     return obj;
   },
   fromPartial(object: Partial<EventEpochStart>): EventEpochStart {
@@ -189,8 +216,8 @@ export const EventEpochStart = {
   },
   toAmino(message: EventEpochStart): EventEpochStartAmino {
     const obj: any = {};
-    obj.epoch_number = message.epochNumber ? message.epochNumber.toString() : undefined;
-    obj.epoch_start_time = message.epochStartTime ? message.epochStartTime.toString() : undefined;
+    obj.epoch_number = message.epochNumber !== BigInt(0) ? message.epochNumber?.toString() : undefined;
+    obj.epoch_start_time = message.epochStartTime !== BigInt(0) ? message.epochStartTime?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: EventEpochStartAminoMsg): EventEpochStart {
@@ -199,7 +226,7 @@ export const EventEpochStart = {
   toAminoMsg(message: EventEpochStart): EventEpochStartAminoMsg {
     return {
       type: "cosmos-sdk/EventEpochStart",
-      value: EventEpochStart.toAmino(message),
+      value: EventEpochStart.toAmino(message)
     };
   },
   fromProtoMsg(message: EventEpochStartProtoMsg): EventEpochStart {
@@ -211,7 +238,9 @@ export const EventEpochStart = {
   toProtoMsg(message: EventEpochStart): EventEpochStartProtoMsg {
     return {
       typeUrl: "/cosmos.epochs.v1beta1.EventEpochStart",
-      value: EventEpochStart.encode(message).finish(),
+      value: EventEpochStart.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(EventEpochStart.typeUrl, EventEpochStart);
+GlobalDecoderRegistry.registerAminoProtoMapping(EventEpochStart.aminoType, EventEpochStart.typeUrl);

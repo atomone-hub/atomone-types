@@ -29,21 +29,11 @@ export const ibcAminoConverters = {
   ...ibcCoreClientV1TxAmino.AminoConverter,
   ...ibcCoreClientV2TxAmino.AminoConverter,
   ...ibcCoreConnectionV1TxAmino.AminoConverter,
-  ...ibcLightclientsWasmV1TxAmino.AminoConverter,
+  ...ibcLightclientsWasmV1TxAmino.AminoConverter
 };
-export const ibcProtoRegistry: ReadonlyArray<[string, GeneratedType]> = [
-  ...ibcApplicationsInterchainAccountsControllerV1TxRegistry.registry,
-  ...ibcApplicationsInterchainAccountsHostV1TxRegistry.registry,
-  ...ibcApplicationsTransferV1TxRegistry.registry,
-  ...ibcCoreChannelV1TxRegistry.registry,
-  ...ibcCoreChannelV2TxRegistry.registry,
-  ...ibcCoreClientV1TxRegistry.registry,
-  ...ibcCoreClientV2TxRegistry.registry,
-  ...ibcCoreConnectionV1TxRegistry.registry,
-  ...ibcLightclientsWasmV1TxRegistry.registry,
-];
+export const ibcProtoRegistry: ReadonlyArray<[string, GeneratedType]> = [...ibcApplicationsInterchainAccountsControllerV1TxRegistry.registry, ...ibcApplicationsInterchainAccountsHostV1TxRegistry.registry, ...ibcApplicationsTransferV1TxRegistry.registry, ...ibcCoreChannelV1TxRegistry.registry, ...ibcCoreChannelV2TxRegistry.registry, ...ibcCoreClientV1TxRegistry.registry, ...ibcCoreClientV2TxRegistry.registry, ...ibcCoreConnectionV1TxRegistry.registry, ...ibcLightclientsWasmV1TxRegistry.registry];
 export const getSigningIbcClientOptions = ({
-  defaultTypes = defaultRegistryTypes,
+  defaultTypes = defaultRegistryTypes
 }: {
   defaultTypes?: ReadonlyArray<[string, GeneratedType]>;
 } = {}): {
@@ -52,28 +42,31 @@ export const getSigningIbcClientOptions = ({
 } => {
   const registry = new Registry([...defaultTypes, ...ibcProtoRegistry]);
   const aminoTypes = new AminoTypes({
-    ...ibcAminoConverters,
+    ...ibcAminoConverters
   });
   return {
     registry,
-    aminoTypes,
+    aminoTypes
   };
 };
 export const getSigningIbcClient = async ({
   rpcEndpoint,
   signer,
-  defaultTypes = defaultRegistryTypes,
+  defaultTypes = defaultRegistryTypes
 }: {
   rpcEndpoint: string | HttpEndpoint;
   signer: OfflineSigner;
   defaultTypes?: ReadonlyArray<[string, GeneratedType]>;
 }) => {
-  const { registry, aminoTypes } = getSigningIbcClientOptions({
-    defaultTypes,
+  const {
+    registry,
+    aminoTypes
+  } = getSigningIbcClientOptions({
+    defaultTypes
   });
   const client = await SigningStargateClient.connectWithSigner(rpcEndpoint, signer, {
     registry: registry as any,
-    aminoTypes,
+    aminoTypes
   });
   return client;
 };

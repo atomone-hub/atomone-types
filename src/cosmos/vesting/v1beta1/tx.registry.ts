@@ -1,16 +1,8 @@
 /* eslint-disable */
 import { TelescopeGeneratedType } from "../../../types";
 import { Registry } from "@cosmjs/proto-signing";
-import {
-  MsgCreateVestingAccount,
-  MsgCreatePermanentLockedAccount,
-  MsgCreatePeriodicVestingAccount,
-} from "./tx";
-export const registry: ReadonlyArray<[string, TelescopeGeneratedType<any, any, any>]> = [
-  ["/cosmos.vesting.v1beta1.MsgCreateVestingAccount", MsgCreateVestingAccount],
-  ["/cosmos.vesting.v1beta1.MsgCreatePermanentLockedAccount", MsgCreatePermanentLockedAccount],
-  ["/cosmos.vesting.v1beta1.MsgCreatePeriodicVestingAccount", MsgCreatePeriodicVestingAccount],
-];
+import { MsgCreateVestingAccount, MsgCreatePermanentLockedAccount, MsgCreatePeriodicVestingAccount } from "./tx";
+export const registry: ReadonlyArray<[string, TelescopeGeneratedType<any, any, any>]> = [["/cosmos.vesting.v1beta1.MsgCreateVestingAccount", MsgCreateVestingAccount], ["/cosmos.vesting.v1beta1.MsgCreatePermanentLockedAccount", MsgCreatePermanentLockedAccount], ["/cosmos.vesting.v1beta1.MsgCreatePeriodicVestingAccount", MsgCreatePeriodicVestingAccount]];
 export const load = (protoRegistry: Registry) => {
   registry.forEach(([typeUrl, mod]) => {
     protoRegistry.register(typeUrl, mod);
@@ -21,100 +13,100 @@ export const MessageComposer = {
     createVestingAccount(value: MsgCreateVestingAccount) {
       return {
         typeUrl: "/cosmos.vesting.v1beta1.MsgCreateVestingAccount",
-        value: MsgCreateVestingAccount.encode(value).finish(),
+        value: MsgCreateVestingAccount.encode(value).finish()
       };
     },
     createPermanentLockedAccount(value: MsgCreatePermanentLockedAccount) {
       return {
         typeUrl: "/cosmos.vesting.v1beta1.MsgCreatePermanentLockedAccount",
-        value: MsgCreatePermanentLockedAccount.encode(value).finish(),
+        value: MsgCreatePermanentLockedAccount.encode(value).finish()
       };
     },
     createPeriodicVestingAccount(value: MsgCreatePeriodicVestingAccount) {
       return {
         typeUrl: "/cosmos.vesting.v1beta1.MsgCreatePeriodicVestingAccount",
-        value: MsgCreatePeriodicVestingAccount.encode(value).finish(),
+        value: MsgCreatePeriodicVestingAccount.encode(value).finish()
       };
-    },
+    }
   },
   withTypeUrl: {
     createVestingAccount(value: MsgCreateVestingAccount) {
       return {
         typeUrl: "/cosmos.vesting.v1beta1.MsgCreateVestingAccount",
-        value,
+        value
       };
     },
     createPermanentLockedAccount(value: MsgCreatePermanentLockedAccount) {
       return {
         typeUrl: "/cosmos.vesting.v1beta1.MsgCreatePermanentLockedAccount",
-        value,
+        value
       };
     },
     createPeriodicVestingAccount(value: MsgCreatePeriodicVestingAccount) {
       return {
         typeUrl: "/cosmos.vesting.v1beta1.MsgCreatePeriodicVestingAccount",
-        value,
+        value
       };
-    },
+    }
   },
   toJSON: {
     createVestingAccount(value: MsgCreateVestingAccount) {
       return {
         typeUrl: "/cosmos.vesting.v1beta1.MsgCreateVestingAccount",
-        value: MsgCreateVestingAccount.toJSON(value),
+        value: MsgCreateVestingAccount.toJSON(value)
       };
     },
     createPermanentLockedAccount(value: MsgCreatePermanentLockedAccount) {
       return {
         typeUrl: "/cosmos.vesting.v1beta1.MsgCreatePermanentLockedAccount",
-        value: MsgCreatePermanentLockedAccount.toJSON(value),
+        value: MsgCreatePermanentLockedAccount.toJSON(value)
       };
     },
     createPeriodicVestingAccount(value: MsgCreatePeriodicVestingAccount) {
       return {
         typeUrl: "/cosmos.vesting.v1beta1.MsgCreatePeriodicVestingAccount",
-        value: MsgCreatePeriodicVestingAccount.toJSON(value),
+        value: MsgCreatePeriodicVestingAccount.toJSON(value)
       };
-    },
+    }
   },
   fromJSON: {
     createVestingAccount(value: any) {
       return {
         typeUrl: "/cosmos.vesting.v1beta1.MsgCreateVestingAccount",
-        value: MsgCreateVestingAccount.fromJSON(value),
+        value: MsgCreateVestingAccount.fromJSON(value)
       };
     },
     createPermanentLockedAccount(value: any) {
       return {
         typeUrl: "/cosmos.vesting.v1beta1.MsgCreatePermanentLockedAccount",
-        value: MsgCreatePermanentLockedAccount.fromJSON(value),
+        value: MsgCreatePermanentLockedAccount.fromJSON(value)
       };
     },
     createPeriodicVestingAccount(value: any) {
       return {
         typeUrl: "/cosmos.vesting.v1beta1.MsgCreatePeriodicVestingAccount",
-        value: MsgCreatePeriodicVestingAccount.fromJSON(value),
+        value: MsgCreatePeriodicVestingAccount.fromJSON(value)
       };
-    },
+    }
   },
   fromPartial: {
     createVestingAccount(value: MsgCreateVestingAccount) {
       return {
         typeUrl: "/cosmos.vesting.v1beta1.MsgCreateVestingAccount",
-        value: MsgCreateVestingAccount.fromPartial(value),
+        value: MsgCreateVestingAccount.fromPartial(value)
       };
     },
     createPermanentLockedAccount(value: MsgCreatePermanentLockedAccount) {
       return {
         typeUrl: "/cosmos.vesting.v1beta1.MsgCreatePermanentLockedAccount",
-        value: MsgCreatePermanentLockedAccount.fromPartial(value),
+        value: MsgCreatePermanentLockedAccount.fromPartial(value)
       };
     },
     createPeriodicVestingAccount(value: MsgCreatePeriodicVestingAccount) {
       return {
         typeUrl: "/cosmos.vesting.v1beta1.MsgCreatePeriodicVestingAccount",
-        value: MsgCreatePeriodicVestingAccount.fromPartial(value),
+        value: MsgCreatePeriodicVestingAccount.fromPartial(value)
       };
-    },
-  },
+    }
+  }
 };

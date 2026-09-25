@@ -1,7 +1,9 @@
 /* eslint-disable */
 import { Params, ParamsAmino, QueryRequest, QueryRequestAmino } from "./host";
 import { BinaryReader, BinaryWriter } from "../../../../../binary";
+import { GlobalDecoderRegistry } from "../../../../../registry";
 import { isSet, bytesFromBase64, base64FromBytes } from "../../../../../helpers";
+import { JsonSafe } from "../../../../../json-safe";
 import { TxRpc } from "../../../../../types";
 export const protobufPackage = "ibc.applications.interchain_accounts.host.v1";
 /** MsgUpdateParams defines the payload for Msg/UpdateParams */
@@ -10,7 +12,7 @@ export interface MsgUpdateParams {
   signer: string;
   /**
    * params defines the 27-interchain-accounts/host parameters to update.
-   *
+   * 
    * NOTE: All parameters must be supplied.
    */
   params: Params | undefined;
@@ -19,13 +21,20 @@ export interface MsgUpdateParamsProtoMsg {
   typeUrl: "/ibc.applications.interchain_accounts.host.v1.MsgUpdateParams";
   value: Uint8Array;
 }
-/** MsgUpdateParams defines the payload for Msg/UpdateParams */
+/**
+ * MsgUpdateParams defines the payload for Msg/UpdateParams
+ * @name MsgUpdateParamsAmino
+ * @package ibc.applications.interchain_accounts.host.v1
+ * @see proto type: ibc.applications.interchain_accounts.host.v1.MsgUpdateParams
+ */
 export interface MsgUpdateParamsAmino {
-  /** signer address */
+  /**
+   * signer address
+   */
   signer?: string;
   /**
    * params defines the 27-interchain-accounts/host parameters to update.
-   *
+   * 
    * NOTE: All parameters must be supplied.
    */
   params?: ParamsAmino | undefined;
@@ -40,7 +49,12 @@ export interface MsgUpdateParamsResponseProtoMsg {
   typeUrl: "/ibc.applications.interchain_accounts.host.v1.MsgUpdateParamsResponse";
   value: Uint8Array;
 }
-/** MsgUpdateParamsResponse defines the response for Msg/UpdateParams */
+/**
+ * MsgUpdateParamsResponse defines the response for Msg/UpdateParams
+ * @name MsgUpdateParamsResponseAmino
+ * @package ibc.applications.interchain_accounts.host.v1
+ * @see proto type: ibc.applications.interchain_accounts.host.v1.MsgUpdateParamsResponse
+ */
 export interface MsgUpdateParamsResponseAmino {}
 export interface MsgUpdateParamsResponseAminoMsg {
   type: "cosmos-sdk/MsgUpdateParamsResponse";
@@ -57,11 +71,20 @@ export interface MsgModuleQuerySafeProtoMsg {
   typeUrl: "/ibc.applications.interchain_accounts.host.v1.MsgModuleQuerySafe";
   value: Uint8Array;
 }
-/** MsgModuleQuerySafe defines the payload for Msg/ModuleQuerySafe */
+/**
+ * MsgModuleQuerySafe defines the payload for Msg/ModuleQuerySafe
+ * @name MsgModuleQuerySafeAmino
+ * @package ibc.applications.interchain_accounts.host.v1
+ * @see proto type: ibc.applications.interchain_accounts.host.v1.MsgModuleQuerySafe
+ */
 export interface MsgModuleQuerySafeAmino {
-  /** signer address */
+  /**
+   * signer address
+   */
   signer?: string;
-  /** requests defines the module safe queries to execute. */
+  /**
+   * requests defines the module safe queries to execute.
+   */
   requests?: QueryRequestAmino[];
 }
 export interface MsgModuleQuerySafeAminoMsg {
@@ -79,11 +102,20 @@ export interface MsgModuleQuerySafeResponseProtoMsg {
   typeUrl: "/ibc.applications.interchain_accounts.host.v1.MsgModuleQuerySafeResponse";
   value: Uint8Array;
 }
-/** MsgModuleQuerySafeResponse defines the response for Msg/ModuleQuerySafe */
+/**
+ * MsgModuleQuerySafeResponse defines the response for Msg/ModuleQuerySafe
+ * @name MsgModuleQuerySafeResponseAmino
+ * @package ibc.applications.interchain_accounts.host.v1
+ * @see proto type: ibc.applications.interchain_accounts.host.v1.MsgModuleQuerySafeResponse
+ */
 export interface MsgModuleQuerySafeResponseAmino {
-  /** height at which the responses were queried */
+  /**
+   * height at which the responses were queried
+   */
   height?: string;
-  /** protobuf encoded responses for each query */
+  /**
+   * protobuf encoded responses for each query
+   */
   responses?: string[];
 }
 export interface MsgModuleQuerySafeResponseAminoMsg {
@@ -93,11 +125,18 @@ export interface MsgModuleQuerySafeResponseAminoMsg {
 function createBaseMsgUpdateParams(): MsgUpdateParams {
   return {
     signer: "",
-    params: Params.fromPartial({}),
+    params: Params.fromPartial({})
   };
 }
 export const MsgUpdateParams = {
   typeUrl: "/ibc.applications.interchain_accounts.host.v1.MsgUpdateParams",
+  aminoType: "cosmos-sdk/MsgUpdateParams",
+  is(o: any): o is MsgUpdateParams {
+    return o && (o.$typeUrl === MsgUpdateParams.typeUrl || typeof o.signer === "string" && Params.is(o.params));
+  },
+  isAmino(o: any): o is MsgUpdateParamsAmino {
+    return o && (o.$typeUrl === MsgUpdateParams.typeUrl || typeof o.signer === "string" && Params.isAmino(o.params));
+  },
   encode(message: MsgUpdateParams, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.signer !== "") {
       writer.uint32(10).string(message.signer);
@@ -133,7 +172,7 @@ export const MsgUpdateParams = {
     if (isSet(object.params)) obj.params = Params.fromJSON(object.params);
     return obj;
   },
-  toJSON(message: MsgUpdateParams): unknown {
+  toJSON(message: MsgUpdateParams): JsonSafe<MsgUpdateParams> {
     const obj: any = {};
     message.signer !== undefined && (obj.signer = message.signer);
     message.params !== undefined && (obj.params = message.params ? Params.toJSON(message.params) : undefined);
@@ -159,7 +198,7 @@ export const MsgUpdateParams = {
   },
   toAmino(message: MsgUpdateParams): MsgUpdateParamsAmino {
     const obj: any = {};
-    obj.signer = message.signer;
+    obj.signer = message.signer === "" ? undefined : message.signer;
     obj.params = message.params ? Params.toAmino(message.params) : undefined;
     return obj;
   },
@@ -169,7 +208,7 @@ export const MsgUpdateParams = {
   toAminoMsg(message: MsgUpdateParams): MsgUpdateParamsAminoMsg {
     return {
       type: "cosmos-sdk/MsgUpdateParams",
-      value: MsgUpdateParams.toAmino(message),
+      value: MsgUpdateParams.toAmino(message)
     };
   },
   fromProtoMsg(message: MsgUpdateParamsProtoMsg): MsgUpdateParams {
@@ -181,15 +220,24 @@ export const MsgUpdateParams = {
   toProtoMsg(message: MsgUpdateParams): MsgUpdateParamsProtoMsg {
     return {
       typeUrl: "/ibc.applications.interchain_accounts.host.v1.MsgUpdateParams",
-      value: MsgUpdateParams.encode(message).finish(),
+      value: MsgUpdateParams.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(MsgUpdateParams.typeUrl, MsgUpdateParams);
+GlobalDecoderRegistry.registerAminoProtoMapping(MsgUpdateParams.aminoType, MsgUpdateParams.typeUrl);
 function createBaseMsgUpdateParamsResponse(): MsgUpdateParamsResponse {
   return {};
 }
 export const MsgUpdateParamsResponse = {
   typeUrl: "/ibc.applications.interchain_accounts.host.v1.MsgUpdateParamsResponse",
+  aminoType: "cosmos-sdk/MsgUpdateParamsResponse",
+  is(o: any): o is MsgUpdateParamsResponse {
+    return o && o.$typeUrl === MsgUpdateParamsResponse.typeUrl;
+  },
+  isAmino(o: any): o is MsgUpdateParamsResponseAmino {
+    return o && o.$typeUrl === MsgUpdateParamsResponse.typeUrl;
+  },
   encode(_: MsgUpdateParamsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
@@ -211,7 +259,7 @@ export const MsgUpdateParamsResponse = {
     const obj = createBaseMsgUpdateParamsResponse();
     return obj;
   },
-  toJSON(_: MsgUpdateParamsResponse): unknown {
+  toJSON(_: MsgUpdateParamsResponse): JsonSafe<MsgUpdateParamsResponse> {
     const obj: any = {};
     return obj;
   },
@@ -233,7 +281,7 @@ export const MsgUpdateParamsResponse = {
   toAminoMsg(message: MsgUpdateParamsResponse): MsgUpdateParamsResponseAminoMsg {
     return {
       type: "cosmos-sdk/MsgUpdateParamsResponse",
-      value: MsgUpdateParamsResponse.toAmino(message),
+      value: MsgUpdateParamsResponse.toAmino(message)
     };
   },
   fromProtoMsg(message: MsgUpdateParamsResponseProtoMsg): MsgUpdateParamsResponse {
@@ -245,18 +293,27 @@ export const MsgUpdateParamsResponse = {
   toProtoMsg(message: MsgUpdateParamsResponse): MsgUpdateParamsResponseProtoMsg {
     return {
       typeUrl: "/ibc.applications.interchain_accounts.host.v1.MsgUpdateParamsResponse",
-      value: MsgUpdateParamsResponse.encode(message).finish(),
+      value: MsgUpdateParamsResponse.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(MsgUpdateParamsResponse.typeUrl, MsgUpdateParamsResponse);
+GlobalDecoderRegistry.registerAminoProtoMapping(MsgUpdateParamsResponse.aminoType, MsgUpdateParamsResponse.typeUrl);
 function createBaseMsgModuleQuerySafe(): MsgModuleQuerySafe {
   return {
     signer: "",
-    requests: [],
+    requests: []
   };
 }
 export const MsgModuleQuerySafe = {
   typeUrl: "/ibc.applications.interchain_accounts.host.v1.MsgModuleQuerySafe",
+  aminoType: "cosmos-sdk/MsgModuleQuerySafe",
+  is(o: any): o is MsgModuleQuerySafe {
+    return o && (o.$typeUrl === MsgModuleQuerySafe.typeUrl || typeof o.signer === "string" && Array.isArray(o.requests) && (!o.requests.length || QueryRequest.is(o.requests[0])));
+  },
+  isAmino(o: any): o is MsgModuleQuerySafeAmino {
+    return o && (o.$typeUrl === MsgModuleQuerySafe.typeUrl || typeof o.signer === "string" && Array.isArray(o.requests) && (!o.requests.length || QueryRequest.isAmino(o.requests[0])));
+  },
   encode(message: MsgModuleQuerySafe, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.signer !== "") {
       writer.uint32(10).string(message.signer);
@@ -289,15 +346,14 @@ export const MsgModuleQuerySafe = {
   fromJSON(object: any): MsgModuleQuerySafe {
     const obj = createBaseMsgModuleQuerySafe();
     if (isSet(object.signer)) obj.signer = String(object.signer);
-    if (Array.isArray(object?.requests))
-      obj.requests = object.requests.map((e: any) => QueryRequest.fromJSON(e));
+    if (Array.isArray(object?.requests)) obj.requests = object.requests.map((e: any) => QueryRequest.fromJSON(e));
     return obj;
   },
-  toJSON(message: MsgModuleQuerySafe): unknown {
+  toJSON(message: MsgModuleQuerySafe): JsonSafe<MsgModuleQuerySafe> {
     const obj: any = {};
     message.signer !== undefined && (obj.signer = message.signer);
     if (message.requests) {
-      obj.requests = message.requests.map((e) => (e ? QueryRequest.toJSON(e) : undefined));
+      obj.requests = message.requests.map(e => e ? QueryRequest.toJSON(e) : undefined);
     } else {
       obj.requests = [];
     }
@@ -306,7 +362,7 @@ export const MsgModuleQuerySafe = {
   fromPartial(object: Partial<MsgModuleQuerySafe>): MsgModuleQuerySafe {
     const message = createBaseMsgModuleQuerySafe();
     message.signer = object.signer ?? "";
-    message.requests = object.requests?.map((e) => QueryRequest.fromPartial(e)) || [];
+    message.requests = object.requests?.map(e => QueryRequest.fromPartial(e)) || [];
     return message;
   },
   fromAmino(object: MsgModuleQuerySafeAmino): MsgModuleQuerySafe {
@@ -314,16 +370,16 @@ export const MsgModuleQuerySafe = {
     if (object.signer !== undefined && object.signer !== null) {
       message.signer = object.signer;
     }
-    message.requests = object.requests?.map((e) => QueryRequest.fromAmino(e)) || [];
+    message.requests = object.requests?.map(e => QueryRequest.fromAmino(e)) || [];
     return message;
   },
   toAmino(message: MsgModuleQuerySafe): MsgModuleQuerySafeAmino {
     const obj: any = {};
-    obj.signer = message.signer;
+    obj.signer = message.signer === "" ? undefined : message.signer;
     if (message.requests) {
-      obj.requests = message.requests.map((e) => (e ? QueryRequest.toAmino(e) : undefined));
+      obj.requests = message.requests.map(e => e ? QueryRequest.toAmino(e) : undefined);
     } else {
-      obj.requests = [];
+      obj.requests = message.requests;
     }
     return obj;
   },
@@ -333,7 +389,7 @@ export const MsgModuleQuerySafe = {
   toAminoMsg(message: MsgModuleQuerySafe): MsgModuleQuerySafeAminoMsg {
     return {
       type: "cosmos-sdk/MsgModuleQuerySafe",
-      value: MsgModuleQuerySafe.toAmino(message),
+      value: MsgModuleQuerySafe.toAmino(message)
     };
   },
   fromProtoMsg(message: MsgModuleQuerySafeProtoMsg): MsgModuleQuerySafe {
@@ -345,18 +401,27 @@ export const MsgModuleQuerySafe = {
   toProtoMsg(message: MsgModuleQuerySafe): MsgModuleQuerySafeProtoMsg {
     return {
       typeUrl: "/ibc.applications.interchain_accounts.host.v1.MsgModuleQuerySafe",
-      value: MsgModuleQuerySafe.encode(message).finish(),
+      value: MsgModuleQuerySafe.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(MsgModuleQuerySafe.typeUrl, MsgModuleQuerySafe);
+GlobalDecoderRegistry.registerAminoProtoMapping(MsgModuleQuerySafe.aminoType, MsgModuleQuerySafe.typeUrl);
 function createBaseMsgModuleQuerySafeResponse(): MsgModuleQuerySafeResponse {
   return {
     height: BigInt(0),
-    responses: [],
+    responses: []
   };
 }
 export const MsgModuleQuerySafeResponse = {
   typeUrl: "/ibc.applications.interchain_accounts.host.v1.MsgModuleQuerySafeResponse",
+  aminoType: "cosmos-sdk/MsgModuleQuerySafeResponse",
+  is(o: any): o is MsgModuleQuerySafeResponse {
+    return o && (o.$typeUrl === MsgModuleQuerySafeResponse.typeUrl || typeof o.height === "bigint" && Array.isArray(o.responses) && (!o.responses.length || o.responses[0] instanceof Uint8Array || typeof o.responses[0] === "string"));
+  },
+  isAmino(o: any): o is MsgModuleQuerySafeResponseAmino {
+    return o && (o.$typeUrl === MsgModuleQuerySafeResponse.typeUrl || typeof o.height === "bigint" && Array.isArray(o.responses) && (!o.responses.length || o.responses[0] instanceof Uint8Array || typeof o.responses[0] === "string"));
+  },
   encode(message: MsgModuleQuerySafeResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.height !== BigInt(0)) {
       writer.uint32(8).uint64(message.height);
@@ -389,15 +454,14 @@ export const MsgModuleQuerySafeResponse = {
   fromJSON(object: any): MsgModuleQuerySafeResponse {
     const obj = createBaseMsgModuleQuerySafeResponse();
     if (isSet(object.height)) obj.height = BigInt(object.height.toString());
-    if (Array.isArray(object?.responses))
-      obj.responses = object.responses.map((e: any) => bytesFromBase64(e));
+    if (Array.isArray(object?.responses)) obj.responses = object.responses.map((e: any) => bytesFromBase64(e));
     return obj;
   },
-  toJSON(message: MsgModuleQuerySafeResponse): unknown {
+  toJSON(message: MsgModuleQuerySafeResponse): JsonSafe<MsgModuleQuerySafeResponse> {
     const obj: any = {};
     message.height !== undefined && (obj.height = (message.height || BigInt(0)).toString());
     if (message.responses) {
-      obj.responses = message.responses.map((e) => base64FromBytes(e !== undefined ? e : new Uint8Array()));
+      obj.responses = message.responses.map(e => base64FromBytes(e !== undefined ? e : new Uint8Array()));
     } else {
       obj.responses = [];
     }
@@ -408,7 +472,7 @@ export const MsgModuleQuerySafeResponse = {
     if (object.height !== undefined && object.height !== null) {
       message.height = BigInt(object.height.toString());
     }
-    message.responses = object.responses?.map((e) => e) || [];
+    message.responses = object.responses?.map(e => e) || [];
     return message;
   },
   fromAmino(object: MsgModuleQuerySafeResponseAmino): MsgModuleQuerySafeResponse {
@@ -416,16 +480,16 @@ export const MsgModuleQuerySafeResponse = {
     if (object.height !== undefined && object.height !== null) {
       message.height = BigInt(object.height);
     }
-    message.responses = object.responses?.map((e) => bytesFromBase64(e)) || [];
+    message.responses = object.responses?.map(e => bytesFromBase64(e)) || [];
     return message;
   },
   toAmino(message: MsgModuleQuerySafeResponse): MsgModuleQuerySafeResponseAmino {
     const obj: any = {};
-    obj.height = message.height ? message.height.toString() : undefined;
+    obj.height = message.height !== BigInt(0) ? message.height?.toString() : undefined;
     if (message.responses) {
-      obj.responses = message.responses.map((e) => base64FromBytes(e));
+      obj.responses = message.responses.map(e => base64FromBytes(e));
     } else {
-      obj.responses = [];
+      obj.responses = message.responses;
     }
     return obj;
   },
@@ -435,7 +499,7 @@ export const MsgModuleQuerySafeResponse = {
   toAminoMsg(message: MsgModuleQuerySafeResponse): MsgModuleQuerySafeResponseAminoMsg {
     return {
       type: "cosmos-sdk/MsgModuleQuerySafeResponse",
-      value: MsgModuleQuerySafeResponse.toAmino(message),
+      value: MsgModuleQuerySafeResponse.toAmino(message)
     };
   },
   fromProtoMsg(message: MsgModuleQuerySafeResponseProtoMsg): MsgModuleQuerySafeResponse {
@@ -447,10 +511,12 @@ export const MsgModuleQuerySafeResponse = {
   toProtoMsg(message: MsgModuleQuerySafeResponse): MsgModuleQuerySafeResponseProtoMsg {
     return {
       typeUrl: "/ibc.applications.interchain_accounts.host.v1.MsgModuleQuerySafeResponse",
-      value: MsgModuleQuerySafeResponse.encode(message).finish(),
+      value: MsgModuleQuerySafeResponse.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(MsgModuleQuerySafeResponse.typeUrl, MsgModuleQuerySafeResponse);
+GlobalDecoderRegistry.registerAminoProtoMapping(MsgModuleQuerySafeResponse.aminoType, MsgModuleQuerySafeResponse.typeUrl);
 /** Msg defines the 27-interchain-accounts/host Msg service. */
 export interface Msg {
   /** UpdateParams defines a rpc handler for MsgUpdateParams. */
@@ -467,20 +533,12 @@ export class MsgClientImpl implements Msg {
   }
   UpdateParams(request: MsgUpdateParams): Promise<MsgUpdateParamsResponse> {
     const data = MsgUpdateParams.encode(request).finish();
-    const promise = this.rpc.request(
-      "ibc.applications.interchain_accounts.host.v1.Msg",
-      "UpdateParams",
-      data,
-    );
-    return promise.then((data) => MsgUpdateParamsResponse.decode(new BinaryReader(data)));
+    const promise = this.rpc.request("ibc.applications.interchain_accounts.host.v1.Msg", "UpdateParams", data);
+    return promise.then(data => MsgUpdateParamsResponse.decode(new BinaryReader(data)));
   }
   ModuleQuerySafe(request: MsgModuleQuerySafe): Promise<MsgModuleQuerySafeResponse> {
     const data = MsgModuleQuerySafe.encode(request).finish();
-    const promise = this.rpc.request(
-      "ibc.applications.interchain_accounts.host.v1.Msg",
-      "ModuleQuerySafe",
-      data,
-    );
-    return promise.then((data) => MsgModuleQuerySafeResponse.decode(new BinaryReader(data)));
+    const promise = this.rpc.request("ibc.applications.interchain_accounts.host.v1.Msg", "ModuleQuerySafe", data);
+    return promise.then(data => MsgModuleQuerySafeResponse.decode(new BinaryReader(data)));
   }
 }

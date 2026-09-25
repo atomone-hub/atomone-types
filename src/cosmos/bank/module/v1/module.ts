@@ -1,6 +1,8 @@
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "../../../../binary";
 import { isSet } from "../../../../helpers";
+import { JsonSafe } from "../../../../json-safe";
+import { GlobalDecoderRegistry } from "../../../../registry";
 export const protobufPackage = "cosmos.bank.module.v1";
 /** Module is the config object of the bank module. */
 export interface Module {
@@ -24,7 +26,12 @@ export interface ModuleProtoMsg {
   typeUrl: "/cosmos.bank.module.v1.Module";
   value: Uint8Array;
 }
-/** Module is the config object of the bank module. */
+/**
+ * Module is the config object of the bank module.
+ * @name ModuleAmino
+ * @package cosmos.bank.module.v1
+ * @see proto type: cosmos.bank.module.v1.Module
+ */
 export interface ModuleAmino {
   /**
    * blocked_module_accounts_override configures exceptional module accounts which should be blocked from receiving
@@ -32,7 +39,9 @@ export interface ModuleAmino {
    * module_account_permissions
    */
   blocked_module_accounts_override?: string[];
-  /** authority defines the custom module authority. If not set, defaults to the governance module. */
+  /**
+   * authority defines the custom module authority. If not set, defaults to the governance module.
+   */
   authority?: string;
   /**
    * restrictions_order specifies the order of send restrictions and should be
@@ -50,11 +59,18 @@ function createBaseModule(): Module {
   return {
     blockedModuleAccountsOverride: [],
     authority: "",
-    restrictionsOrder: [],
+    restrictionsOrder: []
   };
 }
 export const Module = {
   typeUrl: "/cosmos.bank.module.v1.Module",
+  aminoType: "cosmos-sdk/Module",
+  is(o: any): o is Module {
+    return o && (o.$typeUrl === Module.typeUrl || Array.isArray(o.blockedModuleAccountsOverride) && (!o.blockedModuleAccountsOverride.length || typeof o.blockedModuleAccountsOverride[0] === "string") && typeof o.authority === "string" && Array.isArray(o.restrictionsOrder) && (!o.restrictionsOrder.length || typeof o.restrictionsOrder[0] === "string"));
+  },
+  isAmino(o: any): o is ModuleAmino {
+    return o && (o.$typeUrl === Module.typeUrl || Array.isArray(o.blocked_module_accounts_override) && (!o.blocked_module_accounts_override.length || typeof o.blocked_module_accounts_override[0] === "string") && typeof o.authority === "string" && Array.isArray(o.restrictions_order) && (!o.restrictions_order.length || typeof o.restrictions_order[0] === "string"));
+  },
   encode(message: Module, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.blockedModuleAccountsOverride) {
       writer.uint32(10).string(v!);
@@ -92,23 +108,21 @@ export const Module = {
   },
   fromJSON(object: any): Module {
     const obj = createBaseModule();
-    if (Array.isArray(object?.blockedModuleAccountsOverride))
-      obj.blockedModuleAccountsOverride = object.blockedModuleAccountsOverride.map((e: any) => String(e));
+    if (Array.isArray(object?.blockedModuleAccountsOverride)) obj.blockedModuleAccountsOverride = object.blockedModuleAccountsOverride.map((e: any) => String(e));
     if (isSet(object.authority)) obj.authority = String(object.authority);
-    if (Array.isArray(object?.restrictionsOrder))
-      obj.restrictionsOrder = object.restrictionsOrder.map((e: any) => String(e));
+    if (Array.isArray(object?.restrictionsOrder)) obj.restrictionsOrder = object.restrictionsOrder.map((e: any) => String(e));
     return obj;
   },
-  toJSON(message: Module): unknown {
+  toJSON(message: Module): JsonSafe<Module> {
     const obj: any = {};
     if (message.blockedModuleAccountsOverride) {
-      obj.blockedModuleAccountsOverride = message.blockedModuleAccountsOverride.map((e) => e);
+      obj.blockedModuleAccountsOverride = message.blockedModuleAccountsOverride.map(e => e);
     } else {
       obj.blockedModuleAccountsOverride = [];
     }
     message.authority !== undefined && (obj.authority = message.authority);
     if (message.restrictionsOrder) {
-      obj.restrictionsOrder = message.restrictionsOrder.map((e) => e);
+      obj.restrictionsOrder = message.restrictionsOrder.map(e => e);
     } else {
       obj.restrictionsOrder = [];
     }
@@ -116,32 +130,32 @@ export const Module = {
   },
   fromPartial(object: Partial<Module>): Module {
     const message = createBaseModule();
-    message.blockedModuleAccountsOverride = object.blockedModuleAccountsOverride?.map((e) => e) || [];
+    message.blockedModuleAccountsOverride = object.blockedModuleAccountsOverride?.map(e => e) || [];
     message.authority = object.authority ?? "";
-    message.restrictionsOrder = object.restrictionsOrder?.map((e) => e) || [];
+    message.restrictionsOrder = object.restrictionsOrder?.map(e => e) || [];
     return message;
   },
   fromAmino(object: ModuleAmino): Module {
     const message = createBaseModule();
-    message.blockedModuleAccountsOverride = object.blocked_module_accounts_override?.map((e) => e) || [];
+    message.blockedModuleAccountsOverride = object.blocked_module_accounts_override?.map(e => e) || [];
     if (object.authority !== undefined && object.authority !== null) {
       message.authority = object.authority;
     }
-    message.restrictionsOrder = object.restrictions_order?.map((e) => e) || [];
+    message.restrictionsOrder = object.restrictions_order?.map(e => e) || [];
     return message;
   },
   toAmino(message: Module): ModuleAmino {
     const obj: any = {};
     if (message.blockedModuleAccountsOverride) {
-      obj.blocked_module_accounts_override = message.blockedModuleAccountsOverride.map((e) => e);
+      obj.blocked_module_accounts_override = message.blockedModuleAccountsOverride.map(e => e);
     } else {
-      obj.blocked_module_accounts_override = [];
+      obj.blocked_module_accounts_override = message.blockedModuleAccountsOverride;
     }
-    obj.authority = message.authority;
+    obj.authority = message.authority === "" ? undefined : message.authority;
     if (message.restrictionsOrder) {
-      obj.restrictions_order = message.restrictionsOrder.map((e) => e);
+      obj.restrictions_order = message.restrictionsOrder.map(e => e);
     } else {
-      obj.restrictions_order = [];
+      obj.restrictions_order = message.restrictionsOrder;
     }
     return obj;
   },
@@ -151,7 +165,7 @@ export const Module = {
   toAminoMsg(message: Module): ModuleAminoMsg {
     return {
       type: "cosmos-sdk/Module",
-      value: Module.toAmino(message),
+      value: Module.toAmino(message)
     };
   },
   fromProtoMsg(message: ModuleProtoMsg): Module {
@@ -163,7 +177,9 @@ export const Module = {
   toProtoMsg(message: Module): ModuleProtoMsg {
     return {
       typeUrl: "/cosmos.bank.module.v1.Module",
-      value: Module.encode(message).finish(),
+      value: Module.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(Module.typeUrl, Module);
+GlobalDecoderRegistry.registerAminoProtoMapping(Module.aminoType, Module.typeUrl);

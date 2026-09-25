@@ -1,7 +1,9 @@
 /* eslint-disable */
 import { BaseAccount, BaseAccountAmino } from "../../../../cosmos/auth/v1beta1/auth";
 import { BinaryReader, BinaryWriter } from "../../../../binary";
+import { GlobalDecoderRegistry } from "../../../../registry";
 import { isSet } from "../../../../helpers";
+import { JsonSafe } from "../../../../json-safe";
 export const protobufPackage = "ibc.applications.interchain_accounts.v1";
 /** An InterchainAccount is defined as a BaseAccount & the address of the account owner on the controller chain */
 export interface InterchainAccount {
@@ -12,7 +14,12 @@ export interface InterchainAccountProtoMsg {
   typeUrl: "/ibc.applications.interchain_accounts.v1.InterchainAccount";
   value: Uint8Array;
 }
-/** An InterchainAccount is defined as a BaseAccount & the address of the account owner on the controller chain */
+/**
+ * An InterchainAccount is defined as a BaseAccount & the address of the account owner on the controller chain
+ * @name InterchainAccountAmino
+ * @package ibc.applications.interchain_accounts.v1
+ * @see proto type: ibc.applications.interchain_accounts.v1.InterchainAccount
+ */
 export interface InterchainAccountAmino {
   base_account?: BaseAccountAmino | undefined;
   account_owner?: string;
@@ -24,11 +31,18 @@ export interface InterchainAccountAminoMsg {
 function createBaseInterchainAccount(): InterchainAccount {
   return {
     baseAccount: undefined,
-    accountOwner: "",
+    accountOwner: ""
   };
 }
 export const InterchainAccount = {
   typeUrl: "/ibc.applications.interchain_accounts.v1.InterchainAccount",
+  aminoType: "cosmos-sdk/InterchainAccount",
+  is(o: any): o is InterchainAccount {
+    return o && (o.$typeUrl === InterchainAccount.typeUrl || typeof o.accountOwner === "string");
+  },
+  isAmino(o: any): o is InterchainAccountAmino {
+    return o && (o.$typeUrl === InterchainAccount.typeUrl || typeof o.account_owner === "string");
+  },
   encode(message: InterchainAccount, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.baseAccount !== undefined) {
       BaseAccount.encode(message.baseAccount, writer.uint32(10).fork()).ldelim();
@@ -64,10 +78,9 @@ export const InterchainAccount = {
     if (isSet(object.accountOwner)) obj.accountOwner = String(object.accountOwner);
     return obj;
   },
-  toJSON(message: InterchainAccount): unknown {
+  toJSON(message: InterchainAccount): JsonSafe<InterchainAccount> {
     const obj: any = {};
-    message.baseAccount !== undefined &&
-      (obj.baseAccount = message.baseAccount ? BaseAccount.toJSON(message.baseAccount) : undefined);
+    message.baseAccount !== undefined && (obj.baseAccount = message.baseAccount ? BaseAccount.toJSON(message.baseAccount) : undefined);
     message.accountOwner !== undefined && (obj.accountOwner = message.accountOwner);
     return obj;
   },
@@ -92,7 +105,7 @@ export const InterchainAccount = {
   toAmino(message: InterchainAccount): InterchainAccountAmino {
     const obj: any = {};
     obj.base_account = message.baseAccount ? BaseAccount.toAmino(message.baseAccount) : undefined;
-    obj.account_owner = message.accountOwner;
+    obj.account_owner = message.accountOwner === "" ? undefined : message.accountOwner;
     return obj;
   },
   fromAminoMsg(object: InterchainAccountAminoMsg): InterchainAccount {
@@ -101,7 +114,7 @@ export const InterchainAccount = {
   toAminoMsg(message: InterchainAccount): InterchainAccountAminoMsg {
     return {
       type: "cosmos-sdk/InterchainAccount",
-      value: InterchainAccount.toAmino(message),
+      value: InterchainAccount.toAmino(message)
     };
   },
   fromProtoMsg(message: InterchainAccountProtoMsg): InterchainAccount {
@@ -113,7 +126,9 @@ export const InterchainAccount = {
   toProtoMsg(message: InterchainAccount): InterchainAccountProtoMsg {
     return {
       typeUrl: "/ibc.applications.interchain_accounts.v1.InterchainAccount",
-      value: InterchainAccount.encode(message).finish(),
+      value: InterchainAccount.encode(message).finish()
     };
-  },
+  }
 };
+GlobalDecoderRegistry.register(InterchainAccount.typeUrl, InterchainAccount);
+GlobalDecoderRegistry.registerAminoProtoMapping(InterchainAccount.aminoType, InterchainAccount.typeUrl);
