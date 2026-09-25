@@ -8,3 +8,5 @@ Use:
 
 `npm i @atomone/atomone-types`
 
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for how the types are generated and how releases work.
+
