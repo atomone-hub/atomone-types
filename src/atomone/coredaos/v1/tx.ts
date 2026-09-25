@@ -2,6 +2,7 @@
 import { Params, ParamsAmino } from "./coredaos";
 import { BinaryReader, BinaryWriter } from "../../../binary";
 import { isSet } from "../../../helpers";
+import { JsonSafe } from "../../../json-safe";
 import { TxRpc } from "../../../types";
 export const protobufPackage = "atomone.coredaos.v1";
 /** MsgAnnotateProposal defines a message for annotating a proposal. */
@@ -23,13 +24,24 @@ export interface MsgAnnotateProposalProtoMsg {
   typeUrl: "/atomone.coredaos.v1.MsgAnnotateProposal";
   value: Uint8Array;
 }
-/** MsgAnnotateProposal defines a message for annotating a proposal. */
+/**
+ * MsgAnnotateProposal defines a message for annotating a proposal.
+ * @name MsgAnnotateProposalAmino
+ * @package atomone.coredaos.v1
+ * @see proto type: atomone.coredaos.v1.MsgAnnotateProposal
+ */
 export interface MsgAnnotateProposalAmino {
-  /** annotator is the address of the dao annotating the proposal. */
+  /**
+   * annotator is the address of the dao annotating the proposal.
+   */
   annotator?: string;
-  /** proposal_id is the ID of the proposal to annotate. */
+  /**
+   * proposal_id is the ID of the proposal to annotate.
+   */
   proposal_id?: string;
-  /** annotation is the annotation to add to the proposal. */
+  /**
+   * annotation is the annotation to add to the proposal.
+   */
   annotation?: string;
   /**
    * overwrite is a boolean indicating whether to overwrite the existing annotation.
@@ -48,7 +60,12 @@ export interface MsgAnnotateProposalResponseProtoMsg {
   typeUrl: "/atomone.coredaos.v1.MsgAnnotateProposalResponse";
   value: Uint8Array;
 }
-/** MsgAnnotateProposalResponse defines the response for MsgAnnotateProposal. */
+/**
+ * MsgAnnotateProposalResponse defines the response for MsgAnnotateProposal.
+ * @name MsgAnnotateProposalResponseAmino
+ * @package atomone.coredaos.v1
+ * @see proto type: atomone.coredaos.v1.MsgAnnotateProposalResponse
+ */
 export interface MsgAnnotateProposalResponseAmino {}
 export interface MsgAnnotateProposalResponseAminoMsg {
   type: "/atomone.coredaos.v1.MsgAnnotateProposalResponse";
@@ -65,11 +82,20 @@ export interface MsgEndorseProposalProtoMsg {
   typeUrl: "/atomone.coredaos.v1.MsgEndorseProposal";
   value: Uint8Array;
 }
-/** MsgEndorseProposal defines a message for endorsing a proposal. */
+/**
+ * MsgEndorseProposal defines a message for endorsing a proposal.
+ * @name MsgEndorseProposalAmino
+ * @package atomone.coredaos.v1
+ * @see proto type: atomone.coredaos.v1.MsgEndorseProposal
+ */
 export interface MsgEndorseProposalAmino {
-  /** endorser is the address of the dao endorsing the proposal. */
+  /**
+   * endorser is the address of the dao endorsing the proposal.
+   */
   endorser?: string;
-  /** proposal_id is the ID of the proposal to endorse. */
+  /**
+   * proposal_id is the ID of the proposal to endorse.
+   */
   proposal_id?: string;
 }
 export interface MsgEndorseProposalAminoMsg {
@@ -82,7 +108,12 @@ export interface MsgEndorseProposalResponseProtoMsg {
   typeUrl: "/atomone.coredaos.v1.MsgEndorseProposalResponse";
   value: Uint8Array;
 }
-/** MsgEndorseProposalResponse defines the response for MsgEndorseProposal. */
+/**
+ * MsgEndorseProposalResponse defines the response for MsgEndorseProposal.
+ * @name MsgEndorseProposalResponseAmino
+ * @package atomone.coredaos.v1
+ * @see proto type: atomone.coredaos.v1.MsgEndorseProposalResponse
+ */
 export interface MsgEndorseProposalResponseAmino {}
 export interface MsgEndorseProposalResponseAminoMsg {
   type: "/atomone.coredaos.v1.MsgEndorseProposalResponse";
@@ -99,11 +130,20 @@ export interface MsgExtendVotingPeriodProtoMsg {
   typeUrl: "/atomone.coredaos.v1.MsgExtendVotingPeriod";
   value: Uint8Array;
 }
-/** MsgExtendVotingPeriod defines a message for extending the voting period of a proposal. */
+/**
+ * MsgExtendVotingPeriod defines a message for extending the voting period of a proposal.
+ * @name MsgExtendVotingPeriodAmino
+ * @package atomone.coredaos.v1
+ * @see proto type: atomone.coredaos.v1.MsgExtendVotingPeriod
+ */
 export interface MsgExtendVotingPeriodAmino {
-  /** extender is the address of the dao extending the voting period. */
+  /**
+   * extender is the address of the dao extending the voting period.
+   */
   extender?: string;
-  /** proposal_id is the ID of the proposal to extend. */
+  /**
+   * proposal_id is the ID of the proposal to extend.
+   */
   proposal_id?: string;
 }
 export interface MsgExtendVotingPeriodAminoMsg {
@@ -116,7 +156,12 @@ export interface MsgExtendVotingPeriodResponseProtoMsg {
   typeUrl: "/atomone.coredaos.v1.MsgExtendVotingPeriodResponse";
   value: Uint8Array;
 }
-/** MsgExtendVotingPeriodResponse defines the response for MsgExtendVotingPeriod. */
+/**
+ * MsgExtendVotingPeriodResponse defines the response for MsgExtendVotingPeriod.
+ * @name MsgExtendVotingPeriodResponseAmino
+ * @package atomone.coredaos.v1
+ * @see proto type: atomone.coredaos.v1.MsgExtendVotingPeriodResponse
+ */
 export interface MsgExtendVotingPeriodResponseAmino {}
 export interface MsgExtendVotingPeriodResponseAminoMsg {
   type: "/atomone.coredaos.v1.MsgExtendVotingPeriodResponse";
@@ -138,11 +183,20 @@ export interface MsgVetoProposalProtoMsg {
   typeUrl: "/atomone.coredaos.v1.MsgVetoProposal";
   value: Uint8Array;
 }
-/** MsgVetoProposal defines a message for vetoing a proposal. */
+/**
+ * MsgVetoProposal defines a message for vetoing a proposal.
+ * @name MsgVetoProposalAmino
+ * @package atomone.coredaos.v1
+ * @see proto type: atomone.coredaos.v1.MsgVetoProposal
+ */
 export interface MsgVetoProposalAmino {
-  /** vetoer is the address of the dao vetoing the proposal. */
+  /**
+   * vetoer is the address of the dao vetoing the proposal.
+   */
   vetoer?: string;
-  /** proposal_id is the ID of the proposal to veto. */
+  /**
+   * proposal_id is the ID of the proposal to veto.
+   */
   proposal_id?: string;
   /**
    * burn_deposit is a boolean indicating whether to burn the deposit of the proposal.
@@ -160,7 +214,12 @@ export interface MsgVetoProposalResponseProtoMsg {
   typeUrl: "/atomone.coredaos.v1.MsgVetoProposalResponse";
   value: Uint8Array;
 }
-/** MsgVetoProposalResponse defines the response for MsgVetoProposal. */
+/**
+ * MsgVetoProposalResponse defines the response for MsgVetoProposal.
+ * @name MsgVetoProposalResponseAmino
+ * @package atomone.coredaos.v1
+ * @see proto type: atomone.coredaos.v1.MsgVetoProposalResponse
+ */
 export interface MsgVetoProposalResponseAmino {}
 export interface MsgVetoProposalResponseAminoMsg {
   type: "/atomone.coredaos.v1.MsgVetoProposalResponse";
@@ -184,7 +243,12 @@ export interface MsgUpdateParamsProtoMsg {
   typeUrl: "/atomone.coredaos.v1.MsgUpdateParams";
   value: Uint8Array;
 }
-/** MsgUpdateParams is the Msg/UpdateParams request type. */
+/**
+ * MsgUpdateParams is the Msg/UpdateParams request type.
+ * @name MsgUpdateParamsAmino
+ * @package atomone.coredaos.v1
+ * @see proto type: atomone.coredaos.v1.MsgUpdateParams
+ */
 export interface MsgUpdateParamsAmino {
   /**
    * authority is the address that controls the module (defaults to x/gov unless
@@ -214,6 +278,9 @@ export interface MsgUpdateParamsResponseProtoMsg {
 /**
  * MsgUpdateParamsResponse defines the response structure for executing a
  * MsgUpdateParams message.
+ * @name MsgUpdateParamsResponseAmino
+ * @package atomone.coredaos.v1
+ * @see proto type: atomone.coredaos.v1.MsgUpdateParamsResponse
  */
 export interface MsgUpdateParamsResponseAmino {}
 export interface MsgUpdateParamsResponseAminoMsg {
@@ -279,7 +346,7 @@ export const MsgAnnotateProposal = {
     if (isSet(object.overwrite)) obj.overwrite = Boolean(object.overwrite);
     return obj;
   },
-  toJSON(message: MsgAnnotateProposal): unknown {
+  toJSON(message: MsgAnnotateProposal): JsonSafe<MsgAnnotateProposal> {
     const obj: any = {};
     message.annotator !== undefined && (obj.annotator = message.annotator);
     message.proposalId !== undefined && (obj.proposalId = (message.proposalId || BigInt(0)).toString());
@@ -315,10 +382,10 @@ export const MsgAnnotateProposal = {
   },
   toAmino(message: MsgAnnotateProposal): MsgAnnotateProposalAmino {
     const obj: any = {};
-    obj.annotator = message.annotator;
-    obj.proposal_id = message.proposalId ? message.proposalId.toString() : undefined;
-    obj.annotation = message.annotation;
-    obj.overwrite = message.overwrite;
+    obj.annotator = message.annotator === "" ? undefined : message.annotator;
+    obj.proposal_id = message.proposalId !== BigInt(0) ? message.proposalId?.toString() : undefined;
+    obj.annotation = message.annotation === "" ? undefined : message.annotation;
+    obj.overwrite = message.overwrite === false ? undefined : message.overwrite;
     return obj;
   },
   fromAminoMsg(object: MsgAnnotateProposalAminoMsg): MsgAnnotateProposal {
@@ -369,7 +436,7 @@ export const MsgAnnotateProposalResponse = {
     const obj = createBaseMsgAnnotateProposalResponse();
     return obj;
   },
-  toJSON(_: MsgAnnotateProposalResponse): unknown {
+  toJSON(_: MsgAnnotateProposalResponse): JsonSafe<MsgAnnotateProposalResponse> {
     const obj: any = {};
     return obj;
   },
@@ -444,7 +511,7 @@ export const MsgEndorseProposal = {
     if (isSet(object.proposalId)) obj.proposalId = BigInt(object.proposalId.toString());
     return obj;
   },
-  toJSON(message: MsgEndorseProposal): unknown {
+  toJSON(message: MsgEndorseProposal): JsonSafe<MsgEndorseProposal> {
     const obj: any = {};
     message.endorser !== undefined && (obj.endorser = message.endorser);
     message.proposalId !== undefined && (obj.proposalId = (message.proposalId || BigInt(0)).toString());
@@ -470,8 +537,8 @@ export const MsgEndorseProposal = {
   },
   toAmino(message: MsgEndorseProposal): MsgEndorseProposalAmino {
     const obj: any = {};
-    obj.endorser = message.endorser;
-    obj.proposal_id = message.proposalId ? message.proposalId.toString() : undefined;
+    obj.endorser = message.endorser === "" ? undefined : message.endorser;
+    obj.proposal_id = message.proposalId !== BigInt(0) ? message.proposalId?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: MsgEndorseProposalAminoMsg): MsgEndorseProposal {
@@ -522,7 +589,7 @@ export const MsgEndorseProposalResponse = {
     const obj = createBaseMsgEndorseProposalResponse();
     return obj;
   },
-  toJSON(_: MsgEndorseProposalResponse): unknown {
+  toJSON(_: MsgEndorseProposalResponse): JsonSafe<MsgEndorseProposalResponse> {
     const obj: any = {};
     return obj;
   },
@@ -597,7 +664,7 @@ export const MsgExtendVotingPeriod = {
     if (isSet(object.proposalId)) obj.proposalId = BigInt(object.proposalId.toString());
     return obj;
   },
-  toJSON(message: MsgExtendVotingPeriod): unknown {
+  toJSON(message: MsgExtendVotingPeriod): JsonSafe<MsgExtendVotingPeriod> {
     const obj: any = {};
     message.extender !== undefined && (obj.extender = message.extender);
     message.proposalId !== undefined && (obj.proposalId = (message.proposalId || BigInt(0)).toString());
@@ -623,8 +690,8 @@ export const MsgExtendVotingPeriod = {
   },
   toAmino(message: MsgExtendVotingPeriod): MsgExtendVotingPeriodAmino {
     const obj: any = {};
-    obj.extender = message.extender;
-    obj.proposal_id = message.proposalId ? message.proposalId.toString() : undefined;
+    obj.extender = message.extender === "" ? undefined : message.extender;
+    obj.proposal_id = message.proposalId !== BigInt(0) ? message.proposalId?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: MsgExtendVotingPeriodAminoMsg): MsgExtendVotingPeriod {
@@ -675,7 +742,7 @@ export const MsgExtendVotingPeriodResponse = {
     const obj = createBaseMsgExtendVotingPeriodResponse();
     return obj;
   },
-  toJSON(_: MsgExtendVotingPeriodResponse): unknown {
+  toJSON(_: MsgExtendVotingPeriodResponse): JsonSafe<MsgExtendVotingPeriodResponse> {
     const obj: any = {};
     return obj;
   },
@@ -758,7 +825,7 @@ export const MsgVetoProposal = {
     if (isSet(object.burnDeposit)) obj.burnDeposit = Boolean(object.burnDeposit);
     return obj;
   },
-  toJSON(message: MsgVetoProposal): unknown {
+  toJSON(message: MsgVetoProposal): JsonSafe<MsgVetoProposal> {
     const obj: any = {};
     message.vetoer !== undefined && (obj.vetoer = message.vetoer);
     message.proposalId !== undefined && (obj.proposalId = (message.proposalId || BigInt(0)).toString());
@@ -789,9 +856,9 @@ export const MsgVetoProposal = {
   },
   toAmino(message: MsgVetoProposal): MsgVetoProposalAmino {
     const obj: any = {};
-    obj.vetoer = message.vetoer;
-    obj.proposal_id = message.proposalId ? message.proposalId.toString() : undefined;
-    obj.burn_deposit = message.burnDeposit;
+    obj.vetoer = message.vetoer === "" ? undefined : message.vetoer;
+    obj.proposal_id = message.proposalId !== BigInt(0) ? message.proposalId?.toString() : undefined;
+    obj.burn_deposit = message.burnDeposit === false ? undefined : message.burnDeposit;
     return obj;
   },
   fromAminoMsg(object: MsgVetoProposalAminoMsg): MsgVetoProposal {
@@ -842,7 +909,7 @@ export const MsgVetoProposalResponse = {
     const obj = createBaseMsgVetoProposalResponse();
     return obj;
   },
-  toJSON(_: MsgVetoProposalResponse): unknown {
+  toJSON(_: MsgVetoProposalResponse): JsonSafe<MsgVetoProposalResponse> {
     const obj: any = {};
     return obj;
   },
@@ -917,7 +984,7 @@ export const MsgUpdateParams = {
     if (isSet(object.params)) obj.params = Params.fromJSON(object.params);
     return obj;
   },
-  toJSON(message: MsgUpdateParams): unknown {
+  toJSON(message: MsgUpdateParams): JsonSafe<MsgUpdateParams> {
     const obj: any = {};
     message.authority !== undefined && (obj.authority = message.authority);
     message.params !== undefined && (obj.params = message.params ? Params.toJSON(message.params) : undefined);
@@ -943,8 +1010,8 @@ export const MsgUpdateParams = {
   },
   toAmino(message: MsgUpdateParams): MsgUpdateParamsAmino {
     const obj: any = {};
-    obj.authority = message.authority;
-    obj.params = message.params ? Params.toAmino(message.params) : Params.fromPartial({});
+    obj.authority = message.authority === "" ? undefined : message.authority;
+    obj.params = message.params ? Params.toAmino(message.params) : Params.toAmino(Params.fromPartial({}));
     return obj;
   },
   fromAminoMsg(object: MsgUpdateParamsAminoMsg): MsgUpdateParams {
@@ -989,7 +1056,7 @@ export const MsgUpdateParamsResponse = {
     const obj = createBaseMsgUpdateParamsResponse();
     return obj;
   },
-  toJSON(_: MsgUpdateParamsResponse): unknown {
+  toJSON(_: MsgUpdateParamsResponse): JsonSafe<MsgUpdateParamsResponse> {
     const obj: any = {};
     return obj;
   },

@@ -1,5 +1,6 @@
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "../../../../binary";
+import { JsonSafe } from "../../../../json-safe";
 import { isSet, bytesFromBase64, base64FromBytes } from "../../../../helpers";
 export const protobufPackage = "ibc.lightclients.wasm.v1";
 /** GenesisState defines 08-wasm's keeper genesis state */
@@ -11,9 +12,16 @@ export interface GenesisStateProtoMsg {
   typeUrl: "/ibc.lightclients.wasm.v1.GenesisState";
   value: Uint8Array;
 }
-/** GenesisState defines 08-wasm's keeper genesis state */
+/**
+ * GenesisState defines 08-wasm's keeper genesis state
+ * @name GenesisStateAmino
+ * @package ibc.lightclients.wasm.v1
+ * @see proto type: ibc.lightclients.wasm.v1.GenesisState
+ */
 export interface GenesisStateAmino {
-  /** uploaded light client wasm contracts */
+  /**
+   * uploaded light client wasm contracts
+   */
   contracts?: ContractAmino[];
 }
 export interface GenesisStateAminoMsg {
@@ -29,9 +37,16 @@ export interface ContractProtoMsg {
   typeUrl: "/ibc.lightclients.wasm.v1.Contract";
   value: Uint8Array;
 }
-/** Contract stores contract code */
+/**
+ * Contract stores contract code
+ * @name ContractAmino
+ * @package ibc.lightclients.wasm.v1
+ * @see proto type: ibc.lightclients.wasm.v1.Contract
+ */
 export interface ContractAmino {
-  /** contract byte code */
+  /**
+   * contract byte code
+   */
   code_bytes?: string;
 }
 export interface ContractAminoMsg {
@@ -74,7 +89,7 @@ export const GenesisState = {
       obj.contracts = object.contracts.map((e: any) => Contract.fromJSON(e));
     return obj;
   },
-  toJSON(message: GenesisState): unknown {
+  toJSON(message: GenesisState): JsonSafe<GenesisState> {
     const obj: any = {};
     if (message.contracts) {
       obj.contracts = message.contracts.map((e) => (e ? Contract.toJSON(e) : undefined));
@@ -98,7 +113,7 @@ export const GenesisState = {
     if (message.contracts) {
       obj.contracts = message.contracts.map((e) => (e ? Contract.toAmino(e) : undefined));
     } else {
-      obj.contracts = [];
+      obj.contracts = message.contracts;
     }
     return obj;
   },
@@ -159,7 +174,7 @@ export const Contract = {
     if (isSet(object.codeBytes)) obj.codeBytes = bytesFromBase64(object.codeBytes);
     return obj;
   },
-  toJSON(message: Contract): unknown {
+  toJSON(message: Contract): JsonSafe<Contract> {
     const obj: any = {};
     message.codeBytes !== undefined &&
       (obj.codeBytes = base64FromBytes(

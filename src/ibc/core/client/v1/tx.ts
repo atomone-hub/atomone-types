@@ -4,6 +4,7 @@ import { Plan, PlanAmino } from "../../../../cosmos/upgrade/v1beta1/upgrade";
 import { Params, ParamsAmino } from "./client";
 import { BinaryReader, BinaryWriter } from "../../../../binary";
 import { isSet, bytesFromBase64, base64FromBytes } from "../../../../helpers";
+import { JsonSafe } from "../../../../json-safe";
 import { TxRpc } from "../../../../types";
 export const protobufPackage = "ibc.core.client.v1";
 /** MsgCreateClient defines a message to create an IBC client */
@@ -22,16 +23,25 @@ export interface MsgCreateClientProtoMsg {
   typeUrl: "/ibc.core.client.v1.MsgCreateClient";
   value: Uint8Array;
 }
-/** MsgCreateClient defines a message to create an IBC client */
+/**
+ * MsgCreateClient defines a message to create an IBC client
+ * @name MsgCreateClientAmino
+ * @package ibc.core.client.v1
+ * @see proto type: ibc.core.client.v1.MsgCreateClient
+ */
 export interface MsgCreateClientAmino {
-  /** light client state */
+  /**
+   * light client state
+   */
   client_state?: AnyAmino | undefined;
   /**
    * consensus state associated with the client that corresponds to a given
    * height.
    */
   consensus_state?: AnyAmino | undefined;
-  /** signer address */
+  /**
+   * signer address
+   */
   signer?: string;
 }
 export interface MsgCreateClientAminoMsg {
@@ -46,7 +56,12 @@ export interface MsgCreateClientResponseProtoMsg {
   typeUrl: "/ibc.core.client.v1.MsgCreateClientResponse";
   value: Uint8Array;
 }
-/** MsgCreateClientResponse defines the Msg/CreateClient response type. */
+/**
+ * MsgCreateClientResponse defines the Msg/CreateClient response type.
+ * @name MsgCreateClientResponseAmino
+ * @package ibc.core.client.v1
+ * @see proto type: ibc.core.client.v1.MsgCreateClientResponse
+ */
 export interface MsgCreateClientResponseAmino {
   client_id?: string;
 }
@@ -73,13 +88,22 @@ export interface MsgUpdateClientProtoMsg {
 /**
  * MsgUpdateClient defines an sdk.Msg to update a IBC client state using
  * the given client message.
+ * @name MsgUpdateClientAmino
+ * @package ibc.core.client.v1
+ * @see proto type: ibc.core.client.v1.MsgUpdateClient
  */
 export interface MsgUpdateClientAmino {
-  /** client unique identifier */
+  /**
+   * client unique identifier
+   */
   client_id?: string;
-  /** client message to update the light client */
+  /**
+   * client message to update the light client
+   */
   client_message?: AnyAmino | undefined;
-  /** signer address */
+  /**
+   * signer address
+   */
   signer?: string;
 }
 export interface MsgUpdateClientAminoMsg {
@@ -92,7 +116,12 @@ export interface MsgUpdateClientResponseProtoMsg {
   typeUrl: "/ibc.core.client.v1.MsgUpdateClientResponse";
   value: Uint8Array;
 }
-/** MsgUpdateClientResponse defines the Msg/UpdateClient response type. */
+/**
+ * MsgUpdateClientResponse defines the Msg/UpdateClient response type.
+ * @name MsgUpdateClientResponseAmino
+ * @package ibc.core.client.v1
+ * @see proto type: ibc.core.client.v1.MsgUpdateClientResponse
+ */
 export interface MsgUpdateClientResponseAmino {}
 export interface MsgUpdateClientResponseAminoMsg {
   type: "cosmos-sdk/MsgUpdateClientResponse";
@@ -126,22 +155,35 @@ export interface MsgUpgradeClientProtoMsg {
 /**
  * MsgUpgradeClient defines an sdk.Msg to upgrade an IBC client to a new client
  * state
+ * @name MsgUpgradeClientAmino
+ * @package ibc.core.client.v1
+ * @see proto type: ibc.core.client.v1.MsgUpgradeClient
  */
 export interface MsgUpgradeClientAmino {
-  /** client unique identifier */
+  /**
+   * client unique identifier
+   */
   client_id?: string;
-  /** upgraded client state */
+  /**
+   * upgraded client state
+   */
   client_state?: AnyAmino | undefined;
   /**
    * upgraded consensus state, only contains enough information to serve as a
    * basis of trust in update logic
    */
   consensus_state?: AnyAmino | undefined;
-  /** proof that old chain committed to new client */
+  /**
+   * proof that old chain committed to new client
+   */
   proof_upgrade_client?: string;
-  /** proof that old chain committed to new consensus state */
+  /**
+   * proof that old chain committed to new consensus state
+   */
   proof_upgrade_consensus_state?: string;
-  /** signer address */
+  /**
+   * signer address
+   */
   signer?: string;
 }
 export interface MsgUpgradeClientAminoMsg {
@@ -154,7 +196,12 @@ export interface MsgUpgradeClientResponseProtoMsg {
   typeUrl: "/ibc.core.client.v1.MsgUpgradeClientResponse";
   value: Uint8Array;
 }
-/** MsgUpgradeClientResponse defines the Msg/UpgradeClient response type. */
+/**
+ * MsgUpgradeClientResponse defines the Msg/UpgradeClient response type.
+ * @name MsgUpgradeClientResponseAmino
+ * @package ibc.core.client.v1
+ * @see proto type: ibc.core.client.v1.MsgUpgradeClientResponse
+ */
 export interface MsgUpgradeClientResponseAmino {}
 export interface MsgUpgradeClientResponseAminoMsg {
   type: "cosmos-sdk/MsgUpgradeClientResponse";
@@ -182,14 +229,23 @@ export interface MsgSubmitMisbehaviourProtoMsg {
  * MsgSubmitMisbehaviour defines an sdk.Msg type that submits Evidence for
  * light client misbehaviour.
  * This message has been deprecated. Use MsgUpdateClient instead.
+ * @name MsgSubmitMisbehaviourAmino
+ * @package ibc.core.client.v1
+ * @see proto type: ibc.core.client.v1.MsgSubmitMisbehaviour
+ * @deprecated
  */
-/** @deprecated */
 export interface MsgSubmitMisbehaviourAmino {
-  /** client unique identifier */
+  /**
+   * client unique identifier
+   */
   client_id?: string;
-  /** misbehaviour used for freezing the light client */
+  /**
+   * misbehaviour used for freezing the light client
+   */
   misbehaviour?: AnyAmino | undefined;
-  /** signer address */
+  /**
+   * signer address
+   */
   signer?: string;
 }
 export interface MsgSubmitMisbehaviourAminoMsg {
@@ -208,6 +264,9 @@ export interface MsgSubmitMisbehaviourResponseProtoMsg {
 /**
  * MsgSubmitMisbehaviourResponse defines the Msg/SubmitMisbehaviour response
  * type.
+ * @name MsgSubmitMisbehaviourResponseAmino
+ * @package ibc.core.client.v1
+ * @see proto type: ibc.core.client.v1.MsgSubmitMisbehaviourResponse
  */
 export interface MsgSubmitMisbehaviourResponseAmino {}
 export interface MsgSubmitMisbehaviourResponseAminoMsg {
@@ -230,16 +289,25 @@ export interface MsgRecoverClientProtoMsg {
   typeUrl: "/ibc.core.client.v1.MsgRecoverClient";
   value: Uint8Array;
 }
-/** MsgRecoverClient defines the message used to recover a frozen or expired client. */
+/**
+ * MsgRecoverClient defines the message used to recover a frozen or expired client.
+ * @name MsgRecoverClientAmino
+ * @package ibc.core.client.v1
+ * @see proto type: ibc.core.client.v1.MsgRecoverClient
+ */
 export interface MsgRecoverClientAmino {
-  /** the client identifier for the client to be updated if the proposal passes */
+  /**
+   * the client identifier for the client to be updated if the proposal passes
+   */
   subject_client_id?: string;
   /**
    * the substitute client identifier for the client which will replace the subject
    * client
    */
   substitute_client_id?: string;
-  /** signer address */
+  /**
+   * signer address
+   */
   signer?: string;
 }
 export interface MsgRecoverClientAminoMsg {
@@ -252,7 +320,12 @@ export interface MsgRecoverClientResponseProtoMsg {
   typeUrl: "/ibc.core.client.v1.MsgRecoverClientResponse";
   value: Uint8Array;
 }
-/** MsgRecoverClientResponse defines the Msg/RecoverClient response type. */
+/**
+ * MsgRecoverClientResponse defines the Msg/RecoverClient response type.
+ * @name MsgRecoverClientResponseAmino
+ * @package ibc.core.client.v1
+ * @see proto type: ibc.core.client.v1.MsgRecoverClientResponse
+ */
 export interface MsgRecoverClientResponseAmino {}
 export interface MsgRecoverClientResponseAminoMsg {
   type: "cosmos-sdk/MsgRecoverClientResponse";
@@ -279,7 +352,12 @@ export interface MsgIBCSoftwareUpgradeProtoMsg {
   typeUrl: "/ibc.core.client.v1.MsgIBCSoftwareUpgrade";
   value: Uint8Array;
 }
-/** MsgIBCSoftwareUpgrade defines the message used to schedule an upgrade of an IBC client using a v1 governance proposal */
+/**
+ * MsgIBCSoftwareUpgrade defines the message used to schedule an upgrade of an IBC client using a v1 governance proposal
+ * @name MsgIBCSoftwareUpgradeAmino
+ * @package ibc.core.client.v1
+ * @see proto type: ibc.core.client.v1.MsgIBCSoftwareUpgrade
+ */
 export interface MsgIBCSoftwareUpgradeAmino {
   plan?: PlanAmino | undefined;
   /**
@@ -293,7 +371,9 @@ export interface MsgIBCSoftwareUpgradeAmino {
    * the 02-client module.
    */
   upgraded_client_state?: AnyAmino | undefined;
-  /** signer address */
+  /**
+   * signer address
+   */
   signer?: string;
 }
 export interface MsgIBCSoftwareUpgradeAminoMsg {
@@ -306,7 +386,12 @@ export interface MsgIBCSoftwareUpgradeResponseProtoMsg {
   typeUrl: "/ibc.core.client.v1.MsgIBCSoftwareUpgradeResponse";
   value: Uint8Array;
 }
-/** MsgIBCSoftwareUpgradeResponse defines the Msg/IBCSoftwareUpgrade response type. */
+/**
+ * MsgIBCSoftwareUpgradeResponse defines the Msg/IBCSoftwareUpgrade response type.
+ * @name MsgIBCSoftwareUpgradeResponseAmino
+ * @package ibc.core.client.v1
+ * @see proto type: ibc.core.client.v1.MsgIBCSoftwareUpgradeResponse
+ */
 export interface MsgIBCSoftwareUpgradeResponseAmino {}
 export interface MsgIBCSoftwareUpgradeResponseAminoMsg {
   type: "cosmos-sdk/MsgIBCSoftwareUpgradeResponse";
@@ -327,9 +412,16 @@ export interface MsgUpdateParamsProtoMsg {
   typeUrl: "/ibc.core.client.v1.MsgUpdateParams";
   value: Uint8Array;
 }
-/** MsgUpdateParams defines the sdk.Msg type to update the client parameters. */
+/**
+ * MsgUpdateParams defines the sdk.Msg type to update the client parameters.
+ * @name MsgUpdateParamsAmino
+ * @package ibc.core.client.v1
+ * @see proto type: ibc.core.client.v1.MsgUpdateParams
+ */
 export interface MsgUpdateParamsAmino {
-  /** signer address */
+  /**
+   * signer address
+   */
   signer?: string;
   /**
    * params defines the client parameters to update.
@@ -348,7 +440,12 @@ export interface MsgUpdateParamsResponseProtoMsg {
   typeUrl: "/ibc.core.client.v1.MsgUpdateParamsResponse";
   value: Uint8Array;
 }
-/** MsgUpdateParamsResponse defines the MsgUpdateParams response type. */
+/**
+ * MsgUpdateParamsResponse defines the MsgUpdateParams response type.
+ * @name MsgUpdateParamsResponseAmino
+ * @package ibc.core.client.v1
+ * @see proto type: ibc.core.client.v1.MsgUpdateParamsResponse
+ */
 export interface MsgUpdateParamsResponseAmino {}
 export interface MsgUpdateParamsResponseAminoMsg {
   type: "cosmos-sdk/MsgUpdateParamsResponse";
@@ -365,11 +462,20 @@ export interface MsgDeleteClientCreatorProtoMsg {
   typeUrl: "/ibc.core.client.v1.MsgDeleteClientCreator";
   value: Uint8Array;
 }
-/** MsgDeleteClientCreator defines a message to delete the client creator of a client */
+/**
+ * MsgDeleteClientCreator defines a message to delete the client creator of a client
+ * @name MsgDeleteClientCreatorAmino
+ * @package ibc.core.client.v1
+ * @see proto type: ibc.core.client.v1.MsgDeleteClientCreator
+ */
 export interface MsgDeleteClientCreatorAmino {
-  /** client identifier */
+  /**
+   * client identifier
+   */
   client_id?: string;
-  /** signer address */
+  /**
+   * signer address
+   */
   signer?: string;
 }
 export interface MsgDeleteClientCreatorAminoMsg {
@@ -382,7 +488,12 @@ export interface MsgDeleteClientCreatorResponseProtoMsg {
   typeUrl: "/ibc.core.client.v1.MsgDeleteClientCreatorResponse";
   value: Uint8Array;
 }
-/** MsgDeleteClientCreatorResponse defines the Msg/DeleteClientCreator response type. */
+/**
+ * MsgDeleteClientCreatorResponse defines the Msg/DeleteClientCreator response type.
+ * @name MsgDeleteClientCreatorResponseAmino
+ * @package ibc.core.client.v1
+ * @see proto type: ibc.core.client.v1.MsgDeleteClientCreatorResponse
+ */
 export interface MsgDeleteClientCreatorResponseAmino {}
 export interface MsgDeleteClientCreatorResponseAminoMsg {
   type: "cosmos-sdk/MsgDeleteClientCreatorResponse";
@@ -439,7 +550,7 @@ export const MsgCreateClient = {
     if (isSet(object.signer)) obj.signer = String(object.signer);
     return obj;
   },
-  toJSON(message: MsgCreateClient): unknown {
+  toJSON(message: MsgCreateClient): JsonSafe<MsgCreateClient> {
     const obj: any = {};
     message.clientState !== undefined &&
       (obj.clientState = message.clientState ? Any.toJSON(message.clientState) : undefined);
@@ -476,7 +587,7 @@ export const MsgCreateClient = {
     const obj: any = {};
     obj.client_state = message.clientState ? Any.toAmino(message.clientState) : undefined;
     obj.consensus_state = message.consensusState ? Any.toAmino(message.consensusState) : undefined;
-    obj.signer = message.signer;
+    obj.signer = message.signer === "" ? undefined : message.signer;
     return obj;
   },
   fromAminoMsg(object: MsgCreateClientAminoMsg): MsgCreateClient {
@@ -536,7 +647,7 @@ export const MsgCreateClientResponse = {
     if (isSet(object.clientId)) obj.clientId = String(object.clientId);
     return obj;
   },
-  toJSON(message: MsgCreateClientResponse): unknown {
+  toJSON(message: MsgCreateClientResponse): JsonSafe<MsgCreateClientResponse> {
     const obj: any = {};
     message.clientId !== undefined && (obj.clientId = message.clientId);
     return obj;
@@ -555,7 +666,7 @@ export const MsgCreateClientResponse = {
   },
   toAmino(message: MsgCreateClientResponse): MsgCreateClientResponseAmino {
     const obj: any = {};
-    obj.client_id = message.clientId;
+    obj.client_id = message.clientId === "" ? undefined : message.clientId;
     return obj;
   },
   fromAminoMsg(object: MsgCreateClientResponseAminoMsg): MsgCreateClientResponse {
@@ -631,7 +742,7 @@ export const MsgUpdateClient = {
     if (isSet(object.signer)) obj.signer = String(object.signer);
     return obj;
   },
-  toJSON(message: MsgUpdateClient): unknown {
+  toJSON(message: MsgUpdateClient): JsonSafe<MsgUpdateClient> {
     const obj: any = {};
     message.clientId !== undefined && (obj.clientId = message.clientId);
     message.clientMessage !== undefined &&
@@ -663,9 +774,9 @@ export const MsgUpdateClient = {
   },
   toAmino(message: MsgUpdateClient): MsgUpdateClientAmino {
     const obj: any = {};
-    obj.client_id = message.clientId;
+    obj.client_id = message.clientId === "" ? undefined : message.clientId;
     obj.client_message = message.clientMessage ? Any.toAmino(message.clientMessage) : undefined;
-    obj.signer = message.signer;
+    obj.signer = message.signer === "" ? undefined : message.signer;
     return obj;
   },
   fromAminoMsg(object: MsgUpdateClientAminoMsg): MsgUpdateClient {
@@ -716,7 +827,7 @@ export const MsgUpdateClientResponse = {
     const obj = createBaseMsgUpdateClientResponse();
     return obj;
   },
-  toJSON(_: MsgUpdateClientResponse): unknown {
+  toJSON(_: MsgUpdateClientResponse): JsonSafe<MsgUpdateClientResponse> {
     const obj: any = {};
     return obj;
   },
@@ -830,7 +941,7 @@ export const MsgUpgradeClient = {
     if (isSet(object.signer)) obj.signer = String(object.signer);
     return obj;
   },
-  toJSON(message: MsgUpgradeClient): unknown {
+  toJSON(message: MsgUpgradeClient): JsonSafe<MsgUpgradeClient> {
     const obj: any = {};
     message.clientId !== undefined && (obj.clientId = message.clientId);
     message.clientState !== undefined &&
@@ -888,7 +999,7 @@ export const MsgUpgradeClient = {
   },
   toAmino(message: MsgUpgradeClient): MsgUpgradeClientAmino {
     const obj: any = {};
-    obj.client_id = message.clientId;
+    obj.client_id = message.clientId === "" ? undefined : message.clientId;
     obj.client_state = message.clientState ? Any.toAmino(message.clientState) : undefined;
     obj.consensus_state = message.consensusState ? Any.toAmino(message.consensusState) : undefined;
     obj.proof_upgrade_client = message.proofUpgradeClient
@@ -897,7 +1008,7 @@ export const MsgUpgradeClient = {
     obj.proof_upgrade_consensus_state = message.proofUpgradeConsensusState
       ? base64FromBytes(message.proofUpgradeConsensusState)
       : undefined;
-    obj.signer = message.signer;
+    obj.signer = message.signer === "" ? undefined : message.signer;
     return obj;
   },
   fromAminoMsg(object: MsgUpgradeClientAminoMsg): MsgUpgradeClient {
@@ -948,7 +1059,7 @@ export const MsgUpgradeClientResponse = {
     const obj = createBaseMsgUpgradeClientResponse();
     return obj;
   },
-  toJSON(_: MsgUpgradeClientResponse): unknown {
+  toJSON(_: MsgUpgradeClientResponse): JsonSafe<MsgUpgradeClientResponse> {
     const obj: any = {};
     return obj;
   },
@@ -1037,7 +1148,7 @@ export const MsgSubmitMisbehaviour = {
     if (isSet(object.signer)) obj.signer = String(object.signer);
     return obj;
   },
-  toJSON(message: MsgSubmitMisbehaviour): unknown {
+  toJSON(message: MsgSubmitMisbehaviour): JsonSafe<MsgSubmitMisbehaviour> {
     const obj: any = {};
     message.clientId !== undefined && (obj.clientId = message.clientId);
     message.misbehaviour !== undefined &&
@@ -1069,9 +1180,9 @@ export const MsgSubmitMisbehaviour = {
   },
   toAmino(message: MsgSubmitMisbehaviour): MsgSubmitMisbehaviourAmino {
     const obj: any = {};
-    obj.client_id = message.clientId;
+    obj.client_id = message.clientId === "" ? undefined : message.clientId;
     obj.misbehaviour = message.misbehaviour ? Any.toAmino(message.misbehaviour) : undefined;
-    obj.signer = message.signer;
+    obj.signer = message.signer === "" ? undefined : message.signer;
     return obj;
   },
   fromAminoMsg(object: MsgSubmitMisbehaviourAminoMsg): MsgSubmitMisbehaviour {
@@ -1122,7 +1233,7 @@ export const MsgSubmitMisbehaviourResponse = {
     const obj = createBaseMsgSubmitMisbehaviourResponse();
     return obj;
   },
-  toJSON(_: MsgSubmitMisbehaviourResponse): unknown {
+  toJSON(_: MsgSubmitMisbehaviourResponse): JsonSafe<MsgSubmitMisbehaviourResponse> {
     const obj: any = {};
     return obj;
   },
@@ -1211,7 +1322,7 @@ export const MsgRecoverClient = {
     if (isSet(object.signer)) obj.signer = String(object.signer);
     return obj;
   },
-  toJSON(message: MsgRecoverClient): unknown {
+  toJSON(message: MsgRecoverClient): JsonSafe<MsgRecoverClient> {
     const obj: any = {};
     message.subjectClientId !== undefined && (obj.subjectClientId = message.subjectClientId);
     message.substituteClientId !== undefined && (obj.substituteClientId = message.substituteClientId);
@@ -1240,9 +1351,9 @@ export const MsgRecoverClient = {
   },
   toAmino(message: MsgRecoverClient): MsgRecoverClientAmino {
     const obj: any = {};
-    obj.subject_client_id = message.subjectClientId;
-    obj.substitute_client_id = message.substituteClientId;
-    obj.signer = message.signer;
+    obj.subject_client_id = message.subjectClientId === "" ? undefined : message.subjectClientId;
+    obj.substitute_client_id = message.substituteClientId === "" ? undefined : message.substituteClientId;
+    obj.signer = message.signer === "" ? undefined : message.signer;
     return obj;
   },
   fromAminoMsg(object: MsgRecoverClientAminoMsg): MsgRecoverClient {
@@ -1293,7 +1404,7 @@ export const MsgRecoverClientResponse = {
     const obj = createBaseMsgRecoverClientResponse();
     return obj;
   },
-  toJSON(_: MsgRecoverClientResponse): unknown {
+  toJSON(_: MsgRecoverClientResponse): JsonSafe<MsgRecoverClientResponse> {
     const obj: any = {};
     return obj;
   },
@@ -1382,7 +1493,7 @@ export const MsgIBCSoftwareUpgrade = {
     if (isSet(object.signer)) obj.signer = String(object.signer);
     return obj;
   },
-  toJSON(message: MsgIBCSoftwareUpgrade): unknown {
+  toJSON(message: MsgIBCSoftwareUpgrade): JsonSafe<MsgIBCSoftwareUpgrade> {
     const obj: any = {};
     message.plan !== undefined && (obj.plan = message.plan ? Plan.toJSON(message.plan) : undefined);
     message.upgradedClientState !== undefined &&
@@ -1422,7 +1533,7 @@ export const MsgIBCSoftwareUpgrade = {
     obj.upgraded_client_state = message.upgradedClientState
       ? Any.toAmino(message.upgradedClientState)
       : undefined;
-    obj.signer = message.signer;
+    obj.signer = message.signer === "" ? undefined : message.signer;
     return obj;
   },
   fromAminoMsg(object: MsgIBCSoftwareUpgradeAminoMsg): MsgIBCSoftwareUpgrade {
@@ -1473,7 +1584,7 @@ export const MsgIBCSoftwareUpgradeResponse = {
     const obj = createBaseMsgIBCSoftwareUpgradeResponse();
     return obj;
   },
-  toJSON(_: MsgIBCSoftwareUpgradeResponse): unknown {
+  toJSON(_: MsgIBCSoftwareUpgradeResponse): JsonSafe<MsgIBCSoftwareUpgradeResponse> {
     const obj: any = {};
     return obj;
   },
@@ -1554,7 +1665,7 @@ export const MsgUpdateParams = {
     if (isSet(object.params)) obj.params = Params.fromJSON(object.params);
     return obj;
   },
-  toJSON(message: MsgUpdateParams): unknown {
+  toJSON(message: MsgUpdateParams): JsonSafe<MsgUpdateParams> {
     const obj: any = {};
     message.signer !== undefined && (obj.signer = message.signer);
     message.params !== undefined && (obj.params = message.params ? Params.toJSON(message.params) : undefined);
@@ -1580,7 +1691,7 @@ export const MsgUpdateParams = {
   },
   toAmino(message: MsgUpdateParams): MsgUpdateParamsAmino {
     const obj: any = {};
-    obj.signer = message.signer;
+    obj.signer = message.signer === "" ? undefined : message.signer;
     obj.params = message.params ? Params.toAmino(message.params) : undefined;
     return obj;
   },
@@ -1632,7 +1743,7 @@ export const MsgUpdateParamsResponse = {
     const obj = createBaseMsgUpdateParamsResponse();
     return obj;
   },
-  toJSON(_: MsgUpdateParamsResponse): unknown {
+  toJSON(_: MsgUpdateParamsResponse): JsonSafe<MsgUpdateParamsResponse> {
     const obj: any = {};
     return obj;
   },
@@ -1713,7 +1824,7 @@ export const MsgDeleteClientCreator = {
     if (isSet(object.signer)) obj.signer = String(object.signer);
     return obj;
   },
-  toJSON(message: MsgDeleteClientCreator): unknown {
+  toJSON(message: MsgDeleteClientCreator): JsonSafe<MsgDeleteClientCreator> {
     const obj: any = {};
     message.clientId !== undefined && (obj.clientId = message.clientId);
     message.signer !== undefined && (obj.signer = message.signer);
@@ -1737,8 +1848,8 @@ export const MsgDeleteClientCreator = {
   },
   toAmino(message: MsgDeleteClientCreator): MsgDeleteClientCreatorAmino {
     const obj: any = {};
-    obj.client_id = message.clientId;
-    obj.signer = message.signer;
+    obj.client_id = message.clientId === "" ? undefined : message.clientId;
+    obj.signer = message.signer === "" ? undefined : message.signer;
     return obj;
   },
   fromAminoMsg(object: MsgDeleteClientCreatorAminoMsg): MsgDeleteClientCreator {
@@ -1789,7 +1900,7 @@ export const MsgDeleteClientCreatorResponse = {
     const obj = createBaseMsgDeleteClientCreatorResponse();
     return obj;
   },
-  toJSON(_: MsgDeleteClientCreatorResponse): unknown {
+  toJSON(_: MsgDeleteClientCreatorResponse): JsonSafe<MsgDeleteClientCreatorResponse> {
     const obj: any = {};
     return obj;
   },

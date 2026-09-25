@@ -1,6 +1,7 @@
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "../../../../binary";
 import { isSet } from "../../../../helpers";
+import { JsonSafe } from "../../../../json-safe";
 export const protobufPackage = "ibc.applications.transfer.v1";
 /** Token defines a struct which represents a token to be transferred. */
 export interface Token {
@@ -13,11 +14,20 @@ export interface TokenProtoMsg {
   typeUrl: "/ibc.applications.transfer.v1.Token";
   value: Uint8Array;
 }
-/** Token defines a struct which represents a token to be transferred. */
+/**
+ * Token defines a struct which represents a token to be transferred.
+ * @name TokenAmino
+ * @package ibc.applications.transfer.v1
+ * @see proto type: ibc.applications.transfer.v1.Token
+ */
 export interface TokenAmino {
-  /** the token denomination */
+  /**
+   * the token denomination
+   */
   denom?: DenomAmino | undefined;
-  /** the token amount to be transferred */
+  /**
+   * the token amount to be transferred
+   */
   amount?: string;
 }
 export interface TokenAminoMsg {
@@ -35,11 +45,20 @@ export interface DenomProtoMsg {
   typeUrl: "/ibc.applications.transfer.v1.Denom";
   value: Uint8Array;
 }
-/** Denom holds the base denom of a Token and a trace of the chains it was sent through. */
+/**
+ * Denom holds the base denom of a Token and a trace of the chains it was sent through.
+ * @name DenomAmino
+ * @package ibc.applications.transfer.v1
+ * @see proto type: ibc.applications.transfer.v1.Denom
+ */
 export interface DenomAmino {
-  /** the base token denomination */
+  /**
+   * the base token denomination
+   */
   base?: string;
-  /** the trace of the token */
+  /**
+   * the trace of the token
+   */
   trace?: HopAmino[];
 }
 export interface DenomAminoMsg {
@@ -55,7 +74,12 @@ export interface HopProtoMsg {
   typeUrl: "/ibc.applications.transfer.v1.Hop";
   value: Uint8Array;
 }
-/** Hop defines a port ID, channel ID pair specifying a unique "hop" in a trace */
+/**
+ * Hop defines a port ID, channel ID pair specifying a unique "hop" in a trace
+ * @name HopAmino
+ * @package ibc.applications.transfer.v1
+ * @see proto type: ibc.applications.transfer.v1.Hop
+ */
 export interface HopAmino {
   port_id?: string;
   channel_id?: string;
@@ -107,7 +131,7 @@ export const Token = {
     if (isSet(object.amount)) obj.amount = String(object.amount);
     return obj;
   },
-  toJSON(message: Token): unknown {
+  toJSON(message: Token): JsonSafe<Token> {
     const obj: any = {};
     message.denom !== undefined && (obj.denom = message.denom ? Denom.toJSON(message.denom) : undefined);
     message.amount !== undefined && (obj.amount = message.amount);
@@ -134,7 +158,7 @@ export const Token = {
   toAmino(message: Token): TokenAmino {
     const obj: any = {};
     obj.denom = message.denom ? Denom.toAmino(message.denom) : undefined;
-    obj.amount = message.amount;
+    obj.amount = message.amount === "" ? undefined : message.amount;
     return obj;
   },
   fromAminoMsg(object: TokenAminoMsg): Token {
@@ -202,7 +226,7 @@ export const Denom = {
     if (Array.isArray(object?.trace)) obj.trace = object.trace.map((e: any) => Hop.fromJSON(e));
     return obj;
   },
-  toJSON(message: Denom): unknown {
+  toJSON(message: Denom): JsonSafe<Denom> {
     const obj: any = {};
     message.base !== undefined && (obj.base = message.base);
     if (message.trace) {
@@ -228,11 +252,11 @@ export const Denom = {
   },
   toAmino(message: Denom): DenomAmino {
     const obj: any = {};
-    obj.base = message.base;
+    obj.base = message.base === "" ? undefined : message.base;
     if (message.trace) {
       obj.trace = message.trace.map((e) => (e ? Hop.toAmino(e) : undefined));
     } else {
-      obj.trace = [];
+      obj.trace = message.trace;
     }
     return obj;
   },
@@ -301,7 +325,7 @@ export const Hop = {
     if (isSet(object.channelId)) obj.channelId = String(object.channelId);
     return obj;
   },
-  toJSON(message: Hop): unknown {
+  toJSON(message: Hop): JsonSafe<Hop> {
     const obj: any = {};
     message.portId !== undefined && (obj.portId = message.portId);
     message.channelId !== undefined && (obj.channelId = message.channelId);
@@ -325,8 +349,8 @@ export const Hop = {
   },
   toAmino(message: Hop): HopAmino {
     const obj: any = {};
-    obj.port_id = message.portId;
-    obj.channel_id = message.channelId;
+    obj.port_id = message.portId === "" ? undefined : message.portId;
+    obj.channel_id = message.channelId === "" ? undefined : message.channelId;
     return obj;
   },
   fromAminoMsg(object: HopAminoMsg): Hop {

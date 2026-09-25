@@ -1,6 +1,7 @@
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "../../../binary";
 import { isSet } from "../../../helpers";
+import { JsonSafe } from "../../../json-safe";
 export const protobufPackage = "cosmos.epochs.v1beta1";
 /** EventEpochEnd is an event emitted when an epoch end. */
 export interface EventEpochEnd {
@@ -10,7 +11,12 @@ export interface EventEpochEndProtoMsg {
   typeUrl: "/cosmos.epochs.v1beta1.EventEpochEnd";
   value: Uint8Array;
 }
-/** EventEpochEnd is an event emitted when an epoch end. */
+/**
+ * EventEpochEnd is an event emitted when an epoch end.
+ * @name EventEpochEndAmino
+ * @package cosmos.epochs.v1beta1
+ * @see proto type: cosmos.epochs.v1beta1.EventEpochEnd
+ */
 export interface EventEpochEndAmino {
   epoch_number?: string;
 }
@@ -27,7 +33,12 @@ export interface EventEpochStartProtoMsg {
   typeUrl: "/cosmos.epochs.v1beta1.EventEpochStart";
   value: Uint8Array;
 }
-/** EventEpochStart is an event emitted when an epoch start. */
+/**
+ * EventEpochStart is an event emitted when an epoch start.
+ * @name EventEpochStartAmino
+ * @package cosmos.epochs.v1beta1
+ * @see proto type: cosmos.epochs.v1beta1.EventEpochStart
+ */
 export interface EventEpochStartAmino {
   epoch_number?: string;
   epoch_start_time?: string;
@@ -71,7 +82,7 @@ export const EventEpochEnd = {
     if (isSet(object.epochNumber)) obj.epochNumber = BigInt(object.epochNumber.toString());
     return obj;
   },
-  toJSON(message: EventEpochEnd): unknown {
+  toJSON(message: EventEpochEnd): JsonSafe<EventEpochEnd> {
     const obj: any = {};
     message.epochNumber !== undefined && (obj.epochNumber = (message.epochNumber || BigInt(0)).toString());
     return obj;
@@ -92,7 +103,7 @@ export const EventEpochEnd = {
   },
   toAmino(message: EventEpochEnd): EventEpochEndAmino {
     const obj: any = {};
-    obj.epoch_number = message.epochNumber ? message.epochNumber.toString() : undefined;
+    obj.epoch_number = message.epochNumber !== BigInt(0) ? message.epochNumber?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: EventEpochEndAminoMsg): EventEpochEnd {
@@ -160,7 +171,7 @@ export const EventEpochStart = {
     if (isSet(object.epochStartTime)) obj.epochStartTime = BigInt(object.epochStartTime.toString());
     return obj;
   },
-  toJSON(message: EventEpochStart): unknown {
+  toJSON(message: EventEpochStart): JsonSafe<EventEpochStart> {
     const obj: any = {};
     message.epochNumber !== undefined && (obj.epochNumber = (message.epochNumber || BigInt(0)).toString());
     message.epochStartTime !== undefined &&
@@ -189,8 +200,9 @@ export const EventEpochStart = {
   },
   toAmino(message: EventEpochStart): EventEpochStartAmino {
     const obj: any = {};
-    obj.epoch_number = message.epochNumber ? message.epochNumber.toString() : undefined;
-    obj.epoch_start_time = message.epochStartTime ? message.epochStartTime.toString() : undefined;
+    obj.epoch_number = message.epochNumber !== BigInt(0) ? message.epochNumber?.toString() : undefined;
+    obj.epoch_start_time =
+      message.epochStartTime !== BigInt(0) ? message.epochStartTime?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: EventEpochStartAminoMsg): EventEpochStart {

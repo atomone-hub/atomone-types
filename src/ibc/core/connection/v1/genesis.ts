@@ -9,6 +9,7 @@ import {
 } from "./connection";
 import { BinaryReader, BinaryWriter } from "../../../../binary";
 import { isSet } from "../../../../helpers";
+import { JsonSafe } from "../../../../json-safe";
 export const protobufPackage = "ibc.core.connection.v1";
 /** GenesisState defines the ibc connection submodule's genesis state. */
 export interface GenesisState {
@@ -22,11 +23,18 @@ export interface GenesisStateProtoMsg {
   typeUrl: "/ibc.core.connection.v1.GenesisState";
   value: Uint8Array;
 }
-/** GenesisState defines the ibc connection submodule's genesis state. */
+/**
+ * GenesisState defines the ibc connection submodule's genesis state.
+ * @name GenesisStateAmino
+ * @package ibc.core.connection.v1
+ * @see proto type: ibc.core.connection.v1.GenesisState
+ */
 export interface GenesisStateAmino {
   connections?: IdentifiedConnectionAmino[];
   client_connection_paths?: ConnectionPathsAmino[];
-  /** the sequence for the next generated connection identifier */
+  /**
+   * the sequence for the next generated connection identifier
+   */
   next_connection_sequence?: string;
   params?: ParamsAmino | undefined;
 }
@@ -96,7 +104,7 @@ export const GenesisState = {
     if (isSet(object.params)) obj.params = Params.fromJSON(object.params);
     return obj;
   },
-  toJSON(message: GenesisState): unknown {
+  toJSON(message: GenesisState): JsonSafe<GenesisState> {
     const obj: any = {};
     if (message.connections) {
       obj.connections = message.connections.map((e) => (e ? IdentifiedConnection.toJSON(e) : undefined));
@@ -146,18 +154,17 @@ export const GenesisState = {
     if (message.connections) {
       obj.connections = message.connections.map((e) => (e ? IdentifiedConnection.toAmino(e) : undefined));
     } else {
-      obj.connections = [];
+      obj.connections = message.connections;
     }
     if (message.clientConnectionPaths) {
       obj.client_connection_paths = message.clientConnectionPaths.map((e) =>
         e ? ConnectionPaths.toAmino(e) : undefined,
       );
     } else {
-      obj.client_connection_paths = [];
+      obj.client_connection_paths = message.clientConnectionPaths;
     }
-    obj.next_connection_sequence = message.nextConnectionSequence
-      ? message.nextConnectionSequence.toString()
-      : undefined;
+    obj.next_connection_sequence =
+      message.nextConnectionSequence !== BigInt(0) ? message.nextConnectionSequence?.toString() : undefined;
     obj.params = message.params ? Params.toAmino(message.params) : undefined;
     return obj;
   },

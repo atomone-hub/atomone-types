@@ -1,6 +1,7 @@
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "../../../binary";
 import { isSet, bytesFromBase64, base64FromBytes } from "../../../helpers";
+import { JsonSafe } from "../../../json-safe";
 export const protobufPackage = "cosmos.ics23.v1";
 export enum HashOp {
   /** NO_HASH - NO_HASH is the default if no data passed. Note this is an illegal argument some places. */
@@ -222,6 +223,9 @@ export interface ExistenceProofProtoMsg {
  * With LengthOp this is tricker but not impossible. Which is why the "leafPrefixEqual" field
  * in the ProofSpec is valuable to prevent this mutability. And why all trees should
  * length-prefix the data before hashing it.
+ * @name ExistenceProofAmino
+ * @package cosmos.ics23.v1
+ * @see proto type: cosmos.ics23.v1.ExistenceProof
  */
 export interface ExistenceProofAmino {
   key?: string;
@@ -252,9 +256,14 @@ export interface NonExistenceProofProtoMsg {
  * NonExistenceProof takes a proof of two neighbors, one left of the desired key,
  * one right of the desired key. If both proofs are valid AND they are neighbors,
  * then there is no valid proof for the given key.
+ * @name NonExistenceProofAmino
+ * @package cosmos.ics23.v1
+ * @see proto type: cosmos.ics23.v1.NonExistenceProof
  */
 export interface NonExistenceProofAmino {
-  /** TODO: remove this as unnecessary??? we prove a range */
+  /**
+   * TODO: remove this as unnecessary??? we prove a range
+   */
   key?: string;
   left?: ExistenceProofAmino | undefined;
   right?: ExistenceProofAmino | undefined;
@@ -274,7 +283,12 @@ export interface CommitmentProofProtoMsg {
   typeUrl: "/cosmos.ics23.v1.CommitmentProof";
   value: Uint8Array;
 }
-/** CommitmentProof is either an ExistenceProof or a NonExistenceProof, or a Batch of such messages */
+/**
+ * CommitmentProof is either an ExistenceProof or a NonExistenceProof, or a Batch of such messages
+ * @name CommitmentProofAmino
+ * @package cosmos.ics23.v1
+ * @see proto type: cosmos.ics23.v1.CommitmentProof
+ */
 export interface CommitmentProofAmino {
   exist?: ExistenceProofAmino | undefined;
   nonexist?: NonExistenceProofAmino | undefined;
@@ -331,6 +345,9 @@ export interface LeafOpProtoMsg {
  *
  * Then combine the bytes, and hash it
  * output = hash(prefix || length(hkey) || hkey || length(hvalue) || hvalue)
+ * @name LeafOpAmino
+ * @package cosmos.ics23.v1
+ * @see proto type: cosmos.ics23.v1.LeafOp
  */
 export interface LeafOpAmino {
   hash?: HashOp;
@@ -389,6 +406,9 @@ export interface InnerOpProtoMsg {
  * Any special data, like prepending child with the length, or prepending the entire operation with
  * some value to differentiate from leaf nodes, should be included in prefix and suffix.
  * If either of prefix or suffix is empty, we just treat it as an empty string
+ * @name InnerOpAmino
+ * @package cosmos.ics23.v1
+ * @see proto type: cosmos.ics23.v1.InnerOp
  */
 export interface InnerOpAmino {
   hash?: HashOp;
@@ -447,6 +467,9 @@ export interface ProofSpecProtoMsg {
  * generate a given hash (by interpretting the preimage differently).
  * We need this for proper security, requires client knows a priori what
  * tree format server uses. But not in code, rather a configuration object.
+ * @name ProofSpecAmino
+ * @package cosmos.ics23.v1
+ * @see proto type: cosmos.ics23.v1.ProofSpec
  */
 export interface ProofSpecAmino {
   /**
@@ -460,7 +483,9 @@ export interface ProofSpecAmino {
    * the max_depth is interpreted as 128 if set to 0
    */
   max_depth?: number;
-  /** min_depth (if > 0) is the minimum number of InnerOps allowed (mainly for fixed-depth tries) */
+  /**
+   * min_depth (if > 0) is the minimum number of InnerOps allowed (mainly for fixed-depth tries)
+   */
   min_depth?: number;
   /**
    * prehash_key_before_comparison is a flag that indicates whether to use the
@@ -511,6 +536,9 @@ export interface InnerSpecProtoMsg {
  * isLeftMost(spec: InnerSpec, op: InnerOp)
  * isRightMost(spec: InnerSpec, op: InnerOp)
  * isLeftNeighbor(spec: InnerSpec, left: InnerOp, right: InnerOp)
+ * @name InnerSpecAmino
+ * @package cosmos.ics23.v1
+ * @see proto type: cosmos.ics23.v1.InnerSpec
  */
 export interface InnerSpecAmino {
   /**
@@ -522,9 +550,13 @@ export interface InnerSpecAmino {
   child_size?: number;
   min_prefix_length?: number;
   max_prefix_length?: number;
-  /** empty child is the prehash image that is used when one child is nil (eg. 20 bytes of 0) */
+  /**
+   * empty child is the prehash image that is used when one child is nil (eg. 20 bytes of 0)
+   */
   empty_child?: string;
-  /** hash is the algorithm that must be used for each InnerOp */
+  /**
+   * hash is the algorithm that must be used for each InnerOp
+   */
   hash?: HashOp;
 }
 export interface InnerSpecAminoMsg {
@@ -539,7 +571,12 @@ export interface BatchProofProtoMsg {
   typeUrl: "/cosmos.ics23.v1.BatchProof";
   value: Uint8Array;
 }
-/** BatchProof is a group of multiple proof types than can be compressed */
+/**
+ * BatchProof is a group of multiple proof types than can be compressed
+ * @name BatchProofAmino
+ * @package cosmos.ics23.v1
+ * @see proto type: cosmos.ics23.v1.BatchProof
+ */
 export interface BatchProofAmino {
   entries?: BatchEntryAmino[];
 }
@@ -556,7 +593,12 @@ export interface BatchEntryProtoMsg {
   typeUrl: "/cosmos.ics23.v1.BatchEntry";
   value: Uint8Array;
 }
-/** Use BatchEntry not CommitmentProof, to avoid recursion */
+/**
+ * Use BatchEntry not CommitmentProof, to avoid recursion
+ * @name BatchEntryAmino
+ * @package cosmos.ics23.v1
+ * @see proto type: cosmos.ics23.v1.BatchEntry
+ */
 export interface BatchEntryAmino {
   exist?: ExistenceProofAmino | undefined;
   nonexist?: NonExistenceProofAmino | undefined;
@@ -573,6 +615,11 @@ export interface CompressedBatchProofProtoMsg {
   typeUrl: "/cosmos.ics23.v1.CompressedBatchProof";
   value: Uint8Array;
 }
+/**
+ * @name CompressedBatchProofAmino
+ * @package cosmos.ics23.v1
+ * @see proto type: cosmos.ics23.v1.CompressedBatchProof
+ */
 export interface CompressedBatchProofAmino {
   entries?: CompressedBatchEntryAmino[];
   lookup_inners?: InnerOpAmino[];
@@ -590,7 +637,12 @@ export interface CompressedBatchEntryProtoMsg {
   typeUrl: "/cosmos.ics23.v1.CompressedBatchEntry";
   value: Uint8Array;
 }
-/** Use BatchEntry not CommitmentProof, to avoid recursion */
+/**
+ * Use BatchEntry not CommitmentProof, to avoid recursion
+ * @name CompressedBatchEntryAmino
+ * @package cosmos.ics23.v1
+ * @see proto type: cosmos.ics23.v1.CompressedBatchEntry
+ */
 export interface CompressedBatchEntryAmino {
   exist?: CompressedExistenceProofAmino | undefined;
   nonexist?: CompressedNonExistenceProofAmino | undefined;
@@ -610,11 +662,18 @@ export interface CompressedExistenceProofProtoMsg {
   typeUrl: "/cosmos.ics23.v1.CompressedExistenceProof";
   value: Uint8Array;
 }
+/**
+ * @name CompressedExistenceProofAmino
+ * @package cosmos.ics23.v1
+ * @see proto type: cosmos.ics23.v1.CompressedExistenceProof
+ */
 export interface CompressedExistenceProofAmino {
   key?: string;
   value?: string;
   leaf?: LeafOpAmino | undefined;
-  /** these are indexes into the lookup_inners table in CompressedBatchProof */
+  /**
+   * these are indexes into the lookup_inners table in CompressedBatchProof
+   */
   path?: number[];
 }
 export interface CompressedExistenceProofAminoMsg {
@@ -631,8 +690,15 @@ export interface CompressedNonExistenceProofProtoMsg {
   typeUrl: "/cosmos.ics23.v1.CompressedNonExistenceProof";
   value: Uint8Array;
 }
+/**
+ * @name CompressedNonExistenceProofAmino
+ * @package cosmos.ics23.v1
+ * @see proto type: cosmos.ics23.v1.CompressedNonExistenceProof
+ */
 export interface CompressedNonExistenceProofAmino {
-  /** TODO: remove this as unnecessary??? we prove a range */
+  /**
+   * TODO: remove this as unnecessary??? we prove a range
+   */
   key?: string;
   left?: CompressedExistenceProofAmino | undefined;
   right?: CompressedExistenceProofAmino | undefined;
@@ -700,7 +766,7 @@ export const ExistenceProof = {
     if (Array.isArray(object?.path)) obj.path = object.path.map((e: any) => InnerOp.fromJSON(e));
     return obj;
   },
-  toJSON(message: ExistenceProof): unknown {
+  toJSON(message: ExistenceProof): JsonSafe<ExistenceProof> {
     const obj: any = {};
     message.key !== undefined &&
       (obj.key = base64FromBytes(message.key !== undefined ? message.key : new Uint8Array()));
@@ -746,7 +812,7 @@ export const ExistenceProof = {
     if (message.path) {
       obj.path = message.path.map((e) => (e ? InnerOp.toAmino(e) : undefined));
     } else {
-      obj.path = [];
+      obj.path = message.path;
     }
     return obj;
   },
@@ -823,7 +889,7 @@ export const NonExistenceProof = {
     if (isSet(object.right)) obj.right = ExistenceProof.fromJSON(object.right);
     return obj;
   },
-  toJSON(message: NonExistenceProof): unknown {
+  toJSON(message: NonExistenceProof): JsonSafe<NonExistenceProof> {
     const obj: any = {};
     message.key !== undefined &&
       (obj.key = base64FromBytes(message.key !== undefined ? message.key : new Uint8Array()));
@@ -944,7 +1010,7 @@ export const CommitmentProof = {
     if (isSet(object.compressed)) obj.compressed = CompressedBatchProof.fromJSON(object.compressed);
     return obj;
   },
-  toJSON(message: CommitmentProof): unknown {
+  toJSON(message: CommitmentProof): JsonSafe<CommitmentProof> {
     const obj: any = {};
     message.exist !== undefined &&
       (obj.exist = message.exist ? ExistenceProof.toJSON(message.exist) : undefined);
@@ -1084,7 +1150,7 @@ export const LeafOp = {
     if (isSet(object.prefix)) obj.prefix = bytesFromBase64(object.prefix);
     return obj;
   },
-  toJSON(message: LeafOp): unknown {
+  toJSON(message: LeafOp): JsonSafe<LeafOp> {
     const obj: any = {};
     message.hash !== undefined && (obj.hash = hashOpToJSON(message.hash));
     message.prehashKey !== undefined && (obj.prehashKey = hashOpToJSON(message.prehashKey));
@@ -1106,16 +1172,16 @@ export const LeafOp = {
   fromAmino(object: LeafOpAmino): LeafOp {
     const message = createBaseLeafOp();
     if (object.hash !== undefined && object.hash !== null) {
-      message.hash = hashOpFromJSON(object.hash);
+      message.hash = object.hash;
     }
     if (object.prehash_key !== undefined && object.prehash_key !== null) {
-      message.prehashKey = hashOpFromJSON(object.prehash_key);
+      message.prehashKey = object.prehash_key;
     }
     if (object.prehash_value !== undefined && object.prehash_value !== null) {
-      message.prehashValue = hashOpFromJSON(object.prehash_value);
+      message.prehashValue = object.prehash_value;
     }
     if (object.length !== undefined && object.length !== null) {
-      message.length = lengthOpFromJSON(object.length);
+      message.length = object.length;
     }
     if (object.prefix !== undefined && object.prefix !== null) {
       message.prefix = bytesFromBase64(object.prefix);
@@ -1124,10 +1190,10 @@ export const LeafOp = {
   },
   toAmino(message: LeafOp): LeafOpAmino {
     const obj: any = {};
-    obj.hash = message.hash;
-    obj.prehash_key = message.prehashKey;
-    obj.prehash_value = message.prehashValue;
-    obj.length = message.length;
+    obj.hash = message.hash === 0 ? undefined : message.hash;
+    obj.prehash_key = message.prehashKey === 0 ? undefined : message.prehashKey;
+    obj.prehash_value = message.prehashValue === 0 ? undefined : message.prehashValue;
+    obj.length = message.length === 0 ? undefined : message.length;
     obj.prefix = message.prefix ? base64FromBytes(message.prefix) : undefined;
     return obj;
   },
@@ -1204,7 +1270,7 @@ export const InnerOp = {
     if (isSet(object.suffix)) obj.suffix = bytesFromBase64(object.suffix);
     return obj;
   },
-  toJSON(message: InnerOp): unknown {
+  toJSON(message: InnerOp): JsonSafe<InnerOp> {
     const obj: any = {};
     message.hash !== undefined && (obj.hash = hashOpToJSON(message.hash));
     message.prefix !== undefined &&
@@ -1223,7 +1289,7 @@ export const InnerOp = {
   fromAmino(object: InnerOpAmino): InnerOp {
     const message = createBaseInnerOp();
     if (object.hash !== undefined && object.hash !== null) {
-      message.hash = hashOpFromJSON(object.hash);
+      message.hash = object.hash;
     }
     if (object.prefix !== undefined && object.prefix !== null) {
       message.prefix = bytesFromBase64(object.prefix);
@@ -1235,7 +1301,7 @@ export const InnerOp = {
   },
   toAmino(message: InnerOp): InnerOpAmino {
     const obj: any = {};
-    obj.hash = message.hash;
+    obj.hash = message.hash === 0 ? undefined : message.hash;
     obj.prefix = message.prefix ? base64FromBytes(message.prefix) : undefined;
     obj.suffix = message.suffix ? base64FromBytes(message.suffix) : undefined;
     return obj;
@@ -1330,7 +1396,7 @@ export const ProofSpec = {
       obj.prehashKeyBeforeComparison = Boolean(object.prehashKeyBeforeComparison);
     return obj;
   },
-  toJSON(message: ProofSpec): unknown {
+  toJSON(message: ProofSpec): JsonSafe<ProofSpec> {
     const obj: any = {};
     message.leafSpec !== undefined &&
       (obj.leafSpec = message.leafSpec ? LeafOp.toJSON(message.leafSpec) : undefined);
@@ -1378,9 +1444,10 @@ export const ProofSpec = {
     const obj: any = {};
     obj.leaf_spec = message.leafSpec ? LeafOp.toAmino(message.leafSpec) : undefined;
     obj.inner_spec = message.innerSpec ? InnerSpec.toAmino(message.innerSpec) : undefined;
-    obj.max_depth = message.maxDepth;
-    obj.min_depth = message.minDepth;
-    obj.prehash_key_before_comparison = message.prehashKeyBeforeComparison;
+    obj.max_depth = message.maxDepth === 0 ? undefined : message.maxDepth;
+    obj.min_depth = message.minDepth === 0 ? undefined : message.minDepth;
+    obj.prehash_key_before_comparison =
+      message.prehashKeyBeforeComparison === false ? undefined : message.prehashKeyBeforeComparison;
     return obj;
   },
   fromAminoMsg(object: ProofSpecAminoMsg): ProofSpec {
@@ -1489,7 +1556,7 @@ export const InnerSpec = {
     if (isSet(object.hash)) obj.hash = hashOpFromJSON(object.hash);
     return obj;
   },
-  toJSON(message: InnerSpec): unknown {
+  toJSON(message: InnerSpec): JsonSafe<InnerSpec> {
     const obj: any = {};
     if (message.childOrder) {
       obj.childOrder = message.childOrder.map((e) => Math.round(e));
@@ -1532,7 +1599,7 @@ export const InnerSpec = {
       message.emptyChild = bytesFromBase64(object.empty_child);
     }
     if (object.hash !== undefined && object.hash !== null) {
-      message.hash = hashOpFromJSON(object.hash);
+      message.hash = object.hash;
     }
     return message;
   },
@@ -1541,13 +1608,13 @@ export const InnerSpec = {
     if (message.childOrder) {
       obj.child_order = message.childOrder.map((e) => e);
     } else {
-      obj.child_order = [];
+      obj.child_order = message.childOrder;
     }
-    obj.child_size = message.childSize;
-    obj.min_prefix_length = message.minPrefixLength;
-    obj.max_prefix_length = message.maxPrefixLength;
+    obj.child_size = message.childSize === 0 ? undefined : message.childSize;
+    obj.min_prefix_length = message.minPrefixLength === 0 ? undefined : message.minPrefixLength;
+    obj.max_prefix_length = message.maxPrefixLength === 0 ? undefined : message.maxPrefixLength;
     obj.empty_child = message.emptyChild ? base64FromBytes(message.emptyChild) : undefined;
-    obj.hash = message.hash;
+    obj.hash = message.hash === 0 ? undefined : message.hash;
     return obj;
   },
   fromAminoMsg(object: InnerSpecAminoMsg): InnerSpec {
@@ -1607,7 +1674,7 @@ export const BatchProof = {
     if (Array.isArray(object?.entries)) obj.entries = object.entries.map((e: any) => BatchEntry.fromJSON(e));
     return obj;
   },
-  toJSON(message: BatchProof): unknown {
+  toJSON(message: BatchProof): JsonSafe<BatchProof> {
     const obj: any = {};
     if (message.entries) {
       obj.entries = message.entries.map((e) => (e ? BatchEntry.toJSON(e) : undefined));
@@ -1631,7 +1698,7 @@ export const BatchProof = {
     if (message.entries) {
       obj.entries = message.entries.map((e) => (e ? BatchEntry.toAmino(e) : undefined));
     } else {
-      obj.entries = [];
+      obj.entries = message.entries;
     }
     return obj;
   },
@@ -1700,7 +1767,7 @@ export const BatchEntry = {
     if (isSet(object.nonexist)) obj.nonexist = NonExistenceProof.fromJSON(object.nonexist);
     return obj;
   },
-  toJSON(message: BatchEntry): unknown {
+  toJSON(message: BatchEntry): JsonSafe<BatchEntry> {
     const obj: any = {};
     message.exist !== undefined &&
       (obj.exist = message.exist ? ExistenceProof.toJSON(message.exist) : undefined);
@@ -1801,7 +1868,7 @@ export const CompressedBatchProof = {
       obj.lookupInners = object.lookupInners.map((e: any) => InnerOp.fromJSON(e));
     return obj;
   },
-  toJSON(message: CompressedBatchProof): unknown {
+  toJSON(message: CompressedBatchProof): JsonSafe<CompressedBatchProof> {
     const obj: any = {};
     if (message.entries) {
       obj.entries = message.entries.map((e) => (e ? CompressedBatchEntry.toJSON(e) : undefined));
@@ -1832,12 +1899,12 @@ export const CompressedBatchProof = {
     if (message.entries) {
       obj.entries = message.entries.map((e) => (e ? CompressedBatchEntry.toAmino(e) : undefined));
     } else {
-      obj.entries = [];
+      obj.entries = message.entries;
     }
     if (message.lookupInners) {
       obj.lookup_inners = message.lookupInners.map((e) => (e ? InnerOp.toAmino(e) : undefined));
     } else {
-      obj.lookup_inners = [];
+      obj.lookup_inners = message.lookupInners;
     }
     return obj;
   },
@@ -1906,7 +1973,7 @@ export const CompressedBatchEntry = {
     if (isSet(object.nonexist)) obj.nonexist = CompressedNonExistenceProof.fromJSON(object.nonexist);
     return obj;
   },
-  toJSON(message: CompressedBatchEntry): unknown {
+  toJSON(message: CompressedBatchEntry): JsonSafe<CompressedBatchEntry> {
     const obj: any = {};
     message.exist !== undefined &&
       (obj.exist = message.exist ? CompressedExistenceProof.toJSON(message.exist) : undefined);
@@ -2030,7 +2097,7 @@ export const CompressedExistenceProof = {
     if (Array.isArray(object?.path)) obj.path = object.path.map((e: any) => Number(e));
     return obj;
   },
-  toJSON(message: CompressedExistenceProof): unknown {
+  toJSON(message: CompressedExistenceProof): JsonSafe<CompressedExistenceProof> {
     const obj: any = {};
     message.key !== undefined &&
       (obj.key = base64FromBytes(message.key !== undefined ? message.key : new Uint8Array()));
@@ -2076,7 +2143,7 @@ export const CompressedExistenceProof = {
     if (message.path) {
       obj.path = message.path.map((e) => e);
     } else {
-      obj.path = [];
+      obj.path = message.path;
     }
     return obj;
   },
@@ -2153,7 +2220,7 @@ export const CompressedNonExistenceProof = {
     if (isSet(object.right)) obj.right = CompressedExistenceProof.fromJSON(object.right);
     return obj;
   },
-  toJSON(message: CompressedNonExistenceProof): unknown {
+  toJSON(message: CompressedNonExistenceProof): JsonSafe<CompressedNonExistenceProof> {
     const obj: any = {};
     message.key !== undefined &&
       (obj.key = base64FromBytes(message.key !== undefined ? message.key : new Uint8Array()));

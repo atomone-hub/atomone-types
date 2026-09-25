@@ -1,6 +1,7 @@
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "../../../binary";
 import { isSet } from "../../../helpers";
+import { JsonSafe } from "../../../json-safe";
 export const protobufPackage = "atomone.photon.v1";
 /** Params defines the parameters for the x/photon module. */
 export interface Params {
@@ -17,9 +18,16 @@ export interface ParamsProtoMsg {
   typeUrl: "/atomone.photon.v1.Params";
   value: Uint8Array;
 }
-/** Params defines the parameters for the x/photon module. */
+/**
+ * Params defines the parameters for the x/photon module.
+ * @name ParamsAmino
+ * @package atomone.photon.v1
+ * @see proto type: atomone.photon.v1.Params
+ */
 export interface ParamsAmino {
-  /** Allow to mint photon or not */
+  /**
+   * Allow to mint photon or not
+   */
   mint_disabled?: boolean;
   /**
    * tx_fee_exceptions holds the msg type urls that are allowed to use some
@@ -76,7 +84,7 @@ export const Params = {
       obj.txFeeExceptions = object.txFeeExceptions.map((e: any) => String(e));
     return obj;
   },
-  toJSON(message: Params): unknown {
+  toJSON(message: Params): JsonSafe<Params> {
     const obj: any = {};
     message.mintDisabled !== undefined && (obj.mintDisabled = message.mintDisabled);
     if (message.txFeeExceptions) {
@@ -102,11 +110,11 @@ export const Params = {
   },
   toAmino(message: Params): ParamsAmino {
     const obj: any = {};
-    obj.mint_disabled = message.mintDisabled;
+    obj.mint_disabled = message.mintDisabled === false ? undefined : message.mintDisabled;
     if (message.txFeeExceptions) {
       obj.tx_fee_exceptions = message.txFeeExceptions.map((e) => e);
     } else {
-      obj.tx_fee_exceptions = [];
+      obj.tx_fee_exceptions = message.txFeeExceptions;
     }
     return obj;
   },

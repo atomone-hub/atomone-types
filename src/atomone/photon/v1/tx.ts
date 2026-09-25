@@ -3,6 +3,7 @@ import { Coin, CoinAmino } from "../../../cosmos/base/v1beta1/coin";
 import { Params, ParamsAmino } from "./photon";
 import { BinaryReader, BinaryWriter } from "../../../binary";
 import { isSet } from "../../../helpers";
+import { JsonSafe } from "../../../json-safe";
 import { TxRpc } from "../../../types";
 export const protobufPackage = "atomone.photon.v1";
 /** MsgMintPhoton defines an sdk.Msg for burning atone and minting photons. */
@@ -14,7 +15,12 @@ export interface MsgMintPhotonProtoMsg {
   typeUrl: "/atomone.photon.v1.MsgMintPhoton";
   value: Uint8Array;
 }
-/** MsgMintPhoton defines an sdk.Msg for burning atone and minting photons. */
+/**
+ * MsgMintPhoton defines an sdk.Msg for burning atone and minting photons.
+ * @name MsgMintPhotonAmino
+ * @package atomone.photon.v1
+ * @see proto type: atomone.photon.v1.MsgMintPhoton
+ */
 export interface MsgMintPhotonAmino {
   to_address?: string;
   amount: CoinAmino | undefined;
@@ -39,10 +45,15 @@ export interface MsgMintPhotonResponseProtoMsg {
 /**
  * MsgMintPhotonResponse defines the response structure for executing a
  * MsgMintPhoton message.
+ * @name MsgMintPhotonResponseAmino
+ * @package atomone.photon.v1
+ * @see proto type: atomone.photon.v1.MsgMintPhotonResponse
  */
 export interface MsgMintPhotonResponseAmino {
   minted: CoinAmino | undefined;
-  /** conversion_rate represents the factor used to convert atone to photon. */
+  /**
+   * conversion_rate represents the factor used to convert atone to photon.
+   */
   conversion_rate?: string;
 }
 export interface MsgMintPhotonResponseAminoMsg {
@@ -67,7 +78,12 @@ export interface MsgUpdateParamsProtoMsg {
   typeUrl: "/atomone.photon.v1.MsgUpdateParams";
   value: Uint8Array;
 }
-/** MsgUpdateParams is the Msg/UpdateParams request type. */
+/**
+ * MsgUpdateParams is the Msg/UpdateParams request type.
+ * @name MsgUpdateParamsAmino
+ * @package atomone.photon.v1
+ * @see proto type: atomone.photon.v1.MsgUpdateParams
+ */
 export interface MsgUpdateParamsAmino {
   /**
    * authority is the address that controls the module (defaults to x/gov unless
@@ -97,6 +113,9 @@ export interface MsgUpdateParamsResponseProtoMsg {
 /**
  * MsgUpdateParamsResponse defines the response structure for executing a
  * MsgUpdateParams message.
+ * @name MsgUpdateParamsResponseAmino
+ * @package atomone.photon.v1
+ * @see proto type: atomone.photon.v1.MsgUpdateParamsResponse
  */
 export interface MsgUpdateParamsResponseAmino {}
 export interface MsgUpdateParamsResponseAminoMsg {
@@ -146,7 +165,7 @@ export const MsgMintPhoton = {
     if (isSet(object.amount)) obj.amount = Coin.fromJSON(object.amount);
     return obj;
   },
-  toJSON(message: MsgMintPhoton): unknown {
+  toJSON(message: MsgMintPhoton): JsonSafe<MsgMintPhoton> {
     const obj: any = {};
     message.toAddress !== undefined && (obj.toAddress = message.toAddress);
     message.amount !== undefined && (obj.amount = message.amount ? Coin.toJSON(message.amount) : undefined);
@@ -172,8 +191,8 @@ export const MsgMintPhoton = {
   },
   toAmino(message: MsgMintPhoton): MsgMintPhotonAmino {
     const obj: any = {};
-    obj.to_address = message.toAddress;
-    obj.amount = message.amount ? Coin.toAmino(message.amount) : undefined;
+    obj.to_address = message.toAddress === "" ? undefined : message.toAddress;
+    obj.amount = message.amount ? Coin.toAmino(message.amount) : Coin.toAmino(Coin.fromPartial({}));
     return obj;
   },
   fromAminoMsg(object: MsgMintPhotonAminoMsg): MsgMintPhoton {
@@ -241,7 +260,7 @@ export const MsgMintPhotonResponse = {
     if (isSet(object.conversionRate)) obj.conversionRate = String(object.conversionRate);
     return obj;
   },
-  toJSON(message: MsgMintPhotonResponse): unknown {
+  toJSON(message: MsgMintPhotonResponse): JsonSafe<MsgMintPhotonResponse> {
     const obj: any = {};
     message.minted !== undefined && (obj.minted = message.minted ? Coin.toJSON(message.minted) : undefined);
     message.conversionRate !== undefined && (obj.conversionRate = message.conversionRate);
@@ -267,8 +286,8 @@ export const MsgMintPhotonResponse = {
   },
   toAmino(message: MsgMintPhotonResponse): MsgMintPhotonResponseAmino {
     const obj: any = {};
-    obj.minted = message.minted ? Coin.toAmino(message.minted) : undefined;
-    obj.conversion_rate = message.conversionRate;
+    obj.minted = message.minted ? Coin.toAmino(message.minted) : Coin.toAmino(Coin.fromPartial({}));
+    obj.conversion_rate = message.conversionRate === "" ? undefined : message.conversionRate;
     return obj;
   },
   fromAminoMsg(object: MsgMintPhotonResponseAminoMsg): MsgMintPhotonResponse {
@@ -330,7 +349,7 @@ export const MsgUpdateParams = {
     if (isSet(object.params)) obj.params = Params.fromJSON(object.params);
     return obj;
   },
-  toJSON(message: MsgUpdateParams): unknown {
+  toJSON(message: MsgUpdateParams): JsonSafe<MsgUpdateParams> {
     const obj: any = {};
     message.authority !== undefined && (obj.authority = message.authority);
     message.params !== undefined && (obj.params = message.params ? Params.toJSON(message.params) : undefined);
@@ -356,8 +375,8 @@ export const MsgUpdateParams = {
   },
   toAmino(message: MsgUpdateParams): MsgUpdateParamsAmino {
     const obj: any = {};
-    obj.authority = message.authority;
-    obj.params = message.params ? Params.toAmino(message.params) : Params.fromPartial({});
+    obj.authority = message.authority === "" ? undefined : message.authority;
+    obj.params = message.params ? Params.toAmino(message.params) : Params.toAmino(Params.fromPartial({}));
     return obj;
   },
   fromAminoMsg(object: MsgUpdateParamsAminoMsg): MsgUpdateParams {
@@ -408,7 +427,7 @@ export const MsgUpdateParamsResponse = {
     const obj = createBaseMsgUpdateParamsResponse();
     return obj;
   },
-  toJSON(_: MsgUpdateParamsResponse): unknown {
+  toJSON(_: MsgUpdateParamsResponse): JsonSafe<MsgUpdateParamsResponse> {
     const obj: any = {};
     return obj;
   },

@@ -1,6 +1,7 @@
 /* eslint-disable */
 import { Timestamp } from "../../../../google/protobuf/timestamp";
 import { BinaryReader, BinaryWriter } from "../../../../binary";
+import { JsonSafe } from "../../../../json-safe";
 import {
   isSet,
   fromJsonTimestamp,
@@ -16,7 +17,12 @@ export interface ConfigRequestProtoMsg {
   typeUrl: "/cosmos.base.node.v1beta1.ConfigRequest";
   value: Uint8Array;
 }
-/** ConfigRequest defines the request structure for the Config gRPC query. */
+/**
+ * ConfigRequest defines the request structure for the Config gRPC query.
+ * @name ConfigRequestAmino
+ * @package cosmos.base.node.v1beta1
+ * @see proto type: cosmos.base.node.v1beta1.ConfigRequest
+ */
 export interface ConfigRequestAmino {}
 export interface ConfigRequestAminoMsg {
   type: "cosmos-sdk/ConfigRequest";
@@ -33,7 +39,12 @@ export interface ConfigResponseProtoMsg {
   typeUrl: "/cosmos.base.node.v1beta1.ConfigResponse";
   value: Uint8Array;
 }
-/** ConfigResponse defines the response structure for the Config gRPC query. */
+/**
+ * ConfigResponse defines the response structure for the Config gRPC query.
+ * @name ConfigResponseAmino
+ * @package cosmos.base.node.v1beta1
+ * @see proto type: cosmos.base.node.v1beta1.ConfigResponse
+ */
 export interface ConfigResponseAmino {
   minimum_gas_price?: string;
   pruning_keep_recent?: string;
@@ -50,7 +61,12 @@ export interface StatusRequestProtoMsg {
   typeUrl: "/cosmos.base.node.v1beta1.StatusRequest";
   value: Uint8Array;
 }
-/** StateRequest defines the request structure for the status of a node. */
+/**
+ * StateRequest defines the request structure for the status of a node.
+ * @name StatusRequestAmino
+ * @package cosmos.base.node.v1beta1
+ * @see proto type: cosmos.base.node.v1beta1.StatusRequest
+ */
 export interface StatusRequestAmino {}
 export interface StatusRequestAminoMsg {
   type: "cosmos-sdk/StatusRequest";
@@ -73,17 +89,32 @@ export interface StatusResponseProtoMsg {
   typeUrl: "/cosmos.base.node.v1beta1.StatusResponse";
   value: Uint8Array;
 }
-/** StateResponse defines the response structure for the status of a node. */
+/**
+ * StateResponse defines the response structure for the status of a node.
+ * @name StatusResponseAmino
+ * @package cosmos.base.node.v1beta1
+ * @see proto type: cosmos.base.node.v1beta1.StatusResponse
+ */
 export interface StatusResponseAmino {
-  /** earliest block height available in the store */
+  /**
+   * earliest block height available in the store
+   */
   earliest_store_height?: string;
-  /** current block height */
+  /**
+   * current block height
+   */
   height?: string;
-  /** block height timestamp */
+  /**
+   * block height timestamp
+   */
   timestamp?: string | undefined;
-  /** app hash of the current block */
+  /**
+   * app hash of the current block
+   */
   app_hash?: string;
-  /** validator hash provided by the consensus header */
+  /**
+   * validator hash provided by the consensus header
+   */
   validator_hash?: string;
 }
 export interface StatusResponseAminoMsg {
@@ -116,7 +147,7 @@ export const ConfigRequest = {
     const obj = createBaseConfigRequest();
     return obj;
   },
-  toJSON(_: ConfigRequest): unknown {
+  toJSON(_: ConfigRequest): JsonSafe<ConfigRequest> {
     const obj: any = {};
     return obj;
   },
@@ -213,7 +244,7 @@ export const ConfigResponse = {
     if (isSet(object.haltHeight)) obj.haltHeight = BigInt(object.haltHeight.toString());
     return obj;
   },
-  toJSON(message: ConfigResponse): unknown {
+  toJSON(message: ConfigResponse): JsonSafe<ConfigResponse> {
     const obj: any = {};
     message.minimumGasPrice !== undefined && (obj.minimumGasPrice = message.minimumGasPrice);
     message.pruningKeepRecent !== undefined && (obj.pruningKeepRecent = message.pruningKeepRecent);
@@ -249,10 +280,10 @@ export const ConfigResponse = {
   },
   toAmino(message: ConfigResponse): ConfigResponseAmino {
     const obj: any = {};
-    obj.minimum_gas_price = message.minimumGasPrice;
-    obj.pruning_keep_recent = message.pruningKeepRecent;
-    obj.pruning_interval = message.pruningInterval;
-    obj.halt_height = message.haltHeight ? message.haltHeight.toString() : undefined;
+    obj.minimum_gas_price = message.minimumGasPrice === "" ? undefined : message.minimumGasPrice;
+    obj.pruning_keep_recent = message.pruningKeepRecent === "" ? undefined : message.pruningKeepRecent;
+    obj.pruning_interval = message.pruningInterval === "" ? undefined : message.pruningInterval;
+    obj.halt_height = message.haltHeight !== BigInt(0) ? message.haltHeight?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: ConfigResponseAminoMsg): ConfigResponse {
@@ -303,7 +334,7 @@ export const StatusRequest = {
     const obj = createBaseStatusRequest();
     return obj;
   },
-  toJSON(_: StatusRequest): unknown {
+  toJSON(_: StatusRequest): JsonSafe<StatusRequest> {
     const obj: any = {};
     return obj;
   },
@@ -409,7 +440,7 @@ export const StatusResponse = {
     if (isSet(object.validatorHash)) obj.validatorHash = bytesFromBase64(object.validatorHash);
     return obj;
   },
-  toJSON(message: StatusResponse): unknown {
+  toJSON(message: StatusResponse): JsonSafe<StatusResponse> {
     const obj: any = {};
     message.earliestStoreHeight !== undefined &&
       (obj.earliestStoreHeight = (message.earliestStoreHeight || BigInt(0)).toString());
@@ -459,10 +490,9 @@ export const StatusResponse = {
   },
   toAmino(message: StatusResponse): StatusResponseAmino {
     const obj: any = {};
-    obj.earliest_store_height = message.earliestStoreHeight
-      ? message.earliestStoreHeight.toString()
-      : undefined;
-    obj.height = message.height ? message.height.toString() : undefined;
+    obj.earliest_store_height =
+      message.earliestStoreHeight !== BigInt(0) ? message.earliestStoreHeight?.toString() : undefined;
+    obj.height = message.height !== BigInt(0) ? message.height?.toString() : undefined;
     obj.timestamp = message.timestamp ? Timestamp.toAmino(message.timestamp) : undefined;
     obj.app_hash = message.appHash ? base64FromBytes(message.appHash) : undefined;
     obj.validator_hash = message.validatorHash ? base64FromBytes(message.validatorHash) : undefined;

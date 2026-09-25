@@ -5,6 +5,7 @@ import { Params as Params2 } from "../../host/v1/host";
 import { ParamsAmino as Params2Amino } from "../../host/v1/host";
 import { BinaryReader, BinaryWriter } from "../../../../../binary";
 import { isSet } from "../../../../../helpers";
+import { JsonSafe } from "../../../../../json-safe";
 export const protobufPackage = "ibc.applications.interchain_accounts.genesis.v1";
 /** GenesisState defines the interchain accounts genesis state */
 export interface GenesisState {
@@ -15,7 +16,12 @@ export interface GenesisStateProtoMsg {
   typeUrl: "/ibc.applications.interchain_accounts.genesis.v1.GenesisState";
   value: Uint8Array;
 }
-/** GenesisState defines the interchain accounts genesis state */
+/**
+ * GenesisState defines the interchain accounts genesis state
+ * @name GenesisStateAmino
+ * @package ibc.applications.interchain_accounts.genesis.v1
+ * @see proto type: ibc.applications.interchain_accounts.genesis.v1.GenesisState
+ */
 export interface GenesisStateAmino {
   controller_genesis_state?: ControllerGenesisStateAmino | undefined;
   host_genesis_state?: HostGenesisStateAmino | undefined;
@@ -35,7 +41,12 @@ export interface ControllerGenesisStateProtoMsg {
   typeUrl: "/ibc.applications.interchain_accounts.genesis.v1.ControllerGenesisState";
   value: Uint8Array;
 }
-/** ControllerGenesisState defines the interchain accounts controller genesis state */
+/**
+ * ControllerGenesisState defines the interchain accounts controller genesis state
+ * @name ControllerGenesisStateAmino
+ * @package ibc.applications.interchain_accounts.genesis.v1
+ * @see proto type: ibc.applications.interchain_accounts.genesis.v1.ControllerGenesisState
+ */
 export interface ControllerGenesisStateAmino {
   active_channels?: ActiveChannelAmino[];
   interchain_accounts?: RegisteredInterchainAccountAmino[];
@@ -57,7 +68,12 @@ export interface HostGenesisStateProtoMsg {
   typeUrl: "/ibc.applications.interchain_accounts.genesis.v1.HostGenesisState";
   value: Uint8Array;
 }
-/** HostGenesisState defines the interchain accounts host genesis state */
+/**
+ * HostGenesisState defines the interchain accounts host genesis state
+ * @name HostGenesisStateAmino
+ * @package ibc.applications.interchain_accounts.genesis.v1
+ * @see proto type: ibc.applications.interchain_accounts.genesis.v1.HostGenesisState
+ */
 export interface HostGenesisStateAmino {
   active_channels?: ActiveChannelAmino[];
   interchain_accounts?: RegisteredInterchainAccountAmino[];
@@ -85,6 +101,9 @@ export interface ActiveChannelProtoMsg {
 /**
  * ActiveChannel contains a connection ID, port ID and associated active channel ID, as well as a boolean flag to
  * indicate if the channel is middleware enabled
+ * @name ActiveChannelAmino
+ * @package ibc.applications.interchain_accounts.genesis.v1
+ * @see proto type: ibc.applications.interchain_accounts.genesis.v1.ActiveChannel
  */
 export interface ActiveChannelAmino {
   connection_id?: string;
@@ -106,7 +125,12 @@ export interface RegisteredInterchainAccountProtoMsg {
   typeUrl: "/ibc.applications.interchain_accounts.genesis.v1.RegisteredInterchainAccount";
   value: Uint8Array;
 }
-/** RegisteredInterchainAccount contains a connection ID, port ID and associated interchain account address */
+/**
+ * RegisteredInterchainAccount contains a connection ID, port ID and associated interchain account address
+ * @name RegisteredInterchainAccountAmino
+ * @package ibc.applications.interchain_accounts.genesis.v1
+ * @see proto type: ibc.applications.interchain_accounts.genesis.v1.RegisteredInterchainAccount
+ */
 export interface RegisteredInterchainAccountAmino {
   connection_id?: string;
   port_id?: string;
@@ -161,7 +185,7 @@ export const GenesisState = {
       obj.hostGenesisState = HostGenesisState.fromJSON(object.hostGenesisState);
     return obj;
   },
-  toJSON(message: GenesisState): unknown {
+  toJSON(message: GenesisState): JsonSafe<GenesisState> {
     const obj: any = {};
     message.controllerGenesisState !== undefined &&
       (obj.controllerGenesisState = message.controllerGenesisState
@@ -288,7 +312,7 @@ export const ControllerGenesisState = {
     if (isSet(object.params)) obj.params = Params1.fromJSON(object.params);
     return obj;
   },
-  toJSON(message: ControllerGenesisState): unknown {
+  toJSON(message: ControllerGenesisState): JsonSafe<ControllerGenesisState> {
     const obj: any = {};
     if (message.activeChannels) {
       obj.activeChannels = message.activeChannels.map((e) => (e ? ActiveChannel.toJSON(e) : undefined));
@@ -338,19 +362,19 @@ export const ControllerGenesisState = {
     if (message.activeChannels) {
       obj.active_channels = message.activeChannels.map((e) => (e ? ActiveChannel.toAmino(e) : undefined));
     } else {
-      obj.active_channels = [];
+      obj.active_channels = message.activeChannels;
     }
     if (message.interchainAccounts) {
       obj.interchain_accounts = message.interchainAccounts.map((e) =>
         e ? RegisteredInterchainAccount.toAmino(e) : undefined,
       );
     } else {
-      obj.interchain_accounts = [];
+      obj.interchain_accounts = message.interchainAccounts;
     }
     if (message.ports) {
       obj.ports = message.ports.map((e) => e);
     } else {
-      obj.ports = [];
+      obj.ports = message.ports;
     }
     obj.params = message.params ? Params1.toAmino(message.params) : undefined;
     return obj;
@@ -440,7 +464,7 @@ export const HostGenesisState = {
     if (isSet(object.params)) obj.params = Params2.fromJSON(object.params);
     return obj;
   },
-  toJSON(message: HostGenesisState): unknown {
+  toJSON(message: HostGenesisState): JsonSafe<HostGenesisState> {
     const obj: any = {};
     if (message.activeChannels) {
       obj.activeChannels = message.activeChannels.map((e) => (e ? ActiveChannel.toJSON(e) : undefined));
@@ -488,16 +512,16 @@ export const HostGenesisState = {
     if (message.activeChannels) {
       obj.active_channels = message.activeChannels.map((e) => (e ? ActiveChannel.toAmino(e) : undefined));
     } else {
-      obj.active_channels = [];
+      obj.active_channels = message.activeChannels;
     }
     if (message.interchainAccounts) {
       obj.interchain_accounts = message.interchainAccounts.map((e) =>
         e ? RegisteredInterchainAccount.toAmino(e) : undefined,
       );
     } else {
-      obj.interchain_accounts = [];
+      obj.interchain_accounts = message.interchainAccounts;
     }
-    obj.port = message.port;
+    obj.port = message.port === "" ? undefined : message.port;
     obj.params = message.params ? Params2.toAmino(message.params) : undefined;
     return obj;
   },
@@ -582,7 +606,7 @@ export const ActiveChannel = {
     if (isSet(object.isMiddlewareEnabled)) obj.isMiddlewareEnabled = Boolean(object.isMiddlewareEnabled);
     return obj;
   },
-  toJSON(message: ActiveChannel): unknown {
+  toJSON(message: ActiveChannel): JsonSafe<ActiveChannel> {
     const obj: any = {};
     message.connectionId !== undefined && (obj.connectionId = message.connectionId);
     message.portId !== undefined && (obj.portId = message.portId);
@@ -616,10 +640,11 @@ export const ActiveChannel = {
   },
   toAmino(message: ActiveChannel): ActiveChannelAmino {
     const obj: any = {};
-    obj.connection_id = message.connectionId;
-    obj.port_id = message.portId;
-    obj.channel_id = message.channelId;
-    obj.is_middleware_enabled = message.isMiddlewareEnabled;
+    obj.connection_id = message.connectionId === "" ? undefined : message.connectionId;
+    obj.port_id = message.portId === "" ? undefined : message.portId;
+    obj.channel_id = message.channelId === "" ? undefined : message.channelId;
+    obj.is_middleware_enabled =
+      message.isMiddlewareEnabled === false ? undefined : message.isMiddlewareEnabled;
     return obj;
   },
   fromAminoMsg(object: ActiveChannelAminoMsg): ActiveChannel {
@@ -695,7 +720,7 @@ export const RegisteredInterchainAccount = {
     if (isSet(object.accountAddress)) obj.accountAddress = String(object.accountAddress);
     return obj;
   },
-  toJSON(message: RegisteredInterchainAccount): unknown {
+  toJSON(message: RegisteredInterchainAccount): JsonSafe<RegisteredInterchainAccount> {
     const obj: any = {};
     message.connectionId !== undefined && (obj.connectionId = message.connectionId);
     message.portId !== undefined && (obj.portId = message.portId);
@@ -724,9 +749,9 @@ export const RegisteredInterchainAccount = {
   },
   toAmino(message: RegisteredInterchainAccount): RegisteredInterchainAccountAmino {
     const obj: any = {};
-    obj.connection_id = message.connectionId;
-    obj.port_id = message.portId;
-    obj.account_address = message.accountAddress;
+    obj.connection_id = message.connectionId === "" ? undefined : message.connectionId;
+    obj.port_id = message.portId === "" ? undefined : message.portId;
+    obj.account_address = message.accountAddress === "" ? undefined : message.accountAddress;
     return obj;
   },
   fromAminoMsg(object: RegisteredInterchainAccountAminoMsg): RegisteredInterchainAccount {

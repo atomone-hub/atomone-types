@@ -1,6 +1,7 @@
 /* eslint-disable */
 import { Coin, CoinAmino } from "../../base/v1beta1/coin";
 import { BinaryReader, BinaryWriter } from "../../../binary";
+import { JsonSafe } from "../../../json-safe";
 export const protobufPackage = "cosmos.bank.v1beta1";
 /**
  * SendAuthorization allows the grantee to spend up to spend_limit coins from
@@ -27,6 +28,9 @@ export interface SendAuthorizationProtoMsg {
  * the granter's account.
  *
  * Since: cosmos-sdk 0.43
+ * @name SendAuthorizationAmino
+ * @package cosmos.bank.v1beta1
+ * @see proto type: cosmos.bank.v1beta1.SendAuthorization
  */
 export interface SendAuthorizationAmino {
   spend_limit: CoinAmino[];
@@ -86,7 +90,7 @@ export const SendAuthorization = {
     if (Array.isArray(object?.allowList)) obj.allowList = object.allowList.map((e: any) => String(e));
     return obj;
   },
-  toJSON(message: SendAuthorization): unknown {
+  toJSON(message: SendAuthorization): JsonSafe<SendAuthorization> {
     const obj: any = {};
     if (message.spendLimit) {
       obj.spendLimit = message.spendLimit.map((e) => (e ? Coin.toJSON(e) : undefined));
@@ -117,12 +121,12 @@ export const SendAuthorization = {
     if (message.spendLimit) {
       obj.spend_limit = message.spendLimit.map((e) => (e ? Coin.toAmino(e) : undefined));
     } else {
-      obj.spend_limit = [];
+      obj.spend_limit = message.spendLimit;
     }
     if (message.allowList) {
       obj.allow_list = message.allowList.map((e) => e);
     } else {
-      obj.allow_list = [];
+      obj.allow_list = message.allowList;
     }
     return obj;
   },

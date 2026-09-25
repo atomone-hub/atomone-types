@@ -26,6 +26,7 @@ import {
 } from "../../../cosmos/base/query/v1beta1/pagination";
 import { BinaryReader, BinaryWriter } from "../../../binary";
 import { isSet } from "../../../helpers";
+import { JsonSafe } from "../../../json-safe";
 import { TxRpc } from "../../../types";
 export const protobufPackage = "atomone.gov.v1beta1";
 /** QueryProposalRequest is the request type for the Query/Proposal RPC method. */
@@ -37,9 +38,16 @@ export interface QueryProposalRequestProtoMsg {
   typeUrl: "/atomone.gov.v1beta1.QueryProposalRequest";
   value: Uint8Array;
 }
-/** QueryProposalRequest is the request type for the Query/Proposal RPC method. */
+/**
+ * QueryProposalRequest is the request type for the Query/Proposal RPC method.
+ * @name QueryProposalRequestAmino
+ * @package atomone.gov.v1beta1
+ * @see proto type: atomone.gov.v1beta1.QueryProposalRequest
+ */
 export interface QueryProposalRequestAmino {
-  /** proposal_id defines the unique id of the proposal. */
+  /**
+   * proposal_id defines the unique id of the proposal.
+   */
   proposal_id?: string;
 }
 export interface QueryProposalRequestAminoMsg {
@@ -54,7 +62,12 @@ export interface QueryProposalResponseProtoMsg {
   typeUrl: "/atomone.gov.v1beta1.QueryProposalResponse";
   value: Uint8Array;
 }
-/** QueryProposalResponse is the response type for the Query/Proposal RPC method. */
+/**
+ * QueryProposalResponse is the response type for the Query/Proposal RPC method.
+ * @name QueryProposalResponseAmino
+ * @package atomone.gov.v1beta1
+ * @see proto type: atomone.gov.v1beta1.QueryProposalResponse
+ */
 export interface QueryProposalResponseAmino {
   proposal: ProposalAmino | undefined;
 }
@@ -77,15 +90,28 @@ export interface QueryProposalsRequestProtoMsg {
   typeUrl: "/atomone.gov.v1beta1.QueryProposalsRequest";
   value: Uint8Array;
 }
-/** QueryProposalsRequest is the request type for the Query/Proposals RPC method. */
+/**
+ * QueryProposalsRequest is the request type for the Query/Proposals RPC method.
+ * @name QueryProposalsRequestAmino
+ * @package atomone.gov.v1beta1
+ * @see proto type: atomone.gov.v1beta1.QueryProposalsRequest
+ */
 export interface QueryProposalsRequestAmino {
-  /** proposal_status defines the status of the proposals. */
+  /**
+   * proposal_status defines the status of the proposals.
+   */
   proposal_status?: ProposalStatus;
-  /** voter defines the voter address for the proposals. */
+  /**
+   * voter defines the voter address for the proposals.
+   */
   voter?: string;
-  /** depositor defines the deposit addresses from the proposals. */
+  /**
+   * depositor defines the deposit addresses from the proposals.
+   */
   depositor?: string;
-  /** pagination defines an optional pagination for the request. */
+  /**
+   * pagination defines an optional pagination for the request.
+   */
   pagination?: PageRequestAmino | undefined;
 }
 export interface QueryProposalsRequestAminoMsg {
@@ -109,11 +135,18 @@ export interface QueryProposalsResponseProtoMsg {
 /**
  * QueryProposalsResponse is the response type for the Query/Proposals RPC
  * method.
+ * @name QueryProposalsResponseAmino
+ * @package atomone.gov.v1beta1
+ * @see proto type: atomone.gov.v1beta1.QueryProposalsResponse
  */
 export interface QueryProposalsResponseAmino {
-  /** proposals defines all the requested governance proposals. */
+  /**
+   * proposals defines all the requested governance proposals.
+   */
   proposals: ProposalAmino[];
-  /** pagination defines the pagination in the response. */
+  /**
+   * pagination defines the pagination in the response.
+   */
   pagination?: PageResponseAmino | undefined;
 }
 export interface QueryProposalsResponseAminoMsg {
@@ -131,11 +164,20 @@ export interface QueryVoteRequestProtoMsg {
   typeUrl: "/atomone.gov.v1beta1.QueryVoteRequest";
   value: Uint8Array;
 }
-/** QueryVoteRequest is the request type for the Query/Vote RPC method. */
+/**
+ * QueryVoteRequest is the request type for the Query/Vote RPC method.
+ * @name QueryVoteRequestAmino
+ * @package atomone.gov.v1beta1
+ * @see proto type: atomone.gov.v1beta1.QueryVoteRequest
+ */
 export interface QueryVoteRequestAmino {
-  /** proposal_id defines the unique id of the proposal. */
+  /**
+   * proposal_id defines the unique id of the proposal.
+   */
   proposal_id?: string;
-  /** voter defines the voter address for the proposals. */
+  /**
+   * voter defines the voter address for the proposals.
+   */
   voter?: string;
 }
 export interface QueryVoteRequestAminoMsg {
@@ -151,9 +193,16 @@ export interface QueryVoteResponseProtoMsg {
   typeUrl: "/atomone.gov.v1beta1.QueryVoteResponse";
   value: Uint8Array;
 }
-/** QueryVoteResponse is the response type for the Query/Vote RPC method. */
+/**
+ * QueryVoteResponse is the response type for the Query/Vote RPC method.
+ * @name QueryVoteResponseAmino
+ * @package atomone.gov.v1beta1
+ * @see proto type: atomone.gov.v1beta1.QueryVoteResponse
+ */
 export interface QueryVoteResponseAmino {
-  /** vote defines the queried vote. */
+  /**
+   * vote defines the queried vote.
+   */
   vote: VoteAmino | undefined;
 }
 export interface QueryVoteResponseAminoMsg {
@@ -171,11 +220,20 @@ export interface QueryVotesRequestProtoMsg {
   typeUrl: "/atomone.gov.v1beta1.QueryVotesRequest";
   value: Uint8Array;
 }
-/** QueryVotesRequest is the request type for the Query/Votes RPC method. */
+/**
+ * QueryVotesRequest is the request type for the Query/Votes RPC method.
+ * @name QueryVotesRequestAmino
+ * @package atomone.gov.v1beta1
+ * @see proto type: atomone.gov.v1beta1.QueryVotesRequest
+ */
 export interface QueryVotesRequestAmino {
-  /** proposal_id defines the unique id of the proposal. */
+  /**
+   * proposal_id defines the unique id of the proposal.
+   */
   proposal_id?: string;
-  /** pagination defines an optional pagination for the request. */
+  /**
+   * pagination defines an optional pagination for the request.
+   */
   pagination?: PageRequestAmino | undefined;
 }
 export interface QueryVotesRequestAminoMsg {
@@ -193,11 +251,20 @@ export interface QueryVotesResponseProtoMsg {
   typeUrl: "/atomone.gov.v1beta1.QueryVotesResponse";
   value: Uint8Array;
 }
-/** QueryVotesResponse is the response type for the Query/Votes RPC method. */
+/**
+ * QueryVotesResponse is the response type for the Query/Votes RPC method.
+ * @name QueryVotesResponseAmino
+ * @package atomone.gov.v1beta1
+ * @see proto type: atomone.gov.v1beta1.QueryVotesResponse
+ */
 export interface QueryVotesResponseAmino {
-  /** votes defines the queried votes. */
+  /**
+   * votes defines the queried votes.
+   */
   votes: VoteAmino[];
-  /** pagination defines the pagination in the response. */
+  /**
+   * pagination defines the pagination in the response.
+   */
   pagination?: PageResponseAmino | undefined;
 }
 export interface QueryVotesResponseAminoMsg {
@@ -216,7 +283,12 @@ export interface QueryParamsRequestProtoMsg {
   typeUrl: "/atomone.gov.v1beta1.QueryParamsRequest";
   value: Uint8Array;
 }
-/** QueryParamsRequest is the request type for the Query/Params RPC method. */
+/**
+ * QueryParamsRequest is the request type for the Query/Params RPC method.
+ * @name QueryParamsRequestAmino
+ * @package atomone.gov.v1beta1
+ * @see proto type: atomone.gov.v1beta1.QueryParamsRequest
+ */
 export interface QueryParamsRequestAmino {
   /**
    * params_type defines which parameters to query for, can be one of "voting",
@@ -241,13 +313,24 @@ export interface QueryParamsResponseProtoMsg {
   typeUrl: "/atomone.gov.v1beta1.QueryParamsResponse";
   value: Uint8Array;
 }
-/** QueryParamsResponse is the response type for the Query/Params RPC method. */
+/**
+ * QueryParamsResponse is the response type for the Query/Params RPC method.
+ * @name QueryParamsResponseAmino
+ * @package atomone.gov.v1beta1
+ * @see proto type: atomone.gov.v1beta1.QueryParamsResponse
+ */
 export interface QueryParamsResponseAmino {
-  /** voting_params defines the parameters related to voting. */
+  /**
+   * voting_params defines the parameters related to voting.
+   */
   voting_params: VotingParamsAmino | undefined;
-  /** deposit_params defines the parameters related to deposit. */
+  /**
+   * deposit_params defines the parameters related to deposit.
+   */
   deposit_params: DepositParamsAmino | undefined;
-  /** tally_params defines the parameters related to tally. */
+  /**
+   * tally_params defines the parameters related to tally.
+   */
   tally_params: TallyParamsAmino | undefined;
 }
 export interface QueryParamsResponseAminoMsg {
@@ -265,11 +348,20 @@ export interface QueryDepositRequestProtoMsg {
   typeUrl: "/atomone.gov.v1beta1.QueryDepositRequest";
   value: Uint8Array;
 }
-/** QueryDepositRequest is the request type for the Query/Deposit RPC method. */
+/**
+ * QueryDepositRequest is the request type for the Query/Deposit RPC method.
+ * @name QueryDepositRequestAmino
+ * @package atomone.gov.v1beta1
+ * @see proto type: atomone.gov.v1beta1.QueryDepositRequest
+ */
 export interface QueryDepositRequestAmino {
-  /** proposal_id defines the unique id of the proposal. */
+  /**
+   * proposal_id defines the unique id of the proposal.
+   */
   proposal_id?: string;
-  /** depositor defines the deposit addresses from the proposals. */
+  /**
+   * depositor defines the deposit addresses from the proposals.
+   */
   depositor?: string;
 }
 export interface QueryDepositRequestAminoMsg {
@@ -285,9 +377,16 @@ export interface QueryDepositResponseProtoMsg {
   typeUrl: "/atomone.gov.v1beta1.QueryDepositResponse";
   value: Uint8Array;
 }
-/** QueryDepositResponse is the response type for the Query/Deposit RPC method. */
+/**
+ * QueryDepositResponse is the response type for the Query/Deposit RPC method.
+ * @name QueryDepositResponseAmino
+ * @package atomone.gov.v1beta1
+ * @see proto type: atomone.gov.v1beta1.QueryDepositResponse
+ */
 export interface QueryDepositResponseAmino {
-  /** deposit defines the requested deposit. */
+  /**
+   * deposit defines the requested deposit.
+   */
   deposit: DepositAmino | undefined;
 }
 export interface QueryDepositResponseAminoMsg {
@@ -305,11 +404,20 @@ export interface QueryDepositsRequestProtoMsg {
   typeUrl: "/atomone.gov.v1beta1.QueryDepositsRequest";
   value: Uint8Array;
 }
-/** QueryDepositsRequest is the request type for the Query/Deposits RPC method. */
+/**
+ * QueryDepositsRequest is the request type for the Query/Deposits RPC method.
+ * @name QueryDepositsRequestAmino
+ * @package atomone.gov.v1beta1
+ * @see proto type: atomone.gov.v1beta1.QueryDepositsRequest
+ */
 export interface QueryDepositsRequestAmino {
-  /** proposal_id defines the unique id of the proposal. */
+  /**
+   * proposal_id defines the unique id of the proposal.
+   */
   proposal_id?: string;
-  /** pagination defines an optional pagination for the request. */
+  /**
+   * pagination defines an optional pagination for the request.
+   */
   pagination?: PageRequestAmino | undefined;
 }
 export interface QueryDepositsRequestAminoMsg {
@@ -327,11 +435,20 @@ export interface QueryDepositsResponseProtoMsg {
   typeUrl: "/atomone.gov.v1beta1.QueryDepositsResponse";
   value: Uint8Array;
 }
-/** QueryDepositsResponse is the response type for the Query/Deposits RPC method. */
+/**
+ * QueryDepositsResponse is the response type for the Query/Deposits RPC method.
+ * @name QueryDepositsResponseAmino
+ * @package atomone.gov.v1beta1
+ * @see proto type: atomone.gov.v1beta1.QueryDepositsResponse
+ */
 export interface QueryDepositsResponseAmino {
-  /** deposits defines the requested deposits. */
+  /**
+   * deposits defines the requested deposits.
+   */
   deposits: DepositAmino[];
-  /** pagination defines the pagination in the response. */
+  /**
+   * pagination defines the pagination in the response.
+   */
   pagination?: PageResponseAmino | undefined;
 }
 export interface QueryDepositsResponseAminoMsg {
@@ -347,9 +464,16 @@ export interface QueryTallyResultRequestProtoMsg {
   typeUrl: "/atomone.gov.v1beta1.QueryTallyResultRequest";
   value: Uint8Array;
 }
-/** QueryTallyResultRequest is the request type for the Query/Tally RPC method. */
+/**
+ * QueryTallyResultRequest is the request type for the Query/Tally RPC method.
+ * @name QueryTallyResultRequestAmino
+ * @package atomone.gov.v1beta1
+ * @see proto type: atomone.gov.v1beta1.QueryTallyResultRequest
+ */
 export interface QueryTallyResultRequestAmino {
-  /** proposal_id defines the unique id of the proposal. */
+  /**
+   * proposal_id defines the unique id of the proposal.
+   */
   proposal_id?: string;
 }
 export interface QueryTallyResultRequestAminoMsg {
@@ -365,9 +489,16 @@ export interface QueryTallyResultResponseProtoMsg {
   typeUrl: "/atomone.gov.v1beta1.QueryTallyResultResponse";
   value: Uint8Array;
 }
-/** QueryTallyResultResponse is the response type for the Query/Tally RPC method. */
+/**
+ * QueryTallyResultResponse is the response type for the Query/Tally RPC method.
+ * @name QueryTallyResultResponseAmino
+ * @package atomone.gov.v1beta1
+ * @see proto type: atomone.gov.v1beta1.QueryTallyResultResponse
+ */
 export interface QueryTallyResultResponseAmino {
-  /** tally defines the requested tally. */
+  /**
+   * tally defines the requested tally.
+   */
   tally: TallyResultAmino | undefined;
 }
 export interface QueryTallyResultResponseAminoMsg {
@@ -409,7 +540,7 @@ export const QueryProposalRequest = {
     if (isSet(object.proposalId)) obj.proposalId = BigInt(object.proposalId.toString());
     return obj;
   },
-  toJSON(message: QueryProposalRequest): unknown {
+  toJSON(message: QueryProposalRequest): JsonSafe<QueryProposalRequest> {
     const obj: any = {};
     message.proposalId !== undefined && (obj.proposalId = (message.proposalId || BigInt(0)).toString());
     return obj;
@@ -430,7 +561,7 @@ export const QueryProposalRequest = {
   },
   toAmino(message: QueryProposalRequest): QueryProposalRequestAmino {
     const obj: any = {};
-    obj.proposal_id = message.proposalId ? message.proposalId.toString() : undefined;
+    obj.proposal_id = message.proposalId !== BigInt(0) ? message.proposalId?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: QueryProposalRequestAminoMsg): QueryProposalRequest {
@@ -484,7 +615,7 @@ export const QueryProposalResponse = {
     if (isSet(object.proposal)) obj.proposal = Proposal.fromJSON(object.proposal);
     return obj;
   },
-  toJSON(message: QueryProposalResponse): unknown {
+  toJSON(message: QueryProposalResponse): JsonSafe<QueryProposalResponse> {
     const obj: any = {};
     message.proposal !== undefined &&
       (obj.proposal = message.proposal ? Proposal.toJSON(message.proposal) : undefined);
@@ -506,7 +637,9 @@ export const QueryProposalResponse = {
   },
   toAmino(message: QueryProposalResponse): QueryProposalResponseAmino {
     const obj: any = {};
-    obj.proposal = message.proposal ? Proposal.toAmino(message.proposal) : Proposal.fromPartial({});
+    obj.proposal = message.proposal
+      ? Proposal.toAmino(message.proposal)
+      : Proposal.toAmino(Proposal.fromPartial({}));
     return obj;
   },
   fromAminoMsg(object: QueryProposalResponseAminoMsg): QueryProposalResponse {
@@ -584,7 +717,7 @@ export const QueryProposalsRequest = {
     if (isSet(object.pagination)) obj.pagination = PageRequest.fromJSON(object.pagination);
     return obj;
   },
-  toJSON(message: QueryProposalsRequest): unknown {
+  toJSON(message: QueryProposalsRequest): JsonSafe<QueryProposalsRequest> {
     const obj: any = {};
     message.proposalStatus !== undefined &&
       (obj.proposalStatus = proposalStatusToJSON(message.proposalStatus));
@@ -607,7 +740,7 @@ export const QueryProposalsRequest = {
   fromAmino(object: QueryProposalsRequestAmino): QueryProposalsRequest {
     const message = createBaseQueryProposalsRequest();
     if (object.proposal_status !== undefined && object.proposal_status !== null) {
-      message.proposalStatus = proposalStatusFromJSON(object.proposal_status);
+      message.proposalStatus = object.proposal_status;
     }
     if (object.voter !== undefined && object.voter !== null) {
       message.voter = object.voter;
@@ -622,9 +755,9 @@ export const QueryProposalsRequest = {
   },
   toAmino(message: QueryProposalsRequest): QueryProposalsRequestAmino {
     const obj: any = {};
-    obj.proposal_status = message.proposalStatus;
-    obj.voter = message.voter;
-    obj.depositor = message.depositor;
+    obj.proposal_status = message.proposalStatus === 0 ? undefined : message.proposalStatus;
+    obj.voter = message.voter === "" ? undefined : message.voter;
+    obj.depositor = message.depositor === "" ? undefined : message.depositor;
     obj.pagination = message.pagination ? PageRequest.toAmino(message.pagination) : undefined;
     return obj;
   },
@@ -688,7 +821,7 @@ export const QueryProposalsResponse = {
     if (isSet(object.pagination)) obj.pagination = PageResponse.fromJSON(object.pagination);
     return obj;
   },
-  toJSON(message: QueryProposalsResponse): unknown {
+  toJSON(message: QueryProposalsResponse): JsonSafe<QueryProposalsResponse> {
     const obj: any = {};
     if (message.proposals) {
       obj.proposals = message.proposals.map((e) => (e ? Proposal.toJSON(e) : undefined));
@@ -720,7 +853,7 @@ export const QueryProposalsResponse = {
     if (message.proposals) {
       obj.proposals = message.proposals.map((e) => (e ? Proposal.toAmino(e) : undefined));
     } else {
-      obj.proposals = [];
+      obj.proposals = message.proposals;
     }
     obj.pagination = message.pagination ? PageResponse.toAmino(message.pagination) : undefined;
     return obj;
@@ -784,7 +917,7 @@ export const QueryVoteRequest = {
     if (isSet(object.voter)) obj.voter = String(object.voter);
     return obj;
   },
-  toJSON(message: QueryVoteRequest): unknown {
+  toJSON(message: QueryVoteRequest): JsonSafe<QueryVoteRequest> {
     const obj: any = {};
     message.proposalId !== undefined && (obj.proposalId = (message.proposalId || BigInt(0)).toString());
     message.voter !== undefined && (obj.voter = message.voter);
@@ -810,8 +943,8 @@ export const QueryVoteRequest = {
   },
   toAmino(message: QueryVoteRequest): QueryVoteRequestAmino {
     const obj: any = {};
-    obj.proposal_id = message.proposalId ? message.proposalId.toString() : undefined;
-    obj.voter = message.voter;
+    obj.proposal_id = message.proposalId !== BigInt(0) ? message.proposalId?.toString() : undefined;
+    obj.voter = message.voter === "" ? undefined : message.voter;
     return obj;
   },
   fromAminoMsg(object: QueryVoteRequestAminoMsg): QueryVoteRequest {
@@ -865,7 +998,7 @@ export const QueryVoteResponse = {
     if (isSet(object.vote)) obj.vote = Vote.fromJSON(object.vote);
     return obj;
   },
-  toJSON(message: QueryVoteResponse): unknown {
+  toJSON(message: QueryVoteResponse): JsonSafe<QueryVoteResponse> {
     const obj: any = {};
     message.vote !== undefined && (obj.vote = message.vote ? Vote.toJSON(message.vote) : undefined);
     return obj;
@@ -886,7 +1019,7 @@ export const QueryVoteResponse = {
   },
   toAmino(message: QueryVoteResponse): QueryVoteResponseAmino {
     const obj: any = {};
-    obj.vote = message.vote ? Vote.toAmino(message.vote) : Vote.fromPartial({});
+    obj.vote = message.vote ? Vote.toAmino(message.vote) : Vote.toAmino(Vote.fromPartial({}));
     return obj;
   },
   fromAminoMsg(object: QueryVoteResponseAminoMsg): QueryVoteResponse {
@@ -948,7 +1081,7 @@ export const QueryVotesRequest = {
     if (isSet(object.pagination)) obj.pagination = PageRequest.fromJSON(object.pagination);
     return obj;
   },
-  toJSON(message: QueryVotesRequest): unknown {
+  toJSON(message: QueryVotesRequest): JsonSafe<QueryVotesRequest> {
     const obj: any = {};
     message.proposalId !== undefined && (obj.proposalId = (message.proposalId || BigInt(0)).toString());
     message.pagination !== undefined &&
@@ -977,7 +1110,7 @@ export const QueryVotesRequest = {
   },
   toAmino(message: QueryVotesRequest): QueryVotesRequestAmino {
     const obj: any = {};
-    obj.proposal_id = message.proposalId ? message.proposalId.toString() : undefined;
+    obj.proposal_id = message.proposalId !== BigInt(0) ? message.proposalId?.toString() : undefined;
     obj.pagination = message.pagination ? PageRequest.toAmino(message.pagination) : undefined;
     return obj;
   },
@@ -1040,7 +1173,7 @@ export const QueryVotesResponse = {
     if (isSet(object.pagination)) obj.pagination = PageResponse.fromJSON(object.pagination);
     return obj;
   },
-  toJSON(message: QueryVotesResponse): unknown {
+  toJSON(message: QueryVotesResponse): JsonSafe<QueryVotesResponse> {
     const obj: any = {};
     if (message.votes) {
       obj.votes = message.votes.map((e) => (e ? Vote.toJSON(e) : undefined));
@@ -1072,7 +1205,7 @@ export const QueryVotesResponse = {
     if (message.votes) {
       obj.votes = message.votes.map((e) => (e ? Vote.toAmino(e) : undefined));
     } else {
-      obj.votes = [];
+      obj.votes = message.votes;
     }
     obj.pagination = message.pagination ? PageResponse.toAmino(message.pagination) : undefined;
     return obj;
@@ -1128,7 +1261,7 @@ export const QueryParamsRequest = {
     if (isSet(object.paramsType)) obj.paramsType = String(object.paramsType);
     return obj;
   },
-  toJSON(message: QueryParamsRequest): unknown {
+  toJSON(message: QueryParamsRequest): JsonSafe<QueryParamsRequest> {
     const obj: any = {};
     message.paramsType !== undefined && (obj.paramsType = message.paramsType);
     return obj;
@@ -1147,7 +1280,7 @@ export const QueryParamsRequest = {
   },
   toAmino(message: QueryParamsRequest): QueryParamsRequestAmino {
     const obj: any = {};
-    obj.params_type = message.paramsType;
+    obj.params_type = message.paramsType === "" ? undefined : message.paramsType;
     return obj;
   },
   fromAminoMsg(object: QueryParamsRequestAminoMsg): QueryParamsRequest {
@@ -1217,7 +1350,7 @@ export const QueryParamsResponse = {
     if (isSet(object.tallyParams)) obj.tallyParams = TallyParams.fromJSON(object.tallyParams);
     return obj;
   },
-  toJSON(message: QueryParamsResponse): unknown {
+  toJSON(message: QueryParamsResponse): JsonSafe<QueryParamsResponse> {
     const obj: any = {};
     message.votingParams !== undefined &&
       (obj.votingParams = message.votingParams ? VotingParams.toJSON(message.votingParams) : undefined);
@@ -1257,13 +1390,13 @@ export const QueryParamsResponse = {
     const obj: any = {};
     obj.voting_params = message.votingParams
       ? VotingParams.toAmino(message.votingParams)
-      : VotingParams.fromPartial({});
+      : VotingParams.toAmino(VotingParams.fromPartial({}));
     obj.deposit_params = message.depositParams
       ? DepositParams.toAmino(message.depositParams)
-      : DepositParams.fromPartial({});
+      : DepositParams.toAmino(DepositParams.fromPartial({}));
     obj.tally_params = message.tallyParams
       ? TallyParams.toAmino(message.tallyParams)
-      : TallyParams.fromPartial({});
+      : TallyParams.toAmino(TallyParams.fromPartial({}));
     return obj;
   },
   fromAminoMsg(object: QueryParamsResponseAminoMsg): QueryParamsResponse {
@@ -1325,7 +1458,7 @@ export const QueryDepositRequest = {
     if (isSet(object.depositor)) obj.depositor = String(object.depositor);
     return obj;
   },
-  toJSON(message: QueryDepositRequest): unknown {
+  toJSON(message: QueryDepositRequest): JsonSafe<QueryDepositRequest> {
     const obj: any = {};
     message.proposalId !== undefined && (obj.proposalId = (message.proposalId || BigInt(0)).toString());
     message.depositor !== undefined && (obj.depositor = message.depositor);
@@ -1351,8 +1484,8 @@ export const QueryDepositRequest = {
   },
   toAmino(message: QueryDepositRequest): QueryDepositRequestAmino {
     const obj: any = {};
-    obj.proposal_id = message.proposalId ? message.proposalId.toString() : undefined;
-    obj.depositor = message.depositor;
+    obj.proposal_id = message.proposalId !== BigInt(0) ? message.proposalId?.toString() : undefined;
+    obj.depositor = message.depositor === "" ? undefined : message.depositor;
     return obj;
   },
   fromAminoMsg(object: QueryDepositRequestAminoMsg): QueryDepositRequest {
@@ -1406,7 +1539,7 @@ export const QueryDepositResponse = {
     if (isSet(object.deposit)) obj.deposit = Deposit.fromJSON(object.deposit);
     return obj;
   },
-  toJSON(message: QueryDepositResponse): unknown {
+  toJSON(message: QueryDepositResponse): JsonSafe<QueryDepositResponse> {
     const obj: any = {};
     message.deposit !== undefined &&
       (obj.deposit = message.deposit ? Deposit.toJSON(message.deposit) : undefined);
@@ -1428,7 +1561,9 @@ export const QueryDepositResponse = {
   },
   toAmino(message: QueryDepositResponse): QueryDepositResponseAmino {
     const obj: any = {};
-    obj.deposit = message.deposit ? Deposit.toAmino(message.deposit) : Deposit.fromPartial({});
+    obj.deposit = message.deposit
+      ? Deposit.toAmino(message.deposit)
+      : Deposit.toAmino(Deposit.fromPartial({}));
     return obj;
   },
   fromAminoMsg(object: QueryDepositResponseAminoMsg): QueryDepositResponse {
@@ -1490,7 +1625,7 @@ export const QueryDepositsRequest = {
     if (isSet(object.pagination)) obj.pagination = PageRequest.fromJSON(object.pagination);
     return obj;
   },
-  toJSON(message: QueryDepositsRequest): unknown {
+  toJSON(message: QueryDepositsRequest): JsonSafe<QueryDepositsRequest> {
     const obj: any = {};
     message.proposalId !== undefined && (obj.proposalId = (message.proposalId || BigInt(0)).toString());
     message.pagination !== undefined &&
@@ -1519,7 +1654,7 @@ export const QueryDepositsRequest = {
   },
   toAmino(message: QueryDepositsRequest): QueryDepositsRequestAmino {
     const obj: any = {};
-    obj.proposal_id = message.proposalId ? message.proposalId.toString() : undefined;
+    obj.proposal_id = message.proposalId !== BigInt(0) ? message.proposalId?.toString() : undefined;
     obj.pagination = message.pagination ? PageRequest.toAmino(message.pagination) : undefined;
     return obj;
   },
@@ -1582,7 +1717,7 @@ export const QueryDepositsResponse = {
     if (isSet(object.pagination)) obj.pagination = PageResponse.fromJSON(object.pagination);
     return obj;
   },
-  toJSON(message: QueryDepositsResponse): unknown {
+  toJSON(message: QueryDepositsResponse): JsonSafe<QueryDepositsResponse> {
     const obj: any = {};
     if (message.deposits) {
       obj.deposits = message.deposits.map((e) => (e ? Deposit.toJSON(e) : undefined));
@@ -1614,7 +1749,7 @@ export const QueryDepositsResponse = {
     if (message.deposits) {
       obj.deposits = message.deposits.map((e) => (e ? Deposit.toAmino(e) : undefined));
     } else {
-      obj.deposits = [];
+      obj.deposits = message.deposits;
     }
     obj.pagination = message.pagination ? PageResponse.toAmino(message.pagination) : undefined;
     return obj;
@@ -1670,7 +1805,7 @@ export const QueryTallyResultRequest = {
     if (isSet(object.proposalId)) obj.proposalId = BigInt(object.proposalId.toString());
     return obj;
   },
-  toJSON(message: QueryTallyResultRequest): unknown {
+  toJSON(message: QueryTallyResultRequest): JsonSafe<QueryTallyResultRequest> {
     const obj: any = {};
     message.proposalId !== undefined && (obj.proposalId = (message.proposalId || BigInt(0)).toString());
     return obj;
@@ -1691,7 +1826,7 @@ export const QueryTallyResultRequest = {
   },
   toAmino(message: QueryTallyResultRequest): QueryTallyResultRequestAmino {
     const obj: any = {};
-    obj.proposal_id = message.proposalId ? message.proposalId.toString() : undefined;
+    obj.proposal_id = message.proposalId !== BigInt(0) ? message.proposalId?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: QueryTallyResultRequestAminoMsg): QueryTallyResultRequest {
@@ -1745,7 +1880,7 @@ export const QueryTallyResultResponse = {
     if (isSet(object.tally)) obj.tally = TallyResult.fromJSON(object.tally);
     return obj;
   },
-  toJSON(message: QueryTallyResultResponse): unknown {
+  toJSON(message: QueryTallyResultResponse): JsonSafe<QueryTallyResultResponse> {
     const obj: any = {};
     message.tally !== undefined &&
       (obj.tally = message.tally ? TallyResult.toJSON(message.tally) : undefined);
@@ -1767,7 +1902,9 @@ export const QueryTallyResultResponse = {
   },
   toAmino(message: QueryTallyResultResponse): QueryTallyResultResponseAmino {
     const obj: any = {};
-    obj.tally = message.tally ? TallyResult.toAmino(message.tally) : TallyResult.fromPartial({});
+    obj.tally = message.tally
+      ? TallyResult.toAmino(message.tally)
+      : TallyResult.toAmino(TallyResult.fromPartial({}));
     return obj;
   },
   fromAminoMsg(object: QueryTallyResultResponseAminoMsg): QueryTallyResultResponse {

@@ -1,6 +1,7 @@
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "../../../../../binary";
 import { isSet, bytesFromBase64, base64FromBytes } from "../../../../../helpers";
+import { JsonSafe } from "../../../../../json-safe";
 export const protobufPackage = "ibc.applications.interchain_accounts.host.v1";
 /**
  * Params defines the set of on-chain interchain accounts parameters.
@@ -19,11 +20,18 @@ export interface ParamsProtoMsg {
 /**
  * Params defines the set of on-chain interchain accounts parameters.
  * The following parameters may be used to disable the host submodule.
+ * @name ParamsAmino
+ * @package ibc.applications.interchain_accounts.host.v1
+ * @see proto type: ibc.applications.interchain_accounts.host.v1.Params
  */
 export interface ParamsAmino {
-  /** host_enabled enables or disables the host submodule. */
+  /**
+   * host_enabled enables or disables the host submodule.
+   */
   host_enabled?: boolean;
-  /** allow_messages defines a list of sdk message typeURLs allowed to be executed on a host chain. */
+  /**
+   * allow_messages defines a list of sdk message typeURLs allowed to be executed on a host chain.
+   */
   allow_messages?: string[];
 }
 export interface ParamsAminoMsg {
@@ -53,6 +61,9 @@ export interface QueryRequestProtoMsg {
 /**
  * QueryRequest defines the parameters for a particular query request
  * by an interchain account.
+ * @name QueryRequestAmino
+ * @package ibc.applications.interchain_accounts.host.v1
+ * @see proto type: ibc.applications.interchain_accounts.host.v1.QueryRequest
  */
 export interface QueryRequestAmino {
   /**
@@ -114,7 +125,7 @@ export const Params = {
       obj.allowMessages = object.allowMessages.map((e: any) => String(e));
     return obj;
   },
-  toJSON(message: Params): unknown {
+  toJSON(message: Params): JsonSafe<Params> {
     const obj: any = {};
     message.hostEnabled !== undefined && (obj.hostEnabled = message.hostEnabled);
     if (message.allowMessages) {
@@ -140,11 +151,11 @@ export const Params = {
   },
   toAmino(message: Params): ParamsAmino {
     const obj: any = {};
-    obj.host_enabled = message.hostEnabled;
+    obj.host_enabled = message.hostEnabled === false ? undefined : message.hostEnabled;
     if (message.allowMessages) {
       obj.allow_messages = message.allowMessages.map((e) => e);
     } else {
-      obj.allow_messages = [];
+      obj.allow_messages = message.allowMessages;
     }
     return obj;
   },
@@ -213,7 +224,7 @@ export const QueryRequest = {
     if (isSet(object.data)) obj.data = bytesFromBase64(object.data);
     return obj;
   },
-  toJSON(message: QueryRequest): unknown {
+  toJSON(message: QueryRequest): JsonSafe<QueryRequest> {
     const obj: any = {};
     message.path !== undefined && (obj.path = message.path);
     message.data !== undefined &&
@@ -238,7 +249,7 @@ export const QueryRequest = {
   },
   toAmino(message: QueryRequest): QueryRequestAmino {
     const obj: any = {};
-    obj.path = message.path;
+    obj.path = message.path === "" ? undefined : message.path;
     obj.data = message.data ? base64FromBytes(message.data) : undefined;
     return obj;
   },

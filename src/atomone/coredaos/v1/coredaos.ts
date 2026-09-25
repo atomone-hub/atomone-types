@@ -2,6 +2,7 @@
 import { Duration, DurationAmino } from "../../../google/protobuf/duration";
 import { BinaryReader, BinaryWriter } from "../../../binary";
 import { isSet } from "../../../helpers";
+import { JsonSafe } from "../../../json-safe";
 export const protobufPackage = "atomone.coredaos.v1";
 /** Params defines the parameters for the x/coredaos module. */
 export interface Params {
@@ -30,7 +31,12 @@ export interface ParamsProtoMsg {
   typeUrl: "/atomone.coredaos.v1.Params";
   value: Uint8Array;
 }
-/** Params defines the parameters for the x/coredaos module. */
+/**
+ * Params defines the parameters for the x/coredaos module.
+ * @name ParamsAmino
+ * @package atomone.coredaos.v1
+ * @see proto type: atomone.coredaos.v1.Params
+ */
 export interface ParamsAmino {
   /**
    * steering_dao_address defines the address which has authority
@@ -118,7 +124,7 @@ export const Params = {
       obj.votingPeriodExtensionDuration = Duration.fromJSON(object.votingPeriodExtensionDuration);
     return obj;
   },
-  toJSON(message: Params): unknown {
+  toJSON(message: Params): JsonSafe<Params> {
     const obj: any = {};
     message.steeringDaoAddress !== undefined && (obj.steeringDaoAddress = message.steeringDaoAddress);
     message.oversightDaoAddress !== undefined && (obj.oversightDaoAddress = message.oversightDaoAddress);
@@ -164,9 +170,10 @@ export const Params = {
   },
   toAmino(message: Params): ParamsAmino {
     const obj: any = {};
-    obj.steering_dao_address = message.steeringDaoAddress;
-    obj.oversight_dao_address = message.oversightDaoAddress;
-    obj.voting_period_extensions_limit = message.votingPeriodExtensionsLimit;
+    obj.steering_dao_address = message.steeringDaoAddress === "" ? undefined : message.steeringDaoAddress;
+    obj.oversight_dao_address = message.oversightDaoAddress === "" ? undefined : message.oversightDaoAddress;
+    obj.voting_period_extensions_limit =
+      message.votingPeriodExtensionsLimit === 0 ? undefined : message.votingPeriodExtensionsLimit;
     obj.voting_period_extension_duration = message.votingPeriodExtensionDuration
       ? Duration.toAmino(message.votingPeriodExtensionDuration)
       : undefined;

@@ -2,6 +2,7 @@
 import { Coin, CoinAmino } from "../../base/v1beta1/coin";
 import { BinaryReader, BinaryWriter } from "../../../binary";
 import { isSet } from "../../../helpers";
+import { JsonSafe } from "../../../json-safe";
 export const protobufPackage = "cosmos.bank.v1beta1";
 /** Params defines the parameters for the bank module. */
 export interface Params {
@@ -20,7 +21,12 @@ export interface ParamsProtoMsg {
   typeUrl: "/cosmos.bank.v1beta1.Params";
   value: Uint8Array;
 }
-/** Params defines the parameters for the bank module. */
+/**
+ * Params defines the parameters for the bank module.
+ * @name ParamsAmino
+ * @package cosmos.bank.v1beta1
+ * @see proto type: cosmos.bank.v1beta1.Params
+ */
 export interface ParamsAmino {
   /**
    * Deprecated: Use of SendEnabled in params is deprecated.
@@ -28,8 +34,8 @@ export interface ParamsAmino {
    * Storage, lookup, and manipulation of this information is now in the keeper.
    *
    * As of cosmos-sdk 0.47, this only exists for backwards compatibility of genesis files.
+   * @deprecated
    */
-  /** @deprecated */
   send_enabled?: SendEnabledAmino[];
   default_send_enabled?: boolean;
 }
@@ -52,6 +58,9 @@ export interface SendEnabledProtoMsg {
 /**
  * SendEnabled maps coin denom to a send_enabled status (whether a denom is
  * sendable).
+ * @name SendEnabledAmino
+ * @package cosmos.bank.v1beta1
+ * @see proto type: cosmos.bank.v1beta1.SendEnabled
  */
 export interface SendEnabledAmino {
   denom?: string;
@@ -70,7 +79,12 @@ export interface InputProtoMsg {
   typeUrl: "/cosmos.bank.v1beta1.Input";
   value: Uint8Array;
 }
-/** Input models transaction input. */
+/**
+ * Input models transaction input.
+ * @name InputAmino
+ * @package cosmos.bank.v1beta1
+ * @see proto type: cosmos.bank.v1beta1.Input
+ */
 export interface InputAmino {
   address?: string;
   coins: CoinAmino[];
@@ -88,7 +102,12 @@ export interface OutputProtoMsg {
   typeUrl: "/cosmos.bank.v1beta1.Output";
   value: Uint8Array;
 }
-/** Output models transaction outputs. */
+/**
+ * Output models transaction outputs.
+ * @name OutputAmino
+ * @package cosmos.bank.v1beta1
+ * @see proto type: cosmos.bank.v1beta1.Output
+ */
 export interface OutputAmino {
   address?: string;
   coins: CoinAmino[];
@@ -114,8 +133,11 @@ export interface SupplyProtoMsg {
  * Supply represents a struct that passively keeps track of the total supply
  * amounts in the network.
  * This message is deprecated now that supply is indexed by denom.
+ * @name SupplyAmino
+ * @package cosmos.bank.v1beta1
+ * @see proto type: cosmos.bank.v1beta1.Supply
+ * @deprecated
  */
-/** @deprecated */
 export interface SupplyAmino {
   total: CoinAmino[];
 }
@@ -148,9 +170,14 @@ export interface DenomUnitProtoMsg {
 /**
  * DenomUnit represents a struct that describes a given
  * denomination unit of the basic token.
+ * @name DenomUnitAmino
+ * @package cosmos.bank.v1beta1
+ * @see proto type: cosmos.bank.v1beta1.DenomUnit
  */
 export interface DenomUnitAmino {
-  /** denom represents the string name of the given denom unit (e.g uatom). */
+  /**
+   * denom represents the string name of the given denom unit (e.g uatom).
+   */
   denom?: string;
   /**
    * exponent represents power of 10 exponent that one must
@@ -160,7 +187,9 @@ export interface DenomUnitAmino {
    * exponent = 6, thus: 1 atom = 10^6 uatom).
    */
   exponent?: number;
-  /** aliases is a list of string aliases for the given denom */
+  /**
+   * aliases is a list of string aliases for the given denom
+   */
   aliases?: string[];
 }
 export interface DenomUnitAminoMsg {
@@ -216,12 +245,19 @@ export interface MetadataProtoMsg {
 /**
  * Metadata represents a struct that describes
  * a basic token.
+ * @name MetadataAmino
+ * @package cosmos.bank.v1beta1
+ * @see proto type: cosmos.bank.v1beta1.Metadata
  */
 export interface MetadataAmino {
   description?: string;
-  /** denom_units represents the list of DenomUnit's for a given coin */
+  /**
+   * denom_units represents the list of DenomUnit's for a given coin
+   */
   denom_units?: DenomUnitAmino[];
-  /** base represents the base denom (should be the DenomUnit with exponent = 0). */
+  /**
+   * base represents the base denom (should be the DenomUnit with exponent = 0).
+   */
   base?: string;
   /**
    * display indicates the suggested denom that should be
@@ -303,7 +339,7 @@ export const Params = {
     if (isSet(object.defaultSendEnabled)) obj.defaultSendEnabled = Boolean(object.defaultSendEnabled);
     return obj;
   },
-  toJSON(message: Params): unknown {
+  toJSON(message: Params): JsonSafe<Params> {
     const obj: any = {};
     if (message.sendEnabled) {
       obj.sendEnabled = message.sendEnabled.map((e) => (e ? SendEnabled.toJSON(e) : undefined));
@@ -332,9 +368,9 @@ export const Params = {
     if (message.sendEnabled) {
       obj.send_enabled = message.sendEnabled.map((e) => (e ? SendEnabled.toAmino(e) : undefined));
     } else {
-      obj.send_enabled = [];
+      obj.send_enabled = message.sendEnabled;
     }
-    obj.default_send_enabled = message.defaultSendEnabled;
+    obj.default_send_enabled = message.defaultSendEnabled === false ? undefined : message.defaultSendEnabled;
     return obj;
   },
   fromAminoMsg(object: ParamsAminoMsg): Params {
@@ -402,7 +438,7 @@ export const SendEnabled = {
     if (isSet(object.enabled)) obj.enabled = Boolean(object.enabled);
     return obj;
   },
-  toJSON(message: SendEnabled): unknown {
+  toJSON(message: SendEnabled): JsonSafe<SendEnabled> {
     const obj: any = {};
     message.denom !== undefined && (obj.denom = message.denom);
     message.enabled !== undefined && (obj.enabled = message.enabled);
@@ -426,8 +462,8 @@ export const SendEnabled = {
   },
   toAmino(message: SendEnabled): SendEnabledAmino {
     const obj: any = {};
-    obj.denom = message.denom;
-    obj.enabled = message.enabled;
+    obj.denom = message.denom === "" ? undefined : message.denom;
+    obj.enabled = message.enabled === false ? undefined : message.enabled;
     return obj;
   },
   fromAminoMsg(object: SendEnabledAminoMsg): SendEnabled {
@@ -495,7 +531,7 @@ export const Input = {
     if (Array.isArray(object?.coins)) obj.coins = object.coins.map((e: any) => Coin.fromJSON(e));
     return obj;
   },
-  toJSON(message: Input): unknown {
+  toJSON(message: Input): JsonSafe<Input> {
     const obj: any = {};
     message.address !== undefined && (obj.address = message.address);
     if (message.coins) {
@@ -521,11 +557,11 @@ export const Input = {
   },
   toAmino(message: Input): InputAmino {
     const obj: any = {};
-    obj.address = message.address;
+    obj.address = message.address === "" ? undefined : message.address;
     if (message.coins) {
       obj.coins = message.coins.map((e) => (e ? Coin.toAmino(e) : undefined));
     } else {
-      obj.coins = [];
+      obj.coins = message.coins;
     }
     return obj;
   },
@@ -594,7 +630,7 @@ export const Output = {
     if (Array.isArray(object?.coins)) obj.coins = object.coins.map((e: any) => Coin.fromJSON(e));
     return obj;
   },
-  toJSON(message: Output): unknown {
+  toJSON(message: Output): JsonSafe<Output> {
     const obj: any = {};
     message.address !== undefined && (obj.address = message.address);
     if (message.coins) {
@@ -620,11 +656,11 @@ export const Output = {
   },
   toAmino(message: Output): OutputAmino {
     const obj: any = {};
-    obj.address = message.address;
+    obj.address = message.address === "" ? undefined : message.address;
     if (message.coins) {
       obj.coins = message.coins.map((e) => (e ? Coin.toAmino(e) : undefined));
     } else {
-      obj.coins = [];
+      obj.coins = message.coins;
     }
     return obj;
   },
@@ -685,7 +721,7 @@ export const Supply = {
     if (Array.isArray(object?.total)) obj.total = object.total.map((e: any) => Coin.fromJSON(e));
     return obj;
   },
-  toJSON(message: Supply): unknown {
+  toJSON(message: Supply): JsonSafe<Supply> {
     const obj: any = {};
     if (message.total) {
       obj.total = message.total.map((e) => (e ? Coin.toJSON(e) : undefined));
@@ -709,7 +745,7 @@ export const Supply = {
     if (message.total) {
       obj.total = message.total.map((e) => (e ? Coin.toAmino(e) : undefined));
     } else {
-      obj.total = [];
+      obj.total = message.total;
     }
     return obj;
   },
@@ -786,7 +822,7 @@ export const DenomUnit = {
     if (Array.isArray(object?.aliases)) obj.aliases = object.aliases.map((e: any) => String(e));
     return obj;
   },
-  toJSON(message: DenomUnit): unknown {
+  toJSON(message: DenomUnit): JsonSafe<DenomUnit> {
     const obj: any = {};
     message.denom !== undefined && (obj.denom = message.denom);
     message.exponent !== undefined && (obj.exponent = Math.round(message.exponent));
@@ -817,12 +853,12 @@ export const DenomUnit = {
   },
   toAmino(message: DenomUnit): DenomUnitAmino {
     const obj: any = {};
-    obj.denom = message.denom;
-    obj.exponent = message.exponent;
+    obj.denom = message.denom === "" ? undefined : message.denom;
+    obj.exponent = message.exponent === 0 ? undefined : message.exponent;
     if (message.aliases) {
       obj.aliases = message.aliases.map((e) => e);
     } else {
-      obj.aliases = [];
+      obj.aliases = message.aliases;
     }
     return obj;
   },
@@ -940,7 +976,7 @@ export const Metadata = {
     if (isSet(object.uriHash)) obj.uriHash = String(object.uriHash);
     return obj;
   },
-  toJSON(message: Metadata): unknown {
+  toJSON(message: Metadata): JsonSafe<Metadata> {
     const obj: any = {};
     message.description !== undefined && (obj.description = message.description);
     if (message.denomUnits) {
@@ -996,18 +1032,18 @@ export const Metadata = {
   },
   toAmino(message: Metadata): MetadataAmino {
     const obj: any = {};
-    obj.description = message.description;
+    obj.description = message.description === "" ? undefined : message.description;
     if (message.denomUnits) {
       obj.denom_units = message.denomUnits.map((e) => (e ? DenomUnit.toAmino(e) : undefined));
     } else {
-      obj.denom_units = [];
+      obj.denom_units = message.denomUnits;
     }
-    obj.base = message.base;
-    obj.display = message.display;
-    obj.name = message.name;
-    obj.symbol = message.symbol;
-    obj.uri = message.uri;
-    obj.uri_hash = message.uriHash;
+    obj.base = message.base === "" ? undefined : message.base;
+    obj.display = message.display === "" ? undefined : message.display;
+    obj.name = message.name === "" ? undefined : message.name;
+    obj.symbol = message.symbol === "" ? undefined : message.symbol;
+    obj.uri = message.uri === "" ? undefined : message.uri;
+    obj.uri_hash = message.uriHash === "" ? undefined : message.uriHash;
     return obj;
   },
   fromAminoMsg(object: MetadataAminoMsg): Metadata {

@@ -2,6 +2,7 @@
 import { Plan, PlanAmino } from "./upgrade";
 import { BinaryReader, BinaryWriter } from "../../../binary";
 import { isSet } from "../../../helpers";
+import { JsonSafe } from "../../../json-safe";
 import { TxRpc } from "../../../types";
 export const protobufPackage = "cosmos.upgrade.v1beta1";
 /**
@@ -23,11 +24,18 @@ export interface MsgSoftwareUpgradeProtoMsg {
  * MsgSoftwareUpgrade is the Msg/SoftwareUpgrade request type.
  *
  * Since: cosmos-sdk 0.46
+ * @name MsgSoftwareUpgradeAmino
+ * @package cosmos.upgrade.v1beta1
+ * @see proto type: cosmos.upgrade.v1beta1.MsgSoftwareUpgrade
  */
 export interface MsgSoftwareUpgradeAmino {
-  /** authority is the address that controls the module (defaults to x/gov unless overwritten). */
+  /**
+   * authority is the address that controls the module (defaults to x/gov unless overwritten).
+   */
   authority?: string;
-  /** plan is the upgrade plan. */
+  /**
+   * plan is the upgrade plan.
+   */
   plan: PlanAmino | undefined;
 }
 export interface MsgSoftwareUpgradeAminoMsg {
@@ -48,6 +56,9 @@ export interface MsgSoftwareUpgradeResponseProtoMsg {
  * MsgSoftwareUpgradeResponse is the Msg/SoftwareUpgrade response type.
  *
  * Since: cosmos-sdk 0.46
+ * @name MsgSoftwareUpgradeResponseAmino
+ * @package cosmos.upgrade.v1beta1
+ * @see proto type: cosmos.upgrade.v1beta1.MsgSoftwareUpgradeResponse
  */
 export interface MsgSoftwareUpgradeResponseAmino {}
 export interface MsgSoftwareUpgradeResponseAminoMsg {
@@ -71,9 +82,14 @@ export interface MsgCancelUpgradeProtoMsg {
  * MsgCancelUpgrade is the Msg/CancelUpgrade request type.
  *
  * Since: cosmos-sdk 0.46
+ * @name MsgCancelUpgradeAmino
+ * @package cosmos.upgrade.v1beta1
+ * @see proto type: cosmos.upgrade.v1beta1.MsgCancelUpgrade
  */
 export interface MsgCancelUpgradeAmino {
-  /** authority is the address that controls the module (defaults to x/gov unless overwritten). */
+  /**
+   * authority is the address that controls the module (defaults to x/gov unless overwritten).
+   */
   authority?: string;
 }
 export interface MsgCancelUpgradeAminoMsg {
@@ -94,6 +110,9 @@ export interface MsgCancelUpgradeResponseProtoMsg {
  * MsgCancelUpgradeResponse is the Msg/CancelUpgrade response type.
  *
  * Since: cosmos-sdk 0.46
+ * @name MsgCancelUpgradeResponseAmino
+ * @package cosmos.upgrade.v1beta1
+ * @see proto type: cosmos.upgrade.v1beta1.MsgCancelUpgradeResponse
  */
 export interface MsgCancelUpgradeResponseAmino {}
 export interface MsgCancelUpgradeResponseAminoMsg {
@@ -143,7 +162,7 @@ export const MsgSoftwareUpgrade = {
     if (isSet(object.plan)) obj.plan = Plan.fromJSON(object.plan);
     return obj;
   },
-  toJSON(message: MsgSoftwareUpgrade): unknown {
+  toJSON(message: MsgSoftwareUpgrade): JsonSafe<MsgSoftwareUpgrade> {
     const obj: any = {};
     message.authority !== undefined && (obj.authority = message.authority);
     message.plan !== undefined && (obj.plan = message.plan ? Plan.toJSON(message.plan) : undefined);
@@ -169,8 +188,8 @@ export const MsgSoftwareUpgrade = {
   },
   toAmino(message: MsgSoftwareUpgrade): MsgSoftwareUpgradeAmino {
     const obj: any = {};
-    obj.authority = message.authority;
-    obj.plan = message.plan ? Plan.toAmino(message.plan) : Plan.fromPartial({});
+    obj.authority = message.authority === "" ? undefined : message.authority;
+    obj.plan = message.plan ? Plan.toAmino(message.plan) : Plan.toAmino(Plan.fromPartial({}));
     return obj;
   },
   fromAminoMsg(object: MsgSoftwareUpgradeAminoMsg): MsgSoftwareUpgrade {
@@ -221,7 +240,7 @@ export const MsgSoftwareUpgradeResponse = {
     const obj = createBaseMsgSoftwareUpgradeResponse();
     return obj;
   },
-  toJSON(_: MsgSoftwareUpgradeResponse): unknown {
+  toJSON(_: MsgSoftwareUpgradeResponse): JsonSafe<MsgSoftwareUpgradeResponse> {
     const obj: any = {};
     return obj;
   },
@@ -294,7 +313,7 @@ export const MsgCancelUpgrade = {
     if (isSet(object.authority)) obj.authority = String(object.authority);
     return obj;
   },
-  toJSON(message: MsgCancelUpgrade): unknown {
+  toJSON(message: MsgCancelUpgrade): JsonSafe<MsgCancelUpgrade> {
     const obj: any = {};
     message.authority !== undefined && (obj.authority = message.authority);
     return obj;
@@ -313,7 +332,7 @@ export const MsgCancelUpgrade = {
   },
   toAmino(message: MsgCancelUpgrade): MsgCancelUpgradeAmino {
     const obj: any = {};
-    obj.authority = message.authority;
+    obj.authority = message.authority === "" ? undefined : message.authority;
     return obj;
   },
   fromAminoMsg(object: MsgCancelUpgradeAminoMsg): MsgCancelUpgrade {
@@ -364,7 +383,7 @@ export const MsgCancelUpgradeResponse = {
     const obj = createBaseMsgCancelUpgradeResponse();
     return obj;
   },
-  toJSON(_: MsgCancelUpgradeResponse): unknown {
+  toJSON(_: MsgCancelUpgradeResponse): JsonSafe<MsgCancelUpgradeResponse> {
     const obj: any = {};
     return obj;
   },

@@ -1,6 +1,7 @@
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "../../../../binary";
 import { isSet } from "../../../../helpers";
+import { JsonSafe } from "../../../../json-safe";
 export const protobufPackage = "cosmos.bank.module.v1";
 /** Module is the config object of the bank module. */
 export interface Module {
@@ -24,7 +25,12 @@ export interface ModuleProtoMsg {
   typeUrl: "/cosmos.bank.module.v1.Module";
   value: Uint8Array;
 }
-/** Module is the config object of the bank module. */
+/**
+ * Module is the config object of the bank module.
+ * @name ModuleAmino
+ * @package cosmos.bank.module.v1
+ * @see proto type: cosmos.bank.module.v1.Module
+ */
 export interface ModuleAmino {
   /**
    * blocked_module_accounts_override configures exceptional module accounts which should be blocked from receiving
@@ -32,7 +38,9 @@ export interface ModuleAmino {
    * module_account_permissions
    */
   blocked_module_accounts_override?: string[];
-  /** authority defines the custom module authority. If not set, defaults to the governance module. */
+  /**
+   * authority defines the custom module authority. If not set, defaults to the governance module.
+   */
   authority?: string;
   /**
    * restrictions_order specifies the order of send restrictions and should be
@@ -99,7 +107,7 @@ export const Module = {
       obj.restrictionsOrder = object.restrictionsOrder.map((e: any) => String(e));
     return obj;
   },
-  toJSON(message: Module): unknown {
+  toJSON(message: Module): JsonSafe<Module> {
     const obj: any = {};
     if (message.blockedModuleAccountsOverride) {
       obj.blockedModuleAccountsOverride = message.blockedModuleAccountsOverride.map((e) => e);
@@ -135,13 +143,13 @@ export const Module = {
     if (message.blockedModuleAccountsOverride) {
       obj.blocked_module_accounts_override = message.blockedModuleAccountsOverride.map((e) => e);
     } else {
-      obj.blocked_module_accounts_override = [];
+      obj.blocked_module_accounts_override = message.blockedModuleAccountsOverride;
     }
-    obj.authority = message.authority;
+    obj.authority = message.authority === "" ? undefined : message.authority;
     if (message.restrictionsOrder) {
       obj.restrictions_order = message.restrictionsOrder.map((e) => e);
     } else {
-      obj.restrictions_order = [];
+      obj.restrictions_order = message.restrictionsOrder;
     }
     return obj;
   },

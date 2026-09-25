@@ -1,6 +1,7 @@
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "../../../../binary";
 import { isSet } from "../../../../helpers";
+import { JsonSafe } from "../../../../json-safe";
 export const protobufPackage = "cosmos.dynamicfee.module.v1";
 /** Module is the config object of the builder module. */
 export interface Module {
@@ -14,7 +15,12 @@ export interface ModuleProtoMsg {
   typeUrl: "/cosmos.dynamicfee.module.v1.Module";
   value: Uint8Array;
 }
-/** Module is the config object of the builder module. */
+/**
+ * Module is the config object of the builder module.
+ * @name ModuleAmino
+ * @package cosmos.dynamicfee.module.v1
+ * @see proto type: cosmos.dynamicfee.module.v1.Module
+ */
 export interface ModuleAmino {
   /**
    * Authority defines the custom module authority. If not set, defaults to the
@@ -61,7 +67,7 @@ export const Module = {
     if (isSet(object.authority)) obj.authority = String(object.authority);
     return obj;
   },
-  toJSON(message: Module): unknown {
+  toJSON(message: Module): JsonSafe<Module> {
     const obj: any = {};
     message.authority !== undefined && (obj.authority = message.authority);
     return obj;
@@ -80,7 +86,7 @@ export const Module = {
   },
   toAmino(message: Module): ModuleAmino {
     const obj: any = {};
-    obj.authority = message.authority;
+    obj.authority = message.authority === "" ? undefined : message.authority;
     return obj;
   },
   fromAminoMsg(object: ModuleAminoMsg): Module {

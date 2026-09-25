@@ -4,6 +4,7 @@ import { Event, EventAmino } from "../../../../tendermint/abci/types";
 import { Block, BlockAmino } from "../../../../tendermint/types/block";
 import { BinaryReader, BinaryWriter } from "../../../../binary";
 import { isSet, bytesFromBase64, base64FromBytes } from "../../../../helpers";
+import { JsonSafe } from "../../../../json-safe";
 export const protobufPackage = "cosmos.base.abci.v1beta1";
 /**
  * TxResponse defines a structure containing relevant tx data and metadata. The
@@ -58,32 +59,55 @@ export interface TxResponseProtoMsg {
 /**
  * TxResponse defines a structure containing relevant tx data and metadata. The
  * tags are stringified and the log is JSON decoded.
+ * @name TxResponseAmino
+ * @package cosmos.base.abci.v1beta1
+ * @see proto type: cosmos.base.abci.v1beta1.TxResponse
  */
 export interface TxResponseAmino {
-  /** The block height */
+  /**
+   * The block height
+   */
   height?: string;
-  /** The transaction hash. */
+  /**
+   * The transaction hash.
+   */
   txhash?: string;
-  /** Namespace for the Code */
+  /**
+   * Namespace for the Code
+   */
   codespace?: string;
-  /** Response code. */
+  /**
+   * Response code.
+   */
   code?: number;
-  /** Result bytes, if any. */
+  /**
+   * Result bytes, if any.
+   */
   data?: string;
   /**
    * The output of the application's logger (raw string). May be
    * non-deterministic.
    */
   raw_log?: string;
-  /** The output of the application's logger (typed). May be non-deterministic. */
+  /**
+   * The output of the application's logger (typed). May be non-deterministic.
+   */
   logs?: ABCIMessageLogAmino[];
-  /** Additional information. May be non-deterministic. */
+  /**
+   * Additional information. May be non-deterministic.
+   */
   info?: string;
-  /** Amount of gas requested for transaction. */
+  /**
+   * Amount of gas requested for transaction.
+   */
   gas_wanted?: string;
-  /** Amount of gas consumed by transaction. */
+  /**
+   * Amount of gas consumed by transaction.
+   */
   gas_used?: string;
-  /** The request transaction bytes. */
+  /**
+   * The request transaction bytes.
+   */
   tx?: AnyAmino | undefined;
   /**
    * Time of the previous block. For heights > 1, it's the weighted median of
@@ -119,9 +143,14 @@ export interface ABCIMessageLogProtoMsg {
   typeUrl: "/cosmos.base.abci.v1beta1.ABCIMessageLog";
   value: Uint8Array;
 }
-/** ABCIMessageLog defines a structure containing an indexed tx ABCI message log. */
+/**
+ * ABCIMessageLog defines a structure containing an indexed tx ABCI message log.
+ * @name ABCIMessageLogAmino
+ * @package cosmos.base.abci.v1beta1
+ * @see proto type: cosmos.base.abci.v1beta1.ABCIMessageLog
+ */
 export interface ABCIMessageLogAmino {
-  msg_index?: number;
+  msg_index: number;
   log?: string;
   /**
    * Events contains a slice of Event objects that were emitted during some
@@ -148,6 +177,9 @@ export interface StringEventProtoMsg {
 /**
  * StringEvent defines en Event object wrapper where all the attributes
  * contain key/value pairs that are strings instead of raw bytes.
+ * @name StringEventAmino
+ * @package cosmos.base.abci.v1beta1
+ * @see proto type: cosmos.base.abci.v1beta1.StringEvent
  */
 export interface StringEventAmino {
   type?: string;
@@ -172,6 +204,9 @@ export interface AttributeProtoMsg {
 /**
  * Attribute defines an attribute wrapper where the key and value are
  * strings instead of raw bytes.
+ * @name AttributeAmino
+ * @package cosmos.base.abci.v1beta1
+ * @see proto type: cosmos.base.abci.v1beta1.Attribute
  */
 export interface AttributeAmino {
   key?: string;
@@ -192,11 +227,20 @@ export interface GasInfoProtoMsg {
   typeUrl: "/cosmos.base.abci.v1beta1.GasInfo";
   value: Uint8Array;
 }
-/** GasInfo defines tx execution gas context. */
+/**
+ * GasInfo defines tx execution gas context.
+ * @name GasInfoAmino
+ * @package cosmos.base.abci.v1beta1
+ * @see proto type: cosmos.base.abci.v1beta1.GasInfo
+ */
 export interface GasInfoAmino {
-  /** GasWanted is the maximum units of work we allow this tx to perform. */
+  /**
+   * GasWanted is the maximum units of work we allow this tx to perform.
+   */
   gas_wanted?: string;
-  /** GasUsed is the amount of gas actually consumed. */
+  /**
+   * GasUsed is the amount of gas actually consumed.
+   */
   gas_used?: string;
 }
 export interface GasInfoAminoMsg {
@@ -231,17 +275,24 @@ export interface ResultProtoMsg {
   typeUrl: "/cosmos.base.abci.v1beta1.Result";
   value: Uint8Array;
 }
-/** Result is the union of ResponseFormat and ResponseCheckTx. */
+/**
+ * Result is the union of ResponseFormat and ResponseCheckTx.
+ * @name ResultAmino
+ * @package cosmos.base.abci.v1beta1
+ * @see proto type: cosmos.base.abci.v1beta1.Result
+ */
 export interface ResultAmino {
   /**
    * Data is any data returned from message or handler execution. It MUST be
    * length prefixed in order to separate data from multiple message executions.
    * Deprecated. This field is still populated, but prefer msg_response instead
    * because it also contains the Msg response typeURL.
+   * @deprecated
    */
-  /** @deprecated */
   data?: string;
-  /** Log contains the log information from message or handler execution. */
+  /**
+   * Log contains the log information from message or handler execution.
+   */
   log?: string;
   /**
    * Events contains a slice of Event objects that were emitted during message
@@ -274,6 +325,9 @@ export interface SimulationResponseProtoMsg {
 /**
  * SimulationResponse defines the response generated when a transaction is
  * successfully simulated.
+ * @name SimulationResponseAmino
+ * @package cosmos.base.abci.v1beta1
+ * @see proto type: cosmos.base.abci.v1beta1.SimulationResponse
  */
 export interface SimulationResponseAmino {
   gas_info?: GasInfoAmino | undefined;
@@ -299,8 +353,11 @@ export interface MsgDataProtoMsg {
 /**
  * MsgData defines the data returned in a Result object during message
  * execution.
+ * @name MsgDataAmino
+ * @package cosmos.base.abci.v1beta1
+ * @see proto type: cosmos.base.abci.v1beta1.MsgData
+ * @deprecated
  */
-/** @deprecated */
 export interface MsgDataAmino {
   msg_type?: string;
   data?: string;
@@ -331,10 +388,15 @@ export interface TxMsgDataProtoMsg {
 /**
  * TxMsgData defines a list of MsgData. A transaction will have a MsgData object
  * for each message.
+ * @name TxMsgDataAmino
+ * @package cosmos.base.abci.v1beta1
+ * @see proto type: cosmos.base.abci.v1beta1.TxMsgData
  */
 export interface TxMsgDataAmino {
-  /** data field is deprecated and not populated. */
-  /** @deprecated */
+  /**
+   * data field is deprecated and not populated.
+   * @deprecated
+   */
   data?: MsgDataAmino[];
   /**
    * msg_responses contains the Msg handler responses packed into Anys.
@@ -366,19 +428,36 @@ export interface SearchTxsResultProtoMsg {
   typeUrl: "/cosmos.base.abci.v1beta1.SearchTxsResult";
   value: Uint8Array;
 }
-/** SearchTxsResult defines a structure for querying txs pageable */
+/**
+ * SearchTxsResult defines a structure for querying txs pageable
+ * @name SearchTxsResultAmino
+ * @package cosmos.base.abci.v1beta1
+ * @see proto type: cosmos.base.abci.v1beta1.SearchTxsResult
+ */
 export interface SearchTxsResultAmino {
-  /** Count of all txs */
+  /**
+   * Count of all txs
+   */
   total_count?: string;
-  /** Count of txs in current page */
+  /**
+   * Count of txs in current page
+   */
   count?: string;
-  /** Index of current page, start from 1 */
+  /**
+   * Index of current page, start from 1
+   */
   page_number?: string;
-  /** Count of total pages */
+  /**
+   * Count of total pages
+   */
   page_total?: string;
-  /** Max count txs per page */
+  /**
+   * Max count txs per page
+   */
   limit?: string;
-  /** List of txs in current page */
+  /**
+   * List of txs in current page
+   */
   txs?: TxResponseAmino[];
 }
 export interface SearchTxsResultAminoMsg {
@@ -404,19 +483,36 @@ export interface SearchBlocksResultProtoMsg {
   typeUrl: "/cosmos.base.abci.v1beta1.SearchBlocksResult";
   value: Uint8Array;
 }
-/** SearchBlocksResult defines a structure for querying blocks pageable */
+/**
+ * SearchBlocksResult defines a structure for querying blocks pageable
+ * @name SearchBlocksResultAmino
+ * @package cosmos.base.abci.v1beta1
+ * @see proto type: cosmos.base.abci.v1beta1.SearchBlocksResult
+ */
 export interface SearchBlocksResultAmino {
-  /** Count of all blocks */
+  /**
+   * Count of all blocks
+   */
   total_count?: string;
-  /** Count of blocks in current page */
+  /**
+   * Count of blocks in current page
+   */
   count?: string;
-  /** Index of current page, start from 1 */
+  /**
+   * Index of current page, start from 1
+   */
   page_number?: string;
-  /** Count of total pages */
+  /**
+   * Count of total pages
+   */
   page_total?: string;
-  /** Max count blocks per page */
+  /**
+   * Max count blocks per page
+   */
   limit?: string;
-  /** List of blocks in current page */
+  /**
+   * List of blocks in current page
+   */
   blocks?: BlockAmino[];
 }
 export interface SearchBlocksResultAminoMsg {
@@ -554,7 +650,7 @@ export const TxResponse = {
     if (Array.isArray(object?.events)) obj.events = object.events.map((e: any) => Event.fromJSON(e));
     return obj;
   },
-  toJSON(message: TxResponse): unknown {
+  toJSON(message: TxResponse): JsonSafe<TxResponse> {
     const obj: any = {};
     message.height !== undefined && (obj.height = (message.height || BigInt(0)).toString());
     message.txhash !== undefined && (obj.txhash = message.txhash);
@@ -645,26 +741,26 @@ export const TxResponse = {
   },
   toAmino(message: TxResponse): TxResponseAmino {
     const obj: any = {};
-    obj.height = message.height ? message.height.toString() : undefined;
-    obj.txhash = message.txhash;
-    obj.codespace = message.codespace;
-    obj.code = message.code;
-    obj.data = message.data;
-    obj.raw_log = message.rawLog;
+    obj.height = message.height !== BigInt(0) ? message.height?.toString() : undefined;
+    obj.txhash = message.txhash === "" ? undefined : message.txhash;
+    obj.codespace = message.codespace === "" ? undefined : message.codespace;
+    obj.code = message.code === 0 ? undefined : message.code;
+    obj.data = message.data === "" ? undefined : message.data;
+    obj.raw_log = message.rawLog === "" ? undefined : message.rawLog;
     if (message.logs) {
       obj.logs = message.logs.map((e) => (e ? ABCIMessageLog.toAmino(e) : undefined));
     } else {
-      obj.logs = [];
+      obj.logs = message.logs;
     }
-    obj.info = message.info;
-    obj.gas_wanted = message.gasWanted ? message.gasWanted.toString() : undefined;
-    obj.gas_used = message.gasUsed ? message.gasUsed.toString() : undefined;
+    obj.info = message.info === "" ? undefined : message.info;
+    obj.gas_wanted = message.gasWanted !== BigInt(0) ? message.gasWanted?.toString() : undefined;
+    obj.gas_used = message.gasUsed !== BigInt(0) ? message.gasUsed?.toString() : undefined;
     obj.tx = message.tx ? Any.toAmino(message.tx) : undefined;
-    obj.timestamp = message.timestamp;
+    obj.timestamp = message.timestamp === "" ? undefined : message.timestamp;
     if (message.events) {
       obj.events = message.events.map((e) => (e ? Event.toAmino(e) : undefined));
     } else {
-      obj.events = [];
+      obj.events = message.events;
     }
     return obj;
   },
@@ -741,7 +837,7 @@ export const ABCIMessageLog = {
     if (Array.isArray(object?.events)) obj.events = object.events.map((e: any) => StringEvent.fromJSON(e));
     return obj;
   },
-  toJSON(message: ABCIMessageLog): unknown {
+  toJSON(message: ABCIMessageLog): JsonSafe<ABCIMessageLog> {
     const obj: any = {};
     message.msgIndex !== undefined && (obj.msgIndex = Math.round(message.msgIndex));
     message.log !== undefined && (obj.log = message.log);
@@ -772,12 +868,12 @@ export const ABCIMessageLog = {
   },
   toAmino(message: ABCIMessageLog): ABCIMessageLogAmino {
     const obj: any = {};
-    obj.msg_index = message.msgIndex;
-    obj.log = message.log;
+    obj.msg_index = message.msgIndex ?? 0;
+    obj.log = message.log === "" ? undefined : message.log;
     if (message.events) {
       obj.events = message.events.map((e) => (e ? StringEvent.toAmino(e) : undefined));
     } else {
-      obj.events = [];
+      obj.events = message.events;
     }
     return obj;
   },
@@ -847,7 +943,7 @@ export const StringEvent = {
       obj.attributes = object.attributes.map((e: any) => Attribute.fromJSON(e));
     return obj;
   },
-  toJSON(message: StringEvent): unknown {
+  toJSON(message: StringEvent): JsonSafe<StringEvent> {
     const obj: any = {};
     message.type !== undefined && (obj.type = message.type);
     if (message.attributes) {
@@ -873,11 +969,11 @@ export const StringEvent = {
   },
   toAmino(message: StringEvent): StringEventAmino {
     const obj: any = {};
-    obj.type = message.type;
+    obj.type = message.type === "" ? undefined : message.type;
     if (message.attributes) {
       obj.attributes = message.attributes.map((e) => (e ? Attribute.toAmino(e) : undefined));
     } else {
-      obj.attributes = [];
+      obj.attributes = message.attributes;
     }
     return obj;
   },
@@ -946,7 +1042,7 @@ export const Attribute = {
     if (isSet(object.value)) obj.value = String(object.value);
     return obj;
   },
-  toJSON(message: Attribute): unknown {
+  toJSON(message: Attribute): JsonSafe<Attribute> {
     const obj: any = {};
     message.key !== undefined && (obj.key = message.key);
     message.value !== undefined && (obj.value = message.value);
@@ -970,8 +1066,8 @@ export const Attribute = {
   },
   toAmino(message: Attribute): AttributeAmino {
     const obj: any = {};
-    obj.key = message.key;
-    obj.value = message.value;
+    obj.key = message.key === "" ? undefined : message.key;
+    obj.value = message.value === "" ? undefined : message.value;
     return obj;
   },
   fromAminoMsg(object: AttributeAminoMsg): Attribute {
@@ -1039,7 +1135,7 @@ export const GasInfo = {
     if (isSet(object.gasUsed)) obj.gasUsed = BigInt(object.gasUsed.toString());
     return obj;
   },
-  toJSON(message: GasInfo): unknown {
+  toJSON(message: GasInfo): JsonSafe<GasInfo> {
     const obj: any = {};
     message.gasWanted !== undefined && (obj.gasWanted = (message.gasWanted || BigInt(0)).toString());
     message.gasUsed !== undefined && (obj.gasUsed = (message.gasUsed || BigInt(0)).toString());
@@ -1067,8 +1163,8 @@ export const GasInfo = {
   },
   toAmino(message: GasInfo): GasInfoAmino {
     const obj: any = {};
-    obj.gas_wanted = message.gasWanted ? message.gasWanted.toString() : undefined;
-    obj.gas_used = message.gasUsed ? message.gasUsed.toString() : undefined;
+    obj.gas_wanted = message.gasWanted !== BigInt(0) ? message.gasWanted?.toString() : undefined;
+    obj.gas_used = message.gasUsed !== BigInt(0) ? message.gasUsed?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: GasInfoAminoMsg): GasInfo {
@@ -1153,7 +1249,7 @@ export const Result = {
       obj.msgResponses = object.msgResponses.map((e: any) => Any.fromJSON(e));
     return obj;
   },
-  toJSON(message: Result): unknown {
+  toJSON(message: Result): JsonSafe<Result> {
     const obj: any = {};
     message.data !== undefined &&
       (obj.data = base64FromBytes(message.data !== undefined ? message.data : new Uint8Array()));
@@ -1193,16 +1289,16 @@ export const Result = {
   toAmino(message: Result): ResultAmino {
     const obj: any = {};
     obj.data = message.data ? base64FromBytes(message.data) : undefined;
-    obj.log = message.log;
+    obj.log = message.log === "" ? undefined : message.log;
     if (message.events) {
       obj.events = message.events.map((e) => (e ? Event.toAmino(e) : undefined));
     } else {
-      obj.events = [];
+      obj.events = message.events;
     }
     if (message.msgResponses) {
       obj.msg_responses = message.msgResponses.map((e) => (e ? Any.toAmino(e) : undefined));
     } else {
-      obj.msg_responses = [];
+      obj.msg_responses = message.msgResponses;
     }
     return obj;
   },
@@ -1271,7 +1367,7 @@ export const SimulationResponse = {
     if (isSet(object.result)) obj.result = Result.fromJSON(object.result);
     return obj;
   },
-  toJSON(message: SimulationResponse): unknown {
+  toJSON(message: SimulationResponse): JsonSafe<SimulationResponse> {
     const obj: any = {};
     message.gasInfo !== undefined &&
       (obj.gasInfo = message.gasInfo ? GasInfo.toJSON(message.gasInfo) : undefined);
@@ -1369,7 +1465,7 @@ export const MsgData = {
     if (isSet(object.data)) obj.data = bytesFromBase64(object.data);
     return obj;
   },
-  toJSON(message: MsgData): unknown {
+  toJSON(message: MsgData): JsonSafe<MsgData> {
     const obj: any = {};
     message.msgType !== undefined && (obj.msgType = message.msgType);
     message.data !== undefined &&
@@ -1394,7 +1490,7 @@ export const MsgData = {
   },
   toAmino(message: MsgData): MsgDataAmino {
     const obj: any = {};
-    obj.msg_type = message.msgType;
+    obj.msg_type = message.msgType === "" ? undefined : message.msgType;
     obj.data = message.data ? base64FromBytes(message.data) : undefined;
     return obj;
   },
@@ -1464,7 +1560,7 @@ export const TxMsgData = {
       obj.msgResponses = object.msgResponses.map((e: any) => Any.fromJSON(e));
     return obj;
   },
-  toJSON(message: TxMsgData): unknown {
+  toJSON(message: TxMsgData): JsonSafe<TxMsgData> {
     const obj: any = {};
     if (message.data) {
       obj.data = message.data.map((e) => (e ? MsgData.toJSON(e) : undefined));
@@ -1495,12 +1591,12 @@ export const TxMsgData = {
     if (message.data) {
       obj.data = message.data.map((e) => (e ? MsgData.toAmino(e) : undefined));
     } else {
-      obj.data = [];
+      obj.data = message.data;
     }
     if (message.msgResponses) {
       obj.msg_responses = message.msgResponses.map((e) => (e ? Any.toAmino(e) : undefined));
     } else {
-      obj.msg_responses = [];
+      obj.msg_responses = message.msgResponses;
     }
     return obj;
   },
@@ -1601,7 +1697,7 @@ export const SearchTxsResult = {
     if (Array.isArray(object?.txs)) obj.txs = object.txs.map((e: any) => TxResponse.fromJSON(e));
     return obj;
   },
-  toJSON(message: SearchTxsResult): unknown {
+  toJSON(message: SearchTxsResult): JsonSafe<SearchTxsResult> {
     const obj: any = {};
     message.totalCount !== undefined && (obj.totalCount = (message.totalCount || BigInt(0)).toString());
     message.count !== undefined && (obj.count = (message.count || BigInt(0)).toString());
@@ -1657,15 +1753,15 @@ export const SearchTxsResult = {
   },
   toAmino(message: SearchTxsResult): SearchTxsResultAmino {
     const obj: any = {};
-    obj.total_count = message.totalCount ? message.totalCount.toString() : undefined;
-    obj.count = message.count ? message.count.toString() : undefined;
-    obj.page_number = message.pageNumber ? message.pageNumber.toString() : undefined;
-    obj.page_total = message.pageTotal ? message.pageTotal.toString() : undefined;
-    obj.limit = message.limit ? message.limit.toString() : undefined;
+    obj.total_count = message.totalCount !== BigInt(0) ? message.totalCount?.toString() : undefined;
+    obj.count = message.count !== BigInt(0) ? message.count?.toString() : undefined;
+    obj.page_number = message.pageNumber !== BigInt(0) ? message.pageNumber?.toString() : undefined;
+    obj.page_total = message.pageTotal !== BigInt(0) ? message.pageTotal?.toString() : undefined;
+    obj.limit = message.limit !== BigInt(0) ? message.limit?.toString() : undefined;
     if (message.txs) {
       obj.txs = message.txs.map((e) => (e ? TxResponse.toAmino(e) : undefined));
     } else {
-      obj.txs = [];
+      obj.txs = message.txs;
     }
     return obj;
   },
@@ -1766,7 +1862,7 @@ export const SearchBlocksResult = {
     if (Array.isArray(object?.blocks)) obj.blocks = object.blocks.map((e: any) => Block.fromJSON(e));
     return obj;
   },
-  toJSON(message: SearchBlocksResult): unknown {
+  toJSON(message: SearchBlocksResult): JsonSafe<SearchBlocksResult> {
     const obj: any = {};
     message.totalCount !== undefined && (obj.totalCount = (message.totalCount || BigInt(0)).toString());
     message.count !== undefined && (obj.count = (message.count || BigInt(0)).toString());
@@ -1822,15 +1918,15 @@ export const SearchBlocksResult = {
   },
   toAmino(message: SearchBlocksResult): SearchBlocksResultAmino {
     const obj: any = {};
-    obj.total_count = message.totalCount ? message.totalCount.toString() : undefined;
-    obj.count = message.count ? message.count.toString() : undefined;
-    obj.page_number = message.pageNumber ? message.pageNumber.toString() : undefined;
-    obj.page_total = message.pageTotal ? message.pageTotal.toString() : undefined;
-    obj.limit = message.limit ? message.limit.toString() : undefined;
+    obj.total_count = message.totalCount !== BigInt(0) ? message.totalCount?.toString() : undefined;
+    obj.count = message.count !== BigInt(0) ? message.count?.toString() : undefined;
+    obj.page_number = message.pageNumber !== BigInt(0) ? message.pageNumber?.toString() : undefined;
+    obj.page_total = message.pageTotal !== BigInt(0) ? message.pageTotal?.toString() : undefined;
+    obj.limit = message.limit !== BigInt(0) ? message.limit?.toString() : undefined;
     if (message.blocks) {
       obj.blocks = message.blocks.map((e) => (e ? Block.toAmino(e) : undefined));
     } else {
-      obj.blocks = [];
+      obj.blocks = message.blocks;
     }
     return obj;
   },

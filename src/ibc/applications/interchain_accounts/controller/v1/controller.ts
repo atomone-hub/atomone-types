@@ -1,6 +1,7 @@
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "../../../../../binary";
 import { isSet } from "../../../../../helpers";
+import { JsonSafe } from "../../../../../json-safe";
 export const protobufPackage = "ibc.applications.interchain_accounts.controller.v1";
 /**
  * Params defines the set of on-chain interchain accounts parameters.
@@ -17,9 +18,14 @@ export interface ParamsProtoMsg {
 /**
  * Params defines the set of on-chain interchain accounts parameters.
  * The following parameters may be used to disable the controller submodule.
+ * @name ParamsAmino
+ * @package ibc.applications.interchain_accounts.controller.v1
+ * @see proto type: ibc.applications.interchain_accounts.controller.v1.Params
  */
 export interface ParamsAmino {
-  /** controller_enabled enables or disables the controller submodule. */
+  /**
+   * controller_enabled enables or disables the controller submodule.
+   */
   controller_enabled?: boolean;
 }
 export interface ParamsAminoMsg {
@@ -61,7 +67,7 @@ export const Params = {
     if (isSet(object.controllerEnabled)) obj.controllerEnabled = Boolean(object.controllerEnabled);
     return obj;
   },
-  toJSON(message: Params): unknown {
+  toJSON(message: Params): JsonSafe<Params> {
     const obj: any = {};
     message.controllerEnabled !== undefined && (obj.controllerEnabled = message.controllerEnabled);
     return obj;
@@ -80,7 +86,7 @@ export const Params = {
   },
   toAmino(message: Params): ParamsAmino {
     const obj: any = {};
-    obj.controller_enabled = message.controllerEnabled;
+    obj.controller_enabled = message.controllerEnabled === false ? undefined : message.controllerEnabled;
     return obj;
   },
   fromAminoMsg(object: ParamsAminoMsg): Params {

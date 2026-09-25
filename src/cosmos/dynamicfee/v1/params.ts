@@ -1,6 +1,7 @@
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "../../../binary";
 import { isSet } from "../../../helpers";
+import { JsonSafe } from "../../../json-safe";
 export const protobufPackage = "cosmos.dynamicfee.v1";
 /**
  * Params contains the required set of parameters for the EIP1559 dynamic fee
@@ -71,6 +72,9 @@ export interface ParamsProtoMsg {
 /**
  * Params contains the required set of parameters for the EIP1559 dynamic fee
  * pricing implementation.
+ * @name ParamsAmino
+ * @package cosmos.dynamicfee.v1
+ * @see proto type: cosmos.dynamicfee.v1.Params
  */
 export interface ParamsAmino {
   /**
@@ -113,16 +117,22 @@ export interface ParamsAmino {
    * in the case consensus_params.block.max_gas returns 0 or -1.
    */
   default_max_block_gas?: string;
-  /** MinLearningRate is the lower bound for the learning rate. */
+  /**
+   * MinLearningRate is the lower bound for the learning rate.
+   */
   min_learning_rate?: string;
-  /** MaxLearningRate is the upper bound for the learning rate. */
+  /**
+   * MaxLearningRate is the upper bound for the learning rate.
+   */
   max_learning_rate?: string;
   /**
    * Window defines the window size for calculating an adaptive learning rate
    * over a moving window of blocks.
    */
   window?: string;
-  /** FeeDenom is the denom that will be used for all fee payments. */
+  /**
+   * FeeDenom is the denom that will be used for all fee payments.
+   */
   fee_denom?: string;
   /**
    * Enabled is a boolean that determines whether the EIP1559 dynamic fee
@@ -251,7 +261,7 @@ export const Params = {
     if (isSet(object.enabled)) obj.enabled = Boolean(object.enabled);
     return obj;
   },
-  toJSON(message: Params): unknown {
+  toJSON(message: Params): JsonSafe<Params> {
     const obj: any = {};
     message.alpha !== undefined && (obj.alpha = message.alpha);
     message.beta !== undefined && (obj.beta = message.beta);
@@ -326,19 +336,19 @@ export const Params = {
   },
   toAmino(message: Params): ParamsAmino {
     const obj: any = {};
-    obj.alpha = message.alpha;
-    obj.beta = message.beta;
-    obj.gamma = message.gamma;
-    obj.min_base_gas_price = message.minBaseGasPrice;
-    obj.target_block_utilization = message.targetBlockUtilization;
-    obj.default_max_block_gas = message.defaultMaxBlockGas
-      ? message.defaultMaxBlockGas.toString()
-      : undefined;
-    obj.min_learning_rate = message.minLearningRate;
-    obj.max_learning_rate = message.maxLearningRate;
-    obj.window = message.window ? message.window.toString() : undefined;
-    obj.fee_denom = message.feeDenom;
-    obj.enabled = message.enabled;
+    obj.alpha = message.alpha === "" ? undefined : message.alpha;
+    obj.beta = message.beta === "" ? undefined : message.beta;
+    obj.gamma = message.gamma === "" ? undefined : message.gamma;
+    obj.min_base_gas_price = message.minBaseGasPrice === "" ? undefined : message.minBaseGasPrice;
+    obj.target_block_utilization =
+      message.targetBlockUtilization === "" ? undefined : message.targetBlockUtilization;
+    obj.default_max_block_gas =
+      message.defaultMaxBlockGas !== BigInt(0) ? message.defaultMaxBlockGas?.toString() : undefined;
+    obj.min_learning_rate = message.minLearningRate === "" ? undefined : message.minLearningRate;
+    obj.max_learning_rate = message.maxLearningRate === "" ? undefined : message.maxLearningRate;
+    obj.window = message.window !== BigInt(0) ? message.window?.toString() : undefined;
+    obj.fee_denom = message.feeDenom === "" ? undefined : message.feeDenom;
+    obj.enabled = message.enabled === false ? undefined : message.enabled;
     return obj;
   },
   fromAminoMsg(object: ParamsAminoMsg): Params {

@@ -1,6 +1,7 @@
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "../../../../binary";
 import { isSet } from "../../../../helpers";
+import { JsonSafe } from "../../../../json-safe";
 export const protobufPackage = "cosmos.crypto.hd.v1";
 /** BIP44Params is used as path field in ledger item in Record. */
 export interface BIP44Params {
@@ -22,20 +23,33 @@ export interface BIP44ParamsProtoMsg {
   typeUrl: "/cosmos.crypto.hd.v1.BIP44Params";
   value: Uint8Array;
 }
-/** BIP44Params is used as path field in ledger item in Record. */
+/**
+ * BIP44Params is used as path field in ledger item in Record.
+ * @name BIP44ParamsAmino
+ * @package cosmos.crypto.hd.v1
+ * @see proto type: cosmos.crypto.hd.v1.BIP44Params
+ */
 export interface BIP44ParamsAmino {
-  /** purpose is a constant set to 44' (or 0x8000002C) following the BIP43 recommendation */
+  /**
+   * purpose is a constant set to 44' (or 0x8000002C) following the BIP43 recommendation
+   */
   purpose?: number;
-  /** coin_type is a constant that improves privacy */
+  /**
+   * coin_type is a constant that improves privacy
+   */
   coin_type?: number;
-  /** account splits the key space into independent user identities */
+  /**
+   * account splits the key space into independent user identities
+   */
   account?: number;
   /**
    * change is a constant used for public derivation. Constant 0 is used for external chain and constant 1 for internal
    * chain.
    */
   change?: boolean;
-  /** address_index is used as child index in BIP32 derivation */
+  /**
+   * address_index is used as child index in BIP32 derivation
+   */
   address_index?: number;
 }
 export interface BIP44ParamsAminoMsg {
@@ -109,7 +123,7 @@ export const BIP44Params = {
     if (isSet(object.addressIndex)) obj.addressIndex = Number(object.addressIndex);
     return obj;
   },
-  toJSON(message: BIP44Params): unknown {
+  toJSON(message: BIP44Params): JsonSafe<BIP44Params> {
     const obj: any = {};
     message.purpose !== undefined && (obj.purpose = Math.round(message.purpose));
     message.coinType !== undefined && (obj.coinType = Math.round(message.coinType));
@@ -148,11 +162,11 @@ export const BIP44Params = {
   },
   toAmino(message: BIP44Params): BIP44ParamsAmino {
     const obj: any = {};
-    obj.purpose = message.purpose;
-    obj.coin_type = message.coinType;
-    obj.account = message.account;
-    obj.change = message.change;
-    obj.address_index = message.addressIndex;
+    obj.purpose = message.purpose === 0 ? undefined : message.purpose;
+    obj.coin_type = message.coinType === 0 ? undefined : message.coinType;
+    obj.account = message.account === 0 ? undefined : message.account;
+    obj.change = message.change === false ? undefined : message.change;
+    obj.address_index = message.addressIndex === 0 ? undefined : message.addressIndex;
     return obj;
   },
   fromAminoMsg(object: BIP44ParamsAminoMsg): BIP44Params {

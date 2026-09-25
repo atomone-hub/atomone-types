@@ -1,6 +1,7 @@
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "../../../../binary";
 import { isSet, bytesFromBase64, base64FromBytes } from "../../../../helpers";
+import { JsonSafe } from "../../../../json-safe";
 export const protobufPackage = "ibc.core.channel.v2";
 /** PacketStatus specifies the status of a RecvPacketResult. */
 export enum PacketStatus {
@@ -71,7 +72,12 @@ export interface PacketProtoMsg {
   typeUrl: "/ibc.core.channel.v2.Packet";
   value: Uint8Array;
 }
-/** Packet defines a type that carries data across different chains through IBC */
+/**
+ * Packet defines a type that carries data across different chains through IBC
+ * @name PacketAmino
+ * @package ibc.core.channel.v2
+ * @see proto type: ibc.core.channel.v2.Packet
+ */
 export interface PacketAmino {
   /**
    * number corresponds to the order of sends and receives, where a Packet
@@ -79,13 +85,21 @@ export interface PacketAmino {
    * with a later sequence number.
    */
   sequence?: string;
-  /** identifies the sending client on the sending chain. */
+  /**
+   * identifies the sending client on the sending chain.
+   */
   source_client?: string;
-  /** identifies the receiving client on the receiving chain. */
+  /**
+   * identifies the receiving client on the receiving chain.
+   */
   destination_client?: string;
-  /** timeout timestamp in seconds after which the packet times out. */
+  /**
+   * timeout timestamp in seconds after which the packet times out.
+   */
   timeout_timestamp?: string;
-  /** a list of payloads, each one for a specific application. */
+  /**
+   * a list of payloads, each one for a specific application.
+   */
   payloads?: PayloadAmino[];
 }
 export interface PacketAminoMsg {
@@ -109,17 +123,32 @@ export interface PayloadProtoMsg {
   typeUrl: "/ibc.core.channel.v2.Payload";
   value: Uint8Array;
 }
-/** Payload contains the source and destination ports and payload for the application (version, encoding, raw bytes) */
+/**
+ * Payload contains the source and destination ports and payload for the application (version, encoding, raw bytes)
+ * @name PayloadAmino
+ * @package ibc.core.channel.v2
+ * @see proto type: ibc.core.channel.v2.Payload
+ */
 export interface PayloadAmino {
-  /** specifies the source port of the packet. */
+  /**
+   * specifies the source port of the packet.
+   */
   source_port?: string;
-  /** specifies the destination port of the packet. */
+  /**
+   * specifies the destination port of the packet.
+   */
   destination_port?: string;
-  /** version of the specified application. */
+  /**
+   * version of the specified application.
+   */
   version?: string;
-  /** the encoding used for the provided value. */
+  /**
+   * the encoding used for the provided value.
+   */
   encoding?: string;
-  /** the raw bytes for the payload. */
+  /**
+   * the raw bytes for the payload.
+   */
   value?: string;
 }
 export interface PayloadAminoMsg {
@@ -148,6 +177,9 @@ export interface AcknowledgementProtoMsg {
  * in the packet.
  * If the receive is not successful, the acknowledgement will contain a single app acknowledgment
  * which will be a constant error acknowledgment as defined by the IBC v2 protocol.
+ * @name AcknowledgementAmino
+ * @package ibc.core.channel.v2
+ * @see proto type: ibc.core.channel.v2.Acknowledgement
  */
 export interface AcknowledgementAmino {
   app_acknowledgements?: string[];
@@ -167,11 +199,20 @@ export interface RecvPacketResultProtoMsg {
   typeUrl: "/ibc.core.channel.v2.RecvPacketResult";
   value: Uint8Array;
 }
-/** RecvPacketResult speecifies the status of a packet as well as the acknowledgement bytes. */
+/**
+ * RecvPacketResult speecifies the status of a packet as well as the acknowledgement bytes.
+ * @name RecvPacketResultAmino
+ * @package ibc.core.channel.v2
+ * @see proto type: ibc.core.channel.v2.RecvPacketResult
+ */
 export interface RecvPacketResultAmino {
-  /** status of the packet */
+  /**
+   * status of the packet
+   */
   status?: PacketStatus;
-  /** acknowledgement of the packet */
+  /**
+   * acknowledgement of the packet
+   */
   acknowledgement?: string;
 }
 export interface RecvPacketResultAminoMsg {
@@ -245,7 +286,7 @@ export const Packet = {
     if (Array.isArray(object?.payloads)) obj.payloads = object.payloads.map((e: any) => Payload.fromJSON(e));
     return obj;
   },
-  toJSON(message: Packet): unknown {
+  toJSON(message: Packet): JsonSafe<Packet> {
     const obj: any = {};
     message.sequence !== undefined && (obj.sequence = (message.sequence || BigInt(0)).toString());
     message.sourceClient !== undefined && (obj.sourceClient = message.sourceClient);
@@ -291,14 +332,15 @@ export const Packet = {
   },
   toAmino(message: Packet): PacketAmino {
     const obj: any = {};
-    obj.sequence = message.sequence ? message.sequence.toString() : undefined;
-    obj.source_client = message.sourceClient;
-    obj.destination_client = message.destinationClient;
-    obj.timeout_timestamp = message.timeoutTimestamp ? message.timeoutTimestamp.toString() : undefined;
+    obj.sequence = message.sequence !== BigInt(0) ? message.sequence?.toString() : undefined;
+    obj.source_client = message.sourceClient === "" ? undefined : message.sourceClient;
+    obj.destination_client = message.destinationClient === "" ? undefined : message.destinationClient;
+    obj.timeout_timestamp =
+      message.timeoutTimestamp !== BigInt(0) ? message.timeoutTimestamp?.toString() : undefined;
     if (message.payloads) {
       obj.payloads = message.payloads.map((e) => (e ? Payload.toAmino(e) : undefined));
     } else {
-      obj.payloads = [];
+      obj.payloads = message.payloads;
     }
     return obj;
   },
@@ -391,7 +433,7 @@ export const Payload = {
     if (isSet(object.value)) obj.value = bytesFromBase64(object.value);
     return obj;
   },
-  toJSON(message: Payload): unknown {
+  toJSON(message: Payload): JsonSafe<Payload> {
     const obj: any = {};
     message.sourcePort !== undefined && (obj.sourcePort = message.sourcePort);
     message.destinationPort !== undefined && (obj.destinationPort = message.destinationPort);
@@ -431,10 +473,10 @@ export const Payload = {
   },
   toAmino(message: Payload): PayloadAmino {
     const obj: any = {};
-    obj.source_port = message.sourcePort;
-    obj.destination_port = message.destinationPort;
-    obj.version = message.version;
-    obj.encoding = message.encoding;
+    obj.source_port = message.sourcePort === "" ? undefined : message.sourcePort;
+    obj.destination_port = message.destinationPort === "" ? undefined : message.destinationPort;
+    obj.version = message.version === "" ? undefined : message.version;
+    obj.encoding = message.encoding === "" ? undefined : message.encoding;
     obj.value = message.value ? base64FromBytes(message.value) : undefined;
     return obj;
   },
@@ -496,7 +538,7 @@ export const Acknowledgement = {
       obj.appAcknowledgements = object.appAcknowledgements.map((e: any) => bytesFromBase64(e));
     return obj;
   },
-  toJSON(message: Acknowledgement): unknown {
+  toJSON(message: Acknowledgement): JsonSafe<Acknowledgement> {
     const obj: any = {};
     if (message.appAcknowledgements) {
       obj.appAcknowledgements = message.appAcknowledgements.map((e) =>
@@ -522,7 +564,7 @@ export const Acknowledgement = {
     if (message.appAcknowledgements) {
       obj.app_acknowledgements = message.appAcknowledgements.map((e) => base64FromBytes(e));
     } else {
-      obj.app_acknowledgements = [];
+      obj.app_acknowledgements = message.appAcknowledgements;
     }
     return obj;
   },
@@ -591,7 +633,7 @@ export const RecvPacketResult = {
     if (isSet(object.acknowledgement)) obj.acknowledgement = bytesFromBase64(object.acknowledgement);
     return obj;
   },
-  toJSON(message: RecvPacketResult): unknown {
+  toJSON(message: RecvPacketResult): JsonSafe<RecvPacketResult> {
     const obj: any = {};
     message.status !== undefined && (obj.status = packetStatusToJSON(message.status));
     message.acknowledgement !== undefined &&
@@ -609,7 +651,7 @@ export const RecvPacketResult = {
   fromAmino(object: RecvPacketResultAmino): RecvPacketResult {
     const message = createBaseRecvPacketResult();
     if (object.status !== undefined && object.status !== null) {
-      message.status = packetStatusFromJSON(object.status);
+      message.status = object.status;
     }
     if (object.acknowledgement !== undefined && object.acknowledgement !== null) {
       message.acknowledgement = bytesFromBase64(object.acknowledgement);
@@ -618,7 +660,7 @@ export const RecvPacketResult = {
   },
   toAmino(message: RecvPacketResult): RecvPacketResultAmino {
     const obj: any = {};
-    obj.status = message.status;
+    obj.status = message.status === 0 ? undefined : message.status;
     obj.acknowledgement = message.acknowledgement ? base64FromBytes(message.acknowledgement) : undefined;
     return obj;
   },

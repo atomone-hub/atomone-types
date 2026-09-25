@@ -2,6 +2,7 @@
 import { Duration, DurationAmino } from "../../google/protobuf/duration";
 import { BinaryReader, BinaryWriter } from "../../binary";
 import { isSet } from "../../helpers";
+import { JsonSafe } from "../../json-safe";
 export const protobufPackage = "tendermint.types";
 /**
  * ConsensusParams contains consensus critical parameters that determine the
@@ -21,6 +22,9 @@ export interface ConsensusParamsProtoMsg {
 /**
  * ConsensusParams contains consensus critical parameters that determine the
  * validity of blocks.
+ * @name ConsensusParamsAmino
+ * @package tendermint.types
+ * @see proto type: tendermint.types.ConsensusParams
  */
 export interface ConsensusParamsAmino {
   block?: BlockParamsAmino | undefined;
@@ -50,7 +54,12 @@ export interface BlockParamsProtoMsg {
   typeUrl: "/tendermint.types.BlockParams";
   value: Uint8Array;
 }
-/** BlockParams contains limits on the block size. */
+/**
+ * BlockParams contains limits on the block size.
+ * @name BlockParamsAmino
+ * @package tendermint.types
+ * @see proto type: tendermint.types.BlockParams
+ */
 export interface BlockParamsAmino {
   /**
    * Max block size, in bytes.
@@ -95,7 +104,12 @@ export interface EvidenceParamsProtoMsg {
   typeUrl: "/tendermint.types.EvidenceParams";
   value: Uint8Array;
 }
-/** EvidenceParams determine how we handle evidence of malfeasance. */
+/**
+ * EvidenceParams determine how we handle evidence of malfeasance.
+ * @name EvidenceParamsAmino
+ * @package tendermint.types
+ * @see proto type: tendermint.types.EvidenceParams
+ */
 export interface EvidenceParamsAmino {
   /**
    * Max age of evidence, in blocks.
@@ -137,6 +151,9 @@ export interface ValidatorParamsProtoMsg {
 /**
  * ValidatorParams restrict the public key types validators can use.
  * NOTE: uses ABCI pubkey naming, not Amino names.
+ * @name ValidatorParamsAmino
+ * @package tendermint.types
+ * @see proto type: tendermint.types.ValidatorParams
  */
 export interface ValidatorParamsAmino {
   pub_key_types?: string[];
@@ -153,7 +170,12 @@ export interface VersionParamsProtoMsg {
   typeUrl: "/tendermint.types.VersionParams";
   value: Uint8Array;
 }
-/** VersionParams contains the ABCI application version. */
+/**
+ * VersionParams contains the ABCI application version.
+ * @name VersionParamsAmino
+ * @package tendermint.types
+ * @see proto type: tendermint.types.VersionParams
+ */
 export interface VersionParamsAmino {
   app?: string;
 }
@@ -178,6 +200,9 @@ export interface HashedParamsProtoMsg {
  * HashedParams is a subset of ConsensusParams.
  *
  * It is hashed into the Header.ConsensusHash.
+ * @name HashedParamsAmino
+ * @package tendermint.types
+ * @see proto type: tendermint.types.HashedParams
  */
 export interface HashedParamsAmino {
   block_max_bytes?: string;
@@ -206,7 +231,12 @@ export interface ABCIParamsProtoMsg {
   typeUrl: "/tendermint.types.ABCIParams";
   value: Uint8Array;
 }
-/** ABCIParams configure functionality specific to the Application Blockchain Interface. */
+/**
+ * ABCIParams configure functionality specific to the Application Blockchain Interface.
+ * @name ABCIParamsAmino
+ * @package tendermint.types
+ * @see proto type: tendermint.types.ABCIParams
+ */
 export interface ABCIParamsAmino {
   /**
    * vote_extensions_enable_height configures the first height during which
@@ -292,7 +322,7 @@ export const ConsensusParams = {
     if (isSet(object.abci)) obj.abci = ABCIParams.fromJSON(object.abci);
     return obj;
   },
-  toJSON(message: ConsensusParams): unknown {
+  toJSON(message: ConsensusParams): JsonSafe<ConsensusParams> {
     const obj: any = {};
     message.block !== undefined &&
       (obj.block = message.block ? BlockParams.toJSON(message.block) : undefined);
@@ -411,7 +441,7 @@ export const BlockParams = {
     if (isSet(object.maxGas)) obj.maxGas = BigInt(object.maxGas.toString());
     return obj;
   },
-  toJSON(message: BlockParams): unknown {
+  toJSON(message: BlockParams): JsonSafe<BlockParams> {
     const obj: any = {};
     message.maxBytes !== undefined && (obj.maxBytes = (message.maxBytes || BigInt(0)).toString());
     message.maxGas !== undefined && (obj.maxGas = (message.maxGas || BigInt(0)).toString());
@@ -439,8 +469,8 @@ export const BlockParams = {
   },
   toAmino(message: BlockParams): BlockParamsAmino {
     const obj: any = {};
-    obj.max_bytes = message.maxBytes ? message.maxBytes.toString() : undefined;
-    obj.max_gas = message.maxGas ? message.maxGas.toString() : undefined;
+    obj.max_bytes = message.maxBytes !== BigInt(0) ? message.maxBytes?.toString() : undefined;
+    obj.max_gas = message.maxGas !== BigInt(0) ? message.maxGas?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: BlockParamsAminoMsg): BlockParams {
@@ -510,7 +540,7 @@ export const EvidenceParams = {
     if (isSet(object.maxBytes)) obj.maxBytes = BigInt(object.maxBytes.toString());
     return obj;
   },
-  toJSON(message: EvidenceParams): unknown {
+  toJSON(message: EvidenceParams): JsonSafe<EvidenceParams> {
     const obj: any = {};
     message.maxAgeNumBlocks !== undefined &&
       (obj.maxAgeNumBlocks = (message.maxAgeNumBlocks || BigInt(0)).toString());
@@ -547,9 +577,10 @@ export const EvidenceParams = {
   },
   toAmino(message: EvidenceParams): EvidenceParamsAmino {
     const obj: any = {};
-    obj.max_age_num_blocks = message.maxAgeNumBlocks ? message.maxAgeNumBlocks.toString() : undefined;
+    obj.max_age_num_blocks =
+      message.maxAgeNumBlocks !== BigInt(0) ? message.maxAgeNumBlocks?.toString() : undefined;
     obj.max_age_duration = message.maxAgeDuration ? Duration.toAmino(message.maxAgeDuration) : undefined;
-    obj.max_bytes = message.maxBytes ? message.maxBytes.toString() : undefined;
+    obj.max_bytes = message.maxBytes !== BigInt(0) ? message.maxBytes?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: EvidenceParamsAminoMsg): EvidenceParams {
@@ -603,7 +634,7 @@ export const ValidatorParams = {
     if (Array.isArray(object?.pubKeyTypes)) obj.pubKeyTypes = object.pubKeyTypes.map((e: any) => String(e));
     return obj;
   },
-  toJSON(message: ValidatorParams): unknown {
+  toJSON(message: ValidatorParams): JsonSafe<ValidatorParams> {
     const obj: any = {};
     if (message.pubKeyTypes) {
       obj.pubKeyTypes = message.pubKeyTypes.map((e) => e);
@@ -627,7 +658,7 @@ export const ValidatorParams = {
     if (message.pubKeyTypes) {
       obj.pub_key_types = message.pubKeyTypes.map((e) => e);
     } else {
-      obj.pub_key_types = [];
+      obj.pub_key_types = message.pubKeyTypes;
     }
     return obj;
   },
@@ -682,7 +713,7 @@ export const VersionParams = {
     if (isSet(object.app)) obj.app = BigInt(object.app.toString());
     return obj;
   },
-  toJSON(message: VersionParams): unknown {
+  toJSON(message: VersionParams): JsonSafe<VersionParams> {
     const obj: any = {};
     message.app !== undefined && (obj.app = (message.app || BigInt(0)).toString());
     return obj;
@@ -703,7 +734,7 @@ export const VersionParams = {
   },
   toAmino(message: VersionParams): VersionParamsAmino {
     const obj: any = {};
-    obj.app = message.app ? message.app.toString() : undefined;
+    obj.app = message.app !== BigInt(0) ? message.app?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: VersionParamsAminoMsg): VersionParams {
@@ -765,7 +796,7 @@ export const HashedParams = {
     if (isSet(object.blockMaxGas)) obj.blockMaxGas = BigInt(object.blockMaxGas.toString());
     return obj;
   },
-  toJSON(message: HashedParams): unknown {
+  toJSON(message: HashedParams): JsonSafe<HashedParams> {
     const obj: any = {};
     message.blockMaxBytes !== undefined &&
       (obj.blockMaxBytes = (message.blockMaxBytes || BigInt(0)).toString());
@@ -794,8 +825,8 @@ export const HashedParams = {
   },
   toAmino(message: HashedParams): HashedParamsAmino {
     const obj: any = {};
-    obj.block_max_bytes = message.blockMaxBytes ? message.blockMaxBytes.toString() : undefined;
-    obj.block_max_gas = message.blockMaxGas ? message.blockMaxGas.toString() : undefined;
+    obj.block_max_bytes = message.blockMaxBytes !== BigInt(0) ? message.blockMaxBytes?.toString() : undefined;
+    obj.block_max_gas = message.blockMaxGas !== BigInt(0) ? message.blockMaxGas?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: HashedParamsAminoMsg): HashedParams {
@@ -850,7 +881,7 @@ export const ABCIParams = {
       obj.voteExtensionsEnableHeight = BigInt(object.voteExtensionsEnableHeight.toString());
     return obj;
   },
-  toJSON(message: ABCIParams): unknown {
+  toJSON(message: ABCIParams): JsonSafe<ABCIParams> {
     const obj: any = {};
     message.voteExtensionsEnableHeight !== undefined &&
       (obj.voteExtensionsEnableHeight = (message.voteExtensionsEnableHeight || BigInt(0)).toString());
@@ -872,9 +903,10 @@ export const ABCIParams = {
   },
   toAmino(message: ABCIParams): ABCIParamsAmino {
     const obj: any = {};
-    obj.vote_extensions_enable_height = message.voteExtensionsEnableHeight
-      ? message.voteExtensionsEnableHeight.toString()
-      : undefined;
+    obj.vote_extensions_enable_height =
+      message.voteExtensionsEnableHeight !== BigInt(0)
+        ? message.voteExtensionsEnableHeight?.toString()
+        : undefined;
     return obj;
   },
   fromAminoMsg(object: ABCIParamsAminoMsg): ABCIParams {

@@ -23,6 +23,7 @@ import {
 } from "./staking";
 import { BinaryReader, BinaryWriter } from "../../../binary";
 import { isSet } from "../../../helpers";
+import { JsonSafe } from "../../../json-safe";
 import { TxRpc } from "../../../types";
 export const protobufPackage = "cosmos.staking.v1beta1";
 /** QueryValidatorsRequest is request type for Query/Validators RPC method. */
@@ -36,11 +37,20 @@ export interface QueryValidatorsRequestProtoMsg {
   typeUrl: "/cosmos.staking.v1beta1.QueryValidatorsRequest";
   value: Uint8Array;
 }
-/** QueryValidatorsRequest is request type for Query/Validators RPC method. */
+/**
+ * QueryValidatorsRequest is request type for Query/Validators RPC method.
+ * @name QueryValidatorsRequestAmino
+ * @package cosmos.staking.v1beta1
+ * @see proto type: cosmos.staking.v1beta1.QueryValidatorsRequest
+ */
 export interface QueryValidatorsRequestAmino {
-  /** status enables to query for validators matching a given status. */
+  /**
+   * status enables to query for validators matching a given status.
+   */
   status?: string;
-  /** pagination defines an optional pagination for the request. */
+  /**
+   * pagination defines an optional pagination for the request.
+   */
   pagination?: PageRequestAmino | undefined;
 }
 export interface QueryValidatorsRequestAminoMsg {
@@ -58,11 +68,20 @@ export interface QueryValidatorsResponseProtoMsg {
   typeUrl: "/cosmos.staking.v1beta1.QueryValidatorsResponse";
   value: Uint8Array;
 }
-/** QueryValidatorsResponse is response type for the Query/Validators RPC method */
+/**
+ * QueryValidatorsResponse is response type for the Query/Validators RPC method
+ * @name QueryValidatorsResponseAmino
+ * @package cosmos.staking.v1beta1
+ * @see proto type: cosmos.staking.v1beta1.QueryValidatorsResponse
+ */
 export interface QueryValidatorsResponseAmino {
-  /** validators contains all the queried validators. */
+  /**
+   * validators contains all the queried validators.
+   */
   validators: ValidatorAmino[];
-  /** pagination defines the pagination in the response. */
+  /**
+   * pagination defines the pagination in the response.
+   */
   pagination?: PageResponseAmino | undefined;
 }
 export interface QueryValidatorsResponseAminoMsg {
@@ -78,9 +97,16 @@ export interface QueryValidatorRequestProtoMsg {
   typeUrl: "/cosmos.staking.v1beta1.QueryValidatorRequest";
   value: Uint8Array;
 }
-/** QueryValidatorRequest is response type for the Query/Validator RPC method */
+/**
+ * QueryValidatorRequest is response type for the Query/Validator RPC method
+ * @name QueryValidatorRequestAmino
+ * @package cosmos.staking.v1beta1
+ * @see proto type: cosmos.staking.v1beta1.QueryValidatorRequest
+ */
 export interface QueryValidatorRequestAmino {
-  /** validator_addr defines the validator address to query for. */
+  /**
+   * validator_addr defines the validator address to query for.
+   */
   validator_addr?: string;
 }
 export interface QueryValidatorRequestAminoMsg {
@@ -96,9 +122,16 @@ export interface QueryValidatorResponseProtoMsg {
   typeUrl: "/cosmos.staking.v1beta1.QueryValidatorResponse";
   value: Uint8Array;
 }
-/** QueryValidatorResponse is response type for the Query/Validator RPC method */
+/**
+ * QueryValidatorResponse is response type for the Query/Validator RPC method
+ * @name QueryValidatorResponseAmino
+ * @package cosmos.staking.v1beta1
+ * @see proto type: cosmos.staking.v1beta1.QueryValidatorResponse
+ */
 export interface QueryValidatorResponseAmino {
-  /** validator defines the validator info. */
+  /**
+   * validator defines the validator info.
+   */
   validator: ValidatorAmino | undefined;
 }
 export interface QueryValidatorResponseAminoMsg {
@@ -122,11 +155,18 @@ export interface QueryValidatorDelegationsRequestProtoMsg {
 /**
  * QueryValidatorDelegationsRequest is request type for the
  * Query/ValidatorDelegations RPC method
+ * @name QueryValidatorDelegationsRequestAmino
+ * @package cosmos.staking.v1beta1
+ * @see proto type: cosmos.staking.v1beta1.QueryValidatorDelegationsRequest
  */
 export interface QueryValidatorDelegationsRequestAmino {
-  /** validator_addr defines the validator address to query for. */
+  /**
+   * validator_addr defines the validator address to query for.
+   */
   validator_addr?: string;
-  /** pagination defines an optional pagination for the request. */
+  /**
+   * pagination defines an optional pagination for the request.
+   */
   pagination?: PageRequestAmino | undefined;
 }
 export interface QueryValidatorDelegationsRequestAminoMsg {
@@ -149,10 +189,15 @@ export interface QueryValidatorDelegationsResponseProtoMsg {
 /**
  * QueryValidatorDelegationsResponse is response type for the
  * Query/ValidatorDelegations RPC method
+ * @name QueryValidatorDelegationsResponseAmino
+ * @package cosmos.staking.v1beta1
+ * @see proto type: cosmos.staking.v1beta1.QueryValidatorDelegationsResponse
  */
 export interface QueryValidatorDelegationsResponseAmino {
   delegation_responses: DelegationResponseAmino[];
-  /** pagination defines the pagination in the response. */
+  /**
+   * pagination defines the pagination in the response.
+   */
   pagination?: PageResponseAmino | undefined;
 }
 export interface QueryValidatorDelegationsResponseAminoMsg {
@@ -176,11 +221,18 @@ export interface QueryValidatorUnbondingDelegationsRequestProtoMsg {
 /**
  * QueryValidatorUnbondingDelegationsRequest is required type for the
  * Query/ValidatorUnbondingDelegations RPC method
+ * @name QueryValidatorUnbondingDelegationsRequestAmino
+ * @package cosmos.staking.v1beta1
+ * @see proto type: cosmos.staking.v1beta1.QueryValidatorUnbondingDelegationsRequest
  */
 export interface QueryValidatorUnbondingDelegationsRequestAmino {
-  /** validator_addr defines the validator address to query for. */
+  /**
+   * validator_addr defines the validator address to query for.
+   */
   validator_addr?: string;
-  /** pagination defines an optional pagination for the request. */
+  /**
+   * pagination defines an optional pagination for the request.
+   */
   pagination?: PageRequestAmino | undefined;
 }
 export interface QueryValidatorUnbondingDelegationsRequestAminoMsg {
@@ -203,10 +255,15 @@ export interface QueryValidatorUnbondingDelegationsResponseProtoMsg {
 /**
  * QueryValidatorUnbondingDelegationsResponse is response type for the
  * Query/ValidatorUnbondingDelegations RPC method.
+ * @name QueryValidatorUnbondingDelegationsResponseAmino
+ * @package cosmos.staking.v1beta1
+ * @see proto type: cosmos.staking.v1beta1.QueryValidatorUnbondingDelegationsResponse
  */
 export interface QueryValidatorUnbondingDelegationsResponseAmino {
   unbonding_responses: UnbondingDelegationAmino[];
-  /** pagination defines the pagination in the response. */
+  /**
+   * pagination defines the pagination in the response.
+   */
   pagination?: PageResponseAmino | undefined;
 }
 export interface QueryValidatorUnbondingDelegationsResponseAminoMsg {
@@ -224,11 +281,20 @@ export interface QueryDelegationRequestProtoMsg {
   typeUrl: "/cosmos.staking.v1beta1.QueryDelegationRequest";
   value: Uint8Array;
 }
-/** QueryDelegationRequest is request type for the Query/Delegation RPC method. */
+/**
+ * QueryDelegationRequest is request type for the Query/Delegation RPC method.
+ * @name QueryDelegationRequestAmino
+ * @package cosmos.staking.v1beta1
+ * @see proto type: cosmos.staking.v1beta1.QueryDelegationRequest
+ */
 export interface QueryDelegationRequestAmino {
-  /** delegator_addr defines the delegator address to query for. */
+  /**
+   * delegator_addr defines the delegator address to query for.
+   */
   delegator_addr?: string;
-  /** validator_addr defines the validator address to query for. */
+  /**
+   * validator_addr defines the validator address to query for.
+   */
   validator_addr?: string;
 }
 export interface QueryDelegationRequestAminoMsg {
@@ -244,9 +310,16 @@ export interface QueryDelegationResponseProtoMsg {
   typeUrl: "/cosmos.staking.v1beta1.QueryDelegationResponse";
   value: Uint8Array;
 }
-/** QueryDelegationResponse is response type for the Query/Delegation RPC method. */
+/**
+ * QueryDelegationResponse is response type for the Query/Delegation RPC method.
+ * @name QueryDelegationResponseAmino
+ * @package cosmos.staking.v1beta1
+ * @see proto type: cosmos.staking.v1beta1.QueryDelegationResponse
+ */
 export interface QueryDelegationResponseAmino {
-  /** delegation_responses defines the delegation info of a delegation. */
+  /**
+   * delegation_responses defines the delegation info of a delegation.
+   */
   delegation_response?: DelegationResponseAmino | undefined;
 }
 export interface QueryDelegationResponseAminoMsg {
@@ -270,11 +343,18 @@ export interface QueryUnbondingDelegationRequestProtoMsg {
 /**
  * QueryUnbondingDelegationRequest is request type for the
  * Query/UnbondingDelegation RPC method.
+ * @name QueryUnbondingDelegationRequestAmino
+ * @package cosmos.staking.v1beta1
+ * @see proto type: cosmos.staking.v1beta1.QueryUnbondingDelegationRequest
  */
 export interface QueryUnbondingDelegationRequestAmino {
-  /** delegator_addr defines the delegator address to query for. */
+  /**
+   * delegator_addr defines the delegator address to query for.
+   */
   delegator_addr?: string;
-  /** validator_addr defines the validator address to query for. */
+  /**
+   * validator_addr defines the validator address to query for.
+   */
   validator_addr?: string;
 }
 export interface QueryUnbondingDelegationRequestAminoMsg {
@@ -296,9 +376,14 @@ export interface QueryUnbondingDelegationResponseProtoMsg {
 /**
  * QueryDelegationResponse is response type for the Query/UnbondingDelegation
  * RPC method.
+ * @name QueryUnbondingDelegationResponseAmino
+ * @package cosmos.staking.v1beta1
+ * @see proto type: cosmos.staking.v1beta1.QueryUnbondingDelegationResponse
  */
 export interface QueryUnbondingDelegationResponseAmino {
-  /** unbond defines the unbonding information of a delegation. */
+  /**
+   * unbond defines the unbonding information of a delegation.
+   */
   unbond: UnbondingDelegationAmino | undefined;
 }
 export interface QueryUnbondingDelegationResponseAminoMsg {
@@ -322,11 +407,18 @@ export interface QueryDelegatorDelegationsRequestProtoMsg {
 /**
  * QueryDelegatorDelegationsRequest is request type for the
  * Query/DelegatorDelegations RPC method.
+ * @name QueryDelegatorDelegationsRequestAmino
+ * @package cosmos.staking.v1beta1
+ * @see proto type: cosmos.staking.v1beta1.QueryDelegatorDelegationsRequest
  */
 export interface QueryDelegatorDelegationsRequestAmino {
-  /** delegator_addr defines the delegator address to query for. */
+  /**
+   * delegator_addr defines the delegator address to query for.
+   */
   delegator_addr?: string;
-  /** pagination defines an optional pagination for the request. */
+  /**
+   * pagination defines an optional pagination for the request.
+   */
   pagination?: PageRequestAmino | undefined;
 }
 export interface QueryDelegatorDelegationsRequestAminoMsg {
@@ -350,11 +442,18 @@ export interface QueryDelegatorDelegationsResponseProtoMsg {
 /**
  * QueryDelegatorDelegationsResponse is response type for the
  * Query/DelegatorDelegations RPC method.
+ * @name QueryDelegatorDelegationsResponseAmino
+ * @package cosmos.staking.v1beta1
+ * @see proto type: cosmos.staking.v1beta1.QueryDelegatorDelegationsResponse
  */
 export interface QueryDelegatorDelegationsResponseAmino {
-  /** delegation_responses defines all the delegations' info of a delegator. */
+  /**
+   * delegation_responses defines all the delegations' info of a delegator.
+   */
   delegation_responses: DelegationResponseAmino[];
-  /** pagination defines the pagination in the response. */
+  /**
+   * pagination defines the pagination in the response.
+   */
   pagination?: PageResponseAmino | undefined;
 }
 export interface QueryDelegatorDelegationsResponseAminoMsg {
@@ -378,11 +477,18 @@ export interface QueryDelegatorUnbondingDelegationsRequestProtoMsg {
 /**
  * QueryDelegatorUnbondingDelegationsRequest is request type for the
  * Query/DelegatorUnbondingDelegations RPC method.
+ * @name QueryDelegatorUnbondingDelegationsRequestAmino
+ * @package cosmos.staking.v1beta1
+ * @see proto type: cosmos.staking.v1beta1.QueryDelegatorUnbondingDelegationsRequest
  */
 export interface QueryDelegatorUnbondingDelegationsRequestAmino {
-  /** delegator_addr defines the delegator address to query for. */
+  /**
+   * delegator_addr defines the delegator address to query for.
+   */
   delegator_addr?: string;
-  /** pagination defines an optional pagination for the request. */
+  /**
+   * pagination defines an optional pagination for the request.
+   */
   pagination?: PageRequestAmino | undefined;
 }
 export interface QueryDelegatorUnbondingDelegationsRequestAminoMsg {
@@ -405,10 +511,15 @@ export interface QueryDelegatorUnbondingDelegationsResponseProtoMsg {
 /**
  * QueryUnbondingDelegatorDelegationsResponse is response type for the
  * Query/UnbondingDelegatorDelegations RPC method.
+ * @name QueryDelegatorUnbondingDelegationsResponseAmino
+ * @package cosmos.staking.v1beta1
+ * @see proto type: cosmos.staking.v1beta1.QueryDelegatorUnbondingDelegationsResponse
  */
 export interface QueryDelegatorUnbondingDelegationsResponseAmino {
   unbonding_responses: UnbondingDelegationAmino[];
-  /** pagination defines the pagination in the response. */
+  /**
+   * pagination defines the pagination in the response.
+   */
   pagination?: PageResponseAmino | undefined;
 }
 export interface QueryDelegatorUnbondingDelegationsResponseAminoMsg {
@@ -436,15 +547,26 @@ export interface QueryRedelegationsRequestProtoMsg {
 /**
  * QueryRedelegationsRequest is request type for the Query/Redelegations RPC
  * method.
+ * @name QueryRedelegationsRequestAmino
+ * @package cosmos.staking.v1beta1
+ * @see proto type: cosmos.staking.v1beta1.QueryRedelegationsRequest
  */
 export interface QueryRedelegationsRequestAmino {
-  /** delegator_addr defines the delegator address to query for. */
+  /**
+   * delegator_addr defines the delegator address to query for.
+   */
   delegator_addr?: string;
-  /** src_validator_addr defines the validator address to redelegate from. */
+  /**
+   * src_validator_addr defines the validator address to redelegate from.
+   */
   src_validator_addr?: string;
-  /** dst_validator_addr defines the validator address to redelegate to. */
+  /**
+   * dst_validator_addr defines the validator address to redelegate to.
+   */
   dst_validator_addr?: string;
-  /** pagination defines an optional pagination for the request. */
+  /**
+   * pagination defines an optional pagination for the request.
+   */
   pagination?: PageRequestAmino | undefined;
 }
 export interface QueryRedelegationsRequestAminoMsg {
@@ -467,10 +589,15 @@ export interface QueryRedelegationsResponseProtoMsg {
 /**
  * QueryRedelegationsResponse is response type for the Query/Redelegations RPC
  * method.
+ * @name QueryRedelegationsResponseAmino
+ * @package cosmos.staking.v1beta1
+ * @see proto type: cosmos.staking.v1beta1.QueryRedelegationsResponse
  */
 export interface QueryRedelegationsResponseAmino {
   redelegation_responses: RedelegationResponseAmino[];
-  /** pagination defines the pagination in the response. */
+  /**
+   * pagination defines the pagination in the response.
+   */
   pagination?: PageResponseAmino | undefined;
 }
 export interface QueryRedelegationsResponseAminoMsg {
@@ -494,11 +621,18 @@ export interface QueryDelegatorValidatorsRequestProtoMsg {
 /**
  * QueryDelegatorValidatorsRequest is request type for the
  * Query/DelegatorValidators RPC method.
+ * @name QueryDelegatorValidatorsRequestAmino
+ * @package cosmos.staking.v1beta1
+ * @see proto type: cosmos.staking.v1beta1.QueryDelegatorValidatorsRequest
  */
 export interface QueryDelegatorValidatorsRequestAmino {
-  /** delegator_addr defines the delegator address to query for. */
+  /**
+   * delegator_addr defines the delegator address to query for.
+   */
   delegator_addr?: string;
-  /** pagination defines an optional pagination for the request. */
+  /**
+   * pagination defines an optional pagination for the request.
+   */
   pagination?: PageRequestAmino | undefined;
 }
 export interface QueryDelegatorValidatorsRequestAminoMsg {
@@ -522,11 +656,18 @@ export interface QueryDelegatorValidatorsResponseProtoMsg {
 /**
  * QueryDelegatorValidatorsResponse is response type for the
  * Query/DelegatorValidators RPC method.
+ * @name QueryDelegatorValidatorsResponseAmino
+ * @package cosmos.staking.v1beta1
+ * @see proto type: cosmos.staking.v1beta1.QueryDelegatorValidatorsResponse
  */
 export interface QueryDelegatorValidatorsResponseAmino {
-  /** validators defines the validators' info of a delegator. */
+  /**
+   * validators defines the validators' info of a delegator.
+   */
   validators: ValidatorAmino[];
-  /** pagination defines the pagination in the response. */
+  /**
+   * pagination defines the pagination in the response.
+   */
   pagination?: PageResponseAmino | undefined;
 }
 export interface QueryDelegatorValidatorsResponseAminoMsg {
@@ -550,11 +691,18 @@ export interface QueryDelegatorValidatorRequestProtoMsg {
 /**
  * QueryDelegatorValidatorRequest is request type for the
  * Query/DelegatorValidator RPC method.
+ * @name QueryDelegatorValidatorRequestAmino
+ * @package cosmos.staking.v1beta1
+ * @see proto type: cosmos.staking.v1beta1.QueryDelegatorValidatorRequest
  */
 export interface QueryDelegatorValidatorRequestAmino {
-  /** delegator_addr defines the delegator address to query for. */
+  /**
+   * delegator_addr defines the delegator address to query for.
+   */
   delegator_addr?: string;
-  /** validator_addr defines the validator address to query for. */
+  /**
+   * validator_addr defines the validator address to query for.
+   */
   validator_addr?: string;
 }
 export interface QueryDelegatorValidatorRequestAminoMsg {
@@ -576,9 +724,14 @@ export interface QueryDelegatorValidatorResponseProtoMsg {
 /**
  * QueryDelegatorValidatorResponse response type for the
  * Query/DelegatorValidator RPC method.
+ * @name QueryDelegatorValidatorResponseAmino
+ * @package cosmos.staking.v1beta1
+ * @see proto type: cosmos.staking.v1beta1.QueryDelegatorValidatorResponse
  */
 export interface QueryDelegatorValidatorResponseAmino {
-  /** validator defines the validator info. */
+  /**
+   * validator defines the validator info.
+   */
   validator: ValidatorAmino | undefined;
 }
 export interface QueryDelegatorValidatorResponseAminoMsg {
@@ -600,9 +753,14 @@ export interface QueryHistoricalInfoRequestProtoMsg {
 /**
  * QueryHistoricalInfoRequest is request type for the Query/HistoricalInfo RPC
  * method.
+ * @name QueryHistoricalInfoRequestAmino
+ * @package cosmos.staking.v1beta1
+ * @see proto type: cosmos.staking.v1beta1.QueryHistoricalInfoRequest
  */
 export interface QueryHistoricalInfoRequestAmino {
-  /** height defines at which height to query the historical info. */
+  /**
+   * height defines at which height to query the historical info.
+   */
   height?: string;
 }
 export interface QueryHistoricalInfoRequestAminoMsg {
@@ -624,9 +782,14 @@ export interface QueryHistoricalInfoResponseProtoMsg {
 /**
  * QueryHistoricalInfoResponse is response type for the Query/HistoricalInfo RPC
  * method.
+ * @name QueryHistoricalInfoResponseAmino
+ * @package cosmos.staking.v1beta1
+ * @see proto type: cosmos.staking.v1beta1.QueryHistoricalInfoResponse
  */
 export interface QueryHistoricalInfoResponseAmino {
-  /** hist defines the historical info at the given height. */
+  /**
+   * hist defines the historical info at the given height.
+   */
   hist?: HistoricalInfoAmino | undefined;
 }
 export interface QueryHistoricalInfoResponseAminoMsg {
@@ -639,7 +802,12 @@ export interface QueryPoolRequestProtoMsg {
   typeUrl: "/cosmos.staking.v1beta1.QueryPoolRequest";
   value: Uint8Array;
 }
-/** QueryPoolRequest is request type for the Query/Pool RPC method. */
+/**
+ * QueryPoolRequest is request type for the Query/Pool RPC method.
+ * @name QueryPoolRequestAmino
+ * @package cosmos.staking.v1beta1
+ * @see proto type: cosmos.staking.v1beta1.QueryPoolRequest
+ */
 export interface QueryPoolRequestAmino {}
 export interface QueryPoolRequestAminoMsg {
   type: "cosmos-sdk/QueryPoolRequest";
@@ -654,9 +822,16 @@ export interface QueryPoolResponseProtoMsg {
   typeUrl: "/cosmos.staking.v1beta1.QueryPoolResponse";
   value: Uint8Array;
 }
-/** QueryPoolResponse is response type for the Query/Pool RPC method. */
+/**
+ * QueryPoolResponse is response type for the Query/Pool RPC method.
+ * @name QueryPoolResponseAmino
+ * @package cosmos.staking.v1beta1
+ * @see proto type: cosmos.staking.v1beta1.QueryPoolResponse
+ */
 export interface QueryPoolResponseAmino {
-  /** pool defines the pool info. */
+  /**
+   * pool defines the pool info.
+   */
   pool: PoolAmino | undefined;
 }
 export interface QueryPoolResponseAminoMsg {
@@ -669,7 +844,12 @@ export interface QueryParamsRequestProtoMsg {
   typeUrl: "/cosmos.staking.v1beta1.QueryParamsRequest";
   value: Uint8Array;
 }
-/** QueryParamsRequest is request type for the Query/Params RPC method. */
+/**
+ * QueryParamsRequest is request type for the Query/Params RPC method.
+ * @name QueryParamsRequestAmino
+ * @package cosmos.staking.v1beta1
+ * @see proto type: cosmos.staking.v1beta1.QueryParamsRequest
+ */
 export interface QueryParamsRequestAmino {}
 export interface QueryParamsRequestAminoMsg {
   type: "cosmos-sdk/QueryParamsRequest";
@@ -684,9 +864,16 @@ export interface QueryParamsResponseProtoMsg {
   typeUrl: "/cosmos.staking.v1beta1.QueryParamsResponse";
   value: Uint8Array;
 }
-/** QueryParamsResponse is response type for the Query/Params RPC method. */
+/**
+ * QueryParamsResponse is response type for the Query/Params RPC method.
+ * @name QueryParamsResponseAmino
+ * @package cosmos.staking.v1beta1
+ * @see proto type: cosmos.staking.v1beta1.QueryParamsResponse
+ */
 export interface QueryParamsResponseAmino {
-  /** params holds all the parameters of this module. */
+  /**
+   * params holds all the parameters of this module.
+   */
   params: ParamsAmino | undefined;
 }
 export interface QueryParamsResponseAminoMsg {
@@ -736,7 +923,7 @@ export const QueryValidatorsRequest = {
     if (isSet(object.pagination)) obj.pagination = PageRequest.fromJSON(object.pagination);
     return obj;
   },
-  toJSON(message: QueryValidatorsRequest): unknown {
+  toJSON(message: QueryValidatorsRequest): JsonSafe<QueryValidatorsRequest> {
     const obj: any = {};
     message.status !== undefined && (obj.status = message.status);
     message.pagination !== undefined &&
@@ -763,7 +950,7 @@ export const QueryValidatorsRequest = {
   },
   toAmino(message: QueryValidatorsRequest): QueryValidatorsRequestAmino {
     const obj: any = {};
-    obj.status = message.status;
+    obj.status = message.status === "" ? undefined : message.status;
     obj.pagination = message.pagination ? PageRequest.toAmino(message.pagination) : undefined;
     return obj;
   },
@@ -833,7 +1020,7 @@ export const QueryValidatorsResponse = {
     if (isSet(object.pagination)) obj.pagination = PageResponse.fromJSON(object.pagination);
     return obj;
   },
-  toJSON(message: QueryValidatorsResponse): unknown {
+  toJSON(message: QueryValidatorsResponse): JsonSafe<QueryValidatorsResponse> {
     const obj: any = {};
     if (message.validators) {
       obj.validators = message.validators.map((e) => (e ? Validator.toJSON(e) : undefined));
@@ -865,7 +1052,7 @@ export const QueryValidatorsResponse = {
     if (message.validators) {
       obj.validators = message.validators.map((e) => (e ? Validator.toAmino(e) : undefined));
     } else {
-      obj.validators = [];
+      obj.validators = message.validators;
     }
     obj.pagination = message.pagination ? PageResponse.toAmino(message.pagination) : undefined;
     return obj;
@@ -927,7 +1114,7 @@ export const QueryValidatorRequest = {
     if (isSet(object.validatorAddr)) obj.validatorAddr = String(object.validatorAddr);
     return obj;
   },
-  toJSON(message: QueryValidatorRequest): unknown {
+  toJSON(message: QueryValidatorRequest): JsonSafe<QueryValidatorRequest> {
     const obj: any = {};
     message.validatorAddr !== undefined && (obj.validatorAddr = message.validatorAddr);
     return obj;
@@ -946,7 +1133,7 @@ export const QueryValidatorRequest = {
   },
   toAmino(message: QueryValidatorRequest): QueryValidatorRequestAmino {
     const obj: any = {};
-    obj.validator_addr = message.validatorAddr;
+    obj.validator_addr = message.validatorAddr === "" ? undefined : message.validatorAddr;
     return obj;
   },
   fromAminoMsg(object: QueryValidatorRequestAminoMsg): QueryValidatorRequest {
@@ -1006,7 +1193,7 @@ export const QueryValidatorResponse = {
     if (isSet(object.validator)) obj.validator = Validator.fromJSON(object.validator);
     return obj;
   },
-  toJSON(message: QueryValidatorResponse): unknown {
+  toJSON(message: QueryValidatorResponse): JsonSafe<QueryValidatorResponse> {
     const obj: any = {};
     message.validator !== undefined &&
       (obj.validator = message.validator ? Validator.toJSON(message.validator) : undefined);
@@ -1028,7 +1215,9 @@ export const QueryValidatorResponse = {
   },
   toAmino(message: QueryValidatorResponse): QueryValidatorResponseAmino {
     const obj: any = {};
-    obj.validator = message.validator ? Validator.toAmino(message.validator) : Validator.fromPartial({});
+    obj.validator = message.validator
+      ? Validator.toAmino(message.validator)
+      : Validator.toAmino(Validator.fromPartial({}));
     return obj;
   },
   fromAminoMsg(object: QueryValidatorResponseAminoMsg): QueryValidatorResponse {
@@ -1099,7 +1288,7 @@ export const QueryValidatorDelegationsRequest = {
     if (isSet(object.pagination)) obj.pagination = PageRequest.fromJSON(object.pagination);
     return obj;
   },
-  toJSON(message: QueryValidatorDelegationsRequest): unknown {
+  toJSON(message: QueryValidatorDelegationsRequest): JsonSafe<QueryValidatorDelegationsRequest> {
     const obj: any = {};
     message.validatorAddr !== undefined && (obj.validatorAddr = message.validatorAddr);
     message.pagination !== undefined &&
@@ -1126,7 +1315,7 @@ export const QueryValidatorDelegationsRequest = {
   },
   toAmino(message: QueryValidatorDelegationsRequest): QueryValidatorDelegationsRequestAmino {
     const obj: any = {};
-    obj.validator_addr = message.validatorAddr;
+    obj.validator_addr = message.validatorAddr === "" ? undefined : message.validatorAddr;
     obj.pagination = message.pagination ? PageRequest.toAmino(message.pagination) : undefined;
     return obj;
   },
@@ -1199,7 +1388,7 @@ export const QueryValidatorDelegationsResponse = {
     if (isSet(object.pagination)) obj.pagination = PageResponse.fromJSON(object.pagination);
     return obj;
   },
-  toJSON(message: QueryValidatorDelegationsResponse): unknown {
+  toJSON(message: QueryValidatorDelegationsResponse): JsonSafe<QueryValidatorDelegationsResponse> {
     const obj: any = {};
     if (message.delegationResponses) {
       obj.delegationResponses = message.delegationResponses.map((e) =>
@@ -1237,7 +1426,7 @@ export const QueryValidatorDelegationsResponse = {
         e ? DelegationResponse.toAmino(e) : undefined,
       );
     } else {
-      obj.delegation_responses = [];
+      obj.delegation_responses = message.delegationResponses;
     }
     obj.pagination = message.pagination ? PageResponse.toAmino(message.pagination) : undefined;
     return obj;
@@ -1310,7 +1499,9 @@ export const QueryValidatorUnbondingDelegationsRequest = {
     if (isSet(object.pagination)) obj.pagination = PageRequest.fromJSON(object.pagination);
     return obj;
   },
-  toJSON(message: QueryValidatorUnbondingDelegationsRequest): unknown {
+  toJSON(
+    message: QueryValidatorUnbondingDelegationsRequest,
+  ): JsonSafe<QueryValidatorUnbondingDelegationsRequest> {
     const obj: any = {};
     message.validatorAddr !== undefined && (obj.validatorAddr = message.validatorAddr);
     message.pagination !== undefined &&
@@ -1343,7 +1534,7 @@ export const QueryValidatorUnbondingDelegationsRequest = {
     message: QueryValidatorUnbondingDelegationsRequest,
   ): QueryValidatorUnbondingDelegationsRequestAmino {
     const obj: any = {};
-    obj.validator_addr = message.validatorAddr;
+    obj.validator_addr = message.validatorAddr === "" ? undefined : message.validatorAddr;
     obj.pagination = message.pagination ? PageRequest.toAmino(message.pagination) : undefined;
     return obj;
   },
@@ -1424,7 +1615,9 @@ export const QueryValidatorUnbondingDelegationsResponse = {
     if (isSet(object.pagination)) obj.pagination = PageResponse.fromJSON(object.pagination);
     return obj;
   },
-  toJSON(message: QueryValidatorUnbondingDelegationsResponse): unknown {
+  toJSON(
+    message: QueryValidatorUnbondingDelegationsResponse,
+  ): JsonSafe<QueryValidatorUnbondingDelegationsResponse> {
     const obj: any = {};
     if (message.unbondingResponses) {
       obj.unbondingResponses = message.unbondingResponses.map((e) =>
@@ -1468,7 +1661,7 @@ export const QueryValidatorUnbondingDelegationsResponse = {
         e ? UnbondingDelegation.toAmino(e) : undefined,
       );
     } else {
-      obj.unbonding_responses = [];
+      obj.unbonding_responses = message.unbondingResponses;
     }
     obj.pagination = message.pagination ? PageResponse.toAmino(message.pagination) : undefined;
     return obj;
@@ -1546,7 +1739,7 @@ export const QueryDelegationRequest = {
     if (isSet(object.validatorAddr)) obj.validatorAddr = String(object.validatorAddr);
     return obj;
   },
-  toJSON(message: QueryDelegationRequest): unknown {
+  toJSON(message: QueryDelegationRequest): JsonSafe<QueryDelegationRequest> {
     const obj: any = {};
     message.delegatorAddr !== undefined && (obj.delegatorAddr = message.delegatorAddr);
     message.validatorAddr !== undefined && (obj.validatorAddr = message.validatorAddr);
@@ -1570,8 +1763,8 @@ export const QueryDelegationRequest = {
   },
   toAmino(message: QueryDelegationRequest): QueryDelegationRequestAmino {
     const obj: any = {};
-    obj.delegator_addr = message.delegatorAddr;
-    obj.validator_addr = message.validatorAddr;
+    obj.delegator_addr = message.delegatorAddr === "" ? undefined : message.delegatorAddr;
+    obj.validator_addr = message.validatorAddr === "" ? undefined : message.validatorAddr;
     return obj;
   },
   fromAminoMsg(object: QueryDelegationRequestAminoMsg): QueryDelegationRequest {
@@ -1632,7 +1825,7 @@ export const QueryDelegationResponse = {
       obj.delegationResponse = DelegationResponse.fromJSON(object.delegationResponse);
     return obj;
   },
-  toJSON(message: QueryDelegationResponse): unknown {
+  toJSON(message: QueryDelegationResponse): JsonSafe<QueryDelegationResponse> {
     const obj: any = {};
     message.delegationResponse !== undefined &&
       (obj.delegationResponse = message.delegationResponse
@@ -1729,7 +1922,7 @@ export const QueryUnbondingDelegationRequest = {
     if (isSet(object.validatorAddr)) obj.validatorAddr = String(object.validatorAddr);
     return obj;
   },
-  toJSON(message: QueryUnbondingDelegationRequest): unknown {
+  toJSON(message: QueryUnbondingDelegationRequest): JsonSafe<QueryUnbondingDelegationRequest> {
     const obj: any = {};
     message.delegatorAddr !== undefined && (obj.delegatorAddr = message.delegatorAddr);
     message.validatorAddr !== undefined && (obj.validatorAddr = message.validatorAddr);
@@ -1753,8 +1946,8 @@ export const QueryUnbondingDelegationRequest = {
   },
   toAmino(message: QueryUnbondingDelegationRequest): QueryUnbondingDelegationRequestAmino {
     const obj: any = {};
-    obj.delegator_addr = message.delegatorAddr;
-    obj.validator_addr = message.validatorAddr;
+    obj.delegator_addr = message.delegatorAddr === "" ? undefined : message.delegatorAddr;
+    obj.validator_addr = message.validatorAddr === "" ? undefined : message.validatorAddr;
     return obj;
   },
   fromAminoMsg(object: QueryUnbondingDelegationRequestAminoMsg): QueryUnbondingDelegationRequest {
@@ -1817,7 +2010,7 @@ export const QueryUnbondingDelegationResponse = {
     if (isSet(object.unbond)) obj.unbond = UnbondingDelegation.fromJSON(object.unbond);
     return obj;
   },
-  toJSON(message: QueryUnbondingDelegationResponse): unknown {
+  toJSON(message: QueryUnbondingDelegationResponse): JsonSafe<QueryUnbondingDelegationResponse> {
     const obj: any = {};
     message.unbond !== undefined &&
       (obj.unbond = message.unbond ? UnbondingDelegation.toJSON(message.unbond) : undefined);
@@ -1841,7 +2034,7 @@ export const QueryUnbondingDelegationResponse = {
     const obj: any = {};
     obj.unbond = message.unbond
       ? UnbondingDelegation.toAmino(message.unbond)
-      : UnbondingDelegation.fromPartial({});
+      : UnbondingDelegation.toAmino(UnbondingDelegation.fromPartial({}));
     return obj;
   },
   fromAminoMsg(object: QueryUnbondingDelegationResponseAminoMsg): QueryUnbondingDelegationResponse {
@@ -1912,7 +2105,7 @@ export const QueryDelegatorDelegationsRequest = {
     if (isSet(object.pagination)) obj.pagination = PageRequest.fromJSON(object.pagination);
     return obj;
   },
-  toJSON(message: QueryDelegatorDelegationsRequest): unknown {
+  toJSON(message: QueryDelegatorDelegationsRequest): JsonSafe<QueryDelegatorDelegationsRequest> {
     const obj: any = {};
     message.delegatorAddr !== undefined && (obj.delegatorAddr = message.delegatorAddr);
     message.pagination !== undefined &&
@@ -1939,7 +2132,7 @@ export const QueryDelegatorDelegationsRequest = {
   },
   toAmino(message: QueryDelegatorDelegationsRequest): QueryDelegatorDelegationsRequestAmino {
     const obj: any = {};
-    obj.delegator_addr = message.delegatorAddr;
+    obj.delegator_addr = message.delegatorAddr === "" ? undefined : message.delegatorAddr;
     obj.pagination = message.pagination ? PageRequest.toAmino(message.pagination) : undefined;
     return obj;
   },
@@ -2012,7 +2205,7 @@ export const QueryDelegatorDelegationsResponse = {
     if (isSet(object.pagination)) obj.pagination = PageResponse.fromJSON(object.pagination);
     return obj;
   },
-  toJSON(message: QueryDelegatorDelegationsResponse): unknown {
+  toJSON(message: QueryDelegatorDelegationsResponse): JsonSafe<QueryDelegatorDelegationsResponse> {
     const obj: any = {};
     if (message.delegationResponses) {
       obj.delegationResponses = message.delegationResponses.map((e) =>
@@ -2050,7 +2243,7 @@ export const QueryDelegatorDelegationsResponse = {
         e ? DelegationResponse.toAmino(e) : undefined,
       );
     } else {
-      obj.delegation_responses = [];
+      obj.delegation_responses = message.delegationResponses;
     }
     obj.pagination = message.pagination ? PageResponse.toAmino(message.pagination) : undefined;
     return obj;
@@ -2123,7 +2316,9 @@ export const QueryDelegatorUnbondingDelegationsRequest = {
     if (isSet(object.pagination)) obj.pagination = PageRequest.fromJSON(object.pagination);
     return obj;
   },
-  toJSON(message: QueryDelegatorUnbondingDelegationsRequest): unknown {
+  toJSON(
+    message: QueryDelegatorUnbondingDelegationsRequest,
+  ): JsonSafe<QueryDelegatorUnbondingDelegationsRequest> {
     const obj: any = {};
     message.delegatorAddr !== undefined && (obj.delegatorAddr = message.delegatorAddr);
     message.pagination !== undefined &&
@@ -2156,7 +2351,7 @@ export const QueryDelegatorUnbondingDelegationsRequest = {
     message: QueryDelegatorUnbondingDelegationsRequest,
   ): QueryDelegatorUnbondingDelegationsRequestAmino {
     const obj: any = {};
-    obj.delegator_addr = message.delegatorAddr;
+    obj.delegator_addr = message.delegatorAddr === "" ? undefined : message.delegatorAddr;
     obj.pagination = message.pagination ? PageRequest.toAmino(message.pagination) : undefined;
     return obj;
   },
@@ -2237,7 +2432,9 @@ export const QueryDelegatorUnbondingDelegationsResponse = {
     if (isSet(object.pagination)) obj.pagination = PageResponse.fromJSON(object.pagination);
     return obj;
   },
-  toJSON(message: QueryDelegatorUnbondingDelegationsResponse): unknown {
+  toJSON(
+    message: QueryDelegatorUnbondingDelegationsResponse,
+  ): JsonSafe<QueryDelegatorUnbondingDelegationsResponse> {
     const obj: any = {};
     if (message.unbondingResponses) {
       obj.unbondingResponses = message.unbondingResponses.map((e) =>
@@ -2281,7 +2478,7 @@ export const QueryDelegatorUnbondingDelegationsResponse = {
         e ? UnbondingDelegation.toAmino(e) : undefined,
       );
     } else {
-      obj.unbonding_responses = [];
+      obj.unbonding_responses = message.unbondingResponses;
     }
     obj.pagination = message.pagination ? PageResponse.toAmino(message.pagination) : undefined;
     return obj;
@@ -2375,7 +2572,7 @@ export const QueryRedelegationsRequest = {
     if (isSet(object.pagination)) obj.pagination = PageRequest.fromJSON(object.pagination);
     return obj;
   },
-  toJSON(message: QueryRedelegationsRequest): unknown {
+  toJSON(message: QueryRedelegationsRequest): JsonSafe<QueryRedelegationsRequest> {
     const obj: any = {};
     message.delegatorAddr !== undefined && (obj.delegatorAddr = message.delegatorAddr);
     message.srcValidatorAddr !== undefined && (obj.srcValidatorAddr = message.srcValidatorAddr);
@@ -2412,9 +2609,9 @@ export const QueryRedelegationsRequest = {
   },
   toAmino(message: QueryRedelegationsRequest): QueryRedelegationsRequestAmino {
     const obj: any = {};
-    obj.delegator_addr = message.delegatorAddr;
-    obj.src_validator_addr = message.srcValidatorAddr;
-    obj.dst_validator_addr = message.dstValidatorAddr;
+    obj.delegator_addr = message.delegatorAddr === "" ? undefined : message.delegatorAddr;
+    obj.src_validator_addr = message.srcValidatorAddr === "" ? undefined : message.srcValidatorAddr;
+    obj.dst_validator_addr = message.dstValidatorAddr === "" ? undefined : message.dstValidatorAddr;
     obj.pagination = message.pagination ? PageRequest.toAmino(message.pagination) : undefined;
     return obj;
   },
@@ -2486,7 +2683,7 @@ export const QueryRedelegationsResponse = {
     if (isSet(object.pagination)) obj.pagination = PageResponse.fromJSON(object.pagination);
     return obj;
   },
-  toJSON(message: QueryRedelegationsResponse): unknown {
+  toJSON(message: QueryRedelegationsResponse): JsonSafe<QueryRedelegationsResponse> {
     const obj: any = {};
     if (message.redelegationResponses) {
       obj.redelegationResponses = message.redelegationResponses.map((e) =>
@@ -2524,7 +2721,7 @@ export const QueryRedelegationsResponse = {
         e ? RedelegationResponse.toAmino(e) : undefined,
       );
     } else {
-      obj.redelegation_responses = [];
+      obj.redelegation_responses = message.redelegationResponses;
     }
     obj.pagination = message.pagination ? PageResponse.toAmino(message.pagination) : undefined;
     return obj;
@@ -2597,7 +2794,7 @@ export const QueryDelegatorValidatorsRequest = {
     if (isSet(object.pagination)) obj.pagination = PageRequest.fromJSON(object.pagination);
     return obj;
   },
-  toJSON(message: QueryDelegatorValidatorsRequest): unknown {
+  toJSON(message: QueryDelegatorValidatorsRequest): JsonSafe<QueryDelegatorValidatorsRequest> {
     const obj: any = {};
     message.delegatorAddr !== undefined && (obj.delegatorAddr = message.delegatorAddr);
     message.pagination !== undefined &&
@@ -2624,7 +2821,7 @@ export const QueryDelegatorValidatorsRequest = {
   },
   toAmino(message: QueryDelegatorValidatorsRequest): QueryDelegatorValidatorsRequestAmino {
     const obj: any = {};
-    obj.delegator_addr = message.delegatorAddr;
+    obj.delegator_addr = message.delegatorAddr === "" ? undefined : message.delegatorAddr;
     obj.pagination = message.pagination ? PageRequest.toAmino(message.pagination) : undefined;
     return obj;
   },
@@ -2697,7 +2894,7 @@ export const QueryDelegatorValidatorsResponse = {
     if (isSet(object.pagination)) obj.pagination = PageResponse.fromJSON(object.pagination);
     return obj;
   },
-  toJSON(message: QueryDelegatorValidatorsResponse): unknown {
+  toJSON(message: QueryDelegatorValidatorsResponse): JsonSafe<QueryDelegatorValidatorsResponse> {
     const obj: any = {};
     if (message.validators) {
       obj.validators = message.validators.map((e) => (e ? Validator.toJSON(e) : undefined));
@@ -2729,7 +2926,7 @@ export const QueryDelegatorValidatorsResponse = {
     if (message.validators) {
       obj.validators = message.validators.map((e) => (e ? Validator.toAmino(e) : undefined));
     } else {
-      obj.validators = [];
+      obj.validators = message.validators;
     }
     obj.pagination = message.pagination ? PageResponse.toAmino(message.pagination) : undefined;
     return obj;
@@ -2802,7 +2999,7 @@ export const QueryDelegatorValidatorRequest = {
     if (isSet(object.validatorAddr)) obj.validatorAddr = String(object.validatorAddr);
     return obj;
   },
-  toJSON(message: QueryDelegatorValidatorRequest): unknown {
+  toJSON(message: QueryDelegatorValidatorRequest): JsonSafe<QueryDelegatorValidatorRequest> {
     const obj: any = {};
     message.delegatorAddr !== undefined && (obj.delegatorAddr = message.delegatorAddr);
     message.validatorAddr !== undefined && (obj.validatorAddr = message.validatorAddr);
@@ -2826,8 +3023,8 @@ export const QueryDelegatorValidatorRequest = {
   },
   toAmino(message: QueryDelegatorValidatorRequest): QueryDelegatorValidatorRequestAmino {
     const obj: any = {};
-    obj.delegator_addr = message.delegatorAddr;
-    obj.validator_addr = message.validatorAddr;
+    obj.delegator_addr = message.delegatorAddr === "" ? undefined : message.delegatorAddr;
+    obj.validator_addr = message.validatorAddr === "" ? undefined : message.validatorAddr;
     return obj;
   },
   fromAminoMsg(object: QueryDelegatorValidatorRequestAminoMsg): QueryDelegatorValidatorRequest {
@@ -2890,7 +3087,7 @@ export const QueryDelegatorValidatorResponse = {
     if (isSet(object.validator)) obj.validator = Validator.fromJSON(object.validator);
     return obj;
   },
-  toJSON(message: QueryDelegatorValidatorResponse): unknown {
+  toJSON(message: QueryDelegatorValidatorResponse): JsonSafe<QueryDelegatorValidatorResponse> {
     const obj: any = {};
     message.validator !== undefined &&
       (obj.validator = message.validator ? Validator.toJSON(message.validator) : undefined);
@@ -2912,7 +3109,9 @@ export const QueryDelegatorValidatorResponse = {
   },
   toAmino(message: QueryDelegatorValidatorResponse): QueryDelegatorValidatorResponseAmino {
     const obj: any = {};
-    obj.validator = message.validator ? Validator.toAmino(message.validator) : Validator.fromPartial({});
+    obj.validator = message.validator
+      ? Validator.toAmino(message.validator)
+      : Validator.toAmino(Validator.fromPartial({}));
     return obj;
   },
   fromAminoMsg(object: QueryDelegatorValidatorResponseAminoMsg): QueryDelegatorValidatorResponse {
@@ -2972,7 +3171,7 @@ export const QueryHistoricalInfoRequest = {
     if (isSet(object.height)) obj.height = BigInt(object.height.toString());
     return obj;
   },
-  toJSON(message: QueryHistoricalInfoRequest): unknown {
+  toJSON(message: QueryHistoricalInfoRequest): JsonSafe<QueryHistoricalInfoRequest> {
     const obj: any = {};
     message.height !== undefined && (obj.height = (message.height || BigInt(0)).toString());
     return obj;
@@ -2993,7 +3192,7 @@ export const QueryHistoricalInfoRequest = {
   },
   toAmino(message: QueryHistoricalInfoRequest): QueryHistoricalInfoRequestAmino {
     const obj: any = {};
-    obj.height = message.height ? message.height.toString() : undefined;
+    obj.height = message.height !== BigInt(0) ? message.height?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: QueryHistoricalInfoRequestAminoMsg): QueryHistoricalInfoRequest {
@@ -3053,7 +3252,7 @@ export const QueryHistoricalInfoResponse = {
     if (isSet(object.hist)) obj.hist = HistoricalInfo.fromJSON(object.hist);
     return obj;
   },
-  toJSON(message: QueryHistoricalInfoResponse): unknown {
+  toJSON(message: QueryHistoricalInfoResponse): JsonSafe<QueryHistoricalInfoResponse> {
     const obj: any = {};
     message.hist !== undefined && (obj.hist = message.hist ? HistoricalInfo.toJSON(message.hist) : undefined);
     return obj;
@@ -3125,7 +3324,7 @@ export const QueryPoolRequest = {
     const obj = createBaseQueryPoolRequest();
     return obj;
   },
-  toJSON(_: QueryPoolRequest): unknown {
+  toJSON(_: QueryPoolRequest): JsonSafe<QueryPoolRequest> {
     const obj: any = {};
     return obj;
   },
@@ -3198,7 +3397,7 @@ export const QueryPoolResponse = {
     if (isSet(object.pool)) obj.pool = Pool.fromJSON(object.pool);
     return obj;
   },
-  toJSON(message: QueryPoolResponse): unknown {
+  toJSON(message: QueryPoolResponse): JsonSafe<QueryPoolResponse> {
     const obj: any = {};
     message.pool !== undefined && (obj.pool = message.pool ? Pool.toJSON(message.pool) : undefined);
     return obj;
@@ -3219,7 +3418,7 @@ export const QueryPoolResponse = {
   },
   toAmino(message: QueryPoolResponse): QueryPoolResponseAmino {
     const obj: any = {};
-    obj.pool = message.pool ? Pool.toAmino(message.pool) : Pool.fromPartial({});
+    obj.pool = message.pool ? Pool.toAmino(message.pool) : Pool.toAmino(Pool.fromPartial({}));
     return obj;
   },
   fromAminoMsg(object: QueryPoolResponseAminoMsg): QueryPoolResponse {
@@ -3270,7 +3469,7 @@ export const QueryParamsRequest = {
     const obj = createBaseQueryParamsRequest();
     return obj;
   },
-  toJSON(_: QueryParamsRequest): unknown {
+  toJSON(_: QueryParamsRequest): JsonSafe<QueryParamsRequest> {
     const obj: any = {};
     return obj;
   },
@@ -3343,7 +3542,7 @@ export const QueryParamsResponse = {
     if (isSet(object.params)) obj.params = Params.fromJSON(object.params);
     return obj;
   },
-  toJSON(message: QueryParamsResponse): unknown {
+  toJSON(message: QueryParamsResponse): JsonSafe<QueryParamsResponse> {
     const obj: any = {};
     message.params !== undefined && (obj.params = message.params ? Params.toJSON(message.params) : undefined);
     return obj;
@@ -3364,7 +3563,7 @@ export const QueryParamsResponse = {
   },
   toAmino(message: QueryParamsResponse): QueryParamsResponseAmino {
     const obj: any = {};
-    obj.params = message.params ? Params.toAmino(message.params) : Params.fromPartial({});
+    obj.params = message.params ? Params.toAmino(message.params) : Params.toAmino(Params.fromPartial({}));
     return obj;
   },
   fromAminoMsg(object: QueryParamsResponseAminoMsg): QueryParamsResponse {

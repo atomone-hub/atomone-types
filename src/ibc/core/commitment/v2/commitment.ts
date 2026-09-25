@@ -1,6 +1,7 @@
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "../../../../binary";
 import { bytesFromBase64, base64FromBytes } from "../../../../helpers";
+import { JsonSafe } from "../../../../json-safe";
 export const protobufPackage = "ibc.core.commitment.v2";
 /**
  * MerklePath is the path used to verify commitment proofs, which can be an
@@ -74,6 +75,9 @@ export interface MerklePathProtoMsg {
  * consensus state down to the ICS24 provable store. The IBC handler retrieves the counterparty key path to the ICS24
  * provable store from the MerklePath and appends the ICS24 path to get the final key path to the value being verified
  * by the client against the root hash in the client's consensus state.
+ * @name MerklePathAmino
+ * @package ibc.core.commitment.v2
+ * @see proto type: ibc.core.commitment.v2.MerklePath
  */
 export interface MerklePathAmino {
   key_path?: string[];
@@ -117,7 +121,7 @@ export const MerklePath = {
     if (Array.isArray(object?.keyPath)) obj.keyPath = object.keyPath.map((e: any) => bytesFromBase64(e));
     return obj;
   },
-  toJSON(message: MerklePath): unknown {
+  toJSON(message: MerklePath): JsonSafe<MerklePath> {
     const obj: any = {};
     if (message.keyPath) {
       obj.keyPath = message.keyPath.map((e) => base64FromBytes(e !== undefined ? e : new Uint8Array()));
@@ -141,7 +145,7 @@ export const MerklePath = {
     if (message.keyPath) {
       obj.key_path = message.keyPath.map((e) => base64FromBytes(e));
     } else {
-      obj.key_path = [];
+      obj.key_path = message.keyPath;
     }
     return obj;
   },

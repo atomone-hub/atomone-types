@@ -1,6 +1,7 @@
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "../../../../binary";
 import { isSet } from "../../../../helpers";
+import { JsonSafe } from "../../../../json-safe";
 export const protobufPackage = "cosmos.mint.module.v1";
 /** Module is the config object of the mint module. */
 export interface Module {
@@ -12,10 +13,17 @@ export interface ModuleProtoMsg {
   typeUrl: "/cosmos.mint.module.v1.Module";
   value: Uint8Array;
 }
-/** Module is the config object of the mint module. */
+/**
+ * Module is the config object of the mint module.
+ * @name ModuleAmino
+ * @package cosmos.mint.module.v1
+ * @see proto type: cosmos.mint.module.v1.Module
+ */
 export interface ModuleAmino {
   fee_collector_name?: string;
-  /** authority defines the custom module authority. If not set, defaults to the governance module. */
+  /**
+   * authority defines the custom module authority. If not set, defaults to the governance module.
+   */
   authority?: string;
 }
 export interface ModuleAminoMsg {
@@ -65,7 +73,7 @@ export const Module = {
     if (isSet(object.authority)) obj.authority = String(object.authority);
     return obj;
   },
-  toJSON(message: Module): unknown {
+  toJSON(message: Module): JsonSafe<Module> {
     const obj: any = {};
     message.feeCollectorName !== undefined && (obj.feeCollectorName = message.feeCollectorName);
     message.authority !== undefined && (obj.authority = message.authority);
@@ -89,8 +97,8 @@ export const Module = {
   },
   toAmino(message: Module): ModuleAmino {
     const obj: any = {};
-    obj.fee_collector_name = message.feeCollectorName;
-    obj.authority = message.authority;
+    obj.fee_collector_name = message.feeCollectorName === "" ? undefined : message.feeCollectorName;
+    obj.authority = message.authority === "" ? undefined : message.authority;
     return obj;
   },
   fromAminoMsg(object: ModuleAminoMsg): Module {

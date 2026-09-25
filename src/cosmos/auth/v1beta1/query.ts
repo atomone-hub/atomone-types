@@ -9,6 +9,7 @@ import { Any, AnyAmino } from "../../../google/protobuf/any";
 import { Params, ParamsAmino, BaseAccount, BaseAccountAmino } from "./auth";
 import { BinaryReader, BinaryWriter } from "../../../binary";
 import { isSet, bytesFromBase64, base64FromBytes } from "../../../helpers";
+import { JsonSafe } from "../../../json-safe";
 import { TxRpc } from "../../../types";
 export const protobufPackage = "cosmos.auth.v1beta1";
 /**
@@ -28,9 +29,14 @@ export interface QueryAccountsRequestProtoMsg {
  * QueryAccountsRequest is the request type for the Query/Accounts RPC method.
  *
  * Since: cosmos-sdk 0.43
+ * @name QueryAccountsRequestAmino
+ * @package cosmos.auth.v1beta1
+ * @see proto type: cosmos.auth.v1beta1.QueryAccountsRequest
  */
 export interface QueryAccountsRequestAmino {
-  /** pagination defines an optional pagination for the request. */
+  /**
+   * pagination defines an optional pagination for the request.
+   */
   pagination?: PageRequestAmino | undefined;
 }
 export interface QueryAccountsRequestAminoMsg {
@@ -56,11 +62,18 @@ export interface QueryAccountsResponseProtoMsg {
  * QueryAccountsResponse is the response type for the Query/Accounts RPC method.
  *
  * Since: cosmos-sdk 0.43
+ * @name QueryAccountsResponseAmino
+ * @package cosmos.auth.v1beta1
+ * @see proto type: cosmos.auth.v1beta1.QueryAccountsResponse
  */
 export interface QueryAccountsResponseAmino {
-  /** accounts are the existing accounts */
+  /**
+   * accounts are the existing accounts
+   */
   accounts?: AnyAmino[];
-  /** pagination defines the pagination in the response. */
+  /**
+   * pagination defines the pagination in the response.
+   */
   pagination?: PageResponseAmino | undefined;
 }
 export interface QueryAccountsResponseAminoMsg {
@@ -76,9 +89,16 @@ export interface QueryAccountRequestProtoMsg {
   typeUrl: "/cosmos.auth.v1beta1.QueryAccountRequest";
   value: Uint8Array;
 }
-/** QueryAccountRequest is the request type for the Query/Account RPC method. */
+/**
+ * QueryAccountRequest is the request type for the Query/Account RPC method.
+ * @name QueryAccountRequestAmino
+ * @package cosmos.auth.v1beta1
+ * @see proto type: cosmos.auth.v1beta1.QueryAccountRequest
+ */
 export interface QueryAccountRequestAmino {
-  /** address defines the address to query for. */
+  /**
+   * address defines the address to query for.
+   */
   address?: string;
 }
 export interface QueryAccountRequestAminoMsg {
@@ -94,9 +114,16 @@ export interface QueryAccountResponseProtoMsg {
   typeUrl: "/cosmos.auth.v1beta1.QueryAccountResponse";
   value: Uint8Array;
 }
-/** QueryAccountResponse is the response type for the Query/Account RPC method. */
+/**
+ * QueryAccountResponse is the response type for the Query/Account RPC method.
+ * @name QueryAccountResponseAmino
+ * @package cosmos.auth.v1beta1
+ * @see proto type: cosmos.auth.v1beta1.QueryAccountResponse
+ */
 export interface QueryAccountResponseAmino {
-  /** account defines the account of the corresponding address. */
+  /**
+   * account defines the account of the corresponding address.
+   */
   account?: AnyAmino | undefined;
 }
 export interface QueryAccountResponseAminoMsg {
@@ -109,7 +136,12 @@ export interface QueryParamsRequestProtoMsg {
   typeUrl: "/cosmos.auth.v1beta1.QueryParamsRequest";
   value: Uint8Array;
 }
-/** QueryParamsRequest is the request type for the Query/Params RPC method. */
+/**
+ * QueryParamsRequest is the request type for the Query/Params RPC method.
+ * @name QueryParamsRequestAmino
+ * @package cosmos.auth.v1beta1
+ * @see proto type: cosmos.auth.v1beta1.QueryParamsRequest
+ */
 export interface QueryParamsRequestAmino {}
 export interface QueryParamsRequestAminoMsg {
   type: "cosmos-sdk/QueryParamsRequest";
@@ -124,9 +156,16 @@ export interface QueryParamsResponseProtoMsg {
   typeUrl: "/cosmos.auth.v1beta1.QueryParamsResponse";
   value: Uint8Array;
 }
-/** QueryParamsResponse is the response type for the Query/Params RPC method. */
+/**
+ * QueryParamsResponse is the response type for the Query/Params RPC method.
+ * @name QueryParamsResponseAmino
+ * @package cosmos.auth.v1beta1
+ * @see proto type: cosmos.auth.v1beta1.QueryParamsResponse
+ */
 export interface QueryParamsResponseAmino {
-  /** params defines the parameters of the module. */
+  /**
+   * params defines the parameters of the module.
+   */
   params?: ParamsAmino | undefined;
 }
 export interface QueryParamsResponseAminoMsg {
@@ -147,6 +186,9 @@ export interface QueryModuleAccountsRequestProtoMsg {
  * QueryModuleAccountsRequest is the request type for the Query/ModuleAccounts RPC method.
  *
  * Since: cosmos-sdk 0.46
+ * @name QueryModuleAccountsRequestAmino
+ * @package cosmos.auth.v1beta1
+ * @see proto type: cosmos.auth.v1beta1.QueryModuleAccountsRequest
  */
 export interface QueryModuleAccountsRequestAmino {}
 export interface QueryModuleAccountsRequestAminoMsg {
@@ -169,6 +211,9 @@ export interface QueryModuleAccountsResponseProtoMsg {
  * QueryModuleAccountsResponse is the response type for the Query/ModuleAccounts RPC method.
  *
  * Since: cosmos-sdk 0.46
+ * @name QueryModuleAccountsResponseAmino
+ * @package cosmos.auth.v1beta1
+ * @see proto type: cosmos.auth.v1beta1.QueryModuleAccountsResponse
  */
 export interface QueryModuleAccountsResponseAmino {
   accounts?: AnyAmino[];
@@ -185,7 +230,12 @@ export interface QueryModuleAccountByNameRequestProtoMsg {
   typeUrl: "/cosmos.auth.v1beta1.QueryModuleAccountByNameRequest";
   value: Uint8Array;
 }
-/** QueryModuleAccountByNameRequest is the request type for the Query/ModuleAccountByName RPC method. */
+/**
+ * QueryModuleAccountByNameRequest is the request type for the Query/ModuleAccountByName RPC method.
+ * @name QueryModuleAccountByNameRequestAmino
+ * @package cosmos.auth.v1beta1
+ * @see proto type: cosmos.auth.v1beta1.QueryModuleAccountByNameRequest
+ */
 export interface QueryModuleAccountByNameRequestAmino {
   name?: string;
 }
@@ -201,7 +251,12 @@ export interface QueryModuleAccountByNameResponseProtoMsg {
   typeUrl: "/cosmos.auth.v1beta1.QueryModuleAccountByNameResponse";
   value: Uint8Array;
 }
-/** QueryModuleAccountByNameResponse is the response type for the Query/ModuleAccountByName RPC method. */
+/**
+ * QueryModuleAccountByNameResponse is the response type for the Query/ModuleAccountByName RPC method.
+ * @name QueryModuleAccountByNameResponseAmino
+ * @package cosmos.auth.v1beta1
+ * @see proto type: cosmos.auth.v1beta1.QueryModuleAccountByNameResponse
+ */
 export interface QueryModuleAccountByNameResponseAmino {
   account?: AnyAmino | undefined;
 }
@@ -223,6 +278,9 @@ export interface Bech32PrefixRequestProtoMsg {
  * Bech32PrefixRequest is the request type for Bech32Prefix rpc method.
  *
  * Since: cosmos-sdk 0.46
+ * @name Bech32PrefixRequestAmino
+ * @package cosmos.auth.v1beta1
+ * @see proto type: cosmos.auth.v1beta1.Bech32PrefixRequest
  */
 export interface Bech32PrefixRequestAmino {}
 export interface Bech32PrefixRequestAminoMsg {
@@ -245,6 +303,9 @@ export interface Bech32PrefixResponseProtoMsg {
  * Bech32PrefixResponse is the response type for Bech32Prefix rpc method.
  *
  * Since: cosmos-sdk 0.46
+ * @name Bech32PrefixResponseAmino
+ * @package cosmos.auth.v1beta1
+ * @see proto type: cosmos.auth.v1beta1.Bech32PrefixResponse
  */
 export interface Bech32PrefixResponseAmino {
   bech32_prefix?: string;
@@ -269,6 +330,9 @@ export interface AddressBytesToStringRequestProtoMsg {
  * AddressBytesToStringRequest is the request type for AddressString rpc method.
  *
  * Since: cosmos-sdk 0.46
+ * @name AddressBytesToStringRequestAmino
+ * @package cosmos.auth.v1beta1
+ * @see proto type: cosmos.auth.v1beta1.AddressBytesToStringRequest
  */
 export interface AddressBytesToStringRequestAmino {
   address_bytes?: string;
@@ -293,6 +357,9 @@ export interface AddressBytesToStringResponseProtoMsg {
  * AddressBytesToStringResponse is the response type for AddressString rpc method.
  *
  * Since: cosmos-sdk 0.46
+ * @name AddressBytesToStringResponseAmino
+ * @package cosmos.auth.v1beta1
+ * @see proto type: cosmos.auth.v1beta1.AddressBytesToStringResponse
  */
 export interface AddressBytesToStringResponseAmino {
   address_string?: string;
@@ -317,6 +384,9 @@ export interface AddressStringToBytesRequestProtoMsg {
  * AddressStringToBytesRequest is the request type for AccountBytes rpc method.
  *
  * Since: cosmos-sdk 0.46
+ * @name AddressStringToBytesRequestAmino
+ * @package cosmos.auth.v1beta1
+ * @see proto type: cosmos.auth.v1beta1.AddressStringToBytesRequest
  */
 export interface AddressStringToBytesRequestAmino {
   address_string?: string;
@@ -341,6 +411,9 @@ export interface AddressStringToBytesResponseProtoMsg {
  * AddressStringToBytesResponse is the response type for AddressBytes rpc method.
  *
  * Since: cosmos-sdk 0.46
+ * @name AddressStringToBytesResponseAmino
+ * @package cosmos.auth.v1beta1
+ * @see proto type: cosmos.auth.v1beta1.AddressStringToBytesResponse
  */
 export interface AddressStringToBytesResponseAmino {
   address_bytes?: string;
@@ -379,6 +452,9 @@ export interface QueryAccountAddressByIDRequestProtoMsg {
  * QueryAccountAddressByIDRequest is the request type for AccountAddressByID rpc method
  *
  * Since: cosmos-sdk 0.46.2
+ * @name QueryAccountAddressByIDRequestAmino
+ * @package cosmos.auth.v1beta1
+ * @see proto type: cosmos.auth.v1beta1.QueryAccountAddressByIDRequest
  */
 export interface QueryAccountAddressByIDRequestAmino {
   /**
@@ -387,8 +463,8 @@ export interface QueryAccountAddressByIDRequestAmino {
    * id is the account number of the address to be queried. This field
    * should have been an uint64 (like all account numbers), and will be
    * updated to uint64 in a future version of the auth query.
+   * @deprecated
    */
-  /** @deprecated */
   id?: string;
   /**
    * account_id is the account number of the address to be queried.
@@ -417,6 +493,9 @@ export interface QueryAccountAddressByIDResponseProtoMsg {
  * QueryAccountAddressByIDResponse is the response type for AccountAddressByID rpc method
  *
  * Since: cosmos-sdk 0.46.2
+ * @name QueryAccountAddressByIDResponseAmino
+ * @package cosmos.auth.v1beta1
+ * @see proto type: cosmos.auth.v1beta1.QueryAccountAddressByIDResponse
  */
 export interface QueryAccountAddressByIDResponseAmino {
   account_address?: string;
@@ -442,9 +521,14 @@ export interface QueryAccountInfoRequestProtoMsg {
  * QueryAccountInfoRequest is the Query/AccountInfo request type.
  *
  * Since: cosmos-sdk 0.47
+ * @name QueryAccountInfoRequestAmino
+ * @package cosmos.auth.v1beta1
+ * @see proto type: cosmos.auth.v1beta1.QueryAccountInfoRequest
  */
 export interface QueryAccountInfoRequestAmino {
-  /** address is the account address string. */
+  /**
+   * address is the account address string.
+   */
   address?: string;
 }
 export interface QueryAccountInfoRequestAminoMsg {
@@ -468,9 +552,14 @@ export interface QueryAccountInfoResponseProtoMsg {
  * QueryAccountInfoResponse is the Query/AccountInfo response type.
  *
  * Since: cosmos-sdk 0.47
+ * @name QueryAccountInfoResponseAmino
+ * @package cosmos.auth.v1beta1
+ * @see proto type: cosmos.auth.v1beta1.QueryAccountInfoResponse
  */
 export interface QueryAccountInfoResponseAmino {
-  /** info is the account info which is represented by BaseAccount. */
+  /**
+   * info is the account info which is represented by BaseAccount.
+   */
   info?: BaseAccountAmino | undefined;
 }
 export interface QueryAccountInfoResponseAminoMsg {
@@ -512,7 +601,7 @@ export const QueryAccountsRequest = {
     if (isSet(object.pagination)) obj.pagination = PageRequest.fromJSON(object.pagination);
     return obj;
   },
-  toJSON(message: QueryAccountsRequest): unknown {
+  toJSON(message: QueryAccountsRequest): JsonSafe<QueryAccountsRequest> {
     const obj: any = {};
     message.pagination !== undefined &&
       (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
@@ -602,7 +691,7 @@ export const QueryAccountsResponse = {
     if (isSet(object.pagination)) obj.pagination = PageResponse.fromJSON(object.pagination);
     return obj;
   },
-  toJSON(message: QueryAccountsResponse): unknown {
+  toJSON(message: QueryAccountsResponse): JsonSafe<QueryAccountsResponse> {
     const obj: any = {};
     if (message.accounts) {
       obj.accounts = message.accounts.map((e) => (e ? Any.toJSON(e) : undefined));
@@ -634,7 +723,7 @@ export const QueryAccountsResponse = {
     if (message.accounts) {
       obj.accounts = message.accounts.map((e) => (e ? Any.toAmino(e) : undefined));
     } else {
-      obj.accounts = [];
+      obj.accounts = message.accounts;
     }
     obj.pagination = message.pagination ? PageResponse.toAmino(message.pagination) : undefined;
     return obj;
@@ -696,7 +785,7 @@ export const QueryAccountRequest = {
     if (isSet(object.address)) obj.address = String(object.address);
     return obj;
   },
-  toJSON(message: QueryAccountRequest): unknown {
+  toJSON(message: QueryAccountRequest): JsonSafe<QueryAccountRequest> {
     const obj: any = {};
     message.address !== undefined && (obj.address = message.address);
     return obj;
@@ -715,7 +804,7 @@ export const QueryAccountRequest = {
   },
   toAmino(message: QueryAccountRequest): QueryAccountRequestAmino {
     const obj: any = {};
-    obj.address = message.address;
+    obj.address = message.address === "" ? undefined : message.address;
     return obj;
   },
   fromAminoMsg(object: QueryAccountRequestAminoMsg): QueryAccountRequest {
@@ -775,7 +864,7 @@ export const QueryAccountResponse = {
     if (isSet(object.account)) obj.account = Any.fromJSON(object.account);
     return obj;
   },
-  toJSON(message: QueryAccountResponse): unknown {
+  toJSON(message: QueryAccountResponse): JsonSafe<QueryAccountResponse> {
     const obj: any = {};
     message.account !== undefined &&
       (obj.account = message.account ? Any.toJSON(message.account) : undefined);
@@ -848,7 +937,7 @@ export const QueryParamsRequest = {
     const obj = createBaseQueryParamsRequest();
     return obj;
   },
-  toJSON(_: QueryParamsRequest): unknown {
+  toJSON(_: QueryParamsRequest): JsonSafe<QueryParamsRequest> {
     const obj: any = {};
     return obj;
   },
@@ -921,7 +1010,7 @@ export const QueryParamsResponse = {
     if (isSet(object.params)) obj.params = Params.fromJSON(object.params);
     return obj;
   },
-  toJSON(message: QueryParamsResponse): unknown {
+  toJSON(message: QueryParamsResponse): JsonSafe<QueryParamsResponse> {
     const obj: any = {};
     message.params !== undefined && (obj.params = message.params ? Params.toJSON(message.params) : undefined);
     return obj;
@@ -993,7 +1082,7 @@ export const QueryModuleAccountsRequest = {
     const obj = createBaseQueryModuleAccountsRequest();
     return obj;
   },
-  toJSON(_: QueryModuleAccountsRequest): unknown {
+  toJSON(_: QueryModuleAccountsRequest): JsonSafe<QueryModuleAccountsRequest> {
     const obj: any = {};
     return obj;
   },
@@ -1066,7 +1155,7 @@ export const QueryModuleAccountsResponse = {
     if (Array.isArray(object?.accounts)) obj.accounts = object.accounts.map((e: any) => Any.fromJSON(e));
     return obj;
   },
-  toJSON(message: QueryModuleAccountsResponse): unknown {
+  toJSON(message: QueryModuleAccountsResponse): JsonSafe<QueryModuleAccountsResponse> {
     const obj: any = {};
     if (message.accounts) {
       obj.accounts = message.accounts.map((e) => (e ? Any.toJSON(e) : undefined));
@@ -1090,7 +1179,7 @@ export const QueryModuleAccountsResponse = {
     if (message.accounts) {
       obj.accounts = message.accounts.map((e) => (e ? Any.toAmino(e) : undefined));
     } else {
-      obj.accounts = [];
+      obj.accounts = message.accounts;
     }
     return obj;
   },
@@ -1154,7 +1243,7 @@ export const QueryModuleAccountByNameRequest = {
     if (isSet(object.name)) obj.name = String(object.name);
     return obj;
   },
-  toJSON(message: QueryModuleAccountByNameRequest): unknown {
+  toJSON(message: QueryModuleAccountByNameRequest): JsonSafe<QueryModuleAccountByNameRequest> {
     const obj: any = {};
     message.name !== undefined && (obj.name = message.name);
     return obj;
@@ -1173,7 +1262,7 @@ export const QueryModuleAccountByNameRequest = {
   },
   toAmino(message: QueryModuleAccountByNameRequest): QueryModuleAccountByNameRequestAmino {
     const obj: any = {};
-    obj.name = message.name;
+    obj.name = message.name === "" ? undefined : message.name;
     return obj;
   },
   fromAminoMsg(object: QueryModuleAccountByNameRequestAminoMsg): QueryModuleAccountByNameRequest {
@@ -1236,7 +1325,7 @@ export const QueryModuleAccountByNameResponse = {
     if (isSet(object.account)) obj.account = Any.fromJSON(object.account);
     return obj;
   },
-  toJSON(message: QueryModuleAccountByNameResponse): unknown {
+  toJSON(message: QueryModuleAccountByNameResponse): JsonSafe<QueryModuleAccountByNameResponse> {
     const obj: any = {};
     message.account !== undefined &&
       (obj.account = message.account ? Any.toJSON(message.account) : undefined);
@@ -1309,7 +1398,7 @@ export const Bech32PrefixRequest = {
     const obj = createBaseBech32PrefixRequest();
     return obj;
   },
-  toJSON(_: Bech32PrefixRequest): unknown {
+  toJSON(_: Bech32PrefixRequest): JsonSafe<Bech32PrefixRequest> {
     const obj: any = {};
     return obj;
   },
@@ -1382,7 +1471,7 @@ export const Bech32PrefixResponse = {
     if (isSet(object.bech32Prefix)) obj.bech32Prefix = String(object.bech32Prefix);
     return obj;
   },
-  toJSON(message: Bech32PrefixResponse): unknown {
+  toJSON(message: Bech32PrefixResponse): JsonSafe<Bech32PrefixResponse> {
     const obj: any = {};
     message.bech32Prefix !== undefined && (obj.bech32Prefix = message.bech32Prefix);
     return obj;
@@ -1401,7 +1490,7 @@ export const Bech32PrefixResponse = {
   },
   toAmino(message: Bech32PrefixResponse): Bech32PrefixResponseAmino {
     const obj: any = {};
-    obj.bech32_prefix = message.bech32Prefix;
+    obj.bech32_prefix = message.bech32Prefix === "" ? undefined : message.bech32Prefix;
     return obj;
   },
   fromAminoMsg(object: Bech32PrefixResponseAminoMsg): Bech32PrefixResponse {
@@ -1461,7 +1550,7 @@ export const AddressBytesToStringRequest = {
     if (isSet(object.addressBytes)) obj.addressBytes = bytesFromBase64(object.addressBytes);
     return obj;
   },
-  toJSON(message: AddressBytesToStringRequest): unknown {
+  toJSON(message: AddressBytesToStringRequest): JsonSafe<AddressBytesToStringRequest> {
     const obj: any = {};
     message.addressBytes !== undefined &&
       (obj.addressBytes = base64FromBytes(
@@ -1543,7 +1632,7 @@ export const AddressBytesToStringResponse = {
     if (isSet(object.addressString)) obj.addressString = String(object.addressString);
     return obj;
   },
-  toJSON(message: AddressBytesToStringResponse): unknown {
+  toJSON(message: AddressBytesToStringResponse): JsonSafe<AddressBytesToStringResponse> {
     const obj: any = {};
     message.addressString !== undefined && (obj.addressString = message.addressString);
     return obj;
@@ -1562,7 +1651,7 @@ export const AddressBytesToStringResponse = {
   },
   toAmino(message: AddressBytesToStringResponse): AddressBytesToStringResponseAmino {
     const obj: any = {};
-    obj.address_string = message.addressString;
+    obj.address_string = message.addressString === "" ? undefined : message.addressString;
     return obj;
   },
   fromAminoMsg(object: AddressBytesToStringResponseAminoMsg): AddressBytesToStringResponse {
@@ -1622,7 +1711,7 @@ export const AddressStringToBytesRequest = {
     if (isSet(object.addressString)) obj.addressString = String(object.addressString);
     return obj;
   },
-  toJSON(message: AddressStringToBytesRequest): unknown {
+  toJSON(message: AddressStringToBytesRequest): JsonSafe<AddressStringToBytesRequest> {
     const obj: any = {};
     message.addressString !== undefined && (obj.addressString = message.addressString);
     return obj;
@@ -1641,7 +1730,7 @@ export const AddressStringToBytesRequest = {
   },
   toAmino(message: AddressStringToBytesRequest): AddressStringToBytesRequestAmino {
     const obj: any = {};
-    obj.address_string = message.addressString;
+    obj.address_string = message.addressString === "" ? undefined : message.addressString;
     return obj;
   },
   fromAminoMsg(object: AddressStringToBytesRequestAminoMsg): AddressStringToBytesRequest {
@@ -1701,7 +1790,7 @@ export const AddressStringToBytesResponse = {
     if (isSet(object.addressBytes)) obj.addressBytes = bytesFromBase64(object.addressBytes);
     return obj;
   },
-  toJSON(message: AddressStringToBytesResponse): unknown {
+  toJSON(message: AddressStringToBytesResponse): JsonSafe<AddressStringToBytesResponse> {
     const obj: any = {};
     message.addressBytes !== undefined &&
       (obj.addressBytes = base64FromBytes(
@@ -1794,7 +1883,7 @@ export const QueryAccountAddressByIDRequest = {
     if (isSet(object.accountId)) obj.accountId = BigInt(object.accountId.toString());
     return obj;
   },
-  toJSON(message: QueryAccountAddressByIDRequest): unknown {
+  toJSON(message: QueryAccountAddressByIDRequest): JsonSafe<QueryAccountAddressByIDRequest> {
     const obj: any = {};
     message.id !== undefined && (obj.id = (message.id || BigInt(0)).toString());
     message.accountId !== undefined && (obj.accountId = (message.accountId || BigInt(0)).toString());
@@ -1822,8 +1911,8 @@ export const QueryAccountAddressByIDRequest = {
   },
   toAmino(message: QueryAccountAddressByIDRequest): QueryAccountAddressByIDRequestAmino {
     const obj: any = {};
-    obj.id = message.id ? message.id.toString() : undefined;
-    obj.account_id = message.accountId ? message.accountId.toString() : undefined;
+    obj.id = message.id !== BigInt(0) ? message.id?.toString() : undefined;
+    obj.account_id = message.accountId !== BigInt(0) ? message.accountId?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: QueryAccountAddressByIDRequestAminoMsg): QueryAccountAddressByIDRequest {
@@ -1886,7 +1975,7 @@ export const QueryAccountAddressByIDResponse = {
     if (isSet(object.accountAddress)) obj.accountAddress = String(object.accountAddress);
     return obj;
   },
-  toJSON(message: QueryAccountAddressByIDResponse): unknown {
+  toJSON(message: QueryAccountAddressByIDResponse): JsonSafe<QueryAccountAddressByIDResponse> {
     const obj: any = {};
     message.accountAddress !== undefined && (obj.accountAddress = message.accountAddress);
     return obj;
@@ -1905,7 +1994,7 @@ export const QueryAccountAddressByIDResponse = {
   },
   toAmino(message: QueryAccountAddressByIDResponse): QueryAccountAddressByIDResponseAmino {
     const obj: any = {};
-    obj.account_address = message.accountAddress;
+    obj.account_address = message.accountAddress === "" ? undefined : message.accountAddress;
     return obj;
   },
   fromAminoMsg(object: QueryAccountAddressByIDResponseAminoMsg): QueryAccountAddressByIDResponse {
@@ -1965,7 +2054,7 @@ export const QueryAccountInfoRequest = {
     if (isSet(object.address)) obj.address = String(object.address);
     return obj;
   },
-  toJSON(message: QueryAccountInfoRequest): unknown {
+  toJSON(message: QueryAccountInfoRequest): JsonSafe<QueryAccountInfoRequest> {
     const obj: any = {};
     message.address !== undefined && (obj.address = message.address);
     return obj;
@@ -1984,7 +2073,7 @@ export const QueryAccountInfoRequest = {
   },
   toAmino(message: QueryAccountInfoRequest): QueryAccountInfoRequestAmino {
     const obj: any = {};
-    obj.address = message.address;
+    obj.address = message.address === "" ? undefined : message.address;
     return obj;
   },
   fromAminoMsg(object: QueryAccountInfoRequestAminoMsg): QueryAccountInfoRequest {
@@ -2044,7 +2133,7 @@ export const QueryAccountInfoResponse = {
     if (isSet(object.info)) obj.info = BaseAccount.fromJSON(object.info);
     return obj;
   },
-  toJSON(message: QueryAccountInfoResponse): unknown {
+  toJSON(message: QueryAccountInfoResponse): JsonSafe<QueryAccountInfoResponse> {
     const obj: any = {};
     message.info !== undefined && (obj.info = message.info ? BaseAccount.toJSON(message.info) : undefined);
     return obj;

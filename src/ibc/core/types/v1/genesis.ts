@@ -11,6 +11,7 @@ import { GenesisState as GenesisState5 } from "../../channel/v2/genesis";
 import { GenesisStateAmino as GenesisState5Amino } from "../../channel/v2/genesis";
 import { BinaryReader, BinaryWriter } from "../../../../binary";
 import { isSet } from "../../../../helpers";
+import { JsonSafe } from "../../../../json-safe";
 export const protobufPackage = "ibc.core.types.v1";
 /** GenesisState defines the ibc module's genesis state. */
 export interface GenesisState {
@@ -29,17 +30,32 @@ export interface GenesisStateProtoMsg {
   typeUrl: "/ibc.core.types.v1.GenesisState";
   value: Uint8Array;
 }
-/** GenesisState defines the ibc module's genesis state. */
+/**
+ * GenesisState defines the ibc module's genesis state.
+ * @name GenesisStateAmino
+ * @package ibc.core.types.v1
+ * @see proto type: ibc.core.types.v1.GenesisState
+ */
 export interface GenesisStateAmino {
-  /** ICS002 - Clients genesis state */
+  /**
+   * ICS002 - Clients genesis state
+   */
   client_genesis?: GenesisState1Amino | undefined;
-  /** ICS003 - Connections genesis state */
+  /**
+   * ICS003 - Connections genesis state
+   */
   connection_genesis?: GenesisState2Amino | undefined;
-  /** ICS004 - Channel genesis state */
+  /**
+   * ICS004 - Channel genesis state
+   */
   channel_genesis?: GenesisState3Amino | undefined;
-  /** ICS002 - Clients/v2 genesis state */
+  /**
+   * ICS002 - Clients/v2 genesis state
+   */
   client_v2_genesis?: GenesisState4Amino | undefined;
-  /** ICS004 - Channel/v2 genesis state */
+  /**
+   * ICS004 - Channel/v2 genesis state
+   */
   channel_v2_genesis?: GenesisState5Amino | undefined;
 }
 export interface GenesisStateAminoMsg {
@@ -115,7 +131,7 @@ export const GenesisState = {
       obj.channelV2Genesis = GenesisState5.fromJSON(object.channelV2Genesis);
     return obj;
   },
-  toJSON(message: GenesisState): unknown {
+  toJSON(message: GenesisState): JsonSafe<GenesisState> {
     const obj: any = {};
     message.clientGenesis !== undefined &&
       (obj.clientGenesis = message.clientGenesis ? GenesisState1.toJSON(message.clientGenesis) : undefined);

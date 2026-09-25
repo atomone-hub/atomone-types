@@ -2,6 +2,7 @@
 import { Any, AnyAmino } from "../../../google/protobuf/any";
 import { BinaryReader, BinaryWriter } from "../../../binary";
 import { isSet } from "../../../helpers";
+import { JsonSafe } from "../../../json-safe";
 export const protobufPackage = "cosmos.crypto.multisig";
 /**
  * LegacyAminoPubKey specifies a public key type
@@ -20,6 +21,9 @@ export interface LegacyAminoPubKeyProtoMsg {
  * LegacyAminoPubKey specifies a public key type
  * which nests multiple public keys and a threshold,
  * it uses legacy amino address rules.
+ * @name LegacyAminoPubKeyAmino
+ * @package cosmos.crypto.multisig
+ * @see proto type: cosmos.crypto.multisig.LegacyAminoPubKey
  */
 export interface LegacyAminoPubKeyAmino {
   threshold?: number;
@@ -73,7 +77,7 @@ export const LegacyAminoPubKey = {
       obj.publicKeys = object.publicKeys.map((e: any) => Any.fromJSON(e));
     return obj;
   },
-  toJSON(message: LegacyAminoPubKey): unknown {
+  toJSON(message: LegacyAminoPubKey): JsonSafe<LegacyAminoPubKey> {
     const obj: any = {};
     message.threshold !== undefined && (obj.threshold = Math.round(message.threshold));
     if (message.publicKeys) {
@@ -99,11 +103,11 @@ export const LegacyAminoPubKey = {
   },
   toAmino(message: LegacyAminoPubKey): LegacyAminoPubKeyAmino {
     const obj: any = {};
-    obj.threshold = message.threshold;
+    obj.threshold = message.threshold === 0 ? undefined : message.threshold;
     if (message.publicKeys) {
       obj.public_keys = message.publicKeys.map((e) => (e ? Any.toAmino(e) : undefined));
     } else {
-      obj.public_keys = [];
+      obj.public_keys = message.publicKeys;
     }
     return obj;
   },

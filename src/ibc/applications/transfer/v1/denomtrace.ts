@@ -1,6 +1,7 @@
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "../../../../binary";
 import { isSet } from "../../../../helpers";
+import { JsonSafe } from "../../../../json-safe";
 export const protobufPackage = "ibc.applications.transfer.v1";
 /**
  * DenomTrace contains the base denomination for ICS20 fungible tokens and the
@@ -23,15 +24,20 @@ export interface DenomTraceProtoMsg {
 /**
  * DenomTrace contains the base denomination for ICS20 fungible tokens and the
  * source tracing information path.
+ * @name DenomTraceAmino
+ * @package ibc.applications.transfer.v1
+ * @see proto type: ibc.applications.transfer.v1.DenomTrace
+ * @deprecated
  */
-/** @deprecated */
 export interface DenomTraceAmino {
   /**
    * path defines the chain of port/channel identifiers used for tracing the
    * source of the fungible token.
    */
   path?: string;
-  /** base denomination of the relayed fungible token. */
+  /**
+   * base denomination of the relayed fungible token.
+   */
   base_denom?: string;
 }
 export interface DenomTraceAminoMsg {
@@ -81,7 +87,7 @@ export const DenomTrace = {
     if (isSet(object.baseDenom)) obj.baseDenom = String(object.baseDenom);
     return obj;
   },
-  toJSON(message: DenomTrace): unknown {
+  toJSON(message: DenomTrace): JsonSafe<DenomTrace> {
     const obj: any = {};
     message.path !== undefined && (obj.path = message.path);
     message.baseDenom !== undefined && (obj.baseDenom = message.baseDenom);
@@ -105,8 +111,8 @@ export const DenomTrace = {
   },
   toAmino(message: DenomTrace): DenomTraceAmino {
     const obj: any = {};
-    obj.path = message.path;
-    obj.base_denom = message.baseDenom;
+    obj.path = message.path === "" ? undefined : message.path;
+    obj.base_denom = message.baseDenom === "" ? undefined : message.baseDenom;
     return obj;
   },
   fromAminoMsg(object: DenomTraceAminoMsg): DenomTrace {

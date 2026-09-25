@@ -1,6 +1,7 @@
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "../../../../binary";
 import { isSet } from "../../../../helpers";
+import { JsonSafe } from "../../../../json-safe";
 export const protobufPackage = "cosmos.consensus.module.v1";
 /** Module is the config object of the consensus module. */
 export interface Module {
@@ -11,9 +12,16 @@ export interface ModuleProtoMsg {
   typeUrl: "/cosmos.consensus.module.v1.Module";
   value: Uint8Array;
 }
-/** Module is the config object of the consensus module. */
+/**
+ * Module is the config object of the consensus module.
+ * @name ModuleAmino
+ * @package cosmos.consensus.module.v1
+ * @see proto type: cosmos.consensus.module.v1.Module
+ */
 export interface ModuleAmino {
-  /** authority defines the custom module authority. If not set, defaults to the governance module. */
+  /**
+   * authority defines the custom module authority. If not set, defaults to the governance module.
+   */
   authority?: string;
 }
 export interface ModuleAminoMsg {
@@ -55,7 +63,7 @@ export const Module = {
     if (isSet(object.authority)) obj.authority = String(object.authority);
     return obj;
   },
-  toJSON(message: Module): unknown {
+  toJSON(message: Module): JsonSafe<Module> {
     const obj: any = {};
     message.authority !== undefined && (obj.authority = message.authority);
     return obj;
@@ -74,7 +82,7 @@ export const Module = {
   },
   toAmino(message: Module): ModuleAmino {
     const obj: any = {};
-    obj.authority = message.authority;
+    obj.authority = message.authority === "" ? undefined : message.authority;
     return obj;
   },
   fromAminoMsg(object: ModuleAminoMsg): Module {

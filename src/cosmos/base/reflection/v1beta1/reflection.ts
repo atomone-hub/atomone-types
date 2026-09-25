@@ -1,5 +1,6 @@
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "../../../../binary";
+import { JsonSafe } from "../../../../json-safe";
 import { isSet } from "../../../../helpers";
 import { TxRpc } from "../../../../types";
 export const protobufPackage = "cosmos.base.reflection.v1beta1";
@@ -9,7 +10,12 @@ export interface ListAllInterfacesRequestProtoMsg {
   typeUrl: "/cosmos.base.reflection.v1beta1.ListAllInterfacesRequest";
   value: Uint8Array;
 }
-/** ListAllInterfacesRequest is the request type of the ListAllInterfaces RPC. */
+/**
+ * ListAllInterfacesRequest is the request type of the ListAllInterfaces RPC.
+ * @name ListAllInterfacesRequestAmino
+ * @package cosmos.base.reflection.v1beta1
+ * @see proto type: cosmos.base.reflection.v1beta1.ListAllInterfacesRequest
+ */
 export interface ListAllInterfacesRequestAmino {}
 export interface ListAllInterfacesRequestAminoMsg {
   type: "cosmos-sdk/ListAllInterfacesRequest";
@@ -24,9 +30,16 @@ export interface ListAllInterfacesResponseProtoMsg {
   typeUrl: "/cosmos.base.reflection.v1beta1.ListAllInterfacesResponse";
   value: Uint8Array;
 }
-/** ListAllInterfacesResponse is the response type of the ListAllInterfaces RPC. */
+/**
+ * ListAllInterfacesResponse is the response type of the ListAllInterfaces RPC.
+ * @name ListAllInterfacesResponseAmino
+ * @package cosmos.base.reflection.v1beta1
+ * @see proto type: cosmos.base.reflection.v1beta1.ListAllInterfacesResponse
+ */
 export interface ListAllInterfacesResponseAmino {
-  /** interface_names is an array of all the registered interfaces. */
+  /**
+   * interface_names is an array of all the registered interfaces.
+   */
   interface_names?: string[];
 }
 export interface ListAllInterfacesResponseAminoMsg {
@@ -48,9 +61,14 @@ export interface ListImplementationsRequestProtoMsg {
 /**
  * ListImplementationsRequest is the request type of the ListImplementations
  * RPC.
+ * @name ListImplementationsRequestAmino
+ * @package cosmos.base.reflection.v1beta1
+ * @see proto type: cosmos.base.reflection.v1beta1.ListImplementationsRequest
  */
 export interface ListImplementationsRequestAmino {
-  /** interface_name defines the interface to query the implementations for. */
+  /**
+   * interface_name defines the interface to query the implementations for.
+   */
   interface_name?: string;
 }
 export interface ListImplementationsRequestAminoMsg {
@@ -71,6 +89,9 @@ export interface ListImplementationsResponseProtoMsg {
 /**
  * ListImplementationsResponse is the response type of the ListImplementations
  * RPC.
+ * @name ListImplementationsResponseAmino
+ * @package cosmos.base.reflection.v1beta1
+ * @see proto type: cosmos.base.reflection.v1beta1.ListImplementationsResponse
  */
 export interface ListImplementationsResponseAmino {
   implementation_message_names?: string[];
@@ -105,7 +126,7 @@ export const ListAllInterfacesRequest = {
     const obj = createBaseListAllInterfacesRequest();
     return obj;
   },
-  toJSON(_: ListAllInterfacesRequest): unknown {
+  toJSON(_: ListAllInterfacesRequest): JsonSafe<ListAllInterfacesRequest> {
     const obj: any = {};
     return obj;
   },
@@ -179,7 +200,7 @@ export const ListAllInterfacesResponse = {
       obj.interfaceNames = object.interfaceNames.map((e: any) => String(e));
     return obj;
   },
-  toJSON(message: ListAllInterfacesResponse): unknown {
+  toJSON(message: ListAllInterfacesResponse): JsonSafe<ListAllInterfacesResponse> {
     const obj: any = {};
     if (message.interfaceNames) {
       obj.interfaceNames = message.interfaceNames.map((e) => e);
@@ -203,7 +224,7 @@ export const ListAllInterfacesResponse = {
     if (message.interfaceNames) {
       obj.interface_names = message.interfaceNames.map((e) => e);
     } else {
-      obj.interface_names = [];
+      obj.interface_names = message.interfaceNames;
     }
     return obj;
   },
@@ -264,7 +285,7 @@ export const ListImplementationsRequest = {
     if (isSet(object.interfaceName)) obj.interfaceName = String(object.interfaceName);
     return obj;
   },
-  toJSON(message: ListImplementationsRequest): unknown {
+  toJSON(message: ListImplementationsRequest): JsonSafe<ListImplementationsRequest> {
     const obj: any = {};
     message.interfaceName !== undefined && (obj.interfaceName = message.interfaceName);
     return obj;
@@ -283,7 +304,7 @@ export const ListImplementationsRequest = {
   },
   toAmino(message: ListImplementationsRequest): ListImplementationsRequestAmino {
     const obj: any = {};
-    obj.interface_name = message.interfaceName;
+    obj.interface_name = message.interfaceName === "" ? undefined : message.interfaceName;
     return obj;
   },
   fromAminoMsg(object: ListImplementationsRequestAminoMsg): ListImplementationsRequest {
@@ -344,7 +365,7 @@ export const ListImplementationsResponse = {
       obj.implementationMessageNames = object.implementationMessageNames.map((e: any) => String(e));
     return obj;
   },
-  toJSON(message: ListImplementationsResponse): unknown {
+  toJSON(message: ListImplementationsResponse): JsonSafe<ListImplementationsResponse> {
     const obj: any = {};
     if (message.implementationMessageNames) {
       obj.implementationMessageNames = message.implementationMessageNames.map((e) => e);
@@ -368,7 +389,7 @@ export const ListImplementationsResponse = {
     if (message.implementationMessageNames) {
       obj.implementation_message_names = message.implementationMessageNames.map((e) => e);
     } else {
-      obj.implementation_message_names = [];
+      obj.implementation_message_names = message.implementationMessageNames;
     }
     return obj;
   },

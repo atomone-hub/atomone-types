@@ -3,6 +3,7 @@ import { Grant, GrantAmino } from "./authz";
 import { Any, AnyAmino } from "../../../google/protobuf/any";
 import { BinaryReader, BinaryWriter } from "../../../binary";
 import { isSet, bytesFromBase64, base64FromBytes } from "../../../helpers";
+import { JsonSafe } from "../../../json-safe";
 import { TxRpc } from "../../../types";
 export const protobufPackage = "cosmos.authz.v1beta1";
 /**
@@ -21,6 +22,9 @@ export interface MsgGrantProtoMsg {
 /**
  * MsgGrant is a request type for Grant method. It declares authorization to the grantee
  * on behalf of the granter with the provided expiration time.
+ * @name MsgGrantAmino
+ * @package cosmos.authz.v1beta1
+ * @see proto type: cosmos.authz.v1beta1.MsgGrant
  */
 export interface MsgGrantAmino {
   granter?: string;
@@ -37,7 +41,12 @@ export interface MsgGrantResponseProtoMsg {
   typeUrl: "/cosmos.authz.v1beta1.MsgGrantResponse";
   value: Uint8Array;
 }
-/** MsgGrantResponse defines the Msg/MsgGrant response type. */
+/**
+ * MsgGrantResponse defines the Msg/MsgGrant response type.
+ * @name MsgGrantResponseAmino
+ * @package cosmos.authz.v1beta1
+ * @see proto type: cosmos.authz.v1beta1.MsgGrantResponse
+ */
 export interface MsgGrantResponseAmino {}
 export interface MsgGrantResponseAminoMsg {
   type: "cosmos-sdk/MsgGrantResponse";
@@ -65,6 +74,9 @@ export interface MsgExecProtoMsg {
  * MsgExec attempts to execute the provided messages using
  * authorizations granted to the grantee. Each message should have only
  * one signer corresponding to the granter of the authorization.
+ * @name MsgExecAmino
+ * @package cosmos.authz.v1beta1
+ * @see proto type: cosmos.authz.v1beta1.MsgExec
  */
 export interface MsgExecAmino {
   grantee?: string;
@@ -87,7 +99,12 @@ export interface MsgExecResponseProtoMsg {
   typeUrl: "/cosmos.authz.v1beta1.MsgExecResponse";
   value: Uint8Array;
 }
-/** MsgExecResponse defines the Msg/MsgExecResponse response type. */
+/**
+ * MsgExecResponse defines the Msg/MsgExecResponse response type.
+ * @name MsgExecResponseAmino
+ * @package cosmos.authz.v1beta1
+ * @see proto type: cosmos.authz.v1beta1.MsgExecResponse
+ */
 export interface MsgExecResponseAmino {
   results?: string[];
 }
@@ -111,6 +128,9 @@ export interface MsgRevokeProtoMsg {
 /**
  * MsgRevoke revokes any authorization with the provided sdk.Msg type on the
  * granter's account with that has been granted to the grantee.
+ * @name MsgRevokeAmino
+ * @package cosmos.authz.v1beta1
+ * @see proto type: cosmos.authz.v1beta1.MsgRevoke
  */
 export interface MsgRevokeAmino {
   granter?: string;
@@ -127,7 +147,12 @@ export interface MsgRevokeResponseProtoMsg {
   typeUrl: "/cosmos.authz.v1beta1.MsgRevokeResponse";
   value: Uint8Array;
 }
-/** MsgRevokeResponse defines the Msg/MsgRevokeResponse response type. */
+/**
+ * MsgRevokeResponse defines the Msg/MsgRevokeResponse response type.
+ * @name MsgRevokeResponseAmino
+ * @package cosmos.authz.v1beta1
+ * @see proto type: cosmos.authz.v1beta1.MsgRevokeResponse
+ */
 export interface MsgRevokeResponseAmino {}
 export interface MsgRevokeResponseAminoMsg {
   type: "cosmos-sdk/MsgRevokeResponse";
@@ -149,6 +174,9 @@ export interface MsgPruneExpiredGrantsProtoMsg {
  * MsgPruneExpiredGrants prunes the expired grants.
  *
  * Since cosmos-sdk 0.50.x-atomone
+ * @name MsgPruneExpiredGrantsAmino
+ * @package cosmos.authz.v1beta1
+ * @see proto type: cosmos.authz.v1beta1.MsgPruneExpiredGrants
  */
 export interface MsgPruneExpiredGrantsAmino {
   pruner?: string;
@@ -171,6 +199,9 @@ export interface MsgPruneExpiredGrantsResponseProtoMsg {
  * MsgPruneExpiredGrantsResponse defines the Msg/MsgPruneExpiredGrantsResponse response type.
  *
  * Since cosmos-sdk 0.50.x-atomone
+ * @name MsgPruneExpiredGrantsResponseAmino
+ * @package cosmos.authz.v1beta1
+ * @see proto type: cosmos.authz.v1beta1.MsgPruneExpiredGrantsResponse
  */
 export interface MsgPruneExpiredGrantsResponseAmino {}
 export interface MsgPruneExpiredGrantsResponseAminoMsg {
@@ -228,7 +259,7 @@ export const MsgGrant = {
     if (isSet(object.grant)) obj.grant = Grant.fromJSON(object.grant);
     return obj;
   },
-  toJSON(message: MsgGrant): unknown {
+  toJSON(message: MsgGrant): JsonSafe<MsgGrant> {
     const obj: any = {};
     message.granter !== undefined && (obj.granter = message.granter);
     message.grantee !== undefined && (obj.grantee = message.grantee);
@@ -259,9 +290,9 @@ export const MsgGrant = {
   },
   toAmino(message: MsgGrant): MsgGrantAmino {
     const obj: any = {};
-    obj.granter = message.granter;
-    obj.grantee = message.grantee;
-    obj.grant = message.grant ? Grant.toAmino(message.grant) : Grant.fromPartial({});
+    obj.granter = message.granter === "" ? undefined : message.granter;
+    obj.grantee = message.grantee === "" ? undefined : message.grantee;
+    obj.grant = message.grant ? Grant.toAmino(message.grant) : Grant.toAmino(Grant.fromPartial({}));
     return obj;
   },
   fromAminoMsg(object: MsgGrantAminoMsg): MsgGrant {
@@ -312,7 +343,7 @@ export const MsgGrantResponse = {
     const obj = createBaseMsgGrantResponse();
     return obj;
   },
-  toJSON(_: MsgGrantResponse): unknown {
+  toJSON(_: MsgGrantResponse): JsonSafe<MsgGrantResponse> {
     const obj: any = {};
     return obj;
   },
@@ -393,7 +424,7 @@ export const MsgExec = {
     if (Array.isArray(object?.msgs)) obj.msgs = object.msgs.map((e: any) => Any.fromJSON(e));
     return obj;
   },
-  toJSON(message: MsgExec): unknown {
+  toJSON(message: MsgExec): JsonSafe<MsgExec> {
     const obj: any = {};
     message.grantee !== undefined && (obj.grantee = message.grantee);
     if (message.msgs) {
@@ -419,11 +450,11 @@ export const MsgExec = {
   },
   toAmino(message: MsgExec): MsgExecAmino {
     const obj: any = {};
-    obj.grantee = message.grantee;
+    obj.grantee = message.grantee === "" ? undefined : message.grantee;
     if (message.msgs) {
       obj.msgs = message.msgs.map((e) => (e ? Any.toAmino(e) : undefined));
     } else {
-      obj.msgs = [];
+      obj.msgs = message.msgs;
     }
     return obj;
   },
@@ -484,7 +515,7 @@ export const MsgExecResponse = {
     if (Array.isArray(object?.results)) obj.results = object.results.map((e: any) => bytesFromBase64(e));
     return obj;
   },
-  toJSON(message: MsgExecResponse): unknown {
+  toJSON(message: MsgExecResponse): JsonSafe<MsgExecResponse> {
     const obj: any = {};
     if (message.results) {
       obj.results = message.results.map((e) => base64FromBytes(e !== undefined ? e : new Uint8Array()));
@@ -508,7 +539,7 @@ export const MsgExecResponse = {
     if (message.results) {
       obj.results = message.results.map((e) => base64FromBytes(e));
     } else {
-      obj.results = [];
+      obj.results = message.results;
     }
     return obj;
   },
@@ -585,7 +616,7 @@ export const MsgRevoke = {
     if (isSet(object.msgTypeUrl)) obj.msgTypeUrl = String(object.msgTypeUrl);
     return obj;
   },
-  toJSON(message: MsgRevoke): unknown {
+  toJSON(message: MsgRevoke): JsonSafe<MsgRevoke> {
     const obj: any = {};
     message.granter !== undefined && (obj.granter = message.granter);
     message.grantee !== undefined && (obj.grantee = message.grantee);
@@ -614,9 +645,9 @@ export const MsgRevoke = {
   },
   toAmino(message: MsgRevoke): MsgRevokeAmino {
     const obj: any = {};
-    obj.granter = message.granter;
-    obj.grantee = message.grantee;
-    obj.msg_type_url = message.msgTypeUrl;
+    obj.granter = message.granter === "" ? undefined : message.granter;
+    obj.grantee = message.grantee === "" ? undefined : message.grantee;
+    obj.msg_type_url = message.msgTypeUrl === "" ? undefined : message.msgTypeUrl;
     return obj;
   },
   fromAminoMsg(object: MsgRevokeAminoMsg): MsgRevoke {
@@ -667,7 +698,7 @@ export const MsgRevokeResponse = {
     const obj = createBaseMsgRevokeResponse();
     return obj;
   },
-  toJSON(_: MsgRevokeResponse): unknown {
+  toJSON(_: MsgRevokeResponse): JsonSafe<MsgRevokeResponse> {
     const obj: any = {};
     return obj;
   },
@@ -740,7 +771,7 @@ export const MsgPruneExpiredGrants = {
     if (isSet(object.pruner)) obj.pruner = String(object.pruner);
     return obj;
   },
-  toJSON(message: MsgPruneExpiredGrants): unknown {
+  toJSON(message: MsgPruneExpiredGrants): JsonSafe<MsgPruneExpiredGrants> {
     const obj: any = {};
     message.pruner !== undefined && (obj.pruner = message.pruner);
     return obj;
@@ -759,7 +790,7 @@ export const MsgPruneExpiredGrants = {
   },
   toAmino(message: MsgPruneExpiredGrants): MsgPruneExpiredGrantsAmino {
     const obj: any = {};
-    obj.pruner = message.pruner;
+    obj.pruner = message.pruner === "" ? undefined : message.pruner;
     return obj;
   },
   fromAminoMsg(object: MsgPruneExpiredGrantsAminoMsg): MsgPruneExpiredGrants {
@@ -810,7 +841,7 @@ export const MsgPruneExpiredGrantsResponse = {
     const obj = createBaseMsgPruneExpiredGrantsResponse();
     return obj;
   },
-  toJSON(_: MsgPruneExpiredGrantsResponse): unknown {
+  toJSON(_: MsgPruneExpiredGrantsResponse): JsonSafe<MsgPruneExpiredGrantsResponse> {
     const obj: any = {};
     return obj;
   },

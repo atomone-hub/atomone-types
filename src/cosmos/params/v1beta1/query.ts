@@ -2,6 +2,7 @@
 import { ParamChange, ParamChangeAmino } from "./params";
 import { BinaryReader, BinaryWriter } from "../../../binary";
 import { isSet } from "../../../helpers";
+import { JsonSafe } from "../../../json-safe";
 import { TxRpc } from "../../../types";
 export const protobufPackage = "cosmos.params.v1beta1";
 /** QueryParamsRequest is request type for the Query/Params RPC method. */
@@ -15,11 +16,20 @@ export interface QueryParamsRequestProtoMsg {
   typeUrl: "/cosmos.params.v1beta1.QueryParamsRequest";
   value: Uint8Array;
 }
-/** QueryParamsRequest is request type for the Query/Params RPC method. */
+/**
+ * QueryParamsRequest is request type for the Query/Params RPC method.
+ * @name QueryParamsRequestAmino
+ * @package cosmos.params.v1beta1
+ * @see proto type: cosmos.params.v1beta1.QueryParamsRequest
+ */
 export interface QueryParamsRequestAmino {
-  /** subspace defines the module to query the parameter for. */
+  /**
+   * subspace defines the module to query the parameter for.
+   */
   subspace?: string;
-  /** key defines the key of the parameter in the subspace. */
+  /**
+   * key defines the key of the parameter in the subspace.
+   */
   key?: string;
 }
 export interface QueryParamsRequestAminoMsg {
@@ -35,9 +45,16 @@ export interface QueryParamsResponseProtoMsg {
   typeUrl: "/cosmos.params.v1beta1.QueryParamsResponse";
   value: Uint8Array;
 }
-/** QueryParamsResponse is response type for the Query/Params RPC method. */
+/**
+ * QueryParamsResponse is response type for the Query/Params RPC method.
+ * @name QueryParamsResponseAmino
+ * @package cosmos.params.v1beta1
+ * @see proto type: cosmos.params.v1beta1.QueryParamsResponse
+ */
 export interface QueryParamsResponseAmino {
-  /** param defines the queried parameter. */
+  /**
+   * param defines the queried parameter.
+   */
   param: ParamChangeAmino | undefined;
 }
 export interface QueryParamsResponseAminoMsg {
@@ -60,6 +77,9 @@ export interface QuerySubspacesRequestProtoMsg {
  * subspaces and all keys for a subspace.
  *
  * Since: cosmos-sdk 0.46
+ * @name QuerySubspacesRequestAmino
+ * @package cosmos.params.v1beta1
+ * @see proto type: cosmos.params.v1beta1.QuerySubspacesRequest
  */
 export interface QuerySubspacesRequestAmino {}
 export interface QuerySubspacesRequestAminoMsg {
@@ -84,6 +104,9 @@ export interface QuerySubspacesResponseProtoMsg {
  * registered subspaces and all keys for a subspace.
  *
  * Since: cosmos-sdk 0.46
+ * @name QuerySubspacesResponseAmino
+ * @package cosmos.params.v1beta1
+ * @see proto type: cosmos.params.v1beta1.QuerySubspacesResponse
  */
 export interface QuerySubspacesResponseAmino {
   subspaces?: SubspaceAmino[];
@@ -111,6 +134,9 @@ export interface SubspaceProtoMsg {
  * the subspace.
  *
  * Since: cosmos-sdk 0.46
+ * @name SubspaceAmino
+ * @package cosmos.params.v1beta1
+ * @see proto type: cosmos.params.v1beta1.Subspace
  */
 export interface SubspaceAmino {
   subspace?: string;
@@ -163,7 +189,7 @@ export const QueryParamsRequest = {
     if (isSet(object.key)) obj.key = String(object.key);
     return obj;
   },
-  toJSON(message: QueryParamsRequest): unknown {
+  toJSON(message: QueryParamsRequest): JsonSafe<QueryParamsRequest> {
     const obj: any = {};
     message.subspace !== undefined && (obj.subspace = message.subspace);
     message.key !== undefined && (obj.key = message.key);
@@ -187,8 +213,8 @@ export const QueryParamsRequest = {
   },
   toAmino(message: QueryParamsRequest): QueryParamsRequestAmino {
     const obj: any = {};
-    obj.subspace = message.subspace;
-    obj.key = message.key;
+    obj.subspace = message.subspace === "" ? undefined : message.subspace;
+    obj.key = message.key === "" ? undefined : message.key;
     return obj;
   },
   fromAminoMsg(object: QueryParamsRequestAminoMsg): QueryParamsRequest {
@@ -248,7 +274,7 @@ export const QueryParamsResponse = {
     if (isSet(object.param)) obj.param = ParamChange.fromJSON(object.param);
     return obj;
   },
-  toJSON(message: QueryParamsResponse): unknown {
+  toJSON(message: QueryParamsResponse): JsonSafe<QueryParamsResponse> {
     const obj: any = {};
     message.param !== undefined &&
       (obj.param = message.param ? ParamChange.toJSON(message.param) : undefined);
@@ -270,7 +296,9 @@ export const QueryParamsResponse = {
   },
   toAmino(message: QueryParamsResponse): QueryParamsResponseAmino {
     const obj: any = {};
-    obj.param = message.param ? ParamChange.toAmino(message.param) : ParamChange.fromPartial({});
+    obj.param = message.param
+      ? ParamChange.toAmino(message.param)
+      : ParamChange.toAmino(ParamChange.fromPartial({}));
     return obj;
   },
   fromAminoMsg(object: QueryParamsResponseAminoMsg): QueryParamsResponse {
@@ -321,7 +349,7 @@ export const QuerySubspacesRequest = {
     const obj = createBaseQuerySubspacesRequest();
     return obj;
   },
-  toJSON(_: QuerySubspacesRequest): unknown {
+  toJSON(_: QuerySubspacesRequest): JsonSafe<QuerySubspacesRequest> {
     const obj: any = {};
     return obj;
   },
@@ -395,7 +423,7 @@ export const QuerySubspacesResponse = {
       obj.subspaces = object.subspaces.map((e: any) => Subspace.fromJSON(e));
     return obj;
   },
-  toJSON(message: QuerySubspacesResponse): unknown {
+  toJSON(message: QuerySubspacesResponse): JsonSafe<QuerySubspacesResponse> {
     const obj: any = {};
     if (message.subspaces) {
       obj.subspaces = message.subspaces.map((e) => (e ? Subspace.toJSON(e) : undefined));
@@ -419,7 +447,7 @@ export const QuerySubspacesResponse = {
     if (message.subspaces) {
       obj.subspaces = message.subspaces.map((e) => (e ? Subspace.toAmino(e) : undefined));
     } else {
-      obj.subspaces = [];
+      obj.subspaces = message.subspaces;
     }
     return obj;
   },
@@ -488,7 +516,7 @@ export const Subspace = {
     if (Array.isArray(object?.keys)) obj.keys = object.keys.map((e: any) => String(e));
     return obj;
   },
-  toJSON(message: Subspace): unknown {
+  toJSON(message: Subspace): JsonSafe<Subspace> {
     const obj: any = {};
     message.subspace !== undefined && (obj.subspace = message.subspace);
     if (message.keys) {
@@ -514,11 +542,11 @@ export const Subspace = {
   },
   toAmino(message: Subspace): SubspaceAmino {
     const obj: any = {};
-    obj.subspace = message.subspace;
+    obj.subspace = message.subspace === "" ? undefined : message.subspace;
     if (message.keys) {
       obj.keys = message.keys.map((e) => e);
     } else {
-      obj.keys = [];
+      obj.keys = message.keys;
     }
     return obj;
   },

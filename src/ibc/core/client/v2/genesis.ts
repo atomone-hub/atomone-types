@@ -2,6 +2,7 @@
 import { CounterpartyInfo, CounterpartyInfoAmino } from "./counterparty";
 import { BinaryReader, BinaryWriter } from "../../../../binary";
 import { isSet } from "../../../../helpers";
+import { JsonSafe } from "../../../../json-safe";
 export const protobufPackage = "ibc.core.client.v2";
 /** GenesisCounterpartyInfo defines the state associating a client with a counterparty. */
 export interface GenesisCounterpartyInfo {
@@ -14,11 +15,20 @@ export interface GenesisCounterpartyInfoProtoMsg {
   typeUrl: "/ibc.core.client.v2.GenesisCounterpartyInfo";
   value: Uint8Array;
 }
-/** GenesisCounterpartyInfo defines the state associating a client with a counterparty. */
+/**
+ * GenesisCounterpartyInfo defines the state associating a client with a counterparty.
+ * @name GenesisCounterpartyInfoAmino
+ * @package ibc.core.client.v2
+ * @see proto type: ibc.core.client.v2.GenesisCounterpartyInfo
+ */
 export interface GenesisCounterpartyInfoAmino {
-  /** ClientId is the ID of the given client. */
+  /**
+   * ClientId is the ID of the given client.
+   */
   client_id?: string;
-  /** CounterpartyInfo is the counterparty info of the given client. */
+  /**
+   * CounterpartyInfo is the counterparty info of the given client.
+   */
   counterparty_info?: CounterpartyInfoAmino | undefined;
 }
 export interface GenesisCounterpartyInfoAminoMsg {
@@ -34,9 +44,16 @@ export interface GenesisStateProtoMsg {
   typeUrl: "/ibc.core.client.v2.GenesisState";
   value: Uint8Array;
 }
-/** GenesisState defines the ibc client v2 submodule's genesis state. */
+/**
+ * GenesisState defines the ibc client v2 submodule's genesis state.
+ * @name GenesisStateAmino
+ * @package ibc.core.client.v2
+ * @see proto type: ibc.core.client.v2.GenesisState
+ */
 export interface GenesisStateAmino {
-  /** counterparty info for each client */
+  /**
+   * counterparty info for each client
+   */
   counterparty_infos?: GenesisCounterpartyInfoAmino[];
 }
 export interface GenesisStateAminoMsg {
@@ -87,7 +104,7 @@ export const GenesisCounterpartyInfo = {
       obj.counterpartyInfo = CounterpartyInfo.fromJSON(object.counterpartyInfo);
     return obj;
   },
-  toJSON(message: GenesisCounterpartyInfo): unknown {
+  toJSON(message: GenesisCounterpartyInfo): JsonSafe<GenesisCounterpartyInfo> {
     const obj: any = {};
     message.clientId !== undefined && (obj.clientId = message.clientId);
     message.counterpartyInfo !== undefined &&
@@ -116,7 +133,7 @@ export const GenesisCounterpartyInfo = {
   },
   toAmino(message: GenesisCounterpartyInfo): GenesisCounterpartyInfoAmino {
     const obj: any = {};
-    obj.client_id = message.clientId;
+    obj.client_id = message.clientId === "" ? undefined : message.clientId;
     obj.counterparty_info = message.counterpartyInfo
       ? CounterpartyInfo.toAmino(message.counterpartyInfo)
       : undefined;
@@ -180,7 +197,7 @@ export const GenesisState = {
       obj.counterpartyInfos = object.counterpartyInfos.map((e: any) => GenesisCounterpartyInfo.fromJSON(e));
     return obj;
   },
-  toJSON(message: GenesisState): unknown {
+  toJSON(message: GenesisState): JsonSafe<GenesisState> {
     const obj: any = {};
     if (message.counterpartyInfos) {
       obj.counterpartyInfos = message.counterpartyInfos.map((e) =>
@@ -210,7 +227,7 @@ export const GenesisState = {
         e ? GenesisCounterpartyInfo.toAmino(e) : undefined,
       );
     } else {
-      obj.counterparty_infos = [];
+      obj.counterparty_infos = message.counterpartyInfos;
     }
     return obj;
   },

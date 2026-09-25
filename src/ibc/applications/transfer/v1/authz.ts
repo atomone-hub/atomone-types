@@ -2,6 +2,7 @@
 import { Coin, CoinAmino } from "../../../../cosmos/base/v1beta1/coin";
 import { BinaryReader, BinaryWriter } from "../../../../binary";
 import { isSet } from "../../../../helpers";
+import { JsonSafe } from "../../../../json-safe";
 export const protobufPackage = "ibc.applications.transfer.v1";
 /** Allocation defines the spend limit for a particular port and channel */
 export interface Allocation {
@@ -23,15 +24,28 @@ export interface AllocationProtoMsg {
   typeUrl: "/ibc.applications.transfer.v1.Allocation";
   value: Uint8Array;
 }
-/** Allocation defines the spend limit for a particular port and channel */
+/**
+ * Allocation defines the spend limit for a particular port and channel
+ * @name AllocationAmino
+ * @package ibc.applications.transfer.v1
+ * @see proto type: ibc.applications.transfer.v1.Allocation
+ */
 export interface AllocationAmino {
-  /** the port on which the packet will be sent */
+  /**
+   * the port on which the packet will be sent
+   */
   source_port?: string;
-  /** the channel by which the packet will be sent */
+  /**
+   * the channel by which the packet will be sent
+   */
   source_channel?: string;
-  /** spend limitation on the channel */
+  /**
+   * spend limitation on the channel
+   */
   spend_limit?: CoinAmino[];
-  /** allow list of receivers, an empty allow list permits any receiver address */
+  /**
+   * allow list of receivers, an empty allow list permits any receiver address
+   */
   allow_list?: string[];
   /**
    * allow list of memo strings, an empty list prohibits all memo strings;
@@ -58,9 +72,14 @@ export interface TransferAuthorizationProtoMsg {
 /**
  * TransferAuthorization allows the grantee to spend up to spend_limit coins from
  * the granter's account for ibc transfer on a specific channel
+ * @name TransferAuthorizationAmino
+ * @package ibc.applications.transfer.v1
+ * @see proto type: ibc.applications.transfer.v1.TransferAuthorization
  */
 export interface TransferAuthorizationAmino {
-  /** port and channel amounts */
+  /**
+   * port and channel amounts
+   */
   allocations?: AllocationAmino[];
 }
 export interface TransferAuthorizationAminoMsg {
@@ -136,7 +155,7 @@ export const Allocation = {
       obj.allowedPacketData = object.allowedPacketData.map((e: any) => String(e));
     return obj;
   },
-  toJSON(message: Allocation): unknown {
+  toJSON(message: Allocation): JsonSafe<Allocation> {
     const obj: any = {};
     message.sourcePort !== undefined && (obj.sourcePort = message.sourcePort);
     message.sourceChannel !== undefined && (obj.sourceChannel = message.sourceChannel);
@@ -181,22 +200,22 @@ export const Allocation = {
   },
   toAmino(message: Allocation): AllocationAmino {
     const obj: any = {};
-    obj.source_port = message.sourcePort;
-    obj.source_channel = message.sourceChannel;
+    obj.source_port = message.sourcePort === "" ? undefined : message.sourcePort;
+    obj.source_channel = message.sourceChannel === "" ? undefined : message.sourceChannel;
     if (message.spendLimit) {
       obj.spend_limit = message.spendLimit.map((e) => (e ? Coin.toAmino(e) : undefined));
     } else {
-      obj.spend_limit = [];
+      obj.spend_limit = message.spendLimit;
     }
     if (message.allowList) {
       obj.allow_list = message.allowList.map((e) => e);
     } else {
-      obj.allow_list = [];
+      obj.allow_list = message.allowList;
     }
     if (message.allowedPacketData) {
       obj.allowed_packet_data = message.allowedPacketData.map((e) => e);
     } else {
-      obj.allowed_packet_data = [];
+      obj.allowed_packet_data = message.allowedPacketData;
     }
     return obj;
   },
@@ -258,7 +277,7 @@ export const TransferAuthorization = {
       obj.allocations = object.allocations.map((e: any) => Allocation.fromJSON(e));
     return obj;
   },
-  toJSON(message: TransferAuthorization): unknown {
+  toJSON(message: TransferAuthorization): JsonSafe<TransferAuthorization> {
     const obj: any = {};
     if (message.allocations) {
       obj.allocations = message.allocations.map((e) => (e ? Allocation.toJSON(e) : undefined));
@@ -282,7 +301,7 @@ export const TransferAuthorization = {
     if (message.allocations) {
       obj.allocations = message.allocations.map((e) => (e ? Allocation.toAmino(e) : undefined));
     } else {
-      obj.allocations = [];
+      obj.allocations = message.allocations;
     }
     return obj;
   },

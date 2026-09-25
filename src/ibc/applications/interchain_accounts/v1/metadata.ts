@@ -1,6 +1,7 @@
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "../../../../binary";
 import { isSet } from "../../../../helpers";
+import { JsonSafe } from "../../../../json-safe";
 export const protobufPackage = "ibc.applications.interchain_accounts.v1";
 /**
  * Metadata defines a set of protocol specific data encoded into the ICS27 channel version bytestring
@@ -30,22 +31,35 @@ export interface MetadataProtoMsg {
 /**
  * Metadata defines a set of protocol specific data encoded into the ICS27 channel version bytestring
  * See ICS004: https://github.com/cosmos/ibc/tree/master/spec/core/ics-004-channel-and-packet-semantics#Versioning
+ * @name MetadataAmino
+ * @package ibc.applications.interchain_accounts.v1
+ * @see proto type: ibc.applications.interchain_accounts.v1.Metadata
  */
 export interface MetadataAmino {
-  /** version defines the ICS27 protocol version */
+  /**
+   * version defines the ICS27 protocol version
+   */
   version?: string;
-  /** controller_connection_id is the connection identifier associated with the controller chain */
+  /**
+   * controller_connection_id is the connection identifier associated with the controller chain
+   */
   controller_connection_id?: string;
-  /** host_connection_id is the connection identifier associated with the host chain */
+  /**
+   * host_connection_id is the connection identifier associated with the host chain
+   */
   host_connection_id?: string;
   /**
    * address defines the interchain account address to be fulfilled upon the OnChanOpenTry handshake step
    * NOTE: the address field is empty on the OnChanOpenInit handshake step
    */
   address?: string;
-  /** encoding defines the supported codec format */
+  /**
+   * encoding defines the supported codec format
+   */
   encoding?: string;
-  /** tx_type defines the type of transactions the interchain account can execute */
+  /**
+   * tx_type defines the type of transactions the interchain account can execute
+   */
   tx_type?: string;
 }
 export interface MetadataAminoMsg {
@@ -128,7 +142,7 @@ export const Metadata = {
     if (isSet(object.txType)) obj.txType = String(object.txType);
     return obj;
   },
-  toJSON(message: Metadata): unknown {
+  toJSON(message: Metadata): JsonSafe<Metadata> {
     const obj: any = {};
     message.version !== undefined && (obj.version = message.version);
     message.controllerConnectionId !== undefined &&
@@ -173,12 +187,13 @@ export const Metadata = {
   },
   toAmino(message: Metadata): MetadataAmino {
     const obj: any = {};
-    obj.version = message.version;
-    obj.controller_connection_id = message.controllerConnectionId;
-    obj.host_connection_id = message.hostConnectionId;
-    obj.address = message.address;
-    obj.encoding = message.encoding;
-    obj.tx_type = message.txType;
+    obj.version = message.version === "" ? undefined : message.version;
+    obj.controller_connection_id =
+      message.controllerConnectionId === "" ? undefined : message.controllerConnectionId;
+    obj.host_connection_id = message.hostConnectionId === "" ? undefined : message.hostConnectionId;
+    obj.address = message.address === "" ? undefined : message.address;
+    obj.encoding = message.encoding === "" ? undefined : message.encoding;
+    obj.tx_type = message.txType === "" ? undefined : message.txType;
     return obj;
   },
   fromAminoMsg(object: MetadataAminoMsg): Metadata {

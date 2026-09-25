@@ -7,6 +7,7 @@ import {
 } from "../../base/query/v1beta1/pagination";
 import { Params, ParamsAmino, ValidatorSigningInfo, ValidatorSigningInfoAmino } from "./slashing";
 import { BinaryReader, BinaryWriter } from "../../../binary";
+import { JsonSafe } from "../../../json-safe";
 import { isSet } from "../../../helpers";
 import { TxRpc } from "../../../types";
 export const protobufPackage = "cosmos.slashing.v1beta1";
@@ -16,7 +17,12 @@ export interface QueryParamsRequestProtoMsg {
   typeUrl: "/cosmos.slashing.v1beta1.QueryParamsRequest";
   value: Uint8Array;
 }
-/** QueryParamsRequest is the request type for the Query/Params RPC method */
+/**
+ * QueryParamsRequest is the request type for the Query/Params RPC method
+ * @name QueryParamsRequestAmino
+ * @package cosmos.slashing.v1beta1
+ * @see proto type: cosmos.slashing.v1beta1.QueryParamsRequest
+ */
 export interface QueryParamsRequestAmino {}
 export interface QueryParamsRequestAminoMsg {
   type: "cosmos-sdk/QueryParamsRequest";
@@ -30,7 +36,12 @@ export interface QueryParamsResponseProtoMsg {
   typeUrl: "/cosmos.slashing.v1beta1.QueryParamsResponse";
   value: Uint8Array;
 }
-/** QueryParamsResponse is the response type for the Query/Params RPC method */
+/**
+ * QueryParamsResponse is the response type for the Query/Params RPC method
+ * @name QueryParamsResponseAmino
+ * @package cosmos.slashing.v1beta1
+ * @see proto type: cosmos.slashing.v1beta1.QueryParamsResponse
+ */
 export interface QueryParamsResponseAmino {
   params: ParamsAmino | undefined;
 }
@@ -53,9 +64,14 @@ export interface QuerySigningInfoRequestProtoMsg {
 /**
  * QuerySigningInfoRequest is the request type for the Query/SigningInfo RPC
  * method
+ * @name QuerySigningInfoRequestAmino
+ * @package cosmos.slashing.v1beta1
+ * @see proto type: cosmos.slashing.v1beta1.QuerySigningInfoRequest
  */
 export interface QuerySigningInfoRequestAmino {
-  /** cons_address is the address to query signing info of */
+  /**
+   * cons_address is the address to query signing info of
+   */
   cons_address?: string;
 }
 export interface QuerySigningInfoRequestAminoMsg {
@@ -77,9 +93,14 @@ export interface QuerySigningInfoResponseProtoMsg {
 /**
  * QuerySigningInfoResponse is the response type for the Query/SigningInfo RPC
  * method
+ * @name QuerySigningInfoResponseAmino
+ * @package cosmos.slashing.v1beta1
+ * @see proto type: cosmos.slashing.v1beta1.QuerySigningInfoResponse
  */
 export interface QuerySigningInfoResponseAmino {
-  /** val_signing_info is the signing info of requested val cons address */
+  /**
+   * val_signing_info is the signing info of requested val cons address
+   */
   val_signing_info: ValidatorSigningInfoAmino | undefined;
 }
 export interface QuerySigningInfoResponseAminoMsg {
@@ -100,6 +121,9 @@ export interface QuerySigningInfosRequestProtoMsg {
 /**
  * QuerySigningInfosRequest is the request type for the Query/SigningInfos RPC
  * method
+ * @name QuerySigningInfosRequestAmino
+ * @package cosmos.slashing.v1beta1
+ * @see proto type: cosmos.slashing.v1beta1.QuerySigningInfosRequest
  */
 export interface QuerySigningInfosRequestAmino {
   pagination?: PageRequestAmino | undefined;
@@ -124,9 +148,14 @@ export interface QuerySigningInfosResponseProtoMsg {
 /**
  * QuerySigningInfosResponse is the response type for the Query/SigningInfos RPC
  * method
+ * @name QuerySigningInfosResponseAmino
+ * @package cosmos.slashing.v1beta1
+ * @see proto type: cosmos.slashing.v1beta1.QuerySigningInfosResponse
  */
 export interface QuerySigningInfosResponseAmino {
-  /** info is the signing info of all validators */
+  /**
+   * info is the signing info of all validators
+   */
   info: ValidatorSigningInfoAmino[];
   pagination?: PageResponseAmino | undefined;
 }
@@ -160,7 +189,7 @@ export const QueryParamsRequest = {
     const obj = createBaseQueryParamsRequest();
     return obj;
   },
-  toJSON(_: QueryParamsRequest): unknown {
+  toJSON(_: QueryParamsRequest): JsonSafe<QueryParamsRequest> {
     const obj: any = {};
     return obj;
   },
@@ -233,7 +262,7 @@ export const QueryParamsResponse = {
     if (isSet(object.params)) obj.params = Params.fromJSON(object.params);
     return obj;
   },
-  toJSON(message: QueryParamsResponse): unknown {
+  toJSON(message: QueryParamsResponse): JsonSafe<QueryParamsResponse> {
     const obj: any = {};
     message.params !== undefined && (obj.params = message.params ? Params.toJSON(message.params) : undefined);
     return obj;
@@ -254,7 +283,7 @@ export const QueryParamsResponse = {
   },
   toAmino(message: QueryParamsResponse): QueryParamsResponseAmino {
     const obj: any = {};
-    obj.params = message.params ? Params.toAmino(message.params) : Params.fromPartial({});
+    obj.params = message.params ? Params.toAmino(message.params) : Params.toAmino(Params.fromPartial({}));
     return obj;
   },
   fromAminoMsg(object: QueryParamsResponseAminoMsg): QueryParamsResponse {
@@ -314,7 +343,7 @@ export const QuerySigningInfoRequest = {
     if (isSet(object.consAddress)) obj.consAddress = String(object.consAddress);
     return obj;
   },
-  toJSON(message: QuerySigningInfoRequest): unknown {
+  toJSON(message: QuerySigningInfoRequest): JsonSafe<QuerySigningInfoRequest> {
     const obj: any = {};
     message.consAddress !== undefined && (obj.consAddress = message.consAddress);
     return obj;
@@ -333,7 +362,7 @@ export const QuerySigningInfoRequest = {
   },
   toAmino(message: QuerySigningInfoRequest): QuerySigningInfoRequestAmino {
     const obj: any = {};
-    obj.cons_address = message.consAddress;
+    obj.cons_address = message.consAddress === "" ? undefined : message.consAddress;
     return obj;
   },
   fromAminoMsg(object: QuerySigningInfoRequestAminoMsg): QuerySigningInfoRequest {
@@ -394,7 +423,7 @@ export const QuerySigningInfoResponse = {
       obj.valSigningInfo = ValidatorSigningInfo.fromJSON(object.valSigningInfo);
     return obj;
   },
-  toJSON(message: QuerySigningInfoResponse): unknown {
+  toJSON(message: QuerySigningInfoResponse): JsonSafe<QuerySigningInfoResponse> {
     const obj: any = {};
     message.valSigningInfo !== undefined &&
       (obj.valSigningInfo = message.valSigningInfo
@@ -420,7 +449,7 @@ export const QuerySigningInfoResponse = {
     const obj: any = {};
     obj.val_signing_info = message.valSigningInfo
       ? ValidatorSigningInfo.toAmino(message.valSigningInfo)
-      : ValidatorSigningInfo.fromPartial({});
+      : ValidatorSigningInfo.toAmino(ValidatorSigningInfo.fromPartial({}));
     return obj;
   },
   fromAminoMsg(object: QuerySigningInfoResponseAminoMsg): QuerySigningInfoResponse {
@@ -480,7 +509,7 @@ export const QuerySigningInfosRequest = {
     if (isSet(object.pagination)) obj.pagination = PageRequest.fromJSON(object.pagination);
     return obj;
   },
-  toJSON(message: QuerySigningInfosRequest): unknown {
+  toJSON(message: QuerySigningInfosRequest): JsonSafe<QuerySigningInfosRequest> {
     const obj: any = {};
     message.pagination !== undefined &&
       (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
@@ -570,7 +599,7 @@ export const QuerySigningInfosResponse = {
     if (isSet(object.pagination)) obj.pagination = PageResponse.fromJSON(object.pagination);
     return obj;
   },
-  toJSON(message: QuerySigningInfosResponse): unknown {
+  toJSON(message: QuerySigningInfosResponse): JsonSafe<QuerySigningInfosResponse> {
     const obj: any = {};
     if (message.info) {
       obj.info = message.info.map((e) => (e ? ValidatorSigningInfo.toJSON(e) : undefined));
@@ -602,7 +631,7 @@ export const QuerySigningInfosResponse = {
     if (message.info) {
       obj.info = message.info.map((e) => (e ? ValidatorSigningInfo.toAmino(e) : undefined));
     } else {
-      obj.info = [];
+      obj.info = message.info;
     }
     obj.pagination = message.pagination ? PageResponse.toAmino(message.pagination) : undefined;
     return obj;

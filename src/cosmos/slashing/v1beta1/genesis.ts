@@ -2,6 +2,7 @@
 import { Params, ParamsAmino, ValidatorSigningInfo, ValidatorSigningInfoAmino } from "./slashing";
 import { BinaryReader, BinaryWriter } from "../../../binary";
 import { isSet } from "../../../helpers";
+import { JsonSafe } from "../../../json-safe";
 export const protobufPackage = "cosmos.slashing.v1beta1";
 /** GenesisState defines the slashing module's genesis state. */
 export interface GenesisState {
@@ -22,9 +23,16 @@ export interface GenesisStateProtoMsg {
   typeUrl: "/cosmos.slashing.v1beta1.GenesisState";
   value: Uint8Array;
 }
-/** GenesisState defines the slashing module's genesis state. */
+/**
+ * GenesisState defines the slashing module's genesis state.
+ * @name GenesisStateAmino
+ * @package cosmos.slashing.v1beta1
+ * @see proto type: cosmos.slashing.v1beta1.GenesisState
+ */
 export interface GenesisStateAmino {
-  /** params defines all the parameters of the module. */
+  /**
+   * params defines all the parameters of the module.
+   */
   params: ParamsAmino | undefined;
   /**
    * signing_infos represents a map between validator addresses and their
@@ -52,11 +60,20 @@ export interface SigningInfoProtoMsg {
   typeUrl: "/cosmos.slashing.v1beta1.SigningInfo";
   value: Uint8Array;
 }
-/** SigningInfo stores validator signing info of corresponding address. */
+/**
+ * SigningInfo stores validator signing info of corresponding address.
+ * @name SigningInfoAmino
+ * @package cosmos.slashing.v1beta1
+ * @see proto type: cosmos.slashing.v1beta1.SigningInfo
+ */
 export interface SigningInfoAmino {
-  /** address is the validator address. */
+  /**
+   * address is the validator address.
+   */
   address?: string;
-  /** validator_signing_info represents the signing info of this validator. */
+  /**
+   * validator_signing_info represents the signing info of this validator.
+   */
   validator_signing_info: ValidatorSigningInfoAmino | undefined;
 }
 export interface SigningInfoAminoMsg {
@@ -80,11 +97,18 @@ export interface ValidatorMissedBlocksProtoMsg {
 /**
  * ValidatorMissedBlocks contains array of missed blocks of corresponding
  * address.
+ * @name ValidatorMissedBlocksAmino
+ * @package cosmos.slashing.v1beta1
+ * @see proto type: cosmos.slashing.v1beta1.ValidatorMissedBlocks
  */
 export interface ValidatorMissedBlocksAmino {
-  /** address is the validator address. */
+  /**
+   * address is the validator address.
+   */
   address?: string;
-  /** missed_blocks is an array of missed blocks by the validator. */
+  /**
+   * missed_blocks is an array of missed blocks by the validator.
+   */
   missed_blocks: MissedBlockAmino[];
 }
 export interface ValidatorMissedBlocksAminoMsg {
@@ -102,11 +126,20 @@ export interface MissedBlockProtoMsg {
   typeUrl: "/cosmos.slashing.v1beta1.MissedBlock";
   value: Uint8Array;
 }
-/** MissedBlock contains height and missed status as boolean. */
+/**
+ * MissedBlock contains height and missed status as boolean.
+ * @name MissedBlockAmino
+ * @package cosmos.slashing.v1beta1
+ * @see proto type: cosmos.slashing.v1beta1.MissedBlock
+ */
 export interface MissedBlockAmino {
-  /** index is the height at which the block was missed. */
+  /**
+   * index is the height at which the block was missed.
+   */
   index?: string;
-  /** missed is the missed status. */
+  /**
+   * missed is the missed status.
+   */
   missed?: boolean;
 }
 export interface MissedBlockAminoMsg {
@@ -166,7 +199,7 @@ export const GenesisState = {
       obj.missedBlocks = object.missedBlocks.map((e: any) => ValidatorMissedBlocks.fromJSON(e));
     return obj;
   },
-  toJSON(message: GenesisState): unknown {
+  toJSON(message: GenesisState): JsonSafe<GenesisState> {
     const obj: any = {};
     message.params !== undefined && (obj.params = message.params ? Params.toJSON(message.params) : undefined);
     if (message.signingInfos) {
@@ -201,16 +234,16 @@ export const GenesisState = {
   },
   toAmino(message: GenesisState): GenesisStateAmino {
     const obj: any = {};
-    obj.params = message.params ? Params.toAmino(message.params) : Params.fromPartial({});
+    obj.params = message.params ? Params.toAmino(message.params) : Params.toAmino(Params.fromPartial({}));
     if (message.signingInfos) {
       obj.signing_infos = message.signingInfos.map((e) => (e ? SigningInfo.toAmino(e) : undefined));
     } else {
-      obj.signing_infos = [];
+      obj.signing_infos = message.signingInfos;
     }
     if (message.missedBlocks) {
       obj.missed_blocks = message.missedBlocks.map((e) => (e ? ValidatorMissedBlocks.toAmino(e) : undefined));
     } else {
-      obj.missed_blocks = [];
+      obj.missed_blocks = message.missedBlocks;
     }
     return obj;
   },
@@ -280,7 +313,7 @@ export const SigningInfo = {
       obj.validatorSigningInfo = ValidatorSigningInfo.fromJSON(object.validatorSigningInfo);
     return obj;
   },
-  toJSON(message: SigningInfo): unknown {
+  toJSON(message: SigningInfo): JsonSafe<SigningInfo> {
     const obj: any = {};
     message.address !== undefined && (obj.address = message.address);
     message.validatorSigningInfo !== undefined &&
@@ -309,10 +342,10 @@ export const SigningInfo = {
   },
   toAmino(message: SigningInfo): SigningInfoAmino {
     const obj: any = {};
-    obj.address = message.address;
+    obj.address = message.address === "" ? undefined : message.address;
     obj.validator_signing_info = message.validatorSigningInfo
       ? ValidatorSigningInfo.toAmino(message.validatorSigningInfo)
-      : ValidatorSigningInfo.fromPartial({});
+      : ValidatorSigningInfo.toAmino(ValidatorSigningInfo.fromPartial({}));
     return obj;
   },
   fromAminoMsg(object: SigningInfoAminoMsg): SigningInfo {
@@ -381,7 +414,7 @@ export const ValidatorMissedBlocks = {
       obj.missedBlocks = object.missedBlocks.map((e: any) => MissedBlock.fromJSON(e));
     return obj;
   },
-  toJSON(message: ValidatorMissedBlocks): unknown {
+  toJSON(message: ValidatorMissedBlocks): JsonSafe<ValidatorMissedBlocks> {
     const obj: any = {};
     message.address !== undefined && (obj.address = message.address);
     if (message.missedBlocks) {
@@ -407,11 +440,11 @@ export const ValidatorMissedBlocks = {
   },
   toAmino(message: ValidatorMissedBlocks): ValidatorMissedBlocksAmino {
     const obj: any = {};
-    obj.address = message.address;
+    obj.address = message.address === "" ? undefined : message.address;
     if (message.missedBlocks) {
       obj.missed_blocks = message.missedBlocks.map((e) => (e ? MissedBlock.toAmino(e) : undefined));
     } else {
-      obj.missed_blocks = [];
+      obj.missed_blocks = message.missedBlocks;
     }
     return obj;
   },
@@ -480,7 +513,7 @@ export const MissedBlock = {
     if (isSet(object.missed)) obj.missed = Boolean(object.missed);
     return obj;
   },
-  toJSON(message: MissedBlock): unknown {
+  toJSON(message: MissedBlock): JsonSafe<MissedBlock> {
     const obj: any = {};
     message.index !== undefined && (obj.index = (message.index || BigInt(0)).toString());
     message.missed !== undefined && (obj.missed = message.missed);
@@ -506,8 +539,8 @@ export const MissedBlock = {
   },
   toAmino(message: MissedBlock): MissedBlockAmino {
     const obj: any = {};
-    obj.index = message.index ? message.index.toString() : undefined;
-    obj.missed = message.missed;
+    obj.index = message.index !== BigInt(0) ? message.index?.toString() : undefined;
+    obj.missed = message.missed === false ? undefined : message.missed;
     return obj;
   },
   fromAminoMsg(object: MissedBlockAminoMsg): MissedBlock {

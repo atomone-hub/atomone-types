@@ -1,6 +1,7 @@
 /* eslint-disable */
 import { EpochInfo, EpochInfoAmino } from "./genesis";
 import { BinaryReader, BinaryWriter } from "../../../binary";
+import { JsonSafe } from "../../../json-safe";
 import { isSet } from "../../../helpers";
 import { TxRpc } from "../../../types";
 export const protobufPackage = "cosmos.epochs.v1beta1";
@@ -16,6 +17,9 @@ export interface QueryEpochInfosRequestProtoMsg {
 /**
  * QueryEpochInfosRequest defines the gRPC request structure for
  * querying all epoch info.
+ * @name QueryEpochInfosRequestAmino
+ * @package cosmos.epochs.v1beta1
+ * @see proto type: cosmos.epochs.v1beta1.QueryEpochInfosRequest
  */
 export interface QueryEpochInfosRequestAmino {}
 export interface QueryEpochInfosRequestAminoMsg {
@@ -36,6 +40,9 @@ export interface QueryEpochInfosResponseProtoMsg {
 /**
  * QueryEpochInfosRequest defines the gRPC response structure for
  * querying all epoch info.
+ * @name QueryEpochInfosResponseAmino
+ * @package cosmos.epochs.v1beta1
+ * @see proto type: cosmos.epochs.v1beta1.QueryEpochInfosResponse
  */
 export interface QueryEpochInfosResponseAmino {
   epochs?: EpochInfoAmino[];
@@ -58,6 +65,9 @@ export interface QueryCurrentEpochRequestProtoMsg {
 /**
  * QueryCurrentEpochRequest defines the gRPC request structure for
  * querying an epoch by its identifier.
+ * @name QueryCurrentEpochRequestAmino
+ * @package cosmos.epochs.v1beta1
+ * @see proto type: cosmos.epochs.v1beta1.QueryCurrentEpochRequest
  */
 export interface QueryCurrentEpochRequestAmino {
   identifier?: string;
@@ -80,6 +90,9 @@ export interface QueryCurrentEpochResponseProtoMsg {
 /**
  * QueryCurrentEpochResponse defines the gRPC response structure for
  * querying an epoch by its identifier.
+ * @name QueryCurrentEpochResponseAmino
+ * @package cosmos.epochs.v1beta1
+ * @see proto type: cosmos.epochs.v1beta1.QueryCurrentEpochResponse
  */
 export interface QueryCurrentEpochResponseAmino {
   current_epoch?: string;
@@ -114,7 +127,7 @@ export const QueryEpochInfosRequest = {
     const obj = createBaseQueryEpochInfosRequest();
     return obj;
   },
-  toJSON(_: QueryEpochInfosRequest): unknown {
+  toJSON(_: QueryEpochInfosRequest): JsonSafe<QueryEpochInfosRequest> {
     const obj: any = {};
     return obj;
   },
@@ -187,7 +200,7 @@ export const QueryEpochInfosResponse = {
     if (Array.isArray(object?.epochs)) obj.epochs = object.epochs.map((e: any) => EpochInfo.fromJSON(e));
     return obj;
   },
-  toJSON(message: QueryEpochInfosResponse): unknown {
+  toJSON(message: QueryEpochInfosResponse): JsonSafe<QueryEpochInfosResponse> {
     const obj: any = {};
     if (message.epochs) {
       obj.epochs = message.epochs.map((e) => (e ? EpochInfo.toJSON(e) : undefined));
@@ -211,7 +224,7 @@ export const QueryEpochInfosResponse = {
     if (message.epochs) {
       obj.epochs = message.epochs.map((e) => (e ? EpochInfo.toAmino(e) : undefined));
     } else {
-      obj.epochs = [];
+      obj.epochs = message.epochs;
     }
     return obj;
   },
@@ -272,7 +285,7 @@ export const QueryCurrentEpochRequest = {
     if (isSet(object.identifier)) obj.identifier = String(object.identifier);
     return obj;
   },
-  toJSON(message: QueryCurrentEpochRequest): unknown {
+  toJSON(message: QueryCurrentEpochRequest): JsonSafe<QueryCurrentEpochRequest> {
     const obj: any = {};
     message.identifier !== undefined && (obj.identifier = message.identifier);
     return obj;
@@ -291,7 +304,7 @@ export const QueryCurrentEpochRequest = {
   },
   toAmino(message: QueryCurrentEpochRequest): QueryCurrentEpochRequestAmino {
     const obj: any = {};
-    obj.identifier = message.identifier;
+    obj.identifier = message.identifier === "" ? undefined : message.identifier;
     return obj;
   },
   fromAminoMsg(object: QueryCurrentEpochRequestAminoMsg): QueryCurrentEpochRequest {
@@ -351,7 +364,7 @@ export const QueryCurrentEpochResponse = {
     if (isSet(object.currentEpoch)) obj.currentEpoch = BigInt(object.currentEpoch.toString());
     return obj;
   },
-  toJSON(message: QueryCurrentEpochResponse): unknown {
+  toJSON(message: QueryCurrentEpochResponse): JsonSafe<QueryCurrentEpochResponse> {
     const obj: any = {};
     message.currentEpoch !== undefined && (obj.currentEpoch = (message.currentEpoch || BigInt(0)).toString());
     return obj;
@@ -372,7 +385,7 @@ export const QueryCurrentEpochResponse = {
   },
   toAmino(message: QueryCurrentEpochResponse): QueryCurrentEpochResponseAmino {
     const obj: any = {};
-    obj.current_epoch = message.currentEpoch ? message.currentEpoch.toString() : undefined;
+    obj.current_epoch = message.currentEpoch !== BigInt(0) ? message.currentEpoch?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: QueryCurrentEpochResponseAminoMsg): QueryCurrentEpochResponse {

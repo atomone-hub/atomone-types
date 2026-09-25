@@ -4,6 +4,7 @@ import { ConnectionEnd, ConnectionEndAmino } from "../../../core/connection/v1/c
 import { Channel, ChannelAmino } from "../../../core/channel/v1/channel";
 import { BinaryReader, BinaryWriter } from "../../../../binary";
 import { isSet, bytesFromBase64, base64FromBytes } from "../../../../helpers";
+import { JsonSafe } from "../../../../json-safe";
 export const protobufPackage = "ibc.lightclients.solomachine.v2";
 /**
  * DataType defines the type of solo machine proof being created. This is done
@@ -121,11 +122,18 @@ export interface ClientStateProtoMsg {
 /**
  * ClientState defines a solo machine client that tracks the current consensus
  * state and if the client is frozen.
+ * @name ClientStateAmino
+ * @package ibc.lightclients.solomachine.v2
+ * @see proto type: ibc.lightclients.solomachine.v2.ClientState
  */
 export interface ClientStateAmino {
-  /** latest sequence of the client state */
+  /**
+   * latest sequence of the client state
+   */
   sequence?: string;
-  /** frozen sequence of the solo machine */
+  /**
+   * frozen sequence of the solo machine
+   */
   is_frozen?: boolean;
   consensus_state?: ConsensusStateAmino | undefined;
   /**
@@ -162,9 +170,14 @@ export interface ConsensusStateProtoMsg {
  * ConsensusState defines a solo machine consensus state. The sequence of a
  * consensus state is contained in the "height" key used in storing the
  * consensus state.
+ * @name ConsensusStateAmino
+ * @package ibc.lightclients.solomachine.v2
+ * @see proto type: ibc.lightclients.solomachine.v2.ConsensusState
  */
 export interface ConsensusStateAmino {
-  /** public key of the solo machine */
+  /**
+   * public key of the solo machine
+   */
   public_key?: AnyAmino | undefined;
   /**
    * diversifier allows the same public key to be reused across different solo
@@ -191,9 +204,16 @@ export interface HeaderProtoMsg {
   typeUrl: "/ibc.lightclients.solomachine.v2.Header";
   value: Uint8Array;
 }
-/** Header defines a solo machine consensus header */
+/**
+ * Header defines a solo machine consensus header
+ * @name HeaderAmino
+ * @package ibc.lightclients.solomachine.v2
+ * @see proto type: ibc.lightclients.solomachine.v2.Header
+ */
 export interface HeaderAmino {
-  /** sequence to update solo machine public key at */
+  /**
+   * sequence to update solo machine public key at
+   */
   sequence?: string;
   timestamp?: string;
   signature?: string;
@@ -221,6 +241,9 @@ export interface MisbehaviourProtoMsg {
 /**
  * Misbehaviour defines misbehaviour for a solo machine which consists
  * of a sequence and two signatures over different messages at that sequence.
+ * @name MisbehaviourAmino
+ * @package ibc.lightclients.solomachine.v2
+ * @see proto type: ibc.lightclients.solomachine.v2.Misbehaviour
  */
 export interface MisbehaviourAmino {
   client_id?: string;
@@ -249,6 +272,9 @@ export interface SignatureAndDataProtoMsg {
 /**
  * SignatureAndData contains a signature and the data signed over to create that
  * signature.
+ * @name SignatureAndDataAmino
+ * @package ibc.lightclients.solomachine.v2
+ * @see proto type: ibc.lightclients.solomachine.v2.SignatureAndData
  */
 export interface SignatureAndDataAmino {
   signature?: string;
@@ -275,6 +301,9 @@ export interface TimestampedSignatureDataProtoMsg {
 /**
  * TimestampedSignatureData contains the signature data and the timestamp of the
  * signature.
+ * @name TimestampedSignatureDataAmino
+ * @package ibc.lightclients.solomachine.v2
+ * @see proto type: ibc.lightclients.solomachine.v2.TimestampedSignatureData
  */
 export interface TimestampedSignatureDataAmino {
   signature_data?: string;
@@ -298,14 +327,23 @@ export interface SignBytesProtoMsg {
   typeUrl: "/ibc.lightclients.solomachine.v2.SignBytes";
   value: Uint8Array;
 }
-/** SignBytes defines the signed bytes used for signature verification. */
+/**
+ * SignBytes defines the signed bytes used for signature verification.
+ * @name SignBytesAmino
+ * @package ibc.lightclients.solomachine.v2
+ * @see proto type: ibc.lightclients.solomachine.v2.SignBytes
+ */
 export interface SignBytesAmino {
   sequence?: string;
   timestamp?: string;
   diversifier?: string;
-  /** type of the data used */
+  /**
+   * type of the data used
+   */
   data_type?: DataType;
-  /** marshaled data */
+  /**
+   * marshaled data
+   */
   data?: string;
 }
 export interface SignBytesAminoMsg {
@@ -323,11 +361,20 @@ export interface HeaderDataProtoMsg {
   typeUrl: "/ibc.lightclients.solomachine.v2.HeaderData";
   value: Uint8Array;
 }
-/** HeaderData returns the SignBytes data for update verification. */
+/**
+ * HeaderData returns the SignBytes data for update verification.
+ * @name HeaderDataAmino
+ * @package ibc.lightclients.solomachine.v2
+ * @see proto type: ibc.lightclients.solomachine.v2.HeaderData
+ */
 export interface HeaderDataAmino {
-  /** header public key */
+  /**
+   * header public key
+   */
   new_pub_key?: AnyAmino | undefined;
-  /** header diversifier */
+  /**
+   * header diversifier
+   */
   new_diversifier?: string;
 }
 export interface HeaderDataAminoMsg {
@@ -343,7 +390,12 @@ export interface ClientStateDataProtoMsg {
   typeUrl: "/ibc.lightclients.solomachine.v2.ClientStateData";
   value: Uint8Array;
 }
-/** ClientStateData returns the SignBytes data for client state verification. */
+/**
+ * ClientStateData returns the SignBytes data for client state verification.
+ * @name ClientStateDataAmino
+ * @package ibc.lightclients.solomachine.v2
+ * @see proto type: ibc.lightclients.solomachine.v2.ClientStateData
+ */
 export interface ClientStateDataAmino {
   path?: string;
   client_state?: AnyAmino | undefined;
@@ -367,6 +419,9 @@ export interface ConsensusStateDataProtoMsg {
 /**
  * ConsensusStateData returns the SignBytes data for consensus state
  * verification.
+ * @name ConsensusStateDataAmino
+ * @package ibc.lightclients.solomachine.v2
+ * @see proto type: ibc.lightclients.solomachine.v2.ConsensusStateData
  */
 export interface ConsensusStateDataAmino {
   path?: string;
@@ -391,6 +446,9 @@ export interface ConnectionStateDataProtoMsg {
 /**
  * ConnectionStateData returns the SignBytes data for connection state
  * verification.
+ * @name ConnectionStateDataAmino
+ * @package ibc.lightclients.solomachine.v2
+ * @see proto type: ibc.lightclients.solomachine.v2.ConnectionStateData
  */
 export interface ConnectionStateDataAmino {
   path?: string;
@@ -415,6 +473,9 @@ export interface ChannelStateDataProtoMsg {
 /**
  * ChannelStateData returns the SignBytes data for channel state
  * verification.
+ * @name ChannelStateDataAmino
+ * @package ibc.lightclients.solomachine.v2
+ * @see proto type: ibc.lightclients.solomachine.v2.ChannelStateData
  */
 export interface ChannelStateDataAmino {
   path?: string;
@@ -439,6 +500,9 @@ export interface PacketCommitmentDataProtoMsg {
 /**
  * PacketCommitmentData returns the SignBytes data for packet commitment
  * verification.
+ * @name PacketCommitmentDataAmino
+ * @package ibc.lightclients.solomachine.v2
+ * @see proto type: ibc.lightclients.solomachine.v2.PacketCommitmentData
  */
 export interface PacketCommitmentDataAmino {
   path?: string;
@@ -463,6 +527,9 @@ export interface PacketAcknowledgementDataProtoMsg {
 /**
  * PacketAcknowledgementData returns the SignBytes data for acknowledgement
  * verification.
+ * @name PacketAcknowledgementDataAmino
+ * @package ibc.lightclients.solomachine.v2
+ * @see proto type: ibc.lightclients.solomachine.v2.PacketAcknowledgementData
  */
 export interface PacketAcknowledgementDataAmino {
   path?: string;
@@ -486,6 +553,9 @@ export interface PacketReceiptAbsenceDataProtoMsg {
 /**
  * PacketReceiptAbsenceData returns the SignBytes data for
  * packet receipt absence verification.
+ * @name PacketReceiptAbsenceDataAmino
+ * @package ibc.lightclients.solomachine.v2
+ * @see proto type: ibc.lightclients.solomachine.v2.PacketReceiptAbsenceData
  */
 export interface PacketReceiptAbsenceDataAmino {
   path?: string;
@@ -509,6 +579,9 @@ export interface NextSequenceRecvDataProtoMsg {
 /**
  * NextSequenceRecvData returns the SignBytes data for verification of the next
  * sequence to be received.
+ * @name NextSequenceRecvDataAmino
+ * @package ibc.lightclients.solomachine.v2
+ * @see proto type: ibc.lightclients.solomachine.v2.NextSequenceRecvData
  */
 export interface NextSequenceRecvDataAmino {
   path?: string;
@@ -578,7 +651,7 @@ export const ClientState = {
       obj.allowUpdateAfterProposal = Boolean(object.allowUpdateAfterProposal);
     return obj;
   },
-  toJSON(message: ClientState): unknown {
+  toJSON(message: ClientState): JsonSafe<ClientState> {
     const obj: any = {};
     message.sequence !== undefined && (obj.sequence = (message.sequence || BigInt(0)).toString());
     message.isFrozen !== undefined && (obj.isFrozen = message.isFrozen);
@@ -620,10 +693,11 @@ export const ClientState = {
   },
   toAmino(message: ClientState): ClientStateAmino {
     const obj: any = {};
-    obj.sequence = message.sequence ? message.sequence.toString() : undefined;
-    obj.is_frozen = message.isFrozen;
+    obj.sequence = message.sequence !== BigInt(0) ? message.sequence?.toString() : undefined;
+    obj.is_frozen = message.isFrozen === false ? undefined : message.isFrozen;
     obj.consensus_state = message.consensusState ? ConsensusState.toAmino(message.consensusState) : undefined;
-    obj.allow_update_after_proposal = message.allowUpdateAfterProposal;
+    obj.allow_update_after_proposal =
+      message.allowUpdateAfterProposal === false ? undefined : message.allowUpdateAfterProposal;
     return obj;
   },
   fromAminoMsg(object: ClientStateAminoMsg): ClientState {
@@ -699,7 +773,7 @@ export const ConsensusState = {
     if (isSet(object.timestamp)) obj.timestamp = BigInt(object.timestamp.toString());
     return obj;
   },
-  toJSON(message: ConsensusState): unknown {
+  toJSON(message: ConsensusState): JsonSafe<ConsensusState> {
     const obj: any = {};
     message.publicKey !== undefined &&
       (obj.publicKey = message.publicKey ? Any.toJSON(message.publicKey) : undefined);
@@ -734,8 +808,8 @@ export const ConsensusState = {
   toAmino(message: ConsensusState): ConsensusStateAmino {
     const obj: any = {};
     obj.public_key = message.publicKey ? Any.toAmino(message.publicKey) : undefined;
-    obj.diversifier = message.diversifier;
-    obj.timestamp = message.timestamp ? message.timestamp.toString() : undefined;
+    obj.diversifier = message.diversifier === "" ? undefined : message.diversifier;
+    obj.timestamp = message.timestamp !== BigInt(0) ? message.timestamp?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: ConsensusStateAminoMsg): ConsensusState {
@@ -827,7 +901,7 @@ export const Header = {
     if (isSet(object.newDiversifier)) obj.newDiversifier = String(object.newDiversifier);
     return obj;
   },
-  toJSON(message: Header): unknown {
+  toJSON(message: Header): JsonSafe<Header> {
     const obj: any = {};
     message.sequence !== undefined && (obj.sequence = (message.sequence || BigInt(0)).toString());
     message.timestamp !== undefined && (obj.timestamp = (message.timestamp || BigInt(0)).toString());
@@ -876,11 +950,11 @@ export const Header = {
   },
   toAmino(message: Header): HeaderAmino {
     const obj: any = {};
-    obj.sequence = message.sequence ? message.sequence.toString() : undefined;
-    obj.timestamp = message.timestamp ? message.timestamp.toString() : undefined;
+    obj.sequence = message.sequence !== BigInt(0) ? message.sequence?.toString() : undefined;
+    obj.timestamp = message.timestamp !== BigInt(0) ? message.timestamp?.toString() : undefined;
     obj.signature = message.signature ? base64FromBytes(message.signature) : undefined;
     obj.new_public_key = message.newPublicKey ? Any.toAmino(message.newPublicKey) : undefined;
-    obj.new_diversifier = message.newDiversifier;
+    obj.new_diversifier = message.newDiversifier === "" ? undefined : message.newDiversifier;
     return obj;
   },
   fromAminoMsg(object: HeaderAminoMsg): Header {
@@ -964,7 +1038,7 @@ export const Misbehaviour = {
     if (isSet(object.signatureTwo)) obj.signatureTwo = SignatureAndData.fromJSON(object.signatureTwo);
     return obj;
   },
-  toJSON(message: Misbehaviour): unknown {
+  toJSON(message: Misbehaviour): JsonSafe<Misbehaviour> {
     const obj: any = {};
     message.clientId !== undefined && (obj.clientId = message.clientId);
     message.sequence !== undefined && (obj.sequence = (message.sequence || BigInt(0)).toString());
@@ -1006,8 +1080,8 @@ export const Misbehaviour = {
   },
   toAmino(message: Misbehaviour): MisbehaviourAmino {
     const obj: any = {};
-    obj.client_id = message.clientId;
-    obj.sequence = message.sequence ? message.sequence.toString() : undefined;
+    obj.client_id = message.clientId === "" ? undefined : message.clientId;
+    obj.sequence = message.sequence !== BigInt(0) ? message.sequence?.toString() : undefined;
     obj.signature_one = message.signatureOne ? SignatureAndData.toAmino(message.signatureOne) : undefined;
     obj.signature_two = message.signatureTwo ? SignatureAndData.toAmino(message.signatureTwo) : undefined;
     return obj;
@@ -1093,7 +1167,7 @@ export const SignatureAndData = {
     if (isSet(object.timestamp)) obj.timestamp = BigInt(object.timestamp.toString());
     return obj;
   },
-  toJSON(message: SignatureAndData): unknown {
+  toJSON(message: SignatureAndData): JsonSafe<SignatureAndData> {
     const obj: any = {};
     message.signature !== undefined &&
       (obj.signature = base64FromBytes(
@@ -1121,7 +1195,7 @@ export const SignatureAndData = {
       message.signature = bytesFromBase64(object.signature);
     }
     if (object.data_type !== undefined && object.data_type !== null) {
-      message.dataType = dataTypeFromJSON(object.data_type);
+      message.dataType = object.data_type;
     }
     if (object.data !== undefined && object.data !== null) {
       message.data = bytesFromBase64(object.data);
@@ -1134,9 +1208,9 @@ export const SignatureAndData = {
   toAmino(message: SignatureAndData): SignatureAndDataAmino {
     const obj: any = {};
     obj.signature = message.signature ? base64FromBytes(message.signature) : undefined;
-    obj.data_type = message.dataType;
+    obj.data_type = message.dataType === 0 ? undefined : message.dataType;
     obj.data = message.data ? base64FromBytes(message.data) : undefined;
-    obj.timestamp = message.timestamp ? message.timestamp.toString() : undefined;
+    obj.timestamp = message.timestamp !== BigInt(0) ? message.timestamp?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: SignatureAndDataAminoMsg): SignatureAndData {
@@ -1204,7 +1278,7 @@ export const TimestampedSignatureData = {
     if (isSet(object.timestamp)) obj.timestamp = BigInt(object.timestamp.toString());
     return obj;
   },
-  toJSON(message: TimestampedSignatureData): unknown {
+  toJSON(message: TimestampedSignatureData): JsonSafe<TimestampedSignatureData> {
     const obj: any = {};
     message.signatureData !== undefined &&
       (obj.signatureData = base64FromBytes(
@@ -1234,7 +1308,7 @@ export const TimestampedSignatureData = {
   toAmino(message: TimestampedSignatureData): TimestampedSignatureDataAmino {
     const obj: any = {};
     obj.signature_data = message.signatureData ? base64FromBytes(message.signatureData) : undefined;
-    obj.timestamp = message.timestamp ? message.timestamp.toString() : undefined;
+    obj.timestamp = message.timestamp !== BigInt(0) ? message.timestamp?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: TimestampedSignatureDataAminoMsg): TimestampedSignatureData {
@@ -1326,7 +1400,7 @@ export const SignBytes = {
     if (isSet(object.data)) obj.data = bytesFromBase64(object.data);
     return obj;
   },
-  toJSON(message: SignBytes): unknown {
+  toJSON(message: SignBytes): JsonSafe<SignBytes> {
     const obj: any = {};
     message.sequence !== undefined && (obj.sequence = (message.sequence || BigInt(0)).toString());
     message.timestamp !== undefined && (obj.timestamp = (message.timestamp || BigInt(0)).toString());
@@ -1361,7 +1435,7 @@ export const SignBytes = {
       message.diversifier = object.diversifier;
     }
     if (object.data_type !== undefined && object.data_type !== null) {
-      message.dataType = dataTypeFromJSON(object.data_type);
+      message.dataType = object.data_type;
     }
     if (object.data !== undefined && object.data !== null) {
       message.data = bytesFromBase64(object.data);
@@ -1370,10 +1444,10 @@ export const SignBytes = {
   },
   toAmino(message: SignBytes): SignBytesAmino {
     const obj: any = {};
-    obj.sequence = message.sequence ? message.sequence.toString() : undefined;
-    obj.timestamp = message.timestamp ? message.timestamp.toString() : undefined;
-    obj.diversifier = message.diversifier;
-    obj.data_type = message.dataType;
+    obj.sequence = message.sequence !== BigInt(0) ? message.sequence?.toString() : undefined;
+    obj.timestamp = message.timestamp !== BigInt(0) ? message.timestamp?.toString() : undefined;
+    obj.diversifier = message.diversifier === "" ? undefined : message.diversifier;
+    obj.data_type = message.dataType === 0 ? undefined : message.dataType;
     obj.data = message.data ? base64FromBytes(message.data) : undefined;
     return obj;
   },
@@ -1442,7 +1516,7 @@ export const HeaderData = {
     if (isSet(object.newDiversifier)) obj.newDiversifier = String(object.newDiversifier);
     return obj;
   },
-  toJSON(message: HeaderData): unknown {
+  toJSON(message: HeaderData): JsonSafe<HeaderData> {
     const obj: any = {};
     message.newPubKey !== undefined &&
       (obj.newPubKey = message.newPubKey ? Any.toJSON(message.newPubKey) : undefined);
@@ -1470,7 +1544,7 @@ export const HeaderData = {
   toAmino(message: HeaderData): HeaderDataAmino {
     const obj: any = {};
     obj.new_pub_key = message.newPubKey ? Any.toAmino(message.newPubKey) : undefined;
-    obj.new_diversifier = message.newDiversifier;
+    obj.new_diversifier = message.newDiversifier === "" ? undefined : message.newDiversifier;
     return obj;
   },
   fromAminoMsg(object: HeaderDataAminoMsg): HeaderData {
@@ -1538,7 +1612,7 @@ export const ClientStateData = {
     if (isSet(object.clientState)) obj.clientState = Any.fromJSON(object.clientState);
     return obj;
   },
-  toJSON(message: ClientStateData): unknown {
+  toJSON(message: ClientStateData): JsonSafe<ClientStateData> {
     const obj: any = {};
     message.path !== undefined &&
       (obj.path = base64FromBytes(message.path !== undefined ? message.path : new Uint8Array()));
@@ -1635,7 +1709,7 @@ export const ConsensusStateData = {
     if (isSet(object.consensusState)) obj.consensusState = Any.fromJSON(object.consensusState);
     return obj;
   },
-  toJSON(message: ConsensusStateData): unknown {
+  toJSON(message: ConsensusStateData): JsonSafe<ConsensusStateData> {
     const obj: any = {};
     message.path !== undefined &&
       (obj.path = base64FromBytes(message.path !== undefined ? message.path : new Uint8Array()));
@@ -1732,7 +1806,7 @@ export const ConnectionStateData = {
     if (isSet(object.connection)) obj.connection = ConnectionEnd.fromJSON(object.connection);
     return obj;
   },
-  toJSON(message: ConnectionStateData): unknown {
+  toJSON(message: ConnectionStateData): JsonSafe<ConnectionStateData> {
     const obj: any = {};
     message.path !== undefined &&
       (obj.path = base64FromBytes(message.path !== undefined ? message.path : new Uint8Array()));
@@ -1829,7 +1903,7 @@ export const ChannelStateData = {
     if (isSet(object.channel)) obj.channel = Channel.fromJSON(object.channel);
     return obj;
   },
-  toJSON(message: ChannelStateData): unknown {
+  toJSON(message: ChannelStateData): JsonSafe<ChannelStateData> {
     const obj: any = {};
     message.path !== undefined &&
       (obj.path = base64FromBytes(message.path !== undefined ? message.path : new Uint8Array()));
@@ -1926,7 +2000,7 @@ export const PacketCommitmentData = {
     if (isSet(object.commitment)) obj.commitment = bytesFromBase64(object.commitment);
     return obj;
   },
-  toJSON(message: PacketCommitmentData): unknown {
+  toJSON(message: PacketCommitmentData): JsonSafe<PacketCommitmentData> {
     const obj: any = {};
     message.path !== undefined &&
       (obj.path = base64FromBytes(message.path !== undefined ? message.path : new Uint8Array()));
@@ -2023,7 +2097,7 @@ export const PacketAcknowledgementData = {
     if (isSet(object.acknowledgement)) obj.acknowledgement = bytesFromBase64(object.acknowledgement);
     return obj;
   },
-  toJSON(message: PacketAcknowledgementData): unknown {
+  toJSON(message: PacketAcknowledgementData): JsonSafe<PacketAcknowledgementData> {
     const obj: any = {};
     message.path !== undefined &&
       (obj.path = base64FromBytes(message.path !== undefined ? message.path : new Uint8Array()));
@@ -2112,7 +2186,7 @@ export const PacketReceiptAbsenceData = {
     if (isSet(object.path)) obj.path = bytesFromBase64(object.path);
     return obj;
   },
-  toJSON(message: PacketReceiptAbsenceData): unknown {
+  toJSON(message: PacketReceiptAbsenceData): JsonSafe<PacketReceiptAbsenceData> {
     const obj: any = {};
     message.path !== undefined &&
       (obj.path = base64FromBytes(message.path !== undefined ? message.path : new Uint8Array()));
@@ -2200,7 +2274,7 @@ export const NextSequenceRecvData = {
     if (isSet(object.nextSeqRecv)) obj.nextSeqRecv = BigInt(object.nextSeqRecv.toString());
     return obj;
   },
-  toJSON(message: NextSequenceRecvData): unknown {
+  toJSON(message: NextSequenceRecvData): JsonSafe<NextSequenceRecvData> {
     const obj: any = {};
     message.path !== undefined &&
       (obj.path = base64FromBytes(message.path !== undefined ? message.path : new Uint8Array()));
@@ -2228,7 +2302,7 @@ export const NextSequenceRecvData = {
   toAmino(message: NextSequenceRecvData): NextSequenceRecvDataAmino {
     const obj: any = {};
     obj.path = message.path ? base64FromBytes(message.path) : undefined;
-    obj.next_seq_recv = message.nextSeqRecv ? message.nextSeqRecv.toString() : undefined;
+    obj.next_seq_recv = message.nextSeqRecv !== BigInt(0) ? message.nextSeqRecv?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: NextSequenceRecvDataAminoMsg): NextSequenceRecvData {

@@ -2,6 +2,7 @@
 import { Params, ParamsAmino } from "./params";
 import { BinaryReader, BinaryWriter } from "../../../binary";
 import { isSet } from "../../../helpers";
+import { JsonSafe } from "../../../json-safe";
 export const protobufPackage = "cosmos.dynamicfee.v1";
 /** GenesisState defines the dynamicfee module's genesis state. */
 export interface GenesisState {
@@ -18,7 +19,12 @@ export interface GenesisStateProtoMsg {
   typeUrl: "/cosmos.dynamicfee.v1.GenesisState";
   value: Uint8Array;
 }
-/** GenesisState defines the dynamicfee module's genesis state. */
+/**
+ * GenesisState defines the dynamicfee module's genesis state.
+ * @name GenesisStateAmino
+ * @package cosmos.dynamicfee.v1
+ * @see proto type: cosmos.dynamicfee.v1.GenesisState
+ */
 export interface GenesisStateAmino {
   /**
    * Params are the parameters for the dynamicfee module. These parameters
@@ -26,7 +32,9 @@ export interface GenesisStateAmino {
    * and the AIMD EIP-1559 dynamic fee pricing.
    */
   params?: ParamsAmino | undefined;
-  /** State contains the current state of the AIMD dynamic fee pricer. */
+  /**
+   * State contains the current state of the AIMD dynamic fee pricer.
+   */
   state?: StateAmino | undefined;
 }
 export interface GenesisStateAminoMsg {
@@ -63,6 +71,9 @@ export interface StateProtoMsg {
  * State is utilized to track the current state of the dynamic fee pricer.
  * This includes the current base fee, learning rate, and block gas within the
  * specified AIMD window.
+ * @name StateAmino
+ * @package cosmos.dynamicfee.v1
+ * @see proto type: cosmos.dynamicfee.v1.State
  */
 export interface StateAmino {
   /**
@@ -70,7 +81,9 @@ export interface StateAmino {
    * gas unit.
    */
   base_gas_price?: string;
-  /** LearningRate is the current learning rate. */
+  /**
+   * LearningRate is the current learning rate.
+   */
   learning_rate?: string;
   /**
    * Window contains a list of the last blocks' gas values. This is used
@@ -78,7 +91,9 @@ export interface StateAmino {
    * consumed per block.
    */
   window?: string[];
-  /** Index is the index of the current block in the block gas window. */
+  /**
+   * Index is the index of the current block in the block gas window.
+   */
   index?: string;
 }
 export interface StateAminoMsg {
@@ -128,7 +143,7 @@ export const GenesisState = {
     if (isSet(object.state)) obj.state = State.fromJSON(object.state);
     return obj;
   },
-  toJSON(message: GenesisState): unknown {
+  toJSON(message: GenesisState): JsonSafe<GenesisState> {
     const obj: any = {};
     message.params !== undefined && (obj.params = message.params ? Params.toJSON(message.params) : undefined);
     message.state !== undefined && (obj.state = message.state ? State.toJSON(message.state) : undefined);
@@ -250,7 +265,7 @@ export const State = {
     if (isSet(object.index)) obj.index = BigInt(object.index.toString());
     return obj;
   },
-  toJSON(message: State): unknown {
+  toJSON(message: State): JsonSafe<State> {
     const obj: any = {};
     message.baseGasPrice !== undefined && (obj.baseGasPrice = message.baseGasPrice);
     message.learningRate !== undefined && (obj.learningRate = message.learningRate);
@@ -288,14 +303,14 @@ export const State = {
   },
   toAmino(message: State): StateAmino {
     const obj: any = {};
-    obj.base_gas_price = message.baseGasPrice;
-    obj.learning_rate = message.learningRate;
+    obj.base_gas_price = message.baseGasPrice === "" ? undefined : message.baseGasPrice;
+    obj.learning_rate = message.learningRate === "" ? undefined : message.learningRate;
     if (message.window) {
       obj.window = message.window.map((e) => e.toString());
     } else {
-      obj.window = [];
+      obj.window = message.window;
     }
-    obj.index = message.index ? message.index.toString() : undefined;
+    obj.index = message.index !== BigInt(0) ? message.index?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: StateAminoMsg): State {

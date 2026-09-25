@@ -1,6 +1,7 @@
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "../../binary";
 import { isSet } from "../../helpers";
+import { JsonSafe } from "../../json-safe";
 export const protobufPackage = "tendermint.version";
 /**
  * App includes the protocol and software version for the application.
@@ -19,6 +20,9 @@ export interface AppProtoMsg {
  * App includes the protocol and software version for the application.
  * This information is included in ResponseInfo. The App.Protocol can be
  * updated in ResponseEndBlock.
+ * @name AppAmino
+ * @package tendermint.version
+ * @see proto type: tendermint.version.App
  */
 export interface AppAmino {
   protocol?: string;
@@ -45,6 +49,9 @@ export interface ConsensusProtoMsg {
  * Consensus captures the consensus rules for processing a block in the blockchain,
  * including all blockchain data structures and the rules of the application's
  * state transition machine.
+ * @name ConsensusAmino
+ * @package tendermint.version
+ * @see proto type: tendermint.version.Consensus
  */
 export interface ConsensusAmino {
   block?: string;
@@ -97,7 +104,7 @@ export const App = {
     if (isSet(object.software)) obj.software = String(object.software);
     return obj;
   },
-  toJSON(message: App): unknown {
+  toJSON(message: App): JsonSafe<App> {
     const obj: any = {};
     message.protocol !== undefined && (obj.protocol = (message.protocol || BigInt(0)).toString());
     message.software !== undefined && (obj.software = message.software);
@@ -123,8 +130,8 @@ export const App = {
   },
   toAmino(message: App): AppAmino {
     const obj: any = {};
-    obj.protocol = message.protocol ? message.protocol.toString() : undefined;
-    obj.software = message.software;
+    obj.protocol = message.protocol !== BigInt(0) ? message.protocol?.toString() : undefined;
+    obj.software = message.software === "" ? undefined : message.software;
     return obj;
   },
   fromAminoMsg(object: AppAminoMsg): App {
@@ -186,7 +193,7 @@ export const Consensus = {
     if (isSet(object.app)) obj.app = BigInt(object.app.toString());
     return obj;
   },
-  toJSON(message: Consensus): unknown {
+  toJSON(message: Consensus): JsonSafe<Consensus> {
     const obj: any = {};
     message.block !== undefined && (obj.block = (message.block || BigInt(0)).toString());
     message.app !== undefined && (obj.app = (message.app || BigInt(0)).toString());
@@ -214,8 +221,8 @@ export const Consensus = {
   },
   toAmino(message: Consensus): ConsensusAmino {
     const obj: any = {};
-    obj.block = message.block ? message.block.toString() : undefined;
-    obj.app = message.app ? message.app.toString() : undefined;
+    obj.block = message.block !== BigInt(0) ? message.block?.toString() : undefined;
+    obj.app = message.app !== BigInt(0) ? message.app?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: ConsensusAminoMsg): Consensus {

@@ -1,6 +1,7 @@
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "../../../../binary";
 import { isSet } from "../../../../helpers";
+import { JsonSafe } from "../../../../json-safe";
 export const protobufPackage = "atomone.gov.module.v1";
 /** Module is the config object of the gov module. */
 export interface Module {
@@ -19,7 +20,12 @@ export interface ModuleProtoMsg {
   typeUrl: "/atomone.gov.module.v1.Module";
   value: Uint8Array;
 }
-/** Module is the config object of the gov module. */
+/**
+ * Module is the config object of the gov module.
+ * @name ModuleAmino
+ * @package atomone.gov.module.v1
+ * @see proto type: atomone.gov.module.v1.Module
+ */
 export interface ModuleAmino {
   /**
    * max_metadata_len defines the maximum proposal metadata length.
@@ -79,7 +85,7 @@ export const Module = {
     if (isSet(object.authority)) obj.authority = String(object.authority);
     return obj;
   },
-  toJSON(message: Module): unknown {
+  toJSON(message: Module): JsonSafe<Module> {
     const obj: any = {};
     message.maxMetadataLen !== undefined &&
       (obj.maxMetadataLen = (message.maxMetadataLen || BigInt(0)).toString());
@@ -106,8 +112,9 @@ export const Module = {
   },
   toAmino(message: Module): ModuleAmino {
     const obj: any = {};
-    obj.max_metadata_len = message.maxMetadataLen ? message.maxMetadataLen.toString() : undefined;
-    obj.authority = message.authority;
+    obj.max_metadata_len =
+      message.maxMetadataLen !== BigInt(0) ? message.maxMetadataLen?.toString() : undefined;
+    obj.authority = message.authority === "" ? undefined : message.authority;
     return obj;
   },
   fromAminoMsg(object: ModuleAminoMsg): Module {

@@ -19,6 +19,7 @@ import { MerklePath, MerklePathAmino } from "../../commitment/v2/commitment";
 import { Any, AnyAmino } from "../../../../google/protobuf/any";
 import { BinaryReader, BinaryWriter } from "../../../../binary";
 import { isSet, bytesFromBase64, base64FromBytes } from "../../../../helpers";
+import { JsonSafe } from "../../../../json-safe";
 import { TxRpc } from "../../../../types";
 export const protobufPackage = "ibc.core.client.v1";
 /**
@@ -36,9 +37,14 @@ export interface QueryClientStateRequestProtoMsg {
 /**
  * QueryClientStateRequest is the request type for the Query/ClientState RPC
  * method
+ * @name QueryClientStateRequestAmino
+ * @package ibc.core.client.v1
+ * @see proto type: ibc.core.client.v1.QueryClientStateRequest
  */
 export interface QueryClientStateRequestAmino {
-  /** client state unique identifier */
+  /**
+   * client state unique identifier
+   */
   client_id?: string;
 }
 export interface QueryClientStateRequestAminoMsg {
@@ -66,13 +72,22 @@ export interface QueryClientStateResponseProtoMsg {
  * QueryClientStateResponse is the response type for the Query/ClientState RPC
  * method. Besides the client state, it includes a proof and the height from
  * which the proof was retrieved.
+ * @name QueryClientStateResponseAmino
+ * @package ibc.core.client.v1
+ * @see proto type: ibc.core.client.v1.QueryClientStateResponse
  */
 export interface QueryClientStateResponseAmino {
-  /** client state associated with the request identifier */
+  /**
+   * client state associated with the request identifier
+   */
   client_state?: AnyAmino | undefined;
-  /** merkle proof of existence */
+  /**
+   * merkle proof of existence
+   */
   proof?: string;
-  /** height at which the proof was retrieved */
+  /**
+   * height at which the proof was retrieved
+   */
   proof_height?: HeightAmino | undefined;
 }
 export interface QueryClientStateResponseAminoMsg {
@@ -94,9 +109,14 @@ export interface QueryClientStatesRequestProtoMsg {
 /**
  * QueryClientStatesRequest is the request type for the Query/ClientStates RPC
  * method
+ * @name QueryClientStatesRequestAmino
+ * @package ibc.core.client.v1
+ * @see proto type: ibc.core.client.v1.QueryClientStatesRequest
  */
 export interface QueryClientStatesRequestAmino {
-  /** pagination request */
+  /**
+   * pagination request
+   */
   pagination?: PageRequestAmino | undefined;
 }
 export interface QueryClientStatesRequestAminoMsg {
@@ -120,11 +140,18 @@ export interface QueryClientStatesResponseProtoMsg {
 /**
  * QueryClientStatesResponse is the response type for the Query/ClientStates RPC
  * method.
+ * @name QueryClientStatesResponseAmino
+ * @package ibc.core.client.v1
+ * @see proto type: ibc.core.client.v1.QueryClientStatesResponse
  */
 export interface QueryClientStatesResponseAmino {
-  /** list of stored ClientStates of the chain. */
+  /**
+   * list of stored ClientStates of the chain.
+   */
   client_states?: IdentifiedClientStateAmino[];
-  /** pagination response */
+  /**
+   * pagination response
+   */
   pagination?: PageResponseAmino | undefined;
 }
 export interface QueryClientStatesResponseAminoMsg {
@@ -157,13 +184,22 @@ export interface QueryConsensusStateRequestProtoMsg {
  * QueryConsensusStateRequest is the request type for the Query/ConsensusState
  * RPC method. Besides the consensus state, it includes a proof and the height
  * from which the proof was retrieved.
+ * @name QueryConsensusStateRequestAmino
+ * @package ibc.core.client.v1
+ * @see proto type: ibc.core.client.v1.QueryConsensusStateRequest
  */
 export interface QueryConsensusStateRequestAmino {
-  /** client identifier */
+  /**
+   * client identifier
+   */
   client_id?: string;
-  /** consensus state revision number */
+  /**
+   * consensus state revision number
+   */
   revision_number?: string;
-  /** consensus state revision height */
+  /**
+   * consensus state revision height
+   */
   revision_height?: string;
   /**
    * latest_height overrides the height field and queries the latest stored
@@ -194,13 +230,22 @@ export interface QueryConsensusStateResponseProtoMsg {
 /**
  * QueryConsensusStateResponse is the response type for the Query/ConsensusState
  * RPC method
+ * @name QueryConsensusStateResponseAmino
+ * @package ibc.core.client.v1
+ * @see proto type: ibc.core.client.v1.QueryConsensusStateResponse
  */
 export interface QueryConsensusStateResponseAmino {
-  /** consensus state associated with the client identifier at the given height */
+  /**
+   * consensus state associated with the client identifier at the given height
+   */
   consensus_state?: AnyAmino | undefined;
-  /** merkle proof of existence */
+  /**
+   * merkle proof of existence
+   */
   proof?: string;
-  /** height at which the proof was retrieved */
+  /**
+   * height at which the proof was retrieved
+   */
   proof_height?: HeightAmino | undefined;
 }
 export interface QueryConsensusStateResponseAminoMsg {
@@ -224,11 +269,18 @@ export interface QueryConsensusStatesRequestProtoMsg {
 /**
  * QueryConsensusStatesRequest is the request type for the Query/ConsensusStates
  * RPC method.
+ * @name QueryConsensusStatesRequestAmino
+ * @package ibc.core.client.v1
+ * @see proto type: ibc.core.client.v1.QueryConsensusStatesRequest
  */
 export interface QueryConsensusStatesRequestAmino {
-  /** client identifier */
+  /**
+   * client identifier
+   */
   client_id?: string;
-  /** pagination request */
+  /**
+   * pagination request
+   */
   pagination?: PageRequestAmino | undefined;
 }
 export interface QueryConsensusStatesRequestAminoMsg {
@@ -252,11 +304,18 @@ export interface QueryConsensusStatesResponseProtoMsg {
 /**
  * QueryConsensusStatesResponse is the response type for the
  * Query/ConsensusStates RPC method
+ * @name QueryConsensusStatesResponseAmino
+ * @package ibc.core.client.v1
+ * @see proto type: ibc.core.client.v1.QueryConsensusStatesResponse
  */
 export interface QueryConsensusStatesResponseAmino {
-  /** consensus states associated with the identifier */
+  /**
+   * consensus states associated with the identifier
+   */
   consensus_states?: ConsensusStateWithHeightAmino[];
-  /** pagination response */
+  /**
+   * pagination response
+   */
   pagination?: PageResponseAmino | undefined;
 }
 export interface QueryConsensusStatesResponseAminoMsg {
@@ -280,11 +339,18 @@ export interface QueryConsensusStateHeightsRequestProtoMsg {
 /**
  * QueryConsensusStateHeightsRequest is the request type for Query/ConsensusStateHeights
  * RPC method.
+ * @name QueryConsensusStateHeightsRequestAmino
+ * @package ibc.core.client.v1
+ * @see proto type: ibc.core.client.v1.QueryConsensusStateHeightsRequest
  */
 export interface QueryConsensusStateHeightsRequestAmino {
-  /** client identifier */
+  /**
+   * client identifier
+   */
   client_id?: string;
-  /** pagination request */
+  /**
+   * pagination request
+   */
   pagination?: PageRequestAmino | undefined;
 }
 export interface QueryConsensusStateHeightsRequestAminoMsg {
@@ -308,11 +374,18 @@ export interface QueryConsensusStateHeightsResponseProtoMsg {
 /**
  * QueryConsensusStateHeightsResponse is the response type for the
  * Query/ConsensusStateHeights RPC method
+ * @name QueryConsensusStateHeightsResponseAmino
+ * @package ibc.core.client.v1
+ * @see proto type: ibc.core.client.v1.QueryConsensusStateHeightsResponse
  */
 export interface QueryConsensusStateHeightsResponseAmino {
-  /** consensus state heights */
+  /**
+   * consensus state heights
+   */
   consensus_state_heights?: HeightAmino[];
-  /** pagination response */
+  /**
+   * pagination response
+   */
   pagination?: PageResponseAmino | undefined;
 }
 export interface QueryConsensusStateHeightsResponseAminoMsg {
@@ -334,9 +407,14 @@ export interface QueryClientStatusRequestProtoMsg {
 /**
  * QueryClientStatusRequest is the request type for the Query/ClientStatus RPC
  * method
+ * @name QueryClientStatusRequestAmino
+ * @package ibc.core.client.v1
+ * @see proto type: ibc.core.client.v1.QueryClientStatusRequest
  */
 export interface QueryClientStatusRequestAmino {
-  /** client unique identifier */
+  /**
+   * client unique identifier
+   */
   client_id?: string;
 }
 export interface QueryClientStatusRequestAminoMsg {
@@ -357,6 +435,9 @@ export interface QueryClientStatusResponseProtoMsg {
 /**
  * QueryClientStatusResponse is the response type for the Query/ClientStatus RPC
  * method. It returns the current status of the IBC client.
+ * @name QueryClientStatusResponseAmino
+ * @package ibc.core.client.v1
+ * @see proto type: ibc.core.client.v1.QueryClientStatusResponse
  */
 export interface QueryClientStatusResponseAmino {
   status?: string;
@@ -377,6 +458,9 @@ export interface QueryClientParamsRequestProtoMsg {
 /**
  * QueryClientParamsRequest is the request type for the Query/ClientParams RPC
  * method.
+ * @name QueryClientParamsRequestAmino
+ * @package ibc.core.client.v1
+ * @see proto type: ibc.core.client.v1.QueryClientParamsRequest
  */
 export interface QueryClientParamsRequestAmino {}
 export interface QueryClientParamsRequestAminoMsg {
@@ -398,9 +482,14 @@ export interface QueryClientParamsResponseProtoMsg {
 /**
  * QueryClientParamsResponse is the response type for the Query/ClientParams RPC
  * method.
+ * @name QueryClientParamsResponseAmino
+ * @package ibc.core.client.v1
+ * @see proto type: ibc.core.client.v1.QueryClientParamsResponse
  */
 export interface QueryClientParamsResponseAmino {
-  /** params defines the parameters of the module. */
+  /**
+   * params defines the parameters of the module.
+   */
   params?: ParamsAmino | undefined;
 }
 export interface QueryClientParamsResponseAminoMsg {
@@ -422,9 +511,14 @@ export interface QueryClientCreatorRequestProtoMsg {
 /**
  * QueryClientCreatorRequest is the request type for the Query/ClientCreator RPC
  * method.
+ * @name QueryClientCreatorRequestAmino
+ * @package ibc.core.client.v1
+ * @see proto type: ibc.core.client.v1.QueryClientCreatorRequest
  */
 export interface QueryClientCreatorRequestAmino {
-  /** client unique identifier */
+  /**
+   * client unique identifier
+   */
   client_id?: string;
 }
 export interface QueryClientCreatorRequestAminoMsg {
@@ -446,9 +540,14 @@ export interface QueryClientCreatorResponseProtoMsg {
 /**
  * QueryClientCreatorResponse is the response type for the Query/ClientCreator RPC
  * method.
+ * @name QueryClientCreatorResponseAmino
+ * @package ibc.core.client.v1
+ * @see proto type: ibc.core.client.v1.QueryClientCreatorResponse
  */
 export interface QueryClientCreatorResponseAmino {
-  /** creator of the client */
+  /**
+   * creator of the client
+   */
   creator?: string;
 }
 export interface QueryClientCreatorResponseAminoMsg {
@@ -467,6 +566,9 @@ export interface QueryUpgradedClientStateRequestProtoMsg {
 /**
  * QueryUpgradedClientStateRequest is the request type for the
  * Query/UpgradedClientState RPC method
+ * @name QueryUpgradedClientStateRequestAmino
+ * @package ibc.core.client.v1
+ * @see proto type: ibc.core.client.v1.QueryUpgradedClientStateRequest
  */
 export interface QueryUpgradedClientStateRequestAmino {}
 export interface QueryUpgradedClientStateRequestAminoMsg {
@@ -488,9 +590,14 @@ export interface QueryUpgradedClientStateResponseProtoMsg {
 /**
  * QueryUpgradedClientStateResponse is the response type for the
  * Query/UpgradedClientState RPC method.
+ * @name QueryUpgradedClientStateResponseAmino
+ * @package ibc.core.client.v1
+ * @see proto type: ibc.core.client.v1.QueryUpgradedClientStateResponse
  */
 export interface QueryUpgradedClientStateResponseAmino {
-  /** client state associated with the request identifier */
+  /**
+   * client state associated with the request identifier
+   */
   upgraded_client_state?: AnyAmino | undefined;
 }
 export interface QueryUpgradedClientStateResponseAminoMsg {
@@ -509,6 +616,9 @@ export interface QueryUpgradedConsensusStateRequestProtoMsg {
 /**
  * QueryUpgradedConsensusStateRequest is the request type for the
  * Query/UpgradedConsensusState RPC method
+ * @name QueryUpgradedConsensusStateRequestAmino
+ * @package ibc.core.client.v1
+ * @see proto type: ibc.core.client.v1.QueryUpgradedConsensusStateRequest
  */
 export interface QueryUpgradedConsensusStateRequestAmino {}
 export interface QueryUpgradedConsensusStateRequestAminoMsg {
@@ -530,9 +640,14 @@ export interface QueryUpgradedConsensusStateResponseProtoMsg {
 /**
  * QueryUpgradedConsensusStateResponse is the response type for the
  * Query/UpgradedConsensusState RPC method.
+ * @name QueryUpgradedConsensusStateResponseAmino
+ * @package ibc.core.client.v1
+ * @see proto type: ibc.core.client.v1.QueryUpgradedConsensusStateResponse
  */
 export interface QueryUpgradedConsensusStateResponseAmino {
-  /** Consensus state associated with the request identifier */
+  /**
+   * Consensus state associated with the request identifier
+   */
   upgraded_consensus_state?: AnyAmino | undefined;
 }
 export interface QueryUpgradedConsensusStateResponseAminoMsg {
@@ -560,21 +675,40 @@ export interface QueryVerifyMembershipRequestProtoMsg {
   typeUrl: "/ibc.core.client.v1.QueryVerifyMembershipRequest";
   value: Uint8Array;
 }
-/** QueryVerifyMembershipRequest is the request type for the Query/VerifyMembership RPC method */
+/**
+ * QueryVerifyMembershipRequest is the request type for the Query/VerifyMembership RPC method
+ * @name QueryVerifyMembershipRequestAmino
+ * @package ibc.core.client.v1
+ * @see proto type: ibc.core.client.v1.QueryVerifyMembershipRequest
+ */
 export interface QueryVerifyMembershipRequestAmino {
-  /** client unique identifier. */
+  /**
+   * client unique identifier.
+   */
   client_id?: string;
-  /** the proof to be verified by the client. */
+  /**
+   * the proof to be verified by the client.
+   */
   proof?: string;
-  /** the height of the commitment root at which the proof is verified. */
+  /**
+   * the height of the commitment root at which the proof is verified.
+   */
   proof_height?: HeightAmino | undefined;
-  /** the value which is proven. */
+  /**
+   * the value which is proven.
+   */
   value?: string;
-  /** optional time delay */
+  /**
+   * optional time delay
+   */
   time_delay?: string;
-  /** optional block delay */
+  /**
+   * optional block delay
+   */
   block_delay?: string;
-  /** the commitment key path. */
+  /**
+   * the commitment key path.
+   */
   merkle_path?: MerklePathAmino | undefined;
 }
 export interface QueryVerifyMembershipRequestAminoMsg {
@@ -590,9 +724,16 @@ export interface QueryVerifyMembershipResponseProtoMsg {
   typeUrl: "/ibc.core.client.v1.QueryVerifyMembershipResponse";
   value: Uint8Array;
 }
-/** QueryVerifyMembershipResponse is the response type for the Query/VerifyMembership RPC method */
+/**
+ * QueryVerifyMembershipResponse is the response type for the Query/VerifyMembership RPC method
+ * @name QueryVerifyMembershipResponseAmino
+ * @package ibc.core.client.v1
+ * @see proto type: ibc.core.client.v1.QueryVerifyMembershipResponse
+ */
 export interface QueryVerifyMembershipResponseAmino {
-  /** boolean indicating success or failure of proof verification. */
+  /**
+   * boolean indicating success or failure of proof verification.
+   */
   success?: boolean;
 }
 export interface QueryVerifyMembershipResponseAminoMsg {
@@ -634,7 +775,7 @@ export const QueryClientStateRequest = {
     if (isSet(object.clientId)) obj.clientId = String(object.clientId);
     return obj;
   },
-  toJSON(message: QueryClientStateRequest): unknown {
+  toJSON(message: QueryClientStateRequest): JsonSafe<QueryClientStateRequest> {
     const obj: any = {};
     message.clientId !== undefined && (obj.clientId = message.clientId);
     return obj;
@@ -653,7 +794,7 @@ export const QueryClientStateRequest = {
   },
   toAmino(message: QueryClientStateRequest): QueryClientStateRequestAmino {
     const obj: any = {};
-    obj.client_id = message.clientId;
+    obj.client_id = message.clientId === "" ? undefined : message.clientId;
     return obj;
   },
   fromAminoMsg(object: QueryClientStateRequestAminoMsg): QueryClientStateRequest {
@@ -729,7 +870,7 @@ export const QueryClientStateResponse = {
     if (isSet(object.proofHeight)) obj.proofHeight = Height.fromJSON(object.proofHeight);
     return obj;
   },
-  toJSON(message: QueryClientStateResponse): unknown {
+  toJSON(message: QueryClientStateResponse): JsonSafe<QueryClientStateResponse> {
     const obj: any = {};
     message.clientState !== undefined &&
       (obj.clientState = message.clientState ? Any.toJSON(message.clientState) : undefined);
@@ -827,7 +968,7 @@ export const QueryClientStatesRequest = {
     if (isSet(object.pagination)) obj.pagination = PageRequest.fromJSON(object.pagination);
     return obj;
   },
-  toJSON(message: QueryClientStatesRequest): unknown {
+  toJSON(message: QueryClientStatesRequest): JsonSafe<QueryClientStatesRequest> {
     const obj: any = {};
     message.pagination !== undefined &&
       (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
@@ -918,7 +1059,7 @@ export const QueryClientStatesResponse = {
     if (isSet(object.pagination)) obj.pagination = PageResponse.fromJSON(object.pagination);
     return obj;
   },
-  toJSON(message: QueryClientStatesResponse): unknown {
+  toJSON(message: QueryClientStatesResponse): JsonSafe<QueryClientStatesResponse> {
     const obj: any = {};
     if (message.clientStates) {
       obj.clientStates = message.clientStates.map((e) => (e ? IdentifiedClientState.toJSON(e) : undefined));
@@ -950,7 +1091,7 @@ export const QueryClientStatesResponse = {
     if (message.clientStates) {
       obj.client_states = message.clientStates.map((e) => (e ? IdentifiedClientState.toAmino(e) : undefined));
     } else {
-      obj.client_states = [];
+      obj.client_states = message.clientStates;
     }
     obj.pagination = message.pagination ? PageResponse.toAmino(message.pagination) : undefined;
     return obj;
@@ -1036,7 +1177,7 @@ export const QueryConsensusStateRequest = {
     if (isSet(object.latestHeight)) obj.latestHeight = Boolean(object.latestHeight);
     return obj;
   },
-  toJSON(message: QueryConsensusStateRequest): unknown {
+  toJSON(message: QueryConsensusStateRequest): JsonSafe<QueryConsensusStateRequest> {
     const obj: any = {};
     message.clientId !== undefined && (obj.clientId = message.clientId);
     message.revisionNumber !== undefined &&
@@ -1076,10 +1217,12 @@ export const QueryConsensusStateRequest = {
   },
   toAmino(message: QueryConsensusStateRequest): QueryConsensusStateRequestAmino {
     const obj: any = {};
-    obj.client_id = message.clientId;
-    obj.revision_number = message.revisionNumber ? message.revisionNumber.toString() : undefined;
-    obj.revision_height = message.revisionHeight ? message.revisionHeight.toString() : undefined;
-    obj.latest_height = message.latestHeight;
+    obj.client_id = message.clientId === "" ? undefined : message.clientId;
+    obj.revision_number =
+      message.revisionNumber !== BigInt(0) ? message.revisionNumber?.toString() : undefined;
+    obj.revision_height =
+      message.revisionHeight !== BigInt(0) ? message.revisionHeight?.toString() : undefined;
+    obj.latest_height = message.latestHeight === false ? undefined : message.latestHeight;
     return obj;
   },
   fromAminoMsg(object: QueryConsensusStateRequestAminoMsg): QueryConsensusStateRequest {
@@ -1155,7 +1298,7 @@ export const QueryConsensusStateResponse = {
     if (isSet(object.proofHeight)) obj.proofHeight = Height.fromJSON(object.proofHeight);
     return obj;
   },
-  toJSON(message: QueryConsensusStateResponse): unknown {
+  toJSON(message: QueryConsensusStateResponse): JsonSafe<QueryConsensusStateResponse> {
     const obj: any = {};
     message.consensusState !== undefined &&
       (obj.consensusState = message.consensusState ? Any.toJSON(message.consensusState) : undefined);
@@ -1261,7 +1404,7 @@ export const QueryConsensusStatesRequest = {
     if (isSet(object.pagination)) obj.pagination = PageRequest.fromJSON(object.pagination);
     return obj;
   },
-  toJSON(message: QueryConsensusStatesRequest): unknown {
+  toJSON(message: QueryConsensusStatesRequest): JsonSafe<QueryConsensusStatesRequest> {
     const obj: any = {};
     message.clientId !== undefined && (obj.clientId = message.clientId);
     message.pagination !== undefined &&
@@ -1288,7 +1431,7 @@ export const QueryConsensusStatesRequest = {
   },
   toAmino(message: QueryConsensusStatesRequest): QueryConsensusStatesRequestAmino {
     const obj: any = {};
-    obj.client_id = message.clientId;
+    obj.client_id = message.clientId === "" ? undefined : message.clientId;
     obj.pagination = message.pagination ? PageRequest.toAmino(message.pagination) : undefined;
     return obj;
   },
@@ -1358,7 +1501,7 @@ export const QueryConsensusStatesResponse = {
     if (isSet(object.pagination)) obj.pagination = PageResponse.fromJSON(object.pagination);
     return obj;
   },
-  toJSON(message: QueryConsensusStatesResponse): unknown {
+  toJSON(message: QueryConsensusStatesResponse): JsonSafe<QueryConsensusStatesResponse> {
     const obj: any = {};
     if (message.consensusStates) {
       obj.consensusStates = message.consensusStates.map((e) =>
@@ -1396,7 +1539,7 @@ export const QueryConsensusStatesResponse = {
         e ? ConsensusStateWithHeight.toAmino(e) : undefined,
       );
     } else {
-      obj.consensus_states = [];
+      obj.consensus_states = message.consensusStates;
     }
     obj.pagination = message.pagination ? PageResponse.toAmino(message.pagination) : undefined;
     return obj;
@@ -1469,7 +1612,7 @@ export const QueryConsensusStateHeightsRequest = {
     if (isSet(object.pagination)) obj.pagination = PageRequest.fromJSON(object.pagination);
     return obj;
   },
-  toJSON(message: QueryConsensusStateHeightsRequest): unknown {
+  toJSON(message: QueryConsensusStateHeightsRequest): JsonSafe<QueryConsensusStateHeightsRequest> {
     const obj: any = {};
     message.clientId !== undefined && (obj.clientId = message.clientId);
     message.pagination !== undefined &&
@@ -1496,7 +1639,7 @@ export const QueryConsensusStateHeightsRequest = {
   },
   toAmino(message: QueryConsensusStateHeightsRequest): QueryConsensusStateHeightsRequestAmino {
     const obj: any = {};
-    obj.client_id = message.clientId;
+    obj.client_id = message.clientId === "" ? undefined : message.clientId;
     obj.pagination = message.pagination ? PageRequest.toAmino(message.pagination) : undefined;
     return obj;
   },
@@ -1569,7 +1712,7 @@ export const QueryConsensusStateHeightsResponse = {
     if (isSet(object.pagination)) obj.pagination = PageResponse.fromJSON(object.pagination);
     return obj;
   },
-  toJSON(message: QueryConsensusStateHeightsResponse): unknown {
+  toJSON(message: QueryConsensusStateHeightsResponse): JsonSafe<QueryConsensusStateHeightsResponse> {
     const obj: any = {};
     if (message.consensusStateHeights) {
       obj.consensusStateHeights = message.consensusStateHeights.map((e) =>
@@ -1605,7 +1748,7 @@ export const QueryConsensusStateHeightsResponse = {
         e ? Height.toAmino(e) : undefined,
       );
     } else {
-      obj.consensus_state_heights = [];
+      obj.consensus_state_heights = message.consensusStateHeights;
     }
     obj.pagination = message.pagination ? PageResponse.toAmino(message.pagination) : undefined;
     return obj;
@@ -1667,7 +1810,7 @@ export const QueryClientStatusRequest = {
     if (isSet(object.clientId)) obj.clientId = String(object.clientId);
     return obj;
   },
-  toJSON(message: QueryClientStatusRequest): unknown {
+  toJSON(message: QueryClientStatusRequest): JsonSafe<QueryClientStatusRequest> {
     const obj: any = {};
     message.clientId !== undefined && (obj.clientId = message.clientId);
     return obj;
@@ -1686,7 +1829,7 @@ export const QueryClientStatusRequest = {
   },
   toAmino(message: QueryClientStatusRequest): QueryClientStatusRequestAmino {
     const obj: any = {};
-    obj.client_id = message.clientId;
+    obj.client_id = message.clientId === "" ? undefined : message.clientId;
     return obj;
   },
   fromAminoMsg(object: QueryClientStatusRequestAminoMsg): QueryClientStatusRequest {
@@ -1746,7 +1889,7 @@ export const QueryClientStatusResponse = {
     if (isSet(object.status)) obj.status = String(object.status);
     return obj;
   },
-  toJSON(message: QueryClientStatusResponse): unknown {
+  toJSON(message: QueryClientStatusResponse): JsonSafe<QueryClientStatusResponse> {
     const obj: any = {};
     message.status !== undefined && (obj.status = message.status);
     return obj;
@@ -1765,7 +1908,7 @@ export const QueryClientStatusResponse = {
   },
   toAmino(message: QueryClientStatusResponse): QueryClientStatusResponseAmino {
     const obj: any = {};
-    obj.status = message.status;
+    obj.status = message.status === "" ? undefined : message.status;
     return obj;
   },
   fromAminoMsg(object: QueryClientStatusResponseAminoMsg): QueryClientStatusResponse {
@@ -1816,7 +1959,7 @@ export const QueryClientParamsRequest = {
     const obj = createBaseQueryClientParamsRequest();
     return obj;
   },
-  toJSON(_: QueryClientParamsRequest): unknown {
+  toJSON(_: QueryClientParamsRequest): JsonSafe<QueryClientParamsRequest> {
     const obj: any = {};
     return obj;
   },
@@ -1889,7 +2032,7 @@ export const QueryClientParamsResponse = {
     if (isSet(object.params)) obj.params = Params.fromJSON(object.params);
     return obj;
   },
-  toJSON(message: QueryClientParamsResponse): unknown {
+  toJSON(message: QueryClientParamsResponse): JsonSafe<QueryClientParamsResponse> {
     const obj: any = {};
     message.params !== undefined && (obj.params = message.params ? Params.toJSON(message.params) : undefined);
     return obj;
@@ -1970,7 +2113,7 @@ export const QueryClientCreatorRequest = {
     if (isSet(object.clientId)) obj.clientId = String(object.clientId);
     return obj;
   },
-  toJSON(message: QueryClientCreatorRequest): unknown {
+  toJSON(message: QueryClientCreatorRequest): JsonSafe<QueryClientCreatorRequest> {
     const obj: any = {};
     message.clientId !== undefined && (obj.clientId = message.clientId);
     return obj;
@@ -1989,7 +2132,7 @@ export const QueryClientCreatorRequest = {
   },
   toAmino(message: QueryClientCreatorRequest): QueryClientCreatorRequestAmino {
     const obj: any = {};
-    obj.client_id = message.clientId;
+    obj.client_id = message.clientId === "" ? undefined : message.clientId;
     return obj;
   },
   fromAminoMsg(object: QueryClientCreatorRequestAminoMsg): QueryClientCreatorRequest {
@@ -2049,7 +2192,7 @@ export const QueryClientCreatorResponse = {
     if (isSet(object.creator)) obj.creator = String(object.creator);
     return obj;
   },
-  toJSON(message: QueryClientCreatorResponse): unknown {
+  toJSON(message: QueryClientCreatorResponse): JsonSafe<QueryClientCreatorResponse> {
     const obj: any = {};
     message.creator !== undefined && (obj.creator = message.creator);
     return obj;
@@ -2068,7 +2211,7 @@ export const QueryClientCreatorResponse = {
   },
   toAmino(message: QueryClientCreatorResponse): QueryClientCreatorResponseAmino {
     const obj: any = {};
-    obj.creator = message.creator;
+    obj.creator = message.creator === "" ? undefined : message.creator;
     return obj;
   },
   fromAminoMsg(object: QueryClientCreatorResponseAminoMsg): QueryClientCreatorResponse {
@@ -2119,7 +2262,7 @@ export const QueryUpgradedClientStateRequest = {
     const obj = createBaseQueryUpgradedClientStateRequest();
     return obj;
   },
-  toJSON(_: QueryUpgradedClientStateRequest): unknown {
+  toJSON(_: QueryUpgradedClientStateRequest): JsonSafe<QueryUpgradedClientStateRequest> {
     const obj: any = {};
     return obj;
   },
@@ -2195,7 +2338,7 @@ export const QueryUpgradedClientStateResponse = {
     if (isSet(object.upgradedClientState)) obj.upgradedClientState = Any.fromJSON(object.upgradedClientState);
     return obj;
   },
-  toJSON(message: QueryUpgradedClientStateResponse): unknown {
+  toJSON(message: QueryUpgradedClientStateResponse): JsonSafe<QueryUpgradedClientStateResponse> {
     const obj: any = {};
     message.upgradedClientState !== undefined &&
       (obj.upgradedClientState = message.upgradedClientState
@@ -2272,7 +2415,7 @@ export const QueryUpgradedConsensusStateRequest = {
     const obj = createBaseQueryUpgradedConsensusStateRequest();
     return obj;
   },
-  toJSON(_: QueryUpgradedConsensusStateRequest): unknown {
+  toJSON(_: QueryUpgradedConsensusStateRequest): JsonSafe<QueryUpgradedConsensusStateRequest> {
     const obj: any = {};
     return obj;
   },
@@ -2349,7 +2492,7 @@ export const QueryUpgradedConsensusStateResponse = {
       obj.upgradedConsensusState = Any.fromJSON(object.upgradedConsensusState);
     return obj;
   },
-  toJSON(message: QueryUpgradedConsensusStateResponse): unknown {
+  toJSON(message: QueryUpgradedConsensusStateResponse): JsonSafe<QueryUpgradedConsensusStateResponse> {
     const obj: any = {};
     message.upgradedConsensusState !== undefined &&
       (obj.upgradedConsensusState = message.upgradedConsensusState
@@ -2483,7 +2626,7 @@ export const QueryVerifyMembershipRequest = {
     if (isSet(object.merklePath)) obj.merklePath = MerklePath.fromJSON(object.merklePath);
     return obj;
   },
-  toJSON(message: QueryVerifyMembershipRequest): unknown {
+  toJSON(message: QueryVerifyMembershipRequest): JsonSafe<QueryVerifyMembershipRequest> {
     const obj: any = {};
     message.clientId !== undefined && (obj.clientId = message.clientId);
     message.proof !== undefined &&
@@ -2544,12 +2687,12 @@ export const QueryVerifyMembershipRequest = {
   },
   toAmino(message: QueryVerifyMembershipRequest): QueryVerifyMembershipRequestAmino {
     const obj: any = {};
-    obj.client_id = message.clientId;
+    obj.client_id = message.clientId === "" ? undefined : message.clientId;
     obj.proof = message.proof ? base64FromBytes(message.proof) : undefined;
     obj.proof_height = message.proofHeight ? Height.toAmino(message.proofHeight) : {};
     obj.value = message.value ? base64FromBytes(message.value) : undefined;
-    obj.time_delay = message.timeDelay ? message.timeDelay.toString() : undefined;
-    obj.block_delay = message.blockDelay ? message.blockDelay.toString() : undefined;
+    obj.time_delay = message.timeDelay !== BigInt(0) ? message.timeDelay?.toString() : undefined;
+    obj.block_delay = message.blockDelay !== BigInt(0) ? message.blockDelay?.toString() : undefined;
     obj.merkle_path = message.merklePath ? MerklePath.toAmino(message.merklePath) : undefined;
     return obj;
   },
@@ -2610,7 +2753,7 @@ export const QueryVerifyMembershipResponse = {
     if (isSet(object.success)) obj.success = Boolean(object.success);
     return obj;
   },
-  toJSON(message: QueryVerifyMembershipResponse): unknown {
+  toJSON(message: QueryVerifyMembershipResponse): JsonSafe<QueryVerifyMembershipResponse> {
     const obj: any = {};
     message.success !== undefined && (obj.success = message.success);
     return obj;
@@ -2629,7 +2772,7 @@ export const QueryVerifyMembershipResponse = {
   },
   toAmino(message: QueryVerifyMembershipResponse): QueryVerifyMembershipResponseAmino {
     const obj: any = {};
-    obj.success = message.success;
+    obj.success = message.success === false ? undefined : message.success;
     return obj;
   },
   fromAminoMsg(object: QueryVerifyMembershipResponseAminoMsg): QueryVerifyMembershipResponse {

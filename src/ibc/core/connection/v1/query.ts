@@ -22,6 +22,7 @@ import {
 import { Any, AnyAmino } from "../../../../google/protobuf/any";
 import { BinaryReader, BinaryWriter } from "../../../../binary";
 import { isSet, bytesFromBase64, base64FromBytes } from "../../../../helpers";
+import { JsonSafe } from "../../../../json-safe";
 import { TxRpc } from "../../../../types";
 export const protobufPackage = "ibc.core.connection.v1";
 /**
@@ -39,9 +40,14 @@ export interface QueryConnectionRequestProtoMsg {
 /**
  * QueryConnectionRequest is the request type for the Query/Connection RPC
  * method
+ * @name QueryConnectionRequestAmino
+ * @package ibc.core.connection.v1
+ * @see proto type: ibc.core.connection.v1.QueryConnectionRequest
  */
 export interface QueryConnectionRequestAmino {
-  /** connection unique identifier */
+  /**
+   * connection unique identifier
+   */
   connection_id?: string;
 }
 export interface QueryConnectionRequestAminoMsg {
@@ -69,13 +75,22 @@ export interface QueryConnectionResponseProtoMsg {
  * QueryConnectionResponse is the response type for the Query/Connection RPC
  * method. Besides the connection end, it includes a proof and the height from
  * which the proof was retrieved.
+ * @name QueryConnectionResponseAmino
+ * @package ibc.core.connection.v1
+ * @see proto type: ibc.core.connection.v1.QueryConnectionResponse
  */
 export interface QueryConnectionResponseAmino {
-  /** connection associated with the request identifier */
+  /**
+   * connection associated with the request identifier
+   */
   connection?: ConnectionEndAmino | undefined;
-  /** merkle proof of existence */
+  /**
+   * merkle proof of existence
+   */
   proof?: string;
-  /** height at which the proof was retrieved */
+  /**
+   * height at which the proof was retrieved
+   */
   proof_height?: HeightAmino | undefined;
 }
 export interface QueryConnectionResponseAminoMsg {
@@ -96,6 +111,9 @@ export interface QueryConnectionsRequestProtoMsg {
 /**
  * QueryConnectionsRequest is the request type for the Query/Connections RPC
  * method
+ * @name QueryConnectionsRequestAmino
+ * @package ibc.core.connection.v1
+ * @see proto type: ibc.core.connection.v1.QueryConnectionsRequest
  */
 export interface QueryConnectionsRequestAmino {
   pagination?: PageRequestAmino | undefined;
@@ -123,13 +141,22 @@ export interface QueryConnectionsResponseProtoMsg {
 /**
  * QueryConnectionsResponse is the response type for the Query/Connections RPC
  * method.
+ * @name QueryConnectionsResponseAmino
+ * @package ibc.core.connection.v1
+ * @see proto type: ibc.core.connection.v1.QueryConnectionsResponse
  */
 export interface QueryConnectionsResponseAmino {
-  /** list of stored connections of the chain. */
+  /**
+   * list of stored connections of the chain.
+   */
   connections?: IdentifiedConnectionAmino[];
-  /** pagination response */
+  /**
+   * pagination response
+   */
   pagination?: PageResponseAmino | undefined;
-  /** query block height */
+  /**
+   * query block height
+   */
   height?: HeightAmino | undefined;
 }
 export interface QueryConnectionsResponseAminoMsg {
@@ -151,9 +178,14 @@ export interface QueryClientConnectionsRequestProtoMsg {
 /**
  * QueryClientConnectionsRequest is the request type for the
  * Query/ClientConnections RPC method
+ * @name QueryClientConnectionsRequestAmino
+ * @package ibc.core.connection.v1
+ * @see proto type: ibc.core.connection.v1.QueryClientConnectionsRequest
  */
 export interface QueryClientConnectionsRequestAmino {
-  /** client identifier associated with a connection */
+  /**
+   * client identifier associated with a connection
+   */
   client_id?: string;
 }
 export interface QueryClientConnectionsRequestAminoMsg {
@@ -179,13 +211,22 @@ export interface QueryClientConnectionsResponseProtoMsg {
 /**
  * QueryClientConnectionsResponse is the response type for the
  * Query/ClientConnections RPC method
+ * @name QueryClientConnectionsResponseAmino
+ * @package ibc.core.connection.v1
+ * @see proto type: ibc.core.connection.v1.QueryClientConnectionsResponse
  */
 export interface QueryClientConnectionsResponseAmino {
-  /** slice of all the connection paths associated with a client. */
+  /**
+   * slice of all the connection paths associated with a client.
+   */
   connection_paths?: string[];
-  /** merkle proof of existence */
+  /**
+   * merkle proof of existence
+   */
   proof?: string;
-  /** height at which the proof was generated */
+  /**
+   * height at which the proof was generated
+   */
   proof_height?: HeightAmino | undefined;
 }
 export interface QueryClientConnectionsResponseAminoMsg {
@@ -207,9 +248,14 @@ export interface QueryConnectionClientStateRequestProtoMsg {
 /**
  * QueryConnectionClientStateRequest is the request type for the
  * Query/ConnectionClientState RPC method
+ * @name QueryConnectionClientStateRequestAmino
+ * @package ibc.core.connection.v1
+ * @see proto type: ibc.core.connection.v1.QueryConnectionClientStateRequest
  */
 export interface QueryConnectionClientStateRequestAmino {
-  /** connection identifier */
+  /**
+   * connection identifier
+   */
   connection_id?: string;
 }
 export interface QueryConnectionClientStateRequestAminoMsg {
@@ -235,13 +281,22 @@ export interface QueryConnectionClientStateResponseProtoMsg {
 /**
  * QueryConnectionClientStateResponse is the response type for the
  * Query/ConnectionClientState RPC method
+ * @name QueryConnectionClientStateResponseAmino
+ * @package ibc.core.connection.v1
+ * @see proto type: ibc.core.connection.v1.QueryConnectionClientStateResponse
  */
 export interface QueryConnectionClientStateResponseAmino {
-  /** client state associated with the channel */
+  /**
+   * client state associated with the channel
+   */
   identified_client_state?: IdentifiedClientStateAmino | undefined;
-  /** merkle proof of existence */
+  /**
+   * merkle proof of existence
+   */
   proof?: string;
-  /** height at which the proof was retrieved */
+  /**
+   * height at which the proof was retrieved
+   */
   proof_height?: HeightAmino | undefined;
 }
 export interface QueryConnectionClientStateResponseAminoMsg {
@@ -265,9 +320,14 @@ export interface QueryConnectionConsensusStateRequestProtoMsg {
 /**
  * QueryConnectionConsensusStateRequest is the request type for the
  * Query/ConnectionConsensusState RPC method
+ * @name QueryConnectionConsensusStateRequestAmino
+ * @package ibc.core.connection.v1
+ * @see proto type: ibc.core.connection.v1.QueryConnectionConsensusStateRequest
  */
 export interface QueryConnectionConsensusStateRequestAmino {
-  /** connection identifier */
+  /**
+   * connection identifier
+   */
   connection_id?: string;
   revision_number?: string;
   revision_height?: string;
@@ -297,15 +357,26 @@ export interface QueryConnectionConsensusStateResponseProtoMsg {
 /**
  * QueryConnectionConsensusStateResponse is the response type for the
  * Query/ConnectionConsensusState RPC method
+ * @name QueryConnectionConsensusStateResponseAmino
+ * @package ibc.core.connection.v1
+ * @see proto type: ibc.core.connection.v1.QueryConnectionConsensusStateResponse
  */
 export interface QueryConnectionConsensusStateResponseAmino {
-  /** consensus state associated with the channel */
+  /**
+   * consensus state associated with the channel
+   */
   consensus_state?: AnyAmino | undefined;
-  /** client ID associated with the consensus state */
+  /**
+   * client ID associated with the consensus state
+   */
   client_id?: string;
-  /** merkle proof of existence */
+  /**
+   * merkle proof of existence
+   */
   proof?: string;
-  /** height at which the proof was retrieved */
+  /**
+   * height at which the proof was retrieved
+   */
   proof_height?: HeightAmino | undefined;
 }
 export interface QueryConnectionConsensusStateResponseAminoMsg {
@@ -318,7 +389,12 @@ export interface QueryConnectionParamsRequestProtoMsg {
   typeUrl: "/ibc.core.connection.v1.QueryConnectionParamsRequest";
   value: Uint8Array;
 }
-/** QueryConnectionParamsRequest is the request type for the Query/ConnectionParams RPC method. */
+/**
+ * QueryConnectionParamsRequest is the request type for the Query/ConnectionParams RPC method.
+ * @name QueryConnectionParamsRequestAmino
+ * @package ibc.core.connection.v1
+ * @see proto type: ibc.core.connection.v1.QueryConnectionParamsRequest
+ */
 export interface QueryConnectionParamsRequestAmino {}
 export interface QueryConnectionParamsRequestAminoMsg {
   type: "cosmos-sdk/QueryConnectionParamsRequest";
@@ -333,9 +409,16 @@ export interface QueryConnectionParamsResponseProtoMsg {
   typeUrl: "/ibc.core.connection.v1.QueryConnectionParamsResponse";
   value: Uint8Array;
 }
-/** QueryConnectionParamsResponse is the response type for the Query/ConnectionParams RPC method. */
+/**
+ * QueryConnectionParamsResponse is the response type for the Query/ConnectionParams RPC method.
+ * @name QueryConnectionParamsResponseAmino
+ * @package ibc.core.connection.v1
+ * @see proto type: ibc.core.connection.v1.QueryConnectionParamsResponse
+ */
 export interface QueryConnectionParamsResponseAmino {
-  /** params defines the parameters of the module. */
+  /**
+   * params defines the parameters of the module.
+   */
   params?: ParamsAmino | undefined;
 }
 export interface QueryConnectionParamsResponseAminoMsg {
@@ -377,7 +460,7 @@ export const QueryConnectionRequest = {
     if (isSet(object.connectionId)) obj.connectionId = String(object.connectionId);
     return obj;
   },
-  toJSON(message: QueryConnectionRequest): unknown {
+  toJSON(message: QueryConnectionRequest): JsonSafe<QueryConnectionRequest> {
     const obj: any = {};
     message.connectionId !== undefined && (obj.connectionId = message.connectionId);
     return obj;
@@ -396,7 +479,7 @@ export const QueryConnectionRequest = {
   },
   toAmino(message: QueryConnectionRequest): QueryConnectionRequestAmino {
     const obj: any = {};
-    obj.connection_id = message.connectionId;
+    obj.connection_id = message.connectionId === "" ? undefined : message.connectionId;
     return obj;
   },
   fromAminoMsg(object: QueryConnectionRequestAminoMsg): QueryConnectionRequest {
@@ -472,7 +555,7 @@ export const QueryConnectionResponse = {
     if (isSet(object.proofHeight)) obj.proofHeight = Height.fromJSON(object.proofHeight);
     return obj;
   },
-  toJSON(message: QueryConnectionResponse): unknown {
+  toJSON(message: QueryConnectionResponse): JsonSafe<QueryConnectionResponse> {
     const obj: any = {};
     message.connection !== undefined &&
       (obj.connection = message.connection ? ConnectionEnd.toJSON(message.connection) : undefined);
@@ -570,7 +653,7 @@ export const QueryConnectionsRequest = {
     if (isSet(object.pagination)) obj.pagination = PageRequest.fromJSON(object.pagination);
     return obj;
   },
-  toJSON(message: QueryConnectionsRequest): unknown {
+  toJSON(message: QueryConnectionsRequest): JsonSafe<QueryConnectionsRequest> {
     const obj: any = {};
     message.pagination !== undefined &&
       (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
@@ -669,7 +752,7 @@ export const QueryConnectionsResponse = {
     if (isSet(object.height)) obj.height = Height.fromJSON(object.height);
     return obj;
   },
-  toJSON(message: QueryConnectionsResponse): unknown {
+  toJSON(message: QueryConnectionsResponse): JsonSafe<QueryConnectionsResponse> {
     const obj: any = {};
     if (message.connections) {
       obj.connections = message.connections.map((e) => (e ? IdentifiedConnection.toJSON(e) : undefined));
@@ -708,7 +791,7 @@ export const QueryConnectionsResponse = {
     if (message.connections) {
       obj.connections = message.connections.map((e) => (e ? IdentifiedConnection.toAmino(e) : undefined));
     } else {
-      obj.connections = [];
+      obj.connections = message.connections;
     }
     obj.pagination = message.pagination ? PageResponse.toAmino(message.pagination) : undefined;
     obj.height = message.height ? Height.toAmino(message.height) : {};
@@ -771,7 +854,7 @@ export const QueryClientConnectionsRequest = {
     if (isSet(object.clientId)) obj.clientId = String(object.clientId);
     return obj;
   },
-  toJSON(message: QueryClientConnectionsRequest): unknown {
+  toJSON(message: QueryClientConnectionsRequest): JsonSafe<QueryClientConnectionsRequest> {
     const obj: any = {};
     message.clientId !== undefined && (obj.clientId = message.clientId);
     return obj;
@@ -790,7 +873,7 @@ export const QueryClientConnectionsRequest = {
   },
   toAmino(message: QueryClientConnectionsRequest): QueryClientConnectionsRequestAmino {
     const obj: any = {};
-    obj.client_id = message.clientId;
+    obj.client_id = message.clientId === "" ? undefined : message.clientId;
     return obj;
   },
   fromAminoMsg(object: QueryClientConnectionsRequestAminoMsg): QueryClientConnectionsRequest {
@@ -870,7 +953,7 @@ export const QueryClientConnectionsResponse = {
     if (isSet(object.proofHeight)) obj.proofHeight = Height.fromJSON(object.proofHeight);
     return obj;
   },
-  toJSON(message: QueryClientConnectionsResponse): unknown {
+  toJSON(message: QueryClientConnectionsResponse): JsonSafe<QueryClientConnectionsResponse> {
     const obj: any = {};
     if (message.connectionPaths) {
       obj.connectionPaths = message.connectionPaths.map((e) => e);
@@ -908,7 +991,7 @@ export const QueryClientConnectionsResponse = {
     if (message.connectionPaths) {
       obj.connection_paths = message.connectionPaths.map((e) => e);
     } else {
-      obj.connection_paths = [];
+      obj.connection_paths = message.connectionPaths;
     }
     obj.proof = message.proof ? base64FromBytes(message.proof) : undefined;
     obj.proof_height = message.proofHeight ? Height.toAmino(message.proofHeight) : {};
@@ -974,7 +1057,7 @@ export const QueryConnectionClientStateRequest = {
     if (isSet(object.connectionId)) obj.connectionId = String(object.connectionId);
     return obj;
   },
-  toJSON(message: QueryConnectionClientStateRequest): unknown {
+  toJSON(message: QueryConnectionClientStateRequest): JsonSafe<QueryConnectionClientStateRequest> {
     const obj: any = {};
     message.connectionId !== undefined && (obj.connectionId = message.connectionId);
     return obj;
@@ -993,7 +1076,7 @@ export const QueryConnectionClientStateRequest = {
   },
   toAmino(message: QueryConnectionClientStateRequest): QueryConnectionClientStateRequestAmino {
     const obj: any = {};
-    obj.connection_id = message.connectionId;
+    obj.connection_id = message.connectionId === "" ? undefined : message.connectionId;
     return obj;
   },
   fromAminoMsg(object: QueryConnectionClientStateRequestAminoMsg): QueryConnectionClientStateRequest {
@@ -1073,7 +1156,7 @@ export const QueryConnectionClientStateResponse = {
     if (isSet(object.proofHeight)) obj.proofHeight = Height.fromJSON(object.proofHeight);
     return obj;
   },
-  toJSON(message: QueryConnectionClientStateResponse): unknown {
+  toJSON(message: QueryConnectionClientStateResponse): JsonSafe<QueryConnectionClientStateResponse> {
     const obj: any = {};
     message.identifiedClientState !== undefined &&
       (obj.identifiedClientState = message.identifiedClientState
@@ -1194,7 +1277,7 @@ export const QueryConnectionConsensusStateRequest = {
     if (isSet(object.revisionHeight)) obj.revisionHeight = BigInt(object.revisionHeight.toString());
     return obj;
   },
-  toJSON(message: QueryConnectionConsensusStateRequest): unknown {
+  toJSON(message: QueryConnectionConsensusStateRequest): JsonSafe<QueryConnectionConsensusStateRequest> {
     const obj: any = {};
     message.connectionId !== undefined && (obj.connectionId = message.connectionId);
     message.revisionNumber !== undefined &&
@@ -1229,9 +1312,11 @@ export const QueryConnectionConsensusStateRequest = {
   },
   toAmino(message: QueryConnectionConsensusStateRequest): QueryConnectionConsensusStateRequestAmino {
     const obj: any = {};
-    obj.connection_id = message.connectionId;
-    obj.revision_number = message.revisionNumber ? message.revisionNumber.toString() : undefined;
-    obj.revision_height = message.revisionHeight ? message.revisionHeight.toString() : undefined;
+    obj.connection_id = message.connectionId === "" ? undefined : message.connectionId;
+    obj.revision_number =
+      message.revisionNumber !== BigInt(0) ? message.revisionNumber?.toString() : undefined;
+    obj.revision_height =
+      message.revisionHeight !== BigInt(0) ? message.revisionHeight?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: QueryConnectionConsensusStateRequestAminoMsg): QueryConnectionConsensusStateRequest {
@@ -1318,7 +1403,7 @@ export const QueryConnectionConsensusStateResponse = {
     if (isSet(object.proofHeight)) obj.proofHeight = Height.fromJSON(object.proofHeight);
     return obj;
   },
-  toJSON(message: QueryConnectionConsensusStateResponse): unknown {
+  toJSON(message: QueryConnectionConsensusStateResponse): JsonSafe<QueryConnectionConsensusStateResponse> {
     const obj: any = {};
     message.consensusState !== undefined &&
       (obj.consensusState = message.consensusState ? Any.toJSON(message.consensusState) : undefined);
@@ -1360,7 +1445,7 @@ export const QueryConnectionConsensusStateResponse = {
   toAmino(message: QueryConnectionConsensusStateResponse): QueryConnectionConsensusStateResponseAmino {
     const obj: any = {};
     obj.consensus_state = message.consensusState ? Any.toAmino(message.consensusState) : undefined;
-    obj.client_id = message.clientId;
+    obj.client_id = message.clientId === "" ? undefined : message.clientId;
     obj.proof = message.proof ? base64FromBytes(message.proof) : undefined;
     obj.proof_height = message.proofHeight ? Height.toAmino(message.proofHeight) : {};
     return obj;
@@ -1415,7 +1500,7 @@ export const QueryConnectionParamsRequest = {
     const obj = createBaseQueryConnectionParamsRequest();
     return obj;
   },
-  toJSON(_: QueryConnectionParamsRequest): unknown {
+  toJSON(_: QueryConnectionParamsRequest): JsonSafe<QueryConnectionParamsRequest> {
     const obj: any = {};
     return obj;
   },
@@ -1488,7 +1573,7 @@ export const QueryConnectionParamsResponse = {
     if (isSet(object.params)) obj.params = Params.fromJSON(object.params);
     return obj;
   },
-  toJSON(message: QueryConnectionParamsResponse): unknown {
+  toJSON(message: QueryConnectionParamsResponse): JsonSafe<QueryConnectionParamsResponse> {
     const obj: any = {};
     message.params !== undefined && (obj.params = message.params ? Params.toJSON(message.params) : undefined);
     return obj;

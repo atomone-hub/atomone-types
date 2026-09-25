@@ -13,6 +13,9 @@ FILES=(
   index.d.ts
   index.js
   index.js.map
+  json-safe.d.ts
+  json-safe.js
+  json-safe.js.map
   types.js
   types.d.ts
   types.js.map

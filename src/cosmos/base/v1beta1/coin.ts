@@ -1,6 +1,7 @@
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "../../../binary";
 import { isSet } from "../../../helpers";
+import { JsonSafe } from "../../../json-safe";
 export const protobufPackage = "cosmos.base.v1beta1";
 /**
  * Coin defines a token with a denomination and an amount.
@@ -21,6 +22,9 @@ export interface CoinProtoMsg {
  *
  * NOTE: The amount field is an Int which implements the custom method
  * signatures required by gogoproto.
+ * @name CoinAmino
+ * @package cosmos.base.v1beta1
+ * @see proto type: cosmos.base.v1beta1.Coin
  */
 export interface CoinAmino {
   denom?: string;
@@ -49,6 +53,9 @@ export interface DecCoinProtoMsg {
  *
  * NOTE: The amount field is an Dec which implements the custom method
  * signatures required by gogoproto.
+ * @name DecCoinAmino
+ * @package cosmos.base.v1beta1
+ * @see proto type: cosmos.base.v1beta1.DecCoin
  */
 export interface DecCoinAmino {
   denom?: string;
@@ -72,6 +79,9 @@ export interface IntProtoProtoMsg {
 /**
  * IntProto defines a Protobuf wrapper around an Int object.
  * Deprecated: Prefer to use math.Int directly. It supports binary Marshal and Unmarshal.
+ * @name IntProtoAmino
+ * @package cosmos.base.v1beta1
+ * @see proto type: cosmos.base.v1beta1.IntProto
  */
 export interface IntProtoAmino {
   int?: string;
@@ -94,6 +104,9 @@ export interface DecProtoProtoMsg {
 /**
  * DecProto defines a Protobuf wrapper around a Dec object.
  * Deprecated: Prefer to use math.LegacyDec directly. It supports binary Marshal and Unmarshal.
+ * @name DecProtoAmino
+ * @package cosmos.base.v1beta1
+ * @see proto type: cosmos.base.v1beta1.DecProto
  */
 export interface DecProtoAmino {
   dec?: string;
@@ -145,7 +158,7 @@ export const Coin = {
     if (isSet(object.amount)) obj.amount = String(object.amount);
     return obj;
   },
-  toJSON(message: Coin): unknown {
+  toJSON(message: Coin): JsonSafe<Coin> {
     const obj: any = {};
     message.denom !== undefined && (obj.denom = message.denom);
     message.amount !== undefined && (obj.amount = message.amount);
@@ -169,7 +182,7 @@ export const Coin = {
   },
   toAmino(message: Coin): CoinAmino {
     const obj: any = {};
-    obj.denom = message.denom;
+    obj.denom = message.denom === "" ? undefined : message.denom;
     obj.amount = message.amount ?? "";
     return obj;
   },
@@ -238,7 +251,7 @@ export const DecCoin = {
     if (isSet(object.amount)) obj.amount = String(object.amount);
     return obj;
   },
-  toJSON(message: DecCoin): unknown {
+  toJSON(message: DecCoin): JsonSafe<DecCoin> {
     const obj: any = {};
     message.denom !== undefined && (obj.denom = message.denom);
     message.amount !== undefined && (obj.amount = message.amount);
@@ -262,8 +275,8 @@ export const DecCoin = {
   },
   toAmino(message: DecCoin): DecCoinAmino {
     const obj: any = {};
-    obj.denom = message.denom;
-    obj.amount = message.amount;
+    obj.denom = message.denom === "" ? undefined : message.denom;
+    obj.amount = message.amount === "" ? undefined : message.amount;
     return obj;
   },
   fromAminoMsg(object: DecCoinAminoMsg): DecCoin {
@@ -323,7 +336,7 @@ export const IntProto = {
     if (isSet(object.int)) obj.int = String(object.int);
     return obj;
   },
-  toJSON(message: IntProto): unknown {
+  toJSON(message: IntProto): JsonSafe<IntProto> {
     const obj: any = {};
     message.int !== undefined && (obj.int = message.int);
     return obj;
@@ -342,7 +355,7 @@ export const IntProto = {
   },
   toAmino(message: IntProto): IntProtoAmino {
     const obj: any = {};
-    obj.int = message.int;
+    obj.int = message.int === "" ? undefined : message.int;
     return obj;
   },
   fromAminoMsg(object: IntProtoAminoMsg): IntProto {
@@ -402,7 +415,7 @@ export const DecProto = {
     if (isSet(object.dec)) obj.dec = String(object.dec);
     return obj;
   },
-  toJSON(message: DecProto): unknown {
+  toJSON(message: DecProto): JsonSafe<DecProto> {
     const obj: any = {};
     message.dec !== undefined && (obj.dec = message.dec);
     return obj;
@@ -421,7 +434,7 @@ export const DecProto = {
   },
   toAmino(message: DecProto): DecProtoAmino {
     const obj: any = {};
-    obj.dec = message.dec;
+    obj.dec = message.dec === "" ? undefined : message.dec;
     return obj;
   },
   fromAminoMsg(object: DecProtoAminoMsg): DecProto {

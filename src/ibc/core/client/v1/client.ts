@@ -2,6 +2,7 @@
 import { Any, AnyAmino } from "../../../../google/protobuf/any";
 import { BinaryReader, BinaryWriter } from "../../../../binary";
 import { isSet } from "../../../../helpers";
+import { JsonSafe } from "../../../../json-safe";
 export const protobufPackage = "ibc.core.client.v1";
 /**
  * IdentifiedClientState defines a client state with an additional client
@@ -20,11 +21,18 @@ export interface IdentifiedClientStateProtoMsg {
 /**
  * IdentifiedClientState defines a client state with an additional client
  * identifier field.
+ * @name IdentifiedClientStateAmino
+ * @package ibc.core.client.v1
+ * @see proto type: ibc.core.client.v1.IdentifiedClientState
  */
 export interface IdentifiedClientStateAmino {
-  /** client identifier */
+  /**
+   * client identifier
+   */
   client_id?: string;
-  /** client state */
+  /**
+   * client state
+   */
   client_state?: AnyAmino | undefined;
 }
 export interface IdentifiedClientStateAminoMsg {
@@ -48,11 +56,18 @@ export interface ConsensusStateWithHeightProtoMsg {
 /**
  * ConsensusStateWithHeight defines a consensus state with an additional height
  * field.
+ * @name ConsensusStateWithHeightAmino
+ * @package ibc.core.client.v1
+ * @see proto type: ibc.core.client.v1.ConsensusStateWithHeight
  */
 export interface ConsensusStateWithHeightAmino {
-  /** consensus state height */
+  /**
+   * consensus state height
+   */
   height?: HeightAmino | undefined;
-  /** consensus state */
+  /**
+   * consensus state
+   */
   consensus_state?: AnyAmino | undefined;
 }
 export interface ConsensusStateWithHeightAminoMsg {
@@ -76,11 +91,18 @@ export interface ClientConsensusStatesProtoMsg {
 /**
  * ClientConsensusStates defines all the stored consensus states for a given
  * client.
+ * @name ClientConsensusStatesAmino
+ * @package ibc.core.client.v1
+ * @see proto type: ibc.core.client.v1.ClientConsensusStates
  */
 export interface ClientConsensusStatesAmino {
-  /** client identifier */
+  /**
+   * client identifier
+   */
   client_id?: string;
-  /** consensus states and their heights associated with the client */
+  /**
+   * consensus states and their heights associated with the client
+   */
   consensus_states?: ConsensusStateWithHeightAmino[];
 }
 export interface ClientConsensusStatesAminoMsg {
@@ -126,12 +148,19 @@ export interface HeightProtoMsg {
  *
  * Please note that json tags for generated Go code are overridden to explicitly exclude the omitempty jsontag.
  * This enforces the Go json marshaller to always emit zero values for both revision_number and revision_height.
+ * @name HeightAmino
+ * @package ibc.core.client.v1
+ * @see proto type: ibc.core.client.v1.Height
  */
 export interface HeightAmino {
-  /** the revision that the client is currently on */
-  revision_number?: string;
-  /** the height within the given revision */
-  revision_height?: string;
+  /**
+   * the revision that the client is currently on
+   */
+  revision_number: string;
+  /**
+   * the height within the given revision
+   */
+  revision_height: string;
 }
 export interface HeightAminoMsg {
   type: "cosmos-sdk/Height";
@@ -150,7 +179,12 @@ export interface ParamsProtoMsg {
   typeUrl: "/ibc.core.client.v1.Params";
   value: Uint8Array;
 }
-/** Params defines the set of IBC light client parameters. */
+/**
+ * Params defines the set of IBC light client parameters.
+ * @name ParamsAmino
+ * @package ibc.core.client.v1
+ * @see proto type: ibc.core.client.v1.Params
+ */
 export interface ParamsAmino {
   /**
    * allowed_clients defines the list of allowed client state types which can be created
@@ -206,7 +240,7 @@ export const IdentifiedClientState = {
     if (isSet(object.clientState)) obj.clientState = Any.fromJSON(object.clientState);
     return obj;
   },
-  toJSON(message: IdentifiedClientState): unknown {
+  toJSON(message: IdentifiedClientState): JsonSafe<IdentifiedClientState> {
     const obj: any = {};
     message.clientId !== undefined && (obj.clientId = message.clientId);
     message.clientState !== undefined &&
@@ -233,7 +267,7 @@ export const IdentifiedClientState = {
   },
   toAmino(message: IdentifiedClientState): IdentifiedClientStateAmino {
     const obj: any = {};
-    obj.client_id = message.clientId;
+    obj.client_id = message.clientId === "" ? undefined : message.clientId;
     obj.client_state = message.clientState ? Any.toAmino(message.clientState) : undefined;
     return obj;
   },
@@ -302,7 +336,7 @@ export const ConsensusStateWithHeight = {
     if (isSet(object.consensusState)) obj.consensusState = Any.fromJSON(object.consensusState);
     return obj;
   },
-  toJSON(message: ConsensusStateWithHeight): unknown {
+  toJSON(message: ConsensusStateWithHeight): JsonSafe<ConsensusStateWithHeight> {
     const obj: any = {};
     message.height !== undefined && (obj.height = message.height ? Height.toJSON(message.height) : undefined);
     message.consensusState !== undefined &&
@@ -401,7 +435,7 @@ export const ClientConsensusStates = {
       obj.consensusStates = object.consensusStates.map((e: any) => ConsensusStateWithHeight.fromJSON(e));
     return obj;
   },
-  toJSON(message: ClientConsensusStates): unknown {
+  toJSON(message: ClientConsensusStates): JsonSafe<ClientConsensusStates> {
     const obj: any = {};
     message.clientId !== undefined && (obj.clientId = message.clientId);
     if (message.consensusStates) {
@@ -431,13 +465,13 @@ export const ClientConsensusStates = {
   },
   toAmino(message: ClientConsensusStates): ClientConsensusStatesAmino {
     const obj: any = {};
-    obj.client_id = message.clientId;
+    obj.client_id = message.clientId === "" ? undefined : message.clientId;
     if (message.consensusStates) {
       obj.consensus_states = message.consensusStates.map((e) =>
         e ? ConsensusStateWithHeight.toAmino(e) : undefined,
       );
     } else {
-      obj.consensus_states = [];
+      obj.consensus_states = message.consensusStates;
     }
     return obj;
   },
@@ -506,7 +540,7 @@ export const Height = {
     if (isSet(object.revisionHeight)) obj.revisionHeight = BigInt(object.revisionHeight.toString());
     return obj;
   },
-  toJSON(message: Height): unknown {
+  toJSON(message: Height): JsonSafe<Height> {
     const obj: any = {};
     message.revisionNumber !== undefined &&
       (obj.revisionNumber = (message.revisionNumber || BigInt(0)).toString());
@@ -532,8 +566,8 @@ export const Height = {
   },
   toAmino(message: Height): HeightAmino {
     const obj: any = {};
-    obj.revision_number = message.revisionNumber ? message.revisionNumber.toString() : undefined;
-    obj.revision_height = message.revisionHeight ? message.revisionHeight.toString() : undefined;
+    obj.revision_number = message.revisionNumber ? message.revisionNumber?.toString() : "0";
+    obj.revision_height = message.revisionHeight ? message.revisionHeight?.toString() : "0";
     return obj;
   },
   fromAminoMsg(object: HeightAminoMsg): Height {
@@ -594,7 +628,7 @@ export const Params = {
       obj.allowedClients = object.allowedClients.map((e: any) => String(e));
     return obj;
   },
-  toJSON(message: Params): unknown {
+  toJSON(message: Params): JsonSafe<Params> {
     const obj: any = {};
     if (message.allowedClients) {
       obj.allowedClients = message.allowedClients.map((e) => e);
@@ -618,7 +652,7 @@ export const Params = {
     if (message.allowedClients) {
       obj.allowed_clients = message.allowedClients.map((e) => e);
     } else {
-      obj.allowed_clients = [];
+      obj.allowed_clients = message.allowedClients;
     }
     return obj;
   },

@@ -2,6 +2,7 @@
 import { CommitmentProof, CommitmentProofAmino } from "../../../../cosmos/ics23/v1/proofs";
 import { BinaryReader, BinaryWriter } from "../../../../binary";
 import { isSet, bytesFromBase64, base64FromBytes } from "../../../../helpers";
+import { JsonSafe } from "../../../../json-safe";
 export const protobufPackage = "ibc.core.commitment.v1";
 /**
  * MerkleRoot defines a merkle root hash.
@@ -17,6 +18,9 @@ export interface MerkleRootProtoMsg {
 /**
  * MerkleRoot defines a merkle root hash.
  * In the Cosmos SDK, the AppHash of a block header becomes the root.
+ * @name MerkleRootAmino
+ * @package ibc.core.commitment.v1
+ * @see proto type: ibc.core.commitment.v1.MerkleRoot
  */
 export interface MerkleRootAmino {
   hash?: string;
@@ -41,6 +45,9 @@ export interface MerklePrefixProtoMsg {
  * MerklePrefix is merkle path prefixed to the key.
  * The constructed key from the Path and the key will be append(Path.KeyPath,
  * append(Path.KeyPrefix, key...))
+ * @name MerklePrefixAmino
+ * @package ibc.core.commitment.v1
+ * @see proto type: ibc.core.commitment.v1.MerklePrefix
  */
 export interface MerklePrefixAmino {
   key_prefix?: string;
@@ -69,6 +76,9 @@ export interface MerkleProofProtoMsg {
  * elements, verifiable in conjunction with a known commitment root. Proofs
  * should be succinct.
  * MerkleProofs are ordered from leaf-to-root
+ * @name MerkleProofAmino
+ * @package ibc.core.commitment.v1
+ * @see proto type: ibc.core.commitment.v1.MerkleProof
  */
 export interface MerkleProofAmino {
   proofs?: CommitmentProofAmino[];
@@ -112,7 +122,7 @@ export const MerkleRoot = {
     if (isSet(object.hash)) obj.hash = bytesFromBase64(object.hash);
     return obj;
   },
-  toJSON(message: MerkleRoot): unknown {
+  toJSON(message: MerkleRoot): JsonSafe<MerkleRoot> {
     const obj: any = {};
     message.hash !== undefined &&
       (obj.hash = base64FromBytes(message.hash !== undefined ? message.hash : new Uint8Array()));
@@ -192,7 +202,7 @@ export const MerklePrefix = {
     if (isSet(object.keyPrefix)) obj.keyPrefix = bytesFromBase64(object.keyPrefix);
     return obj;
   },
-  toJSON(message: MerklePrefix): unknown {
+  toJSON(message: MerklePrefix): JsonSafe<MerklePrefix> {
     const obj: any = {};
     message.keyPrefix !== undefined &&
       (obj.keyPrefix = base64FromBytes(
@@ -275,7 +285,7 @@ export const MerkleProof = {
       obj.proofs = object.proofs.map((e: any) => CommitmentProof.fromJSON(e));
     return obj;
   },
-  toJSON(message: MerkleProof): unknown {
+  toJSON(message: MerkleProof): JsonSafe<MerkleProof> {
     const obj: any = {};
     if (message.proofs) {
       obj.proofs = message.proofs.map((e) => (e ? CommitmentProof.toJSON(e) : undefined));
@@ -299,7 +309,7 @@ export const MerkleProof = {
     if (message.proofs) {
       obj.proofs = message.proofs.map((e) => (e ? CommitmentProof.toAmino(e) : undefined));
     } else {
-      obj.proofs = [];
+      obj.proofs = message.proofs;
     }
     return obj;
   },

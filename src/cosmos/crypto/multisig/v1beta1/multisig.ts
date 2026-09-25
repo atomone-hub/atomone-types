@@ -1,6 +1,7 @@
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "../../../../binary";
 import { bytesFromBase64, base64FromBytes, isSet } from "../../../../helpers";
+import { JsonSafe } from "../../../../json-safe";
 export const protobufPackage = "cosmos.crypto.multisig.v1beta1";
 /**
  * MultiSignature wraps the signatures from a multisig.LegacyAminoPubKey.
@@ -18,6 +19,9 @@ export interface MultiSignatureProtoMsg {
  * MultiSignature wraps the signatures from a multisig.LegacyAminoPubKey.
  * See cosmos.tx.v1betata1.ModeInfo.Multi for how to specify which signers
  * signed and with which modes.
+ * @name MultiSignatureAmino
+ * @package cosmos.crypto.multisig.v1beta1
+ * @see proto type: cosmos.crypto.multisig.v1beta1.MultiSignature
  */
 export interface MultiSignatureAmino {
   signatures?: string[];
@@ -45,6 +49,9 @@ export interface CompactBitArrayProtoMsg {
  * This is used to ensure that the encoded data takes up a minimal amount of
  * space after proto encoding.
  * This is not thread safe, and is not intended for concurrent usage.
+ * @name CompactBitArrayAmino
+ * @package cosmos.crypto.multisig.v1beta1
+ * @see proto type: cosmos.crypto.multisig.v1beta1.CompactBitArray
  */
 export interface CompactBitArrayAmino {
   extra_bits_stored?: number;
@@ -90,7 +97,7 @@ export const MultiSignature = {
       obj.signatures = object.signatures.map((e: any) => bytesFromBase64(e));
     return obj;
   },
-  toJSON(message: MultiSignature): unknown {
+  toJSON(message: MultiSignature): JsonSafe<MultiSignature> {
     const obj: any = {};
     if (message.signatures) {
       obj.signatures = message.signatures.map((e) => base64FromBytes(e !== undefined ? e : new Uint8Array()));
@@ -114,7 +121,7 @@ export const MultiSignature = {
     if (message.signatures) {
       obj.signatures = message.signatures.map((e) => base64FromBytes(e));
     } else {
-      obj.signatures = [];
+      obj.signatures = message.signatures;
     }
     return obj;
   },
@@ -183,7 +190,7 @@ export const CompactBitArray = {
     if (isSet(object.elems)) obj.elems = bytesFromBase64(object.elems);
     return obj;
   },
-  toJSON(message: CompactBitArray): unknown {
+  toJSON(message: CompactBitArray): JsonSafe<CompactBitArray> {
     const obj: any = {};
     message.extraBitsStored !== undefined && (obj.extraBitsStored = Math.round(message.extraBitsStored));
     message.elems !== undefined &&
@@ -208,7 +215,7 @@ export const CompactBitArray = {
   },
   toAmino(message: CompactBitArray): CompactBitArrayAmino {
     const obj: any = {};
-    obj.extra_bits_stored = message.extraBitsStored;
+    obj.extra_bits_stored = message.extraBitsStored === 0 ? undefined : message.extraBitsStored;
     obj.elems = message.elems ? base64FromBytes(message.elems) : undefined;
     return obj;
   },

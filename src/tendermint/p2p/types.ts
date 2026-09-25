@@ -1,6 +1,7 @@
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "../../binary";
 import { isSet, bytesFromBase64, base64FromBytes } from "../../helpers";
+import { JsonSafe } from "../../json-safe";
 export const protobufPackage = "tendermint.p2p";
 export interface NetAddress {
   id: string;
@@ -11,6 +12,11 @@ export interface NetAddressProtoMsg {
   typeUrl: "/tendermint.p2p.NetAddress";
   value: Uint8Array;
 }
+/**
+ * @name NetAddressAmino
+ * @package tendermint.p2p
+ * @see proto type: tendermint.p2p.NetAddress
+ */
 export interface NetAddressAmino {
   id?: string;
   ip?: string;
@@ -29,6 +35,11 @@ export interface ProtocolVersionProtoMsg {
   typeUrl: "/tendermint.p2p.ProtocolVersion";
   value: Uint8Array;
 }
+/**
+ * @name ProtocolVersionAmino
+ * @package tendermint.p2p
+ * @see proto type: tendermint.p2p.ProtocolVersion
+ */
 export interface ProtocolVersionAmino {
   p2p?: string;
   block?: string;
@@ -52,6 +63,11 @@ export interface DefaultNodeInfoProtoMsg {
   typeUrl: "/tendermint.p2p.DefaultNodeInfo";
   value: Uint8Array;
 }
+/**
+ * @name DefaultNodeInfoAmino
+ * @package tendermint.p2p
+ * @see proto type: tendermint.p2p.DefaultNodeInfo
+ */
 export interface DefaultNodeInfoAmino {
   protocol_version?: ProtocolVersionAmino | undefined;
   default_node_id?: string;
@@ -74,6 +90,11 @@ export interface DefaultNodeInfoOtherProtoMsg {
   typeUrl: "/tendermint.p2p.DefaultNodeInfoOther";
   value: Uint8Array;
 }
+/**
+ * @name DefaultNodeInfoOtherAmino
+ * @package tendermint.p2p
+ * @see proto type: tendermint.p2p.DefaultNodeInfoOther
+ */
 export interface DefaultNodeInfoOtherAmino {
   tx_index?: string;
   rpc_address?: string;
@@ -133,7 +154,7 @@ export const NetAddress = {
     if (isSet(object.port)) obj.port = Number(object.port);
     return obj;
   },
-  toJSON(message: NetAddress): unknown {
+  toJSON(message: NetAddress): JsonSafe<NetAddress> {
     const obj: any = {};
     message.id !== undefined && (obj.id = message.id);
     message.ip !== undefined && (obj.ip = message.ip);
@@ -162,9 +183,9 @@ export const NetAddress = {
   },
   toAmino(message: NetAddress): NetAddressAmino {
     const obj: any = {};
-    obj.id = message.id;
-    obj.ip = message.ip;
-    obj.port = message.port;
+    obj.id = message.id === "" ? undefined : message.id;
+    obj.ip = message.ip === "" ? undefined : message.ip;
+    obj.port = message.port === 0 ? undefined : message.port;
     return obj;
   },
   fromAminoMsg(object: NetAddressAminoMsg): NetAddress {
@@ -234,7 +255,7 @@ export const ProtocolVersion = {
     if (isSet(object.app)) obj.app = BigInt(object.app.toString());
     return obj;
   },
-  toJSON(message: ProtocolVersion): unknown {
+  toJSON(message: ProtocolVersion): JsonSafe<ProtocolVersion> {
     const obj: any = {};
     message.p2p !== undefined && (obj.p2p = (message.p2p || BigInt(0)).toString());
     message.block !== undefined && (obj.block = (message.block || BigInt(0)).toString());
@@ -269,9 +290,9 @@ export const ProtocolVersion = {
   },
   toAmino(message: ProtocolVersion): ProtocolVersionAmino {
     const obj: any = {};
-    obj.p2p = message.p2p ? message.p2p.toString() : undefined;
-    obj.block = message.block ? message.block.toString() : undefined;
-    obj.app = message.app ? message.app.toString() : undefined;
+    obj.p2p = message.p2p !== BigInt(0) ? message.p2p?.toString() : undefined;
+    obj.block = message.block !== BigInt(0) ? message.block?.toString() : undefined;
+    obj.app = message.app !== BigInt(0) ? message.app?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: ProtocolVersionAminoMsg): ProtocolVersion {
@@ -381,7 +402,7 @@ export const DefaultNodeInfo = {
     if (isSet(object.other)) obj.other = DefaultNodeInfoOther.fromJSON(object.other);
     return obj;
   },
-  toJSON(message: DefaultNodeInfo): unknown {
+  toJSON(message: DefaultNodeInfo): JsonSafe<DefaultNodeInfo> {
     const obj: any = {};
     message.protocolVersion !== undefined &&
       (obj.protocolVersion = message.protocolVersion
@@ -447,12 +468,12 @@ export const DefaultNodeInfo = {
     obj.protocol_version = message.protocolVersion
       ? ProtocolVersion.toAmino(message.protocolVersion)
       : undefined;
-    obj.default_node_id = message.defaultNodeId;
-    obj.listen_addr = message.listenAddr;
-    obj.network = message.network;
-    obj.version = message.version;
+    obj.default_node_id = message.defaultNodeId === "" ? undefined : message.defaultNodeId;
+    obj.listen_addr = message.listenAddr === "" ? undefined : message.listenAddr;
+    obj.network = message.network === "" ? undefined : message.network;
+    obj.version = message.version === "" ? undefined : message.version;
     obj.channels = message.channels ? base64FromBytes(message.channels) : undefined;
-    obj.moniker = message.moniker;
+    obj.moniker = message.moniker === "" ? undefined : message.moniker;
     obj.other = message.other ? DefaultNodeInfoOther.toAmino(message.other) : undefined;
     return obj;
   },
@@ -515,7 +536,7 @@ export const DefaultNodeInfoOther = {
     if (isSet(object.rpcAddress)) obj.rpcAddress = String(object.rpcAddress);
     return obj;
   },
-  toJSON(message: DefaultNodeInfoOther): unknown {
+  toJSON(message: DefaultNodeInfoOther): JsonSafe<DefaultNodeInfoOther> {
     const obj: any = {};
     message.txIndex !== undefined && (obj.txIndex = message.txIndex);
     message.rpcAddress !== undefined && (obj.rpcAddress = message.rpcAddress);
@@ -539,8 +560,8 @@ export const DefaultNodeInfoOther = {
   },
   toAmino(message: DefaultNodeInfoOther): DefaultNodeInfoOtherAmino {
     const obj: any = {};
-    obj.tx_index = message.txIndex;
-    obj.rpc_address = message.rpcAddress;
+    obj.tx_index = message.txIndex === "" ? undefined : message.txIndex;
+    obj.rpc_address = message.rpcAddress === "" ? undefined : message.rpcAddress;
     return obj;
   },
   fromAminoMsg(object: DefaultNodeInfoOtherAminoMsg): DefaultNodeInfoOther {

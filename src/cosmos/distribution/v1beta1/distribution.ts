@@ -2,6 +2,7 @@
 import { DecCoin, DecCoinAmino, Coin, CoinAmino } from "../../base/v1beta1/coin";
 import { BinaryReader, BinaryWriter } from "../../../binary";
 import { isSet } from "../../../helpers";
+import { JsonSafe } from "../../../json-safe";
 export const protobufPackage = "cosmos.distribution.v1beta1";
 /** NakamotoBonus defines the nakamoto bonus parameters */
 export interface NakamotoBonus {
@@ -16,11 +17,18 @@ export interface NakamotoBonusProtoMsg {
   typeUrl: "/cosmos.distribution.v1beta1.NakamotoBonus";
   value: Uint8Array;
 }
-/** NakamotoBonus defines the nakamoto bonus parameters */
+/**
+ * NakamotoBonus defines the nakamoto bonus parameters
+ * @name NakamotoBonusAmino
+ * @package cosmos.distribution.v1beta1
+ * @see proto type: cosmos.distribution.v1beta1.NakamotoBonus
+ */
 export interface NakamotoBonusAmino {
   enabled?: boolean;
   step: string;
-  /** period_epoch_identifier is the identifier of the epoch at which the nakamoto bonus coefficient is adjusted */
+  /**
+   * period_epoch_identifier is the identifier of the epoch at which the nakamoto bonus coefficient is adjusted
+   */
   period_epoch_identifier?: string;
   minimum_coefficient: string;
   maximum_coefficient: string;
@@ -39,7 +47,12 @@ export interface ParamsProtoMsg {
   typeUrl: "/cosmos.distribution.v1beta1.Params";
   value: Uint8Array;
 }
-/** Params defines the set of params for the distribution module. */
+/**
+ * Params defines the set of params for the distribution module.
+ * @name ParamsAmino
+ * @package cosmos.distribution.v1beta1
+ * @see proto type: cosmos.distribution.v1beta1.Params
+ */
 export interface ParamsAmino {
   community_tax: string;
   withdraw_addr_enabled?: boolean;
@@ -84,6 +97,9 @@ export interface ValidatorHistoricalRewardsProtoMsg {
  *  + number of slashes which ended the associated period (and might need to
  *  read that record)
  *  + one per validator for the zeroeth period, set on initialization
+ * @name ValidatorHistoricalRewardsAmino
+ * @package cosmos.distribution.v1beta1
+ * @see proto type: cosmos.distribution.v1beta1.ValidatorHistoricalRewards
  */
 export interface ValidatorHistoricalRewardsAmino {
   cumulative_reward_ratio: DecCoinAmino[];
@@ -110,6 +126,9 @@ export interface ValidatorCurrentRewardsProtoMsg {
  * ValidatorCurrentRewards represents current rewards and current
  * period for a validator kept as a running counter and incremented
  * each block as long as the validator's tokens remain constant.
+ * @name ValidatorCurrentRewardsAmino
+ * @package cosmos.distribution.v1beta1
+ * @see proto type: cosmos.distribution.v1beta1.ValidatorCurrentRewards
  */
 export interface ValidatorCurrentRewardsAmino {
   rewards: DecCoinAmino[];
@@ -133,6 +152,9 @@ export interface ValidatorAccumulatedCommissionProtoMsg {
 /**
  * ValidatorAccumulatedCommission represents accumulated commission
  * for a validator kept as a running counter, can be withdrawn at any time.
+ * @name ValidatorAccumulatedCommissionAmino
+ * @package cosmos.distribution.v1beta1
+ * @see proto type: cosmos.distribution.v1beta1.ValidatorAccumulatedCommission
  */
 export interface ValidatorAccumulatedCommissionAmino {
   commission: DecCoinAmino[];
@@ -155,6 +177,9 @@ export interface ValidatorOutstandingRewardsProtoMsg {
 /**
  * ValidatorOutstandingRewards represents outstanding (un-withdrawn) rewards
  * for a validator inexpensive to track, allows simple sanity checks.
+ * @name ValidatorOutstandingRewardsAmino
+ * @package cosmos.distribution.v1beta1
+ * @see proto type: cosmos.distribution.v1beta1.ValidatorOutstandingRewards
  */
 export interface ValidatorOutstandingRewardsAmino {
   rewards: DecCoinAmino[];
@@ -182,6 +207,9 @@ export interface ValidatorSlashEventProtoMsg {
  * Height is implicit within the store key.
  * This is needed to calculate appropriate amount of staking tokens
  * for delegations which are withdrawn after a slash has occurred.
+ * @name ValidatorSlashEventAmino
+ * @package cosmos.distribution.v1beta1
+ * @see proto type: cosmos.distribution.v1beta1.ValidatorSlashEvent
  */
 export interface ValidatorSlashEventAmino {
   validator_period?: string;
@@ -199,7 +227,12 @@ export interface ValidatorSlashEventsProtoMsg {
   typeUrl: "/cosmos.distribution.v1beta1.ValidatorSlashEvents";
   value: Uint8Array;
 }
-/** ValidatorSlashEvents is a collection of ValidatorSlashEvent messages. */
+/**
+ * ValidatorSlashEvents is a collection of ValidatorSlashEvent messages.
+ * @name ValidatorSlashEventsAmino
+ * @package cosmos.distribution.v1beta1
+ * @see proto type: cosmos.distribution.v1beta1.ValidatorSlashEvents
+ */
 export interface ValidatorSlashEventsAmino {
   validator_slash_events: ValidatorSlashEventAmino[];
 }
@@ -215,7 +248,12 @@ export interface FeePoolProtoMsg {
   typeUrl: "/cosmos.distribution.v1beta1.FeePool";
   value: Uint8Array;
 }
-/** FeePool is the global fee pool for distribution. */
+/**
+ * FeePool is the global fee pool for distribution.
+ * @name FeePoolAmino
+ * @package cosmos.distribution.v1beta1
+ * @see proto type: cosmos.distribution.v1beta1.FeePool
+ */
 export interface FeePoolAmino {
   community_pool: DecCoinAmino[];
 }
@@ -253,8 +291,11 @@ export interface CommunityPoolSpendProposalProtoMsg {
  * longer a need for an explicit CommunityPoolSpendProposal. To spend community
  * pool funds, a simple MsgCommunityPoolSpend can be invoked from the x/gov
  * module via a v1 governance proposal.
+ * @name CommunityPoolSpendProposalAmino
+ * @package cosmos.distribution.v1beta1
+ * @see proto type: cosmos.distribution.v1beta1.CommunityPoolSpendProposal
+ * @deprecated
  */
-/** @deprecated */
 export interface CommunityPoolSpendProposalAmino {
   title?: string;
   description?: string;
@@ -289,6 +330,9 @@ export interface DelegatorStartingInfoProtoMsg {
  * occurred). NOTE: Even though validators are slashed to whole staking tokens,
  * the delegators within the validator may be left with less than a full token,
  * thus sdk.Dec is used.
+ * @name DelegatorStartingInfoAmino
+ * @package cosmos.distribution.v1beta1
+ * @see proto type: cosmos.distribution.v1beta1.DelegatorStartingInfo
  */
 export interface DelegatorStartingInfoAmino {
   previous_period?: string;
@@ -314,6 +358,9 @@ export interface DelegationDelegatorRewardProtoMsg {
 /**
  * DelegationDelegatorReward represents the properties
  * of a delegator's delegation reward.
+ * @name DelegationDelegatorRewardAmino
+ * @package cosmos.distribution.v1beta1
+ * @see proto type: cosmos.distribution.v1beta1.DelegationDelegatorReward
  */
 export interface DelegationDelegatorRewardAmino {
   validator_address?: string;
@@ -341,6 +388,9 @@ export interface CommunityPoolSpendProposalWithDepositProtoMsg {
 /**
  * CommunityPoolSpendProposalWithDeposit defines a CommunityPoolSpendProposal
  * with a deposit
+ * @name CommunityPoolSpendProposalWithDepositAmino
+ * @package cosmos.distribution.v1beta1
+ * @see proto type: cosmos.distribution.v1beta1.CommunityPoolSpendProposalWithDeposit
  */
 export interface CommunityPoolSpendProposalWithDepositAmino {
   title?: string;
@@ -420,7 +470,7 @@ export const NakamotoBonus = {
     if (isSet(object.maximumCoefficient)) obj.maximumCoefficient = String(object.maximumCoefficient);
     return obj;
   },
-  toJSON(message: NakamotoBonus): unknown {
+  toJSON(message: NakamotoBonus): JsonSafe<NakamotoBonus> {
     const obj: any = {};
     message.enabled !== undefined && (obj.enabled = message.enabled);
     message.step !== undefined && (obj.step = message.step);
@@ -460,9 +510,10 @@ export const NakamotoBonus = {
   },
   toAmino(message: NakamotoBonus): NakamotoBonusAmino {
     const obj: any = {};
-    obj.enabled = message.enabled;
+    obj.enabled = message.enabled === false ? undefined : message.enabled;
     obj.step = message.step ?? "";
-    obj.period_epoch_identifier = message.periodEpochIdentifier;
+    obj.period_epoch_identifier =
+      message.periodEpochIdentifier === "" ? undefined : message.periodEpochIdentifier;
     obj.minimum_coefficient = message.minimumCoefficient ?? "";
     obj.maximum_coefficient = message.maximumCoefficient ?? "";
     return obj;
@@ -540,7 +591,7 @@ export const Params = {
     if (isSet(object.nakamotoBonus)) obj.nakamotoBonus = NakamotoBonus.fromJSON(object.nakamotoBonus);
     return obj;
   },
-  toJSON(message: Params): unknown {
+  toJSON(message: Params): JsonSafe<Params> {
     const obj: any = {};
     message.communityTax !== undefined && (obj.communityTax = message.communityTax);
     message.withdrawAddrEnabled !== undefined && (obj.withdrawAddrEnabled = message.withdrawAddrEnabled);
@@ -573,10 +624,11 @@ export const Params = {
   toAmino(message: Params): ParamsAmino {
     const obj: any = {};
     obj.community_tax = message.communityTax ?? "";
-    obj.withdraw_addr_enabled = message.withdrawAddrEnabled;
+    obj.withdraw_addr_enabled =
+      message.withdrawAddrEnabled === false ? undefined : message.withdrawAddrEnabled;
     obj.nakamoto_bonus = message.nakamotoBonus
       ? NakamotoBonus.toAmino(message.nakamotoBonus)
-      : NakamotoBonus.fromPartial({});
+      : NakamotoBonus.toAmino(NakamotoBonus.fromPartial({}));
     return obj;
   },
   fromAminoMsg(object: ParamsAminoMsg): Params {
@@ -645,7 +697,7 @@ export const ValidatorHistoricalRewards = {
     if (isSet(object.referenceCount)) obj.referenceCount = Number(object.referenceCount);
     return obj;
   },
-  toJSON(message: ValidatorHistoricalRewards): unknown {
+  toJSON(message: ValidatorHistoricalRewards): JsonSafe<ValidatorHistoricalRewards> {
     const obj: any = {};
     if (message.cumulativeRewardRatio) {
       obj.cumulativeRewardRatio = message.cumulativeRewardRatio.map((e) =>
@@ -678,9 +730,9 @@ export const ValidatorHistoricalRewards = {
         e ? DecCoin.toAmino(e) : undefined,
       );
     } else {
-      obj.cumulative_reward_ratio = [];
+      obj.cumulative_reward_ratio = message.cumulativeRewardRatio;
     }
-    obj.reference_count = message.referenceCount;
+    obj.reference_count = message.referenceCount === 0 ? undefined : message.referenceCount;
     return obj;
   },
   fromAminoMsg(object: ValidatorHistoricalRewardsAminoMsg): ValidatorHistoricalRewards {
@@ -748,7 +800,7 @@ export const ValidatorCurrentRewards = {
     if (isSet(object.period)) obj.period = BigInt(object.period.toString());
     return obj;
   },
-  toJSON(message: ValidatorCurrentRewards): unknown {
+  toJSON(message: ValidatorCurrentRewards): JsonSafe<ValidatorCurrentRewards> {
     const obj: any = {};
     if (message.rewards) {
       obj.rewards = message.rewards.map((e) => (e ? DecCoin.toJSON(e) : undefined));
@@ -779,9 +831,9 @@ export const ValidatorCurrentRewards = {
     if (message.rewards) {
       obj.rewards = message.rewards.map((e) => (e ? DecCoin.toAmino(e) : undefined));
     } else {
-      obj.rewards = [];
+      obj.rewards = message.rewards;
     }
-    obj.period = message.period ? message.period.toString() : undefined;
+    obj.period = message.period !== BigInt(0) ? message.period?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: ValidatorCurrentRewardsAminoMsg): ValidatorCurrentRewards {
@@ -845,7 +897,7 @@ export const ValidatorAccumulatedCommission = {
       obj.commission = object.commission.map((e: any) => DecCoin.fromJSON(e));
     return obj;
   },
-  toJSON(message: ValidatorAccumulatedCommission): unknown {
+  toJSON(message: ValidatorAccumulatedCommission): JsonSafe<ValidatorAccumulatedCommission> {
     const obj: any = {};
     if (message.commission) {
       obj.commission = message.commission.map((e) => (e ? DecCoin.toJSON(e) : undefined));
@@ -869,7 +921,7 @@ export const ValidatorAccumulatedCommission = {
     if (message.commission) {
       obj.commission = message.commission.map((e) => (e ? DecCoin.toAmino(e) : undefined));
     } else {
-      obj.commission = [];
+      obj.commission = message.commission;
     }
     return obj;
   },
@@ -930,7 +982,7 @@ export const ValidatorOutstandingRewards = {
     if (Array.isArray(object?.rewards)) obj.rewards = object.rewards.map((e: any) => DecCoin.fromJSON(e));
     return obj;
   },
-  toJSON(message: ValidatorOutstandingRewards): unknown {
+  toJSON(message: ValidatorOutstandingRewards): JsonSafe<ValidatorOutstandingRewards> {
     const obj: any = {};
     if (message.rewards) {
       obj.rewards = message.rewards.map((e) => (e ? DecCoin.toJSON(e) : undefined));
@@ -954,7 +1006,7 @@ export const ValidatorOutstandingRewards = {
     if (message.rewards) {
       obj.rewards = message.rewards.map((e) => (e ? DecCoin.toAmino(e) : undefined));
     } else {
-      obj.rewards = [];
+      obj.rewards = message.rewards;
     }
     return obj;
   },
@@ -1023,7 +1075,7 @@ export const ValidatorSlashEvent = {
     if (isSet(object.fraction)) obj.fraction = String(object.fraction);
     return obj;
   },
-  toJSON(message: ValidatorSlashEvent): unknown {
+  toJSON(message: ValidatorSlashEvent): JsonSafe<ValidatorSlashEvent> {
     const obj: any = {};
     message.validatorPeriod !== undefined &&
       (obj.validatorPeriod = (message.validatorPeriod || BigInt(0)).toString());
@@ -1050,8 +1102,9 @@ export const ValidatorSlashEvent = {
   },
   toAmino(message: ValidatorSlashEvent): ValidatorSlashEventAmino {
     const obj: any = {};
-    obj.validator_period = message.validatorPeriod ? message.validatorPeriod.toString() : undefined;
-    obj.fraction = message.fraction;
+    obj.validator_period =
+      message.validatorPeriod !== BigInt(0) ? message.validatorPeriod?.toString() : undefined;
+    obj.fraction = message.fraction === "" ? undefined : message.fraction;
     return obj;
   },
   fromAminoMsg(object: ValidatorSlashEventAminoMsg): ValidatorSlashEvent {
@@ -1112,7 +1165,7 @@ export const ValidatorSlashEvents = {
       obj.validatorSlashEvents = object.validatorSlashEvents.map((e: any) => ValidatorSlashEvent.fromJSON(e));
     return obj;
   },
-  toJSON(message: ValidatorSlashEvents): unknown {
+  toJSON(message: ValidatorSlashEvents): JsonSafe<ValidatorSlashEvents> {
     const obj: any = {};
     if (message.validatorSlashEvents) {
       obj.validatorSlashEvents = message.validatorSlashEvents.map((e) =>
@@ -1142,7 +1195,7 @@ export const ValidatorSlashEvents = {
         e ? ValidatorSlashEvent.toAmino(e) : undefined,
       );
     } else {
-      obj.validator_slash_events = [];
+      obj.validator_slash_events = message.validatorSlashEvents;
     }
     return obj;
   },
@@ -1204,7 +1257,7 @@ export const FeePool = {
       obj.communityPool = object.communityPool.map((e: any) => DecCoin.fromJSON(e));
     return obj;
   },
-  toJSON(message: FeePool): unknown {
+  toJSON(message: FeePool): JsonSafe<FeePool> {
     const obj: any = {};
     if (message.communityPool) {
       obj.communityPool = message.communityPool.map((e) => (e ? DecCoin.toJSON(e) : undefined));
@@ -1228,7 +1281,7 @@ export const FeePool = {
     if (message.communityPool) {
       obj.community_pool = message.communityPool.map((e) => (e ? DecCoin.toAmino(e) : undefined));
     } else {
-      obj.community_pool = [];
+      obj.community_pool = message.communityPool;
     }
     return obj;
   },
@@ -1313,7 +1366,7 @@ export const CommunityPoolSpendProposal = {
     if (Array.isArray(object?.amount)) obj.amount = object.amount.map((e: any) => Coin.fromJSON(e));
     return obj;
   },
-  toJSON(message: CommunityPoolSpendProposal): unknown {
+  toJSON(message: CommunityPoolSpendProposal): JsonSafe<CommunityPoolSpendProposal> {
     const obj: any = {};
     message.title !== undefined && (obj.title = message.title);
     message.description !== undefined && (obj.description = message.description);
@@ -1349,13 +1402,13 @@ export const CommunityPoolSpendProposal = {
   },
   toAmino(message: CommunityPoolSpendProposal): CommunityPoolSpendProposalAmino {
     const obj: any = {};
-    obj.title = message.title;
-    obj.description = message.description;
-    obj.recipient = message.recipient;
+    obj.title = message.title === "" ? undefined : message.title;
+    obj.description = message.description === "" ? undefined : message.description;
+    obj.recipient = message.recipient === "" ? undefined : message.recipient;
     if (message.amount) {
       obj.amount = message.amount.map((e) => (e ? Coin.toAmino(e) : undefined));
     } else {
-      obj.amount = [];
+      obj.amount = message.amount;
     }
     return obj;
   },
@@ -1432,7 +1485,7 @@ export const DelegatorStartingInfo = {
     if (isSet(object.height)) obj.height = BigInt(object.height.toString());
     return obj;
   },
-  toJSON(message: DelegatorStartingInfo): unknown {
+  toJSON(message: DelegatorStartingInfo): JsonSafe<DelegatorStartingInfo> {
     const obj: any = {};
     message.previousPeriod !== undefined &&
       (obj.previousPeriod = (message.previousPeriod || BigInt(0)).toString());
@@ -1466,9 +1519,10 @@ export const DelegatorStartingInfo = {
   },
   toAmino(message: DelegatorStartingInfo): DelegatorStartingInfoAmino {
     const obj: any = {};
-    obj.previous_period = message.previousPeriod ? message.previousPeriod.toString() : undefined;
+    obj.previous_period =
+      message.previousPeriod !== BigInt(0) ? message.previousPeriod?.toString() : undefined;
     obj.stake = message.stake ?? "";
-    obj.height = message.height ? message.height.toString() : "0";
+    obj.height = message.height ? message.height?.toString() : "0";
     return obj;
   },
   fromAminoMsg(object: DelegatorStartingInfoAminoMsg): DelegatorStartingInfo {
@@ -1536,7 +1590,7 @@ export const DelegationDelegatorReward = {
     if (Array.isArray(object?.reward)) obj.reward = object.reward.map((e: any) => DecCoin.fromJSON(e));
     return obj;
   },
-  toJSON(message: DelegationDelegatorReward): unknown {
+  toJSON(message: DelegationDelegatorReward): JsonSafe<DelegationDelegatorReward> {
     const obj: any = {};
     message.validatorAddress !== undefined && (obj.validatorAddress = message.validatorAddress);
     if (message.reward) {
@@ -1562,11 +1616,11 @@ export const DelegationDelegatorReward = {
   },
   toAmino(message: DelegationDelegatorReward): DelegationDelegatorRewardAmino {
     const obj: any = {};
-    obj.validator_address = message.validatorAddress;
+    obj.validator_address = message.validatorAddress === "" ? undefined : message.validatorAddress;
     if (message.reward) {
       obj.reward = message.reward.map((e) => (e ? DecCoin.toAmino(e) : undefined));
     } else {
-      obj.reward = [];
+      obj.reward = message.reward;
     }
     return obj;
   },
@@ -1662,7 +1716,7 @@ export const CommunityPoolSpendProposalWithDeposit = {
     if (isSet(object.deposit)) obj.deposit = String(object.deposit);
     return obj;
   },
-  toJSON(message: CommunityPoolSpendProposalWithDeposit): unknown {
+  toJSON(message: CommunityPoolSpendProposalWithDeposit): JsonSafe<CommunityPoolSpendProposalWithDeposit> {
     const obj: any = {};
     message.title !== undefined && (obj.title = message.title);
     message.description !== undefined && (obj.description = message.description);
@@ -1701,11 +1755,11 @@ export const CommunityPoolSpendProposalWithDeposit = {
   },
   toAmino(message: CommunityPoolSpendProposalWithDeposit): CommunityPoolSpendProposalWithDepositAmino {
     const obj: any = {};
-    obj.title = message.title;
-    obj.description = message.description;
-    obj.recipient = message.recipient;
-    obj.amount = message.amount;
-    obj.deposit = message.deposit;
+    obj.title = message.title === "" ? undefined : message.title;
+    obj.description = message.description === "" ? undefined : message.description;
+    obj.recipient = message.recipient === "" ? undefined : message.recipient;
+    obj.amount = message.amount === "" ? undefined : message.amount;
+    obj.deposit = message.deposit === "" ? undefined : message.deposit;
     return obj;
   },
   fromAminoMsg(object: CommunityPoolSpendProposalWithDepositAminoMsg): CommunityPoolSpendProposalWithDeposit {

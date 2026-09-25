@@ -7,6 +7,7 @@ import {
 } from "../../../../cosmos/base/query/v1beta1/pagination";
 import { BinaryReader, BinaryWriter } from "../../../../binary";
 import { isSet, bytesFromBase64, base64FromBytes } from "../../../../helpers";
+import { JsonSafe } from "../../../../json-safe";
 import { TxRpc } from "../../../../types";
 export const protobufPackage = "ibc.lightclients.wasm.v1";
 /** QueryChecksumsRequest is the request type for the Query/Checksums RPC method. */
@@ -18,9 +19,16 @@ export interface QueryChecksumsRequestProtoMsg {
   typeUrl: "/ibc.lightclients.wasm.v1.QueryChecksumsRequest";
   value: Uint8Array;
 }
-/** QueryChecksumsRequest is the request type for the Query/Checksums RPC method. */
+/**
+ * QueryChecksumsRequest is the request type for the Query/Checksums RPC method.
+ * @name QueryChecksumsRequestAmino
+ * @package ibc.lightclients.wasm.v1
+ * @see proto type: ibc.lightclients.wasm.v1.QueryChecksumsRequest
+ */
 export interface QueryChecksumsRequestAmino {
-  /** pagination defines an optional pagination for the request. */
+  /**
+   * pagination defines an optional pagination for the request.
+   */
   pagination?: PageRequestAmino | undefined;
 }
 export interface QueryChecksumsRequestAminoMsg {
@@ -38,11 +46,20 @@ export interface QueryChecksumsResponseProtoMsg {
   typeUrl: "/ibc.lightclients.wasm.v1.QueryChecksumsResponse";
   value: Uint8Array;
 }
-/** QueryChecksumsResponse is the response type for the Query/Checksums RPC method. */
+/**
+ * QueryChecksumsResponse is the response type for the Query/Checksums RPC method.
+ * @name QueryChecksumsResponseAmino
+ * @package ibc.lightclients.wasm.v1
+ * @see proto type: ibc.lightclients.wasm.v1.QueryChecksumsResponse
+ */
 export interface QueryChecksumsResponseAmino {
-  /** checksums is a list of the hex encoded checksums of all wasm codes stored. */
+  /**
+   * checksums is a list of the hex encoded checksums of all wasm codes stored.
+   */
   checksums?: string[];
-  /** pagination defines the pagination in the response. */
+  /**
+   * pagination defines the pagination in the response.
+   */
   pagination?: PageResponseAmino | undefined;
 }
 export interface QueryChecksumsResponseAminoMsg {
@@ -58,9 +75,16 @@ export interface QueryCodeRequestProtoMsg {
   typeUrl: "/ibc.lightclients.wasm.v1.QueryCodeRequest";
   value: Uint8Array;
 }
-/** QueryCodeRequest is the request type for the Query/Code RPC method. */
+/**
+ * QueryCodeRequest is the request type for the Query/Code RPC method.
+ * @name QueryCodeRequestAmino
+ * @package ibc.lightclients.wasm.v1
+ * @see proto type: ibc.lightclients.wasm.v1.QueryCodeRequest
+ */
 export interface QueryCodeRequestAmino {
-  /** checksum is a hex encoded string of the code stored. */
+  /**
+   * checksum is a hex encoded string of the code stored.
+   */
   checksum?: string;
 }
 export interface QueryCodeRequestAminoMsg {
@@ -75,7 +99,12 @@ export interface QueryCodeResponseProtoMsg {
   typeUrl: "/ibc.lightclients.wasm.v1.QueryCodeResponse";
   value: Uint8Array;
 }
-/** QueryCodeResponse is the response type for the Query/Code RPC method. */
+/**
+ * QueryCodeResponse is the response type for the Query/Code RPC method.
+ * @name QueryCodeResponseAmino
+ * @package ibc.lightclients.wasm.v1
+ * @see proto type: ibc.lightclients.wasm.v1.QueryCodeResponse
+ */
 export interface QueryCodeResponseAmino {
   data?: string;
 }
@@ -118,7 +147,7 @@ export const QueryChecksumsRequest = {
     if (isSet(object.pagination)) obj.pagination = PageRequest.fromJSON(object.pagination);
     return obj;
   },
-  toJSON(message: QueryChecksumsRequest): unknown {
+  toJSON(message: QueryChecksumsRequest): JsonSafe<QueryChecksumsRequest> {
     const obj: any = {};
     message.pagination !== undefined &&
       (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
@@ -208,7 +237,7 @@ export const QueryChecksumsResponse = {
     if (isSet(object.pagination)) obj.pagination = PageResponse.fromJSON(object.pagination);
     return obj;
   },
-  toJSON(message: QueryChecksumsResponse): unknown {
+  toJSON(message: QueryChecksumsResponse): JsonSafe<QueryChecksumsResponse> {
     const obj: any = {};
     if (message.checksums) {
       obj.checksums = message.checksums.map((e) => e);
@@ -240,7 +269,7 @@ export const QueryChecksumsResponse = {
     if (message.checksums) {
       obj.checksums = message.checksums.map((e) => e);
     } else {
-      obj.checksums = [];
+      obj.checksums = message.checksums;
     }
     obj.pagination = message.pagination ? PageResponse.toAmino(message.pagination) : undefined;
     return obj;
@@ -302,7 +331,7 @@ export const QueryCodeRequest = {
     if (isSet(object.checksum)) obj.checksum = String(object.checksum);
     return obj;
   },
-  toJSON(message: QueryCodeRequest): unknown {
+  toJSON(message: QueryCodeRequest): JsonSafe<QueryCodeRequest> {
     const obj: any = {};
     message.checksum !== undefined && (obj.checksum = message.checksum);
     return obj;
@@ -321,7 +350,7 @@ export const QueryCodeRequest = {
   },
   toAmino(message: QueryCodeRequest): QueryCodeRequestAmino {
     const obj: any = {};
-    obj.checksum = message.checksum;
+    obj.checksum = message.checksum === "" ? undefined : message.checksum;
     return obj;
   },
   fromAminoMsg(object: QueryCodeRequestAminoMsg): QueryCodeRequest {
@@ -381,7 +410,7 @@ export const QueryCodeResponse = {
     if (isSet(object.data)) obj.data = bytesFromBase64(object.data);
     return obj;
   },
-  toJSON(message: QueryCodeResponse): unknown {
+  toJSON(message: QueryCodeResponse): JsonSafe<QueryCodeResponse> {
     const obj: any = {};
     message.data !== undefined &&
       (obj.data = base64FromBytes(message.data !== undefined ? message.data : new Uint8Array()));

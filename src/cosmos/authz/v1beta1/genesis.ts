@@ -1,6 +1,7 @@
 /* eslint-disable */
 import { GrantAuthorization, GrantAuthorizationAmino } from "./authz";
 import { BinaryReader, BinaryWriter } from "../../../binary";
+import { JsonSafe } from "../../../json-safe";
 export const protobufPackage = "cosmos.authz.v1beta1";
 /** GenesisState defines the authz module's genesis state. */
 export interface GenesisState {
@@ -10,7 +11,12 @@ export interface GenesisStateProtoMsg {
   typeUrl: "/cosmos.authz.v1beta1.GenesisState";
   value: Uint8Array;
 }
-/** GenesisState defines the authz module's genesis state. */
+/**
+ * GenesisState defines the authz module's genesis state.
+ * @name GenesisStateAmino
+ * @package cosmos.authz.v1beta1
+ * @see proto type: cosmos.authz.v1beta1.GenesisState
+ */
 export interface GenesisStateAmino {
   authorization: GrantAuthorizationAmino[];
 }
@@ -54,7 +60,7 @@ export const GenesisState = {
       obj.authorization = object.authorization.map((e: any) => GrantAuthorization.fromJSON(e));
     return obj;
   },
-  toJSON(message: GenesisState): unknown {
+  toJSON(message: GenesisState): JsonSafe<GenesisState> {
     const obj: any = {};
     if (message.authorization) {
       obj.authorization = message.authorization.map((e) => (e ? GrantAuthorization.toJSON(e) : undefined));
@@ -78,7 +84,7 @@ export const GenesisState = {
     if (message.authorization) {
       obj.authorization = message.authorization.map((e) => (e ? GrantAuthorization.toAmino(e) : undefined));
     } else {
-      obj.authorization = [];
+      obj.authorization = message.authorization;
     }
     return obj;
   },

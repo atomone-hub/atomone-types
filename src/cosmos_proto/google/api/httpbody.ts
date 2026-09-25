@@ -2,6 +2,7 @@
 import { Any, AnyAmino } from "../../../google/protobuf/any";
 import { BinaryReader, BinaryWriter } from "../../../binary";
 import { isSet, bytesFromBase64, base64FromBytes } from "../../../helpers";
+import { JsonSafe } from "../../../json-safe";
 export const protobufPackage = "google.api";
 /**
  * Message that represents an arbitrary HTTP body. It should only be used for
@@ -99,11 +100,18 @@ export interface HttpBodyProtoMsg {
  *
  * Use of this type only changes how the request and response bodies are
  * handled, all other features will continue to work unchanged.
+ * @name HttpBodyAmino
+ * @package google.api
+ * @see proto type: google.api.HttpBody
  */
 export interface HttpBodyAmino {
-  /** The HTTP Content-Type header value specifying the content type of the body. */
+  /**
+   * The HTTP Content-Type header value specifying the content type of the body.
+   */
   content_type?: string;
-  /** The HTTP request/response body as raw binary. */
+  /**
+   * The HTTP request/response body as raw binary.
+   */
   data?: string;
   /**
    * Application specific response metadata. Must be set in the first response
@@ -167,7 +175,7 @@ export const HttpBody = {
       obj.extensions = object.extensions.map((e: any) => Any.fromJSON(e));
     return obj;
   },
-  toJSON(message: HttpBody): unknown {
+  toJSON(message: HttpBody): JsonSafe<HttpBody> {
     const obj: any = {};
     message.contentType !== undefined && (obj.contentType = message.contentType);
     message.data !== undefined &&
@@ -199,12 +207,12 @@ export const HttpBody = {
   },
   toAmino(message: HttpBody): HttpBodyAmino {
     const obj: any = {};
-    obj.content_type = message.contentType;
+    obj.content_type = message.contentType === "" ? undefined : message.contentType;
     obj.data = message.data ? base64FromBytes(message.data) : undefined;
     if (message.extensions) {
       obj.extensions = message.extensions.map((e) => (e ? Any.toAmino(e) : undefined));
     } else {
-      obj.extensions = [];
+      obj.extensions = message.extensions;
     }
     return obj;
   },

@@ -3,6 +3,7 @@ import { Params, ParamsAmino, Metadata, MetadataAmino, SendEnabled, SendEnabledA
 import { Coin, CoinAmino } from "../../base/v1beta1/coin";
 import { BinaryReader, BinaryWriter } from "../../../binary";
 import { isSet } from "../../../helpers";
+import { JsonSafe } from "../../../json-safe";
 export const protobufPackage = "cosmos.bank.v1beta1";
 /** GenesisState defines the bank module's genesis state. */
 export interface GenesisState {
@@ -28,18 +29,29 @@ export interface GenesisStateProtoMsg {
   typeUrl: "/cosmos.bank.v1beta1.GenesisState";
   value: Uint8Array;
 }
-/** GenesisState defines the bank module's genesis state. */
+/**
+ * GenesisState defines the bank module's genesis state.
+ * @name GenesisStateAmino
+ * @package cosmos.bank.v1beta1
+ * @see proto type: cosmos.bank.v1beta1.GenesisState
+ */
 export interface GenesisStateAmino {
-  /** params defines all the parameters of the module. */
+  /**
+   * params defines all the parameters of the module.
+   */
   params: ParamsAmino | undefined;
-  /** balances is an array containing the balances of all the accounts. */
+  /**
+   * balances is an array containing the balances of all the accounts.
+   */
   balances: BalanceAmino[];
   /**
    * supply represents the total supply. If it is left empty, then supply will be calculated based on the provided
    * balances. Otherwise, it will be used to validate that the sum of the balances equals this amount.
    */
   supply: CoinAmino[];
-  /** denom_metadata defines the metadata of the different coins. */
+  /**
+   * denom_metadata defines the metadata of the different coins.
+   */
   denom_metadata: MetadataAmino[];
   /**
    * send_enabled defines the denoms where send is enabled or disabled.
@@ -69,11 +81,18 @@ export interface BalanceProtoMsg {
 /**
  * Balance defines an account address and balance pair used in the bank module's
  * genesis state.
+ * @name BalanceAmino
+ * @package cosmos.bank.v1beta1
+ * @see proto type: cosmos.bank.v1beta1.Balance
  */
 export interface BalanceAmino {
-  /** address is the address of the balance holder. */
+  /**
+   * address is the address of the balance holder.
+   */
   address?: string;
-  /** coins defines the different coins this balance holds. */
+  /**
+   * coins defines the different coins this balance holds.
+   */
   coins: CoinAmino[];
 }
 export interface BalanceAminoMsg {
@@ -149,7 +168,7 @@ export const GenesisState = {
       obj.sendEnabled = object.sendEnabled.map((e: any) => SendEnabled.fromJSON(e));
     return obj;
   },
-  toJSON(message: GenesisState): unknown {
+  toJSON(message: GenesisState): JsonSafe<GenesisState> {
     const obj: any = {};
     message.params !== undefined && (obj.params = message.params ? Params.toJSON(message.params) : undefined);
     if (message.balances) {
@@ -198,26 +217,26 @@ export const GenesisState = {
   },
   toAmino(message: GenesisState): GenesisStateAmino {
     const obj: any = {};
-    obj.params = message.params ? Params.toAmino(message.params) : Params.fromPartial({});
+    obj.params = message.params ? Params.toAmino(message.params) : Params.toAmino(Params.fromPartial({}));
     if (message.balances) {
       obj.balances = message.balances.map((e) => (e ? Balance.toAmino(e) : undefined));
     } else {
-      obj.balances = [];
+      obj.balances = message.balances;
     }
     if (message.supply) {
       obj.supply = message.supply.map((e) => (e ? Coin.toAmino(e) : undefined));
     } else {
-      obj.supply = [];
+      obj.supply = message.supply;
     }
     if (message.denomMetadata) {
       obj.denom_metadata = message.denomMetadata.map((e) => (e ? Metadata.toAmino(e) : undefined));
     } else {
-      obj.denom_metadata = [];
+      obj.denom_metadata = message.denomMetadata;
     }
     if (message.sendEnabled) {
       obj.send_enabled = message.sendEnabled.map((e) => (e ? SendEnabled.toAmino(e) : undefined));
     } else {
-      obj.send_enabled = [];
+      obj.send_enabled = message.sendEnabled;
     }
     return obj;
   },
@@ -286,7 +305,7 @@ export const Balance = {
     if (Array.isArray(object?.coins)) obj.coins = object.coins.map((e: any) => Coin.fromJSON(e));
     return obj;
   },
-  toJSON(message: Balance): unknown {
+  toJSON(message: Balance): JsonSafe<Balance> {
     const obj: any = {};
     message.address !== undefined && (obj.address = message.address);
     if (message.coins) {
@@ -312,11 +331,11 @@ export const Balance = {
   },
   toAmino(message: Balance): BalanceAmino {
     const obj: any = {};
-    obj.address = message.address;
+    obj.address = message.address === "" ? undefined : message.address;
     if (message.coins) {
       obj.coins = message.coins.map((e) => (e ? Coin.toAmino(e) : undefined));
     } else {
-      obj.coins = [];
+      obj.coins = message.coins;
     }
     return obj;
   },

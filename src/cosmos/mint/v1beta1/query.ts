@@ -1,6 +1,7 @@
 /* eslint-disable */
 import { Params, ParamsAmino } from "./mint";
 import { BinaryReader, BinaryWriter } from "../../../binary";
+import { JsonSafe } from "../../../json-safe";
 import { isSet, bytesFromBase64, base64FromBytes } from "../../../helpers";
 import { TxRpc } from "../../../types";
 export const protobufPackage = "cosmos.mint.v1beta1";
@@ -10,7 +11,12 @@ export interface QueryParamsRequestProtoMsg {
   typeUrl: "/cosmos.mint.v1beta1.QueryParamsRequest";
   value: Uint8Array;
 }
-/** QueryParamsRequest is the request type for the Query/Params RPC method. */
+/**
+ * QueryParamsRequest is the request type for the Query/Params RPC method.
+ * @name QueryParamsRequestAmino
+ * @package cosmos.mint.v1beta1
+ * @see proto type: cosmos.mint.v1beta1.QueryParamsRequest
+ */
 export interface QueryParamsRequestAmino {}
 export interface QueryParamsRequestAminoMsg {
   type: "cosmos-sdk/QueryParamsRequest";
@@ -25,9 +31,16 @@ export interface QueryParamsResponseProtoMsg {
   typeUrl: "/cosmos.mint.v1beta1.QueryParamsResponse";
   value: Uint8Array;
 }
-/** QueryParamsResponse is the response type for the Query/Params RPC method. */
+/**
+ * QueryParamsResponse is the response type for the Query/Params RPC method.
+ * @name QueryParamsResponseAmino
+ * @package cosmos.mint.v1beta1
+ * @see proto type: cosmos.mint.v1beta1.QueryParamsResponse
+ */
 export interface QueryParamsResponseAmino {
-  /** params defines the parameters of the module. */
+  /**
+   * params defines the parameters of the module.
+   */
   params: ParamsAmino | undefined;
 }
 export interface QueryParamsResponseAminoMsg {
@@ -40,7 +53,12 @@ export interface QueryInflationRequestProtoMsg {
   typeUrl: "/cosmos.mint.v1beta1.QueryInflationRequest";
   value: Uint8Array;
 }
-/** QueryInflationRequest is the request type for the Query/Inflation RPC method. */
+/**
+ * QueryInflationRequest is the request type for the Query/Inflation RPC method.
+ * @name QueryInflationRequestAmino
+ * @package cosmos.mint.v1beta1
+ * @see proto type: cosmos.mint.v1beta1.QueryInflationRequest
+ */
 export interface QueryInflationRequestAmino {}
 export interface QueryInflationRequestAminoMsg {
   type: "cosmos-sdk/QueryInflationRequest";
@@ -61,9 +79,14 @@ export interface QueryInflationResponseProtoMsg {
 /**
  * QueryInflationResponse is the response type for the Query/Inflation RPC
  * method.
+ * @name QueryInflationResponseAmino
+ * @package cosmos.mint.v1beta1
+ * @see proto type: cosmos.mint.v1beta1.QueryInflationResponse
  */
 export interface QueryInflationResponseAmino {
-  /** inflation is the current minting inflation value. */
+  /**
+   * inflation is the current minting inflation value.
+   */
   inflation: string;
 }
 export interface QueryInflationResponseAminoMsg {
@@ -82,6 +105,9 @@ export interface QueryAnnualProvisionsRequestProtoMsg {
 /**
  * QueryAnnualProvisionsRequest is the request type for the
  * Query/AnnualProvisions RPC method.
+ * @name QueryAnnualProvisionsRequestAmino
+ * @package cosmos.mint.v1beta1
+ * @see proto type: cosmos.mint.v1beta1.QueryAnnualProvisionsRequest
  */
 export interface QueryAnnualProvisionsRequestAmino {}
 export interface QueryAnnualProvisionsRequestAminoMsg {
@@ -103,9 +129,14 @@ export interface QueryAnnualProvisionsResponseProtoMsg {
 /**
  * QueryAnnualProvisionsResponse is the response type for the
  * Query/AnnualProvisions RPC method.
+ * @name QueryAnnualProvisionsResponseAmino
+ * @package cosmos.mint.v1beta1
+ * @see proto type: cosmos.mint.v1beta1.QueryAnnualProvisionsResponse
  */
 export interface QueryAnnualProvisionsResponseAmino {
-  /** annual_provisions is the current minting annual provisions value. */
+  /**
+   * annual_provisions is the current minting annual provisions value.
+   */
   annual_provisions: string;
 }
 export interface QueryAnnualProvisionsResponseAminoMsg {
@@ -138,7 +169,7 @@ export const QueryParamsRequest = {
     const obj = createBaseQueryParamsRequest();
     return obj;
   },
-  toJSON(_: QueryParamsRequest): unknown {
+  toJSON(_: QueryParamsRequest): JsonSafe<QueryParamsRequest> {
     const obj: any = {};
     return obj;
   },
@@ -211,7 +242,7 @@ export const QueryParamsResponse = {
     if (isSet(object.params)) obj.params = Params.fromJSON(object.params);
     return obj;
   },
-  toJSON(message: QueryParamsResponse): unknown {
+  toJSON(message: QueryParamsResponse): JsonSafe<QueryParamsResponse> {
     const obj: any = {};
     message.params !== undefined && (obj.params = message.params ? Params.toJSON(message.params) : undefined);
     return obj;
@@ -232,7 +263,7 @@ export const QueryParamsResponse = {
   },
   toAmino(message: QueryParamsResponse): QueryParamsResponseAmino {
     const obj: any = {};
-    obj.params = message.params ? Params.toAmino(message.params) : Params.fromPartial({});
+    obj.params = message.params ? Params.toAmino(message.params) : Params.toAmino(Params.fromPartial({}));
     return obj;
   },
   fromAminoMsg(object: QueryParamsResponseAminoMsg): QueryParamsResponse {
@@ -283,7 +314,7 @@ export const QueryInflationRequest = {
     const obj = createBaseQueryInflationRequest();
     return obj;
   },
-  toJSON(_: QueryInflationRequest): unknown {
+  toJSON(_: QueryInflationRequest): JsonSafe<QueryInflationRequest> {
     const obj: any = {};
     return obj;
   },
@@ -356,7 +387,7 @@ export const QueryInflationResponse = {
     if (isSet(object.inflation)) obj.inflation = bytesFromBase64(object.inflation);
     return obj;
   },
-  toJSON(message: QueryInflationResponse): unknown {
+  toJSON(message: QueryInflationResponse): JsonSafe<QueryInflationResponse> {
     const obj: any = {};
     message.inflation !== undefined &&
       (obj.inflation = base64FromBytes(
@@ -429,7 +460,7 @@ export const QueryAnnualProvisionsRequest = {
     const obj = createBaseQueryAnnualProvisionsRequest();
     return obj;
   },
-  toJSON(_: QueryAnnualProvisionsRequest): unknown {
+  toJSON(_: QueryAnnualProvisionsRequest): JsonSafe<QueryAnnualProvisionsRequest> {
     const obj: any = {};
     return obj;
   },
@@ -502,7 +533,7 @@ export const QueryAnnualProvisionsResponse = {
     if (isSet(object.annualProvisions)) obj.annualProvisions = bytesFromBase64(object.annualProvisions);
     return obj;
   },
-  toJSON(message: QueryAnnualProvisionsResponse): unknown {
+  toJSON(message: QueryAnnualProvisionsResponse): JsonSafe<QueryAnnualProvisionsResponse> {
     const obj: any = {};
     message.annualProvisions !== undefined &&
       (obj.annualProvisions = base64FromBytes(

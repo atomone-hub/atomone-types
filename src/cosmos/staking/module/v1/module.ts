@@ -1,6 +1,7 @@
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "../../../../binary";
 import { isSet } from "../../../../helpers";
+import { JsonSafe } from "../../../../json-safe";
 export const protobufPackage = "cosmos.staking.module.v1";
 /** Module is the config object of the staking module. */
 export interface Module {
@@ -21,7 +22,12 @@ export interface ModuleProtoMsg {
   typeUrl: "/cosmos.staking.module.v1.Module";
   value: Uint8Array;
 }
-/** Module is the config object of the staking module. */
+/**
+ * Module is the config object of the staking module.
+ * @name ModuleAmino
+ * @package cosmos.staking.module.v1
+ * @see proto type: cosmos.staking.module.v1.Module
+ */
 export interface ModuleAmino {
   /**
    * hooks_order specifies the order of staking hooks and should be a list
@@ -29,11 +35,17 @@ export interface ModuleAmino {
    * provided, then hooks will be applied in alphabetical order of module names.
    */
   hooks_order?: string[];
-  /** authority defines the custom module authority. If not set, defaults to the governance module. */
+  /**
+   * authority defines the custom module authority. If not set, defaults to the governance module.
+   */
   authority?: string;
-  /** bech32_prefix_validator is the bech32 validator prefix for the app. */
+  /**
+   * bech32_prefix_validator is the bech32 validator prefix for the app.
+   */
   bech32_prefix_validator?: string;
-  /** bech32_prefix_consensus is the bech32 consensus node prefix for the app. */
+  /**
+   * bech32_prefix_consensus is the bech32 consensus node prefix for the app.
+   */
   bech32_prefix_consensus?: string;
 }
 export interface ModuleAminoMsg {
@@ -99,7 +111,7 @@ export const Module = {
     if (isSet(object.bech32PrefixConsensus)) obj.bech32PrefixConsensus = String(object.bech32PrefixConsensus);
     return obj;
   },
-  toJSON(message: Module): unknown {
+  toJSON(message: Module): JsonSafe<Module> {
     const obj: any = {};
     if (message.hooksOrder) {
       obj.hooksOrder = message.hooksOrder.map((e) => e);
@@ -140,11 +152,13 @@ export const Module = {
     if (message.hooksOrder) {
       obj.hooks_order = message.hooksOrder.map((e) => e);
     } else {
-      obj.hooks_order = [];
+      obj.hooks_order = message.hooksOrder;
     }
-    obj.authority = message.authority;
-    obj.bech32_prefix_validator = message.bech32PrefixValidator;
-    obj.bech32_prefix_consensus = message.bech32PrefixConsensus;
+    obj.authority = message.authority === "" ? undefined : message.authority;
+    obj.bech32_prefix_validator =
+      message.bech32PrefixValidator === "" ? undefined : message.bech32PrefixValidator;
+    obj.bech32_prefix_consensus =
+      message.bech32PrefixConsensus === "" ? undefined : message.bech32PrefixConsensus;
     return obj;
   },
   fromAminoMsg(object: ModuleAminoMsg): Module {

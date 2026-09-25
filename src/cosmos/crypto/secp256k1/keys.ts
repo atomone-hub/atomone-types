@@ -1,6 +1,7 @@
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "../../../binary";
 import { isSet, bytesFromBase64, base64FromBytes } from "../../../helpers";
+import { JsonSafe } from "../../../json-safe";
 export const protobufPackage = "cosmos.crypto.secp256k1";
 /**
  * PubKey defines a secp256k1 public key
@@ -22,6 +23,9 @@ export interface PubKeyProtoMsg {
  * if the y-coordinate is the lexicographically largest of the two associated with
  * the x-coordinate. Otherwise the first byte is a 0x03.
  * This prefix is followed with the x-coordinate.
+ * @name PubKeyAmino
+ * @package cosmos.crypto.secp256k1
+ * @see proto type: cosmos.crypto.secp256k1.PubKey
  */
 export interface PubKeyAmino {
   key?: string;
@@ -38,7 +42,12 @@ export interface PrivKeyProtoMsg {
   typeUrl: "/cosmos.crypto.secp256k1.PrivKey";
   value: Uint8Array;
 }
-/** PrivKey defines a secp256k1 private key. */
+/**
+ * PrivKey defines a secp256k1 private key.
+ * @name PrivKeyAmino
+ * @package cosmos.crypto.secp256k1
+ * @see proto type: cosmos.crypto.secp256k1.PrivKey
+ */
 export interface PrivKeyAmino {
   key?: string;
 }
@@ -81,7 +90,7 @@ export const PubKey = {
     if (isSet(object.key)) obj.key = bytesFromBase64(object.key);
     return obj;
   },
-  toJSON(message: PubKey): unknown {
+  toJSON(message: PubKey): JsonSafe<PubKey> {
     const obj: any = {};
     message.key !== undefined &&
       (obj.key = base64FromBytes(message.key !== undefined ? message.key : new Uint8Array()));
@@ -161,7 +170,7 @@ export const PrivKey = {
     if (isSet(object.key)) obj.key = bytesFromBase64(object.key);
     return obj;
   },
-  toJSON(message: PrivKey): unknown {
+  toJSON(message: PrivKey): JsonSafe<PrivKey> {
     const obj: any = {};
     message.key !== undefined &&
       (obj.key = base64FromBytes(message.key !== undefined ? message.key : new Uint8Array()));

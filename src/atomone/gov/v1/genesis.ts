@@ -23,6 +23,7 @@ import {
 } from "./gov";
 import { BinaryReader, BinaryWriter } from "../../../binary";
 import { isSet } from "../../../helpers";
+import { JsonSafe } from "../../../json-safe";
 export const protobufPackage = "atomone.gov.v1";
 /** GenesisState defines the gov module's genesis state. */
 export interface GenesisState {
@@ -95,33 +96,46 @@ export interface GenesisStateProtoMsg {
   typeUrl: "/atomone.gov.v1.GenesisState";
   value: Uint8Array;
 }
-/** GenesisState defines the gov module's genesis state. */
+/**
+ * GenesisState defines the gov module's genesis state.
+ * @name GenesisStateAmino
+ * @package atomone.gov.v1
+ * @see proto type: atomone.gov.v1.GenesisState
+ */
 export interface GenesisStateAmino {
-  /** starting_proposal_id is the ID of the starting proposal. */
+  /**
+   * starting_proposal_id is the ID of the starting proposal.
+   */
   starting_proposal_id?: string;
-  /** deposits defines all the deposits present at genesis. */
+  /**
+   * deposits defines all the deposits present at genesis.
+   */
   deposits?: DepositAmino[];
-  /** votes defines all the votes present at genesis. */
+  /**
+   * votes defines all the votes present at genesis.
+   */
   votes?: VoteAmino[];
-  /** proposals defines all the proposals present at genesis. */
+  /**
+   * proposals defines all the proposals present at genesis.
+   */
   proposals?: ProposalAmino[];
   /**
    * Deprecated: Prefer to use `params` instead.
    * deposit_params defines all the paramaters of related to deposit.
+   * @deprecated
    */
-  /** @deprecated */
   deposit_params?: DepositParamsAmino | undefined;
   /**
    * Deprecated: Prefer to use `params` instead.
    * voting_params defines all the paramaters of related to voting.
+   * @deprecated
    */
-  /** @deprecated */
   voting_params?: VotingParamsAmino | undefined;
   /**
    * Deprecated: Prefer to use `params` instead.
    * tally_params defines all the paramaters of related to tally.
+   * @deprecated
    */
-  /** @deprecated */
   tally_params?: TallyParamsAmino | undefined;
   /**
    * params defines all the paramaters of x/gov module.
@@ -135,9 +149,13 @@ export interface GenesisStateAmino {
    * Since: cosmos-sdk 0.48
    */
   constitution?: string;
-  /** last updated value for the dynamic min deposit */
+  /**
+   * last updated value for the dynamic min deposit
+   */
   last_min_deposit?: LastMinDepositAmino | undefined;
-  /** last updated value for the dynamic min initial deposit */
+  /**
+   * last updated value for the dynamic min initial deposit
+   */
   last_min_initial_deposit?: LastMinDepositAmino | undefined;
   /**
    * governance participation EMA
@@ -157,9 +175,13 @@ export interface GenesisStateAmino {
    * the params.LawMinQuorum value.
    */
   law_participation_ema?: string;
-  /** governors defines all the governors present at genesis. */
+  /**
+   * governors defines all the governors present at genesis.
+   */
   governors?: GovernorAmino[];
-  /** governance_delegations defines all the governance delegations present at genesis. */
+  /**
+   * governance_delegations defines all the governance delegations present at genesis.
+   */
   governance_delegations?: GovernanceDelegationAmino[];
 }
 export interface GenesisStateAminoMsg {
@@ -329,7 +351,7 @@ export const GenesisState = {
       );
     return obj;
   },
-  toJSON(message: GenesisState): unknown {
+  toJSON(message: GenesisState): JsonSafe<GenesisState> {
     const obj: any = {};
     message.startingProposalId !== undefined &&
       (obj.startingProposalId = (message.startingProposalId || BigInt(0)).toString());
@@ -465,47 +487,51 @@ export const GenesisState = {
   },
   toAmino(message: GenesisState): GenesisStateAmino {
     const obj: any = {};
-    obj.starting_proposal_id = message.startingProposalId ? message.startingProposalId.toString() : undefined;
+    obj.starting_proposal_id =
+      message.startingProposalId !== BigInt(0) ? message.startingProposalId?.toString() : undefined;
     if (message.deposits) {
       obj.deposits = message.deposits.map((e) => (e ? Deposit.toAmino(e) : undefined));
     } else {
-      obj.deposits = [];
+      obj.deposits = message.deposits;
     }
     if (message.votes) {
       obj.votes = message.votes.map((e) => (e ? Vote.toAmino(e) : undefined));
     } else {
-      obj.votes = [];
+      obj.votes = message.votes;
     }
     if (message.proposals) {
       obj.proposals = message.proposals.map((e) => (e ? Proposal.toAmino(e) : undefined));
     } else {
-      obj.proposals = [];
+      obj.proposals = message.proposals;
     }
     obj.deposit_params = message.depositParams ? DepositParams.toAmino(message.depositParams) : undefined;
     obj.voting_params = message.votingParams ? VotingParams.toAmino(message.votingParams) : undefined;
     obj.tally_params = message.tallyParams ? TallyParams.toAmino(message.tallyParams) : undefined;
     obj.params = message.params ? Params.toAmino(message.params) : undefined;
-    obj.constitution = message.constitution;
+    obj.constitution = message.constitution === "" ? undefined : message.constitution;
     obj.last_min_deposit = message.lastMinDeposit
       ? LastMinDeposit.toAmino(message.lastMinDeposit)
       : undefined;
     obj.last_min_initial_deposit = message.lastMinInitialDeposit
       ? LastMinDeposit.toAmino(message.lastMinInitialDeposit)
       : undefined;
-    obj.participation_ema = message.participationEma;
-    obj.constitution_amendment_participation_ema = message.constitutionAmendmentParticipationEma;
-    obj.law_participation_ema = message.lawParticipationEma;
+    obj.participation_ema = message.participationEma === "" ? undefined : message.participationEma;
+    obj.constitution_amendment_participation_ema =
+      message.constitutionAmendmentParticipationEma === ""
+        ? undefined
+        : message.constitutionAmendmentParticipationEma;
+    obj.law_participation_ema = message.lawParticipationEma === "" ? undefined : message.lawParticipationEma;
     if (message.governors) {
       obj.governors = message.governors.map((e) => (e ? Governor.toAmino(e) : undefined));
     } else {
-      obj.governors = [];
+      obj.governors = message.governors;
     }
     if (message.governanceDelegations) {
       obj.governance_delegations = message.governanceDelegations.map((e) =>
         e ? GovernanceDelegation.toAmino(e) : undefined,
       );
     } else {
-      obj.governance_delegations = [];
+      obj.governance_delegations = message.governanceDelegations;
     }
     return obj;
   },

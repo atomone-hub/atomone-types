@@ -3,6 +3,7 @@ import { CounterpartyInfo, CounterpartyInfoAmino } from "./counterparty";
 import { Config, ConfigAmino } from "./config";
 import { BinaryReader, BinaryWriter } from "../../../../binary";
 import { isSet } from "../../../../helpers";
+import { JsonSafe } from "../../../../json-safe";
 import { TxRpc } from "../../../../types";
 export const protobufPackage = "ibc.core.client.v2";
 /**
@@ -20,9 +21,14 @@ export interface QueryCounterpartyInfoRequestProtoMsg {
 /**
  * QueryCounterpartyInfoRequest is the request type for the Query/CounterpartyInfo RPC
  * method
+ * @name QueryCounterpartyInfoRequestAmino
+ * @package ibc.core.client.v2
+ * @see proto type: ibc.core.client.v2.QueryCounterpartyInfoRequest
  */
 export interface QueryCounterpartyInfoRequestAmino {
-  /** client state unique identifier */
+  /**
+   * client state unique identifier
+   */
   client_id?: string;
 }
 export interface QueryCounterpartyInfoRequestAminoMsg {
@@ -43,6 +49,9 @@ export interface QueryCounterpartyInfoResponseProtoMsg {
 /**
  * QueryCounterpartyInfoResponse is the response type for the
  * Query/CounterpartyInfo RPC method.
+ * @name QueryCounterpartyInfoResponseAmino
+ * @package ibc.core.client.v2
+ * @see proto type: ibc.core.client.v2.QueryCounterpartyInfoResponse
  */
 export interface QueryCounterpartyInfoResponseAmino {
   counterparty_info?: CounterpartyInfoAmino | undefined;
@@ -60,9 +69,16 @@ export interface QueryConfigRequestProtoMsg {
   typeUrl: "/ibc.core.client.v2.QueryConfigRequest";
   value: Uint8Array;
 }
-/** QueryConfigRequest is the request type for the Query/Config RPC method */
+/**
+ * QueryConfigRequest is the request type for the Query/Config RPC method
+ * @name QueryConfigRequestAmino
+ * @package ibc.core.client.v2
+ * @see proto type: ibc.core.client.v2.QueryConfigRequest
+ */
 export interface QueryConfigRequestAmino {
-  /** client state unique identifier */
+  /**
+   * client state unique identifier
+   */
   client_id?: string;
 }
 export interface QueryConfigRequestAminoMsg {
@@ -77,7 +93,12 @@ export interface QueryConfigResponseProtoMsg {
   typeUrl: "/ibc.core.client.v2.QueryConfigResponse";
   value: Uint8Array;
 }
-/** QueryConfigResponse is the response type for the Query/Config RPC method */
+/**
+ * QueryConfigResponse is the response type for the Query/Config RPC method
+ * @name QueryConfigResponseAmino
+ * @package ibc.core.client.v2
+ * @see proto type: ibc.core.client.v2.QueryConfigResponse
+ */
 export interface QueryConfigResponseAmino {
   config?: ConfigAmino | undefined;
 }
@@ -120,7 +141,7 @@ export const QueryCounterpartyInfoRequest = {
     if (isSet(object.clientId)) obj.clientId = String(object.clientId);
     return obj;
   },
-  toJSON(message: QueryCounterpartyInfoRequest): unknown {
+  toJSON(message: QueryCounterpartyInfoRequest): JsonSafe<QueryCounterpartyInfoRequest> {
     const obj: any = {};
     message.clientId !== undefined && (obj.clientId = message.clientId);
     return obj;
@@ -139,7 +160,7 @@ export const QueryCounterpartyInfoRequest = {
   },
   toAmino(message: QueryCounterpartyInfoRequest): QueryCounterpartyInfoRequestAmino {
     const obj: any = {};
-    obj.client_id = message.clientId;
+    obj.client_id = message.clientId === "" ? undefined : message.clientId;
     return obj;
   },
   fromAminoMsg(object: QueryCounterpartyInfoRequestAminoMsg): QueryCounterpartyInfoRequest {
@@ -200,7 +221,7 @@ export const QueryCounterpartyInfoResponse = {
       obj.counterpartyInfo = CounterpartyInfo.fromJSON(object.counterpartyInfo);
     return obj;
   },
-  toJSON(message: QueryCounterpartyInfoResponse): unknown {
+  toJSON(message: QueryCounterpartyInfoResponse): JsonSafe<QueryCounterpartyInfoResponse> {
     const obj: any = {};
     message.counterpartyInfo !== undefined &&
       (obj.counterpartyInfo = message.counterpartyInfo
@@ -286,7 +307,7 @@ export const QueryConfigRequest = {
     if (isSet(object.clientId)) obj.clientId = String(object.clientId);
     return obj;
   },
-  toJSON(message: QueryConfigRequest): unknown {
+  toJSON(message: QueryConfigRequest): JsonSafe<QueryConfigRequest> {
     const obj: any = {};
     message.clientId !== undefined && (obj.clientId = message.clientId);
     return obj;
@@ -305,7 +326,7 @@ export const QueryConfigRequest = {
   },
   toAmino(message: QueryConfigRequest): QueryConfigRequestAmino {
     const obj: any = {};
-    obj.client_id = message.clientId;
+    obj.client_id = message.clientId === "" ? undefined : message.clientId;
     return obj;
   },
   fromAminoMsg(object: QueryConfigRequestAminoMsg): QueryConfigRequest {
@@ -365,7 +386,7 @@ export const QueryConfigResponse = {
     if (isSet(object.config)) obj.config = Config.fromJSON(object.config);
     return obj;
   },
-  toJSON(message: QueryConfigResponse): unknown {
+  toJSON(message: QueryConfigResponse): JsonSafe<QueryConfigResponse> {
     const obj: any = {};
     message.config !== undefined && (obj.config = message.config ? Config.toJSON(message.config) : undefined);
     return obj;

@@ -4,6 +4,7 @@ import { Params, ParamsAmino } from "./transfer";
 import { Coin, CoinAmino } from "../../../../cosmos/base/v1beta1/coin";
 import { BinaryReader, BinaryWriter } from "../../../../binary";
 import { isSet } from "../../../../helpers";
+import { JsonSafe } from "../../../../json-safe";
 export const protobufPackage = "ibc.applications.transfer.v1";
 /** GenesisState defines the ibc-transfer genesis state */
 export interface GenesisState {
@@ -20,7 +21,12 @@ export interface GenesisStateProtoMsg {
   typeUrl: "/ibc.applications.transfer.v1.GenesisState";
   value: Uint8Array;
 }
-/** GenesisState defines the ibc-transfer genesis state */
+/**
+ * GenesisState defines the ibc-transfer genesis state
+ * @name GenesisStateAmino
+ * @package ibc.applications.transfer.v1
+ * @see proto type: ibc.applications.transfer.v1.GenesisState
+ */
 export interface GenesisStateAmino {
   port_id?: string;
   denoms?: DenomAmino[];
@@ -95,7 +101,7 @@ export const GenesisState = {
       obj.totalEscrowed = object.totalEscrowed.map((e: any) => Coin.fromJSON(e));
     return obj;
   },
-  toJSON(message: GenesisState): unknown {
+  toJSON(message: GenesisState): JsonSafe<GenesisState> {
     const obj: any = {};
     message.portId !== undefined && (obj.portId = message.portId);
     if (message.denoms) {
@@ -135,17 +141,17 @@ export const GenesisState = {
   },
   toAmino(message: GenesisState): GenesisStateAmino {
     const obj: any = {};
-    obj.port_id = message.portId;
+    obj.port_id = message.portId === "" ? undefined : message.portId;
     if (message.denoms) {
       obj.denoms = message.denoms.map((e) => (e ? Denom.toAmino(e) : undefined));
     } else {
-      obj.denoms = [];
+      obj.denoms = message.denoms;
     }
     obj.params = message.params ? Params.toAmino(message.params) : undefined;
     if (message.totalEscrowed) {
       obj.total_escrowed = message.totalEscrowed.map((e) => (e ? Coin.toAmino(e) : undefined));
     } else {
-      obj.total_escrowed = [];
+      obj.total_escrowed = message.totalEscrowed;
     }
     return obj;
   },

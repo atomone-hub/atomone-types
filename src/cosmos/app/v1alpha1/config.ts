@@ -1,6 +1,7 @@
 /* eslint-disable */
 import { Any, AnyAmino } from "../../../google/protobuf/any";
 import { BinaryReader, BinaryWriter } from "../../../binary";
+import { JsonSafe } from "../../../json-safe";
 import { isSet } from "../../../helpers";
 export const protobufPackage = "cosmos.app.v1alpha1";
 /**
@@ -34,9 +35,14 @@ export interface ConfigProtoMsg {
  * allow a mixture of declarative and imperative app wiring, however, apps
  * that strive for the maximum ease of maintainability should be able to describe
  * their state machine with a config object alone.
+ * @name ConfigAmino
+ * @package cosmos.app.v1alpha1
+ * @see proto type: cosmos.app.v1alpha1.Config
  */
 export interface ConfigAmino {
-  /** modules are the module configurations for the app. */
+  /**
+   * modules are the module configurations for the app.
+   */
   modules?: ModuleConfigAmino[];
   /**
    * golang_bindings specifies explicit interface to implementation type bindings which
@@ -80,7 +86,12 @@ export interface ModuleConfigProtoMsg {
   typeUrl: "/cosmos.app.v1alpha1.ModuleConfig";
   value: Uint8Array;
 }
-/** ModuleConfig is a module configuration for an app. */
+/**
+ * ModuleConfig is a module configuration for an app.
+ * @name ModuleConfigAmino
+ * @package cosmos.app.v1alpha1
+ * @see proto type: cosmos.app.v1alpha1.ModuleConfig
+ */
 export interface ModuleConfigAmino {
   /**
    * name is the unique name of the module within the app. It should be a name
@@ -122,11 +133,20 @@ export interface GolangBindingProtoMsg {
   typeUrl: "/cosmos.app.v1alpha1.GolangBinding";
   value: Uint8Array;
 }
-/** GolangBinding is an explicit interface type to implementing type binding for dependency injection. */
+/**
+ * GolangBinding is an explicit interface type to implementing type binding for dependency injection.
+ * @name GolangBindingAmino
+ * @package cosmos.app.v1alpha1
+ * @see proto type: cosmos.app.v1alpha1.GolangBinding
+ */
 export interface GolangBindingAmino {
-  /** interface_type is the interface type which will be bound to a specific implementation type */
+  /**
+   * interface_type is the interface type which will be bound to a specific implementation type
+   */
   interface_type?: string;
-  /** implementation is the implementing type which will be supplied when an input of type interface is requested */
+  /**
+   * implementation is the implementing type which will be supplied when an input of type interface is requested
+   */
   implementation?: string;
 }
 export interface GolangBindingAminoMsg {
@@ -178,7 +198,7 @@ export const Config = {
       obj.golangBindings = object.golangBindings.map((e: any) => GolangBinding.fromJSON(e));
     return obj;
   },
-  toJSON(message: Config): unknown {
+  toJSON(message: Config): JsonSafe<Config> {
     const obj: any = {};
     if (message.modules) {
       obj.modules = message.modules.map((e) => (e ? ModuleConfig.toJSON(e) : undefined));
@@ -209,12 +229,12 @@ export const Config = {
     if (message.modules) {
       obj.modules = message.modules.map((e) => (e ? ModuleConfig.toAmino(e) : undefined));
     } else {
-      obj.modules = [];
+      obj.modules = message.modules;
     }
     if (message.golangBindings) {
       obj.golang_bindings = message.golangBindings.map((e) => (e ? GolangBinding.toAmino(e) : undefined));
     } else {
-      obj.golang_bindings = [];
+      obj.golang_bindings = message.golangBindings;
     }
     return obj;
   },
@@ -292,7 +312,7 @@ export const ModuleConfig = {
       obj.golangBindings = object.golangBindings.map((e: any) => GolangBinding.fromJSON(e));
     return obj;
   },
-  toJSON(message: ModuleConfig): unknown {
+  toJSON(message: ModuleConfig): JsonSafe<ModuleConfig> {
     const obj: any = {};
     message.name !== undefined && (obj.name = message.name);
     message.config !== undefined && (obj.config = message.config ? Any.toJSON(message.config) : undefined);
@@ -325,12 +345,12 @@ export const ModuleConfig = {
   },
   toAmino(message: ModuleConfig): ModuleConfigAmino {
     const obj: any = {};
-    obj.name = message.name;
+    obj.name = message.name === "" ? undefined : message.name;
     obj.config = message.config ? Any.toAmino(message.config) : undefined;
     if (message.golangBindings) {
       obj.golang_bindings = message.golangBindings.map((e) => (e ? GolangBinding.toAmino(e) : undefined));
     } else {
-      obj.golang_bindings = [];
+      obj.golang_bindings = message.golangBindings;
     }
     return obj;
   },
@@ -399,7 +419,7 @@ export const GolangBinding = {
     if (isSet(object.implementation)) obj.implementation = String(object.implementation);
     return obj;
   },
-  toJSON(message: GolangBinding): unknown {
+  toJSON(message: GolangBinding): JsonSafe<GolangBinding> {
     const obj: any = {};
     message.interfaceType !== undefined && (obj.interfaceType = message.interfaceType);
     message.implementation !== undefined && (obj.implementation = message.implementation);
@@ -423,8 +443,8 @@ export const GolangBinding = {
   },
   toAmino(message: GolangBinding): GolangBindingAmino {
     const obj: any = {};
-    obj.interface_type = message.interfaceType;
-    obj.implementation = message.implementation;
+    obj.interface_type = message.interfaceType === "" ? undefined : message.interfaceType;
+    obj.implementation = message.implementation === "" ? undefined : message.implementation;
     return obj;
   },
   fromAminoMsg(object: GolangBindingAminoMsg): GolangBinding {

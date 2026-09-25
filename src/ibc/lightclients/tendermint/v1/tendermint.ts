@@ -14,6 +14,7 @@ import {
   fromTimestamp,
   base64FromBytes,
 } from "../../../../helpers";
+import { JsonSafe } from "../../../../json-safe";
 export const protobufPackage = "ibc.lightclients.tendermint.v1";
 /**
  * ClientState from Tendermint tracks the current validator set, latest height,
@@ -61,6 +62,9 @@ export interface ClientStateProtoMsg {
 /**
  * ClientState from Tendermint tracks the current validator set, latest height,
  * and a possible frozen height.
+ * @name ClientStateAmino
+ * @package ibc.lightclients.tendermint.v1
+ * @see proto type: ibc.lightclients.tendermint.v1.ClientState
  */
 export interface ClientStateAmino {
   chain_id?: string;
@@ -70,15 +74,25 @@ export interface ClientStateAmino {
    * submitted headers are valid for upgrade
    */
   trusting_period?: DurationAmino | undefined;
-  /** duration of the staking unbonding period */
+  /**
+   * duration of the staking unbonding period
+   */
   unbonding_period?: DurationAmino | undefined;
-  /** defines how much new (untrusted) header's Time can drift into the future. */
+  /**
+   * defines how much new (untrusted) header's Time can drift into the future.
+   */
   max_clock_drift?: DurationAmino | undefined;
-  /** Block height when the client was frozen due to a misbehaviour */
+  /**
+   * Block height when the client was frozen due to a misbehaviour
+   */
   frozen_height?: HeightAmino | undefined;
-  /** Latest height the client was updated to */
+  /**
+   * Latest height the client was updated to
+   */
   latest_height?: HeightAmino | undefined;
-  /** Proof specifications used in verifying counterparty state */
+  /**
+   * Proof specifications used in verifying counterparty state
+   */
   proof_specs?: ProofSpecAmino[];
   /**
    * Path at which next upgraded client will be committed.
@@ -90,11 +104,15 @@ export interface ClientStateAmino {
    * "upgradedIBCState"}`
    */
   upgrade_path?: string[];
-  /** allow_update_after_expiry is deprecated */
-  /** @deprecated */
+  /**
+   * allow_update_after_expiry is deprecated
+   * @deprecated
+   */
   allow_update_after_expiry?: boolean;
-  /** allow_update_after_misbehaviour is deprecated */
-  /** @deprecated */
+  /**
+   * allow_update_after_misbehaviour is deprecated
+   * @deprecated
+   */
   allow_update_after_misbehaviour?: boolean;
 }
 export interface ClientStateAminoMsg {
@@ -116,14 +134,21 @@ export interface ConsensusStateProtoMsg {
   typeUrl: "/ibc.lightclients.tendermint.v1.ConsensusState";
   value: Uint8Array;
 }
-/** ConsensusState defines the consensus state from Tendermint. */
+/**
+ * ConsensusState defines the consensus state from Tendermint.
+ * @name ConsensusStateAmino
+ * @package ibc.lightclients.tendermint.v1
+ * @see proto type: ibc.lightclients.tendermint.v1.ConsensusState
+ */
 export interface ConsensusStateAmino {
   /**
    * timestamp that corresponds to the block height in which the ConsensusState
    * was stored.
    */
   timestamp?: string | undefined;
-  /** commitment root (i.e app hash) */
+  /**
+   * commitment root (i.e app hash)
+   */
   root?: MerkleRootAmino | undefined;
   next_validators_hash?: string;
 }
@@ -149,10 +174,15 @@ export interface MisbehaviourProtoMsg {
 /**
  * Misbehaviour is a wrapper over two conflicting Headers
  * that implements Misbehaviour interface expected by ICS-02
+ * @name MisbehaviourAmino
+ * @package ibc.lightclients.tendermint.v1
+ * @see proto type: ibc.lightclients.tendermint.v1.Misbehaviour
  */
 export interface MisbehaviourAmino {
-  /** ClientID is deprecated */
-  /** @deprecated */
+  /**
+   * ClientID is deprecated
+   * @deprecated
+   */
   client_id?: string;
   header_1?: HeaderAmino | undefined;
   header_2?: HeaderAmino | undefined;
@@ -198,6 +228,9 @@ export interface HeaderProtoMsg {
  * current time in order to correctly verify, and the TrustedValidators must
  * hash to TrustedConsensusState.NextValidatorsHash since that is the last
  * trusted validator set at the TrustedHeight.
+ * @name HeaderAmino
+ * @package ibc.lightclients.tendermint.v1
+ * @see proto type: ibc.lightclients.tendermint.v1.Header
  */
 export interface HeaderAmino {
   signed_header?: SignedHeaderAmino | undefined;
@@ -224,6 +257,9 @@ export interface FractionProtoMsg {
 /**
  * Fraction defines the protobuf message type for tmmath.Fraction that only
  * supports positive values.
+ * @name FractionAmino
+ * @package ibc.lightclients.tendermint.v1
+ * @see proto type: ibc.lightclients.tendermint.v1.Fraction
  */
 export interface FractionAmino {
   numerator?: string;
@@ -351,7 +387,7 @@ export const ClientState = {
       obj.allowUpdateAfterMisbehaviour = Boolean(object.allowUpdateAfterMisbehaviour);
     return obj;
   },
-  toJSON(message: ClientState): unknown {
+  toJSON(message: ClientState): JsonSafe<ClientState> {
     const obj: any = {};
     message.chainId !== undefined && (obj.chainId = message.chainId);
     message.trustLevel !== undefined &&
@@ -447,7 +483,7 @@ export const ClientState = {
   },
   toAmino(message: ClientState): ClientStateAmino {
     const obj: any = {};
-    obj.chain_id = message.chainId;
+    obj.chain_id = message.chainId === "" ? undefined : message.chainId;
     obj.trust_level = message.trustLevel ? Fraction.toAmino(message.trustLevel) : undefined;
     obj.trusting_period = message.trustingPeriod ? Duration.toAmino(message.trustingPeriod) : undefined;
     obj.unbonding_period = message.unbondingPeriod ? Duration.toAmino(message.unbondingPeriod) : undefined;
@@ -457,15 +493,17 @@ export const ClientState = {
     if (message.proofSpecs) {
       obj.proof_specs = message.proofSpecs.map((e) => (e ? ProofSpec.toAmino(e) : undefined));
     } else {
-      obj.proof_specs = [];
+      obj.proof_specs = message.proofSpecs;
     }
     if (message.upgradePath) {
       obj.upgrade_path = message.upgradePath.map((e) => e);
     } else {
-      obj.upgrade_path = [];
+      obj.upgrade_path = message.upgradePath;
     }
-    obj.allow_update_after_expiry = message.allowUpdateAfterExpiry;
-    obj.allow_update_after_misbehaviour = message.allowUpdateAfterMisbehaviour;
+    obj.allow_update_after_expiry =
+      message.allowUpdateAfterExpiry === false ? undefined : message.allowUpdateAfterExpiry;
+    obj.allow_update_after_misbehaviour =
+      message.allowUpdateAfterMisbehaviour === false ? undefined : message.allowUpdateAfterMisbehaviour;
     return obj;
   },
   fromAminoMsg(object: ClientStateAminoMsg): ClientState {
@@ -541,7 +579,7 @@ export const ConsensusState = {
     if (isSet(object.nextValidatorsHash)) obj.nextValidatorsHash = bytesFromBase64(object.nextValidatorsHash);
     return obj;
   },
-  toJSON(message: ConsensusState): unknown {
+  toJSON(message: ConsensusState): JsonSafe<ConsensusState> {
     const obj: any = {};
     message.timestamp !== undefined && (obj.timestamp = fromTimestamp(message.timestamp).toISOString());
     message.root !== undefined && (obj.root = message.root ? MerkleRoot.toJSON(message.root) : undefined);
@@ -657,7 +695,7 @@ export const Misbehaviour = {
     if (isSet(object.header2)) obj.header2 = Header.fromJSON(object.header2);
     return obj;
   },
-  toJSON(message: Misbehaviour): unknown {
+  toJSON(message: Misbehaviour): JsonSafe<Misbehaviour> {
     const obj: any = {};
     message.clientId !== undefined && (obj.clientId = message.clientId);
     message.header1 !== undefined &&
@@ -692,7 +730,7 @@ export const Misbehaviour = {
   },
   toAmino(message: Misbehaviour): MisbehaviourAmino {
     const obj: any = {};
-    obj.client_id = message.clientId;
+    obj.client_id = message.clientId === "" ? undefined : message.clientId;
     obj.header_1 = message.header1 ? Header.toAmino(message.header1) : undefined;
     obj.header_2 = message.header2 ? Header.toAmino(message.header2) : undefined;
     return obj;
@@ -779,7 +817,7 @@ export const Header = {
       obj.trustedValidators = ValidatorSet.fromJSON(object.trustedValidators);
     return obj;
   },
-  toJSON(message: Header): unknown {
+  toJSON(message: Header): JsonSafe<Header> {
     const obj: any = {};
     message.signedHeader !== undefined &&
       (obj.signedHeader = message.signedHeader ? SignedHeader.toJSON(message.signedHeader) : undefined);
@@ -900,7 +938,7 @@ export const Fraction = {
     if (isSet(object.denominator)) obj.denominator = BigInt(object.denominator.toString());
     return obj;
   },
-  toJSON(message: Fraction): unknown {
+  toJSON(message: Fraction): JsonSafe<Fraction> {
     const obj: any = {};
     message.numerator !== undefined && (obj.numerator = (message.numerator || BigInt(0)).toString());
     message.denominator !== undefined && (obj.denominator = (message.denominator || BigInt(0)).toString());
@@ -928,8 +966,8 @@ export const Fraction = {
   },
   toAmino(message: Fraction): FractionAmino {
     const obj: any = {};
-    obj.numerator = message.numerator ? message.numerator.toString() : undefined;
-    obj.denominator = message.denominator ? message.denominator.toString() : undefined;
+    obj.numerator = message.numerator !== BigInt(0) ? message.numerator?.toString() : undefined;
+    obj.denominator = message.denominator !== BigInt(0) ? message.denominator?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: FractionAminoMsg): Fraction {

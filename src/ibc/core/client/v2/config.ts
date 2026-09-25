@@ -1,5 +1,6 @@
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "../../../../binary";
+import { JsonSafe } from "../../../../json-safe";
 export const protobufPackage = "ibc.core.client.v2";
 /**
  * Config is a **per-client** configuration struct that sets which relayers are allowed to relay v2 IBC messages
@@ -20,9 +21,14 @@ export interface ConfigProtoMsg {
  * for a given client.
  * If it is set, then only relayers in the allow list can send v2 messages
  * If it is not set, then the client allows permissionless relaying of v2 messages
+ * @name ConfigAmino
+ * @package ibc.core.client.v2
+ * @see proto type: ibc.core.client.v2.Config
  */
 export interface ConfigAmino {
-  /** allowed_relayers defines the set of allowed relayers for IBC V2 protocol for the given client */
+  /**
+   * allowed_relayers defines the set of allowed relayers for IBC V2 protocol for the given client
+   */
   allowed_relayers?: string[];
 }
 export interface ConfigAminoMsg {
@@ -65,7 +71,7 @@ export const Config = {
       obj.allowedRelayers = object.allowedRelayers.map((e: any) => String(e));
     return obj;
   },
-  toJSON(message: Config): unknown {
+  toJSON(message: Config): JsonSafe<Config> {
     const obj: any = {};
     if (message.allowedRelayers) {
       obj.allowedRelayers = message.allowedRelayers.map((e) => e);
@@ -89,7 +95,7 @@ export const Config = {
     if (message.allowedRelayers) {
       obj.allowed_relayers = message.allowedRelayers.map((e) => e);
     } else {
-      obj.allowed_relayers = [];
+      obj.allowed_relayers = message.allowedRelayers;
     }
     return obj;
   },

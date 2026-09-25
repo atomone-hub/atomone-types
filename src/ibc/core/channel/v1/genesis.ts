@@ -2,6 +2,7 @@
 import { IdentifiedChannel, IdentifiedChannelAmino, PacketState, PacketStateAmino } from "./channel";
 import { BinaryReader, BinaryWriter } from "../../../../binary";
 import { isSet } from "../../../../helpers";
+import { JsonSafe } from "../../../../json-safe";
 export const protobufPackage = "ibc.core.channel.v1";
 /** GenesisState defines the ibc channel submodule's genesis state. */
 export interface GenesisState {
@@ -19,7 +20,12 @@ export interface GenesisStateProtoMsg {
   typeUrl: "/ibc.core.channel.v1.GenesisState";
   value: Uint8Array;
 }
-/** GenesisState defines the ibc channel submodule's genesis state. */
+/**
+ * GenesisState defines the ibc channel submodule's genesis state.
+ * @name GenesisStateAmino
+ * @package ibc.core.channel.v1
+ * @see proto type: ibc.core.channel.v1.GenesisState
+ */
 export interface GenesisStateAmino {
   channels?: IdentifiedChannelAmino[];
   acknowledgements?: PacketStateAmino[];
@@ -28,7 +34,9 @@ export interface GenesisStateAmino {
   send_sequences?: PacketSequenceAmino[];
   recv_sequences?: PacketSequenceAmino[];
   ack_sequences?: PacketSequenceAmino[];
-  /** the sequence for the next generated channel identifier */
+  /**
+   * the sequence for the next generated channel identifier
+   */
   next_channel_sequence?: string;
 }
 export interface GenesisStateAminoMsg {
@@ -51,6 +59,9 @@ export interface PacketSequenceProtoMsg {
 /**
  * PacketSequence defines the genesis type necessary to retrieve and store
  * next send and receive sequences.
+ * @name PacketSequenceAmino
+ * @package ibc.core.channel.v1
+ * @see proto type: ibc.core.channel.v1.PacketSequence
  */
 export interface PacketSequenceAmino {
   port_id?: string;
@@ -160,7 +171,7 @@ export const GenesisState = {
       obj.nextChannelSequence = BigInt(object.nextChannelSequence.toString());
     return obj;
   },
-  toJSON(message: GenesisState): unknown {
+  toJSON(message: GenesisState): JsonSafe<GenesisState> {
     const obj: any = {};
     if (message.channels) {
       obj.channels = message.channels.map((e) => (e ? IdentifiedChannel.toJSON(e) : undefined));
@@ -234,41 +245,40 @@ export const GenesisState = {
     if (message.channels) {
       obj.channels = message.channels.map((e) => (e ? IdentifiedChannel.toAmino(e) : undefined));
     } else {
-      obj.channels = [];
+      obj.channels = message.channels;
     }
     if (message.acknowledgements) {
       obj.acknowledgements = message.acknowledgements.map((e) => (e ? PacketState.toAmino(e) : undefined));
     } else {
-      obj.acknowledgements = [];
+      obj.acknowledgements = message.acknowledgements;
     }
     if (message.commitments) {
       obj.commitments = message.commitments.map((e) => (e ? PacketState.toAmino(e) : undefined));
     } else {
-      obj.commitments = [];
+      obj.commitments = message.commitments;
     }
     if (message.receipts) {
       obj.receipts = message.receipts.map((e) => (e ? PacketState.toAmino(e) : undefined));
     } else {
-      obj.receipts = [];
+      obj.receipts = message.receipts;
     }
     if (message.sendSequences) {
       obj.send_sequences = message.sendSequences.map((e) => (e ? PacketSequence.toAmino(e) : undefined));
     } else {
-      obj.send_sequences = [];
+      obj.send_sequences = message.sendSequences;
     }
     if (message.recvSequences) {
       obj.recv_sequences = message.recvSequences.map((e) => (e ? PacketSequence.toAmino(e) : undefined));
     } else {
-      obj.recv_sequences = [];
+      obj.recv_sequences = message.recvSequences;
     }
     if (message.ackSequences) {
       obj.ack_sequences = message.ackSequences.map((e) => (e ? PacketSequence.toAmino(e) : undefined));
     } else {
-      obj.ack_sequences = [];
+      obj.ack_sequences = message.ackSequences;
     }
-    obj.next_channel_sequence = message.nextChannelSequence
-      ? message.nextChannelSequence.toString()
-      : undefined;
+    obj.next_channel_sequence =
+      message.nextChannelSequence !== BigInt(0) ? message.nextChannelSequence?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: GenesisStateAminoMsg): GenesisState {
@@ -344,7 +354,7 @@ export const PacketSequence = {
     if (isSet(object.sequence)) obj.sequence = BigInt(object.sequence.toString());
     return obj;
   },
-  toJSON(message: PacketSequence): unknown {
+  toJSON(message: PacketSequence): JsonSafe<PacketSequence> {
     const obj: any = {};
     message.portId !== undefined && (obj.portId = message.portId);
     message.channelId !== undefined && (obj.channelId = message.channelId);
@@ -375,9 +385,9 @@ export const PacketSequence = {
   },
   toAmino(message: PacketSequence): PacketSequenceAmino {
     const obj: any = {};
-    obj.port_id = message.portId;
-    obj.channel_id = message.channelId;
-    obj.sequence = message.sequence ? message.sequence.toString() : undefined;
+    obj.port_id = message.portId === "" ? undefined : message.portId;
+    obj.channel_id = message.channelId === "" ? undefined : message.channelId;
+    obj.sequence = message.sequence !== BigInt(0) ? message.sequence?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: PacketSequenceAminoMsg): PacketSequence {

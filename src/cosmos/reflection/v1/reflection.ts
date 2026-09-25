@@ -1,6 +1,7 @@
 /* eslint-disable */
 import { FileDescriptorProto, FileDescriptorProtoAmino } from "../../../google/protobuf/descriptor";
 import { BinaryReader, BinaryWriter } from "../../../binary";
+import { JsonSafe } from "../../../json-safe";
 import { TxRpc } from "../../../types";
 export const protobufPackage = "cosmos.reflection.v1";
 /** FileDescriptorsRequest is the Query/FileDescriptors request type. */
@@ -9,7 +10,12 @@ export interface FileDescriptorsRequestProtoMsg {
   typeUrl: "/cosmos.reflection.v1.FileDescriptorsRequest";
   value: Uint8Array;
 }
-/** FileDescriptorsRequest is the Query/FileDescriptors request type. */
+/**
+ * FileDescriptorsRequest is the Query/FileDescriptors request type.
+ * @name FileDescriptorsRequestAmino
+ * @package cosmos.reflection.v1
+ * @see proto type: cosmos.reflection.v1.FileDescriptorsRequest
+ */
 export interface FileDescriptorsRequestAmino {}
 export interface FileDescriptorsRequestAminoMsg {
   type: "cosmos-sdk/FileDescriptorsRequest";
@@ -24,9 +30,16 @@ export interface FileDescriptorsResponseProtoMsg {
   typeUrl: "/cosmos.reflection.v1.FileDescriptorsResponse";
   value: Uint8Array;
 }
-/** FileDescriptorsResponse is the Query/FileDescriptors response type. */
+/**
+ * FileDescriptorsResponse is the Query/FileDescriptors response type.
+ * @name FileDescriptorsResponseAmino
+ * @package cosmos.reflection.v1
+ * @see proto type: cosmos.reflection.v1.FileDescriptorsResponse
+ */
 export interface FileDescriptorsResponseAmino {
-  /** files is the file descriptors. */
+  /**
+   * files is the file descriptors.
+   */
   files?: FileDescriptorProtoAmino[];
 }
 export interface FileDescriptorsResponseAminoMsg {
@@ -59,7 +72,7 @@ export const FileDescriptorsRequest = {
     const obj = createBaseFileDescriptorsRequest();
     return obj;
   },
-  toJSON(_: FileDescriptorsRequest): unknown {
+  toJSON(_: FileDescriptorsRequest): JsonSafe<FileDescriptorsRequest> {
     const obj: any = {};
     return obj;
   },
@@ -133,7 +146,7 @@ export const FileDescriptorsResponse = {
       obj.files = object.files.map((e: any) => FileDescriptorProto.fromJSON(e));
     return obj;
   },
-  toJSON(message: FileDescriptorsResponse): unknown {
+  toJSON(message: FileDescriptorsResponse): JsonSafe<FileDescriptorsResponse> {
     const obj: any = {};
     if (message.files) {
       obj.files = message.files.map((e) => (e ? FileDescriptorProto.toJSON(e) : undefined));
@@ -157,7 +170,7 @@ export const FileDescriptorsResponse = {
     if (message.files) {
       obj.files = message.files.map((e) => (e ? FileDescriptorProto.toAmino(e) : undefined));
     } else {
-      obj.files = [];
+      obj.files = message.files;
     }
     return obj;
   },

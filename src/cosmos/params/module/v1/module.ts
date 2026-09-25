@@ -1,5 +1,6 @@
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "../../../../binary";
+import { JsonSafe } from "../../../../json-safe";
 export const protobufPackage = "cosmos.params.module.v1";
 /** Module is the config object of the params module. */
 export interface Module {}
@@ -7,7 +8,12 @@ export interface ModuleProtoMsg {
   typeUrl: "/cosmos.params.module.v1.Module";
   value: Uint8Array;
 }
-/** Module is the config object of the params module. */
+/**
+ * Module is the config object of the params module.
+ * @name ModuleAmino
+ * @package cosmos.params.module.v1
+ * @see proto type: cosmos.params.module.v1.Module
+ */
 export interface ModuleAmino {}
 export interface ModuleAminoMsg {
   type: "cosmos-sdk/Module";
@@ -39,7 +45,7 @@ export const Module = {
     const obj = createBaseModule();
     return obj;
   },
-  toJSON(_: Module): unknown {
+  toJSON(_: Module): JsonSafe<Module> {
     const obj: any = {};
     return obj;
   },

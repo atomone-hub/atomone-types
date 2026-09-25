@@ -17,6 +17,7 @@ import {
 } from "./gov";
 import { BinaryReader, BinaryWriter } from "../../../binary";
 import { isSet } from "../../../helpers";
+import { JsonSafe } from "../../../json-safe";
 import { TxRpc } from "../../../types";
 export const protobufPackage = "atomone.gov.v1";
 /**
@@ -55,18 +56,27 @@ export interface MsgSubmitProposalProtoMsg {
 /**
  * MsgSubmitProposal defines an sdk.Msg type that supports submitting arbitrary
  * proposal Content.
+ * @name MsgSubmitProposalAmino
+ * @package atomone.gov.v1
+ * @see proto type: atomone.gov.v1.MsgSubmitProposal
  */
 export interface MsgSubmitProposalAmino {
-  /** messages are the arbitrary messages to be executed if proposal passes. */
+  /**
+   * messages are the arbitrary messages to be executed if proposal passes.
+   */
   messages?: AnyAmino[];
   /**
    * initial_deposit is the deposit value that must be paid at proposal
    * submission.
    */
   initial_deposit: CoinAmino[];
-  /** proposer is the account address of the proposer. */
+  /**
+   * proposer is the account address of the proposer.
+   */
   proposer?: string;
-  /** metadata is any arbitrary metadata attached to the proposal. */
+  /**
+   * metadata is any arbitrary metadata attached to the proposal.
+   */
   metadata?: string;
   /**
    * title is the title of the proposal.
@@ -94,9 +104,16 @@ export interface MsgSubmitProposalResponseProtoMsg {
   typeUrl: "/atomone.gov.v1.MsgSubmitProposalResponse";
   value: Uint8Array;
 }
-/** MsgSubmitProposalResponse defines the Msg/SubmitProposal response type. */
+/**
+ * MsgSubmitProposalResponse defines the Msg/SubmitProposal response type.
+ * @name MsgSubmitProposalResponseAmino
+ * @package atomone.gov.v1
+ * @see proto type: atomone.gov.v1.MsgSubmitProposalResponse
+ */
 export interface MsgSubmitProposalResponseAmino {
-  /** proposal_id defines the unique id of the proposal. */
+  /**
+   * proposal_id defines the unique id of the proposal.
+   */
   proposal_id?: string;
 }
 export interface MsgSubmitProposalResponseAminoMsg {
@@ -120,11 +137,18 @@ export interface MsgExecLegacyContentProtoMsg {
 /**
  * MsgExecLegacyContent is used to wrap the legacy content field into a message.
  * This ensures backwards compatibility with v1beta1.MsgSubmitProposal.
+ * @name MsgExecLegacyContentAmino
+ * @package atomone.gov.v1
+ * @see proto type: atomone.gov.v1.MsgExecLegacyContent
  */
 export interface MsgExecLegacyContentAmino {
-  /** content is the proposal's content. */
+  /**
+   * content is the proposal's content.
+   */
   content?: AnyAmino | undefined;
-  /** authority must be the gov module address. */
+  /**
+   * authority must be the gov module address.
+   */
   authority?: string;
 }
 export interface MsgExecLegacyContentAminoMsg {
@@ -137,7 +161,12 @@ export interface MsgExecLegacyContentResponseProtoMsg {
   typeUrl: "/atomone.gov.v1.MsgExecLegacyContentResponse";
   value: Uint8Array;
 }
-/** MsgExecLegacyContentResponse defines the Msg/ExecLegacyContent response type. */
+/**
+ * MsgExecLegacyContentResponse defines the Msg/ExecLegacyContent response type.
+ * @name MsgExecLegacyContentResponseAmino
+ * @package atomone.gov.v1
+ * @see proto type: atomone.gov.v1.MsgExecLegacyContentResponse
+ */
 export interface MsgExecLegacyContentResponseAmino {}
 export interface MsgExecLegacyContentResponseAminoMsg {
   type: "/atomone.gov.v1.MsgExecLegacyContentResponse";
@@ -158,15 +187,28 @@ export interface MsgVoteProtoMsg {
   typeUrl: "/atomone.gov.v1.MsgVote";
   value: Uint8Array;
 }
-/** MsgVote defines a message to cast a vote. */
+/**
+ * MsgVote defines a message to cast a vote.
+ * @name MsgVoteAmino
+ * @package atomone.gov.v1
+ * @see proto type: atomone.gov.v1.MsgVote
+ */
 export interface MsgVoteAmino {
-  /** proposal_id defines the unique id of the proposal. */
+  /**
+   * proposal_id defines the unique id of the proposal.
+   */
   proposal_id: string;
-  /** voter is the voter address for the proposal. */
+  /**
+   * voter is the voter address for the proposal.
+   */
   voter?: string;
-  /** option defines the vote option. */
+  /**
+   * option defines the vote option.
+   */
   option?: VoteOption;
-  /** metadata is any arbitrary metadata attached to the Vote. */
+  /**
+   * metadata is any arbitrary metadata attached to the Vote.
+   */
   metadata?: string;
 }
 export interface MsgVoteAminoMsg {
@@ -179,7 +221,12 @@ export interface MsgVoteResponseProtoMsg {
   typeUrl: "/atomone.gov.v1.MsgVoteResponse";
   value: Uint8Array;
 }
-/** MsgVoteResponse defines the Msg/Vote response type. */
+/**
+ * MsgVoteResponse defines the Msg/Vote response type.
+ * @name MsgVoteResponseAmino
+ * @package atomone.gov.v1
+ * @see proto type: atomone.gov.v1.MsgVoteResponse
+ */
 export interface MsgVoteResponseAmino {}
 export interface MsgVoteResponseAminoMsg {
   type: "/atomone.gov.v1.MsgVoteResponse";
@@ -200,15 +247,28 @@ export interface MsgVoteWeightedProtoMsg {
   typeUrl: "/atomone.gov.v1.MsgVoteWeighted";
   value: Uint8Array;
 }
-/** MsgVoteWeighted defines a message to cast a vote. */
+/**
+ * MsgVoteWeighted defines a message to cast a vote.
+ * @name MsgVoteWeightedAmino
+ * @package atomone.gov.v1
+ * @see proto type: atomone.gov.v1.MsgVoteWeighted
+ */
 export interface MsgVoteWeightedAmino {
-  /** proposal_id defines the unique id of the proposal. */
+  /**
+   * proposal_id defines the unique id of the proposal.
+   */
   proposal_id: string;
-  /** voter is the voter address for the proposal. */
+  /**
+   * voter is the voter address for the proposal.
+   */
   voter?: string;
-  /** options defines the weighted vote options. */
+  /**
+   * options defines the weighted vote options.
+   */
   options?: WeightedVoteOptionAmino[];
-  /** metadata is any arbitrary metadata attached to the VoteWeighted. */
+  /**
+   * metadata is any arbitrary metadata attached to the VoteWeighted.
+   */
   metadata?: string;
 }
 export interface MsgVoteWeightedAminoMsg {
@@ -221,7 +281,12 @@ export interface MsgVoteWeightedResponseProtoMsg {
   typeUrl: "/atomone.gov.v1.MsgVoteWeightedResponse";
   value: Uint8Array;
 }
-/** MsgVoteWeightedResponse defines the Msg/VoteWeighted response type. */
+/**
+ * MsgVoteWeightedResponse defines the Msg/VoteWeighted response type.
+ * @name MsgVoteWeightedResponseAmino
+ * @package atomone.gov.v1
+ * @see proto type: atomone.gov.v1.MsgVoteWeightedResponse
+ */
 export interface MsgVoteWeightedResponseAmino {}
 export interface MsgVoteWeightedResponseAminoMsg {
   type: "/atomone.gov.v1.MsgVoteWeightedResponse";
@@ -240,13 +305,24 @@ export interface MsgDepositProtoMsg {
   typeUrl: "/atomone.gov.v1.MsgDeposit";
   value: Uint8Array;
 }
-/** MsgDeposit defines a message to submit a deposit to an existing proposal. */
+/**
+ * MsgDeposit defines a message to submit a deposit to an existing proposal.
+ * @name MsgDepositAmino
+ * @package atomone.gov.v1
+ * @see proto type: atomone.gov.v1.MsgDeposit
+ */
 export interface MsgDepositAmino {
-  /** proposal_id defines the unique id of the proposal. */
+  /**
+   * proposal_id defines the unique id of the proposal.
+   */
   proposal_id: string;
-  /** depositor defines the deposit addresses from the proposals. */
+  /**
+   * depositor defines the deposit addresses from the proposals.
+   */
   depositor?: string;
-  /** amount to be deposited by depositor. */
+  /**
+   * amount to be deposited by depositor.
+   */
   amount: CoinAmino[];
 }
 export interface MsgDepositAminoMsg {
@@ -259,7 +335,12 @@ export interface MsgDepositResponseProtoMsg {
   typeUrl: "/atomone.gov.v1.MsgDepositResponse";
   value: Uint8Array;
 }
-/** MsgDepositResponse defines the Msg/Deposit response type. */
+/**
+ * MsgDepositResponse defines the Msg/Deposit response type.
+ * @name MsgDepositResponseAmino
+ * @package atomone.gov.v1
+ * @see proto type: atomone.gov.v1.MsgDepositResponse
+ */
 export interface MsgDepositResponseAmino {}
 export interface MsgDepositResponseAminoMsg {
   type: "/atomone.gov.v1.MsgDepositResponse";
@@ -291,6 +372,9 @@ export interface MsgUpdateParamsProtoMsg {
  * MsgUpdateParams is the Msg/UpdateParams request type.
  *
  * Since: cosmos-sdk 0.47
+ * @name MsgUpdateParamsAmino
+ * @package atomone.gov.v1
+ * @see proto type: atomone.gov.v1.MsgUpdateParams
  */
 export interface MsgUpdateParamsAmino {
   /**
@@ -325,6 +409,9 @@ export interface MsgUpdateParamsResponseProtoMsg {
  * MsgUpdateParams message.
  *
  * Since: cosmos-sdk 0.47
+ * @name MsgUpdateParamsResponseAmino
+ * @package atomone.gov.v1
+ * @see proto type: atomone.gov.v1.MsgUpdateParamsResponse
  */
 export interface MsgUpdateParamsResponseAmino {}
 export interface MsgUpdateParamsResponseAminoMsg {
@@ -343,7 +430,12 @@ export interface MsgProposeLawProtoMsg {
   typeUrl: "/atomone.gov.v1.MsgProposeLaw";
   value: Uint8Array;
 }
-/** MsgLaw is the Msg/ProposeLaw request type. */
+/**
+ * MsgLaw is the Msg/ProposeLaw request type.
+ * @name MsgProposeLawAmino
+ * @package atomone.gov.v1
+ * @see proto type: atomone.gov.v1.MsgProposeLaw
+ */
 export interface MsgProposeLawAmino {
   /**
    * authority is the address that controls the module (defaults to x/gov unless
@@ -367,6 +459,9 @@ export interface MsgProposeLawResponseProtoMsg {
 /**
  * MsgProposeLawResponse defines the response structure for executing a
  * MsgProposeLaw message.
+ * @name MsgProposeLawResponseAmino
+ * @package atomone.gov.v1
+ * @see proto type: atomone.gov.v1.MsgProposeLawResponse
  */
 export interface MsgProposeLawResponseAmino {}
 export interface MsgProposeLawResponseAminoMsg {
@@ -387,14 +482,21 @@ export interface MsgProposeConstitutionAmendmentProtoMsg {
   typeUrl: "/atomone.gov.v1.MsgProposeConstitutionAmendment";
   value: Uint8Array;
 }
-/** MsgConstitutionAmendment is the Msg/ProposeConstitutionAmendment request type. */
+/**
+ * MsgConstitutionAmendment is the Msg/ProposeConstitutionAmendment request type.
+ * @name MsgProposeConstitutionAmendmentAmino
+ * @package atomone.gov.v1
+ * @see proto type: atomone.gov.v1.MsgProposeConstitutionAmendment
+ */
 export interface MsgProposeConstitutionAmendmentAmino {
   /**
    * authority is the address that controls the module (defaults to x/gov unless
    * overwritten).
    */
   authority?: string;
-  /** amendment is the amendment to the constitution. It must be in valid GNU patch format. */
+  /**
+   * amendment is the amendment to the constitution. It must be in valid GNU patch format.
+   */
   amendment?: string;
 }
 export interface MsgProposeConstitutionAmendmentAminoMsg {
@@ -413,6 +515,9 @@ export interface MsgProposeConstitutionAmendmentResponseProtoMsg {
 /**
  * MsgProposeConstitutionAmendmentResponse defines the response structure for executing a
  * MsgProposeConstitutionAmendment message.
+ * @name MsgProposeConstitutionAmendmentResponseAmino
+ * @package atomone.gov.v1
+ * @see proto type: atomone.gov.v1.MsgProposeConstitutionAmendmentResponse
  */
 export interface MsgProposeConstitutionAmendmentResponseAmino {}
 export interface MsgProposeConstitutionAmendmentResponseAminoMsg {
@@ -429,9 +534,16 @@ export interface MsgCreateGovernorProtoMsg {
   typeUrl: "/atomone.gov.v1.MsgCreateGovernor";
   value: Uint8Array;
 }
-/** MsgCreateGovernor defines a SDK message for creating a new governor. */
+/**
+ * MsgCreateGovernor defines a SDK message for creating a new governor.
+ * @name MsgCreateGovernorAmino
+ * @package atomone.gov.v1
+ * @see proto type: atomone.gov.v1.MsgCreateGovernor
+ */
 export interface MsgCreateGovernorAmino {
-  /** address is the base account address that is creating the governor. */
+  /**
+   * address is the base account address that is creating the governor.
+   */
   address?: string;
   description: GovernorDescriptionAmino | undefined;
 }
@@ -445,7 +557,12 @@ export interface MsgCreateGovernorResponseProtoMsg {
   typeUrl: "/atomone.gov.v1.MsgCreateGovernorResponse";
   value: Uint8Array;
 }
-/** MsgCreateGovernorrResponse defines the Msg/CreateGovernor response type. */
+/**
+ * MsgCreateGovernorrResponse defines the Msg/CreateGovernor response type.
+ * @name MsgCreateGovernorResponseAmino
+ * @package atomone.gov.v1
+ * @see proto type: atomone.gov.v1.MsgCreateGovernorResponse
+ */
 export interface MsgCreateGovernorResponseAmino {}
 export interface MsgCreateGovernorResponseAminoMsg {
   type: "/atomone.gov.v1.MsgCreateGovernorResponse";
@@ -461,9 +578,16 @@ export interface MsgEditGovernorProtoMsg {
   typeUrl: "/atomone.gov.v1.MsgEditGovernor";
   value: Uint8Array;
 }
-/** MsgEditGovernor defines a SDK message for editing an existing governor. */
+/**
+ * MsgEditGovernor defines a SDK message for editing an existing governor.
+ * @name MsgEditGovernorAmino
+ * @package atomone.gov.v1
+ * @see proto type: atomone.gov.v1.MsgEditGovernor
+ */
 export interface MsgEditGovernorAmino {
-  /** address is the base account address that is editing the corresponding governor. */
+  /**
+   * address is the base account address that is editing the corresponding governor.
+   */
   address?: string;
   description: GovernorDescriptionAmino | undefined;
 }
@@ -477,7 +601,12 @@ export interface MsgEditGovernorResponseProtoMsg {
   typeUrl: "/atomone.gov.v1.MsgEditGovernorResponse";
   value: Uint8Array;
 }
-/** MsgEditGovernorResponse defines the Msg/EditGovernor response type. */
+/**
+ * MsgEditGovernorResponse defines the Msg/EditGovernor response type.
+ * @name MsgEditGovernorResponseAmino
+ * @package atomone.gov.v1
+ * @see proto type: atomone.gov.v1.MsgEditGovernorResponse
+ */
 export interface MsgEditGovernorResponseAmino {}
 export interface MsgEditGovernorResponseAminoMsg {
   type: "/atomone.gov.v1.MsgEditGovernorResponse";
@@ -493,9 +622,16 @@ export interface MsgUpdateGovernorStatusProtoMsg {
   typeUrl: "/atomone.gov.v1.MsgUpdateGovernorStatus";
   value: Uint8Array;
 }
-/** MsgUpdateGovernorStatus defines a SDK message for updating the status of a governor. */
+/**
+ * MsgUpdateGovernorStatus defines a SDK message for updating the status of a governor.
+ * @name MsgUpdateGovernorStatusAmino
+ * @package atomone.gov.v1
+ * @see proto type: atomone.gov.v1.MsgUpdateGovernorStatus
+ */
 export interface MsgUpdateGovernorStatusAmino {
-  /** address is the base account address that is editing the corresponding governor. */
+  /**
+   * address is the base account address that is editing the corresponding governor.
+   */
   address?: string;
   status?: GovernorStatus;
 }
@@ -509,7 +645,12 @@ export interface MsgUpdateGovernorStatusResponseProtoMsg {
   typeUrl: "/atomone.gov.v1.MsgUpdateGovernorStatusResponse";
   value: Uint8Array;
 }
-/** MsgUpdateGovernorStatusResponse defines the Msg/UpdateGovernorStatus response type. */
+/**
+ * MsgUpdateGovernorStatusResponse defines the Msg/UpdateGovernorStatus response type.
+ * @name MsgUpdateGovernorStatusResponseAmino
+ * @package atomone.gov.v1
+ * @see proto type: atomone.gov.v1.MsgUpdateGovernorStatusResponse
+ */
 export interface MsgUpdateGovernorStatusResponseAmino {}
 export interface MsgUpdateGovernorStatusResponseAminoMsg {
   type: "/atomone.gov.v1.MsgUpdateGovernorStatusResponse";
@@ -530,6 +671,9 @@ export interface MsgDelegateGovernorProtoMsg {
 /**
  * MsgDelegateGovernor defines a SDK message for performing a delegation of governance voting power
  * from a delegator to a governor.
+ * @name MsgDelegateGovernorAmino
+ * @package atomone.gov.v1
+ * @see proto type: atomone.gov.v1.MsgDelegateGovernor
  */
 export interface MsgDelegateGovernorAmino {
   delegator_address?: string;
@@ -545,7 +689,12 @@ export interface MsgDelegateGovernorResponseProtoMsg {
   typeUrl: "/atomone.gov.v1.MsgDelegateGovernorResponse";
   value: Uint8Array;
 }
-/** MsgDelegateGovernorResponse defines the Msg/Delegate response type. */
+/**
+ * MsgDelegateGovernorResponse defines the Msg/Delegate response type.
+ * @name MsgDelegateGovernorResponseAmino
+ * @package atomone.gov.v1
+ * @see proto type: atomone.gov.v1.MsgDelegateGovernorResponse
+ */
 export interface MsgDelegateGovernorResponseAmino {}
 export interface MsgDelegateGovernorResponseAminoMsg {
   type: "/atomone.gov.v1.MsgDelegateGovernorResponse";
@@ -559,7 +708,12 @@ export interface MsgUndelegateGovernorProtoMsg {
   typeUrl: "/atomone.gov.v1.MsgUndelegateGovernor";
   value: Uint8Array;
 }
-/** MsgUndelegateGovernor defines a SDK message for undelegating governance voting power */
+/**
+ * MsgUndelegateGovernor defines a SDK message for undelegating governance voting power
+ * @name MsgUndelegateGovernorAmino
+ * @package atomone.gov.v1
+ * @see proto type: atomone.gov.v1.MsgUndelegateGovernor
+ */
 export interface MsgUndelegateGovernorAmino {
   delegator_address?: string;
 }
@@ -573,7 +727,12 @@ export interface MsgUndelegateGovernorResponseProtoMsg {
   typeUrl: "/atomone.gov.v1.MsgUndelegateGovernorResponse";
   value: Uint8Array;
 }
-/** MsgUndelegateGovernorResponse defines the Msg/UndelegateGovernor response type. */
+/**
+ * MsgUndelegateGovernorResponse defines the Msg/UndelegateGovernor response type.
+ * @name MsgUndelegateGovernorResponseAmino
+ * @package atomone.gov.v1
+ * @see proto type: atomone.gov.v1.MsgUndelegateGovernorResponse
+ */
 export interface MsgUndelegateGovernorResponseAmino {}
 export interface MsgUndelegateGovernorResponseAminoMsg {
   type: "/atomone.gov.v1.MsgUndelegateGovernorResponse";
@@ -655,7 +814,7 @@ export const MsgSubmitProposal = {
     if (isSet(object.summary)) obj.summary = String(object.summary);
     return obj;
   },
-  toJSON(message: MsgSubmitProposal): unknown {
+  toJSON(message: MsgSubmitProposal): JsonSafe<MsgSubmitProposal> {
     const obj: any = {};
     if (message.messages) {
       obj.messages = message.messages.map((e) => (e ? Any.toJSON(e) : undefined));
@@ -706,17 +865,17 @@ export const MsgSubmitProposal = {
     if (message.messages) {
       obj.messages = message.messages.map((e) => (e ? Any.toAmino(e) : undefined));
     } else {
-      obj.messages = [];
+      obj.messages = message.messages;
     }
     if (message.initialDeposit) {
       obj.initial_deposit = message.initialDeposit.map((e) => (e ? Coin.toAmino(e) : undefined));
     } else {
-      obj.initial_deposit = [];
+      obj.initial_deposit = message.initialDeposit;
     }
-    obj.proposer = message.proposer;
-    obj.metadata = message.metadata;
-    obj.title = message.title;
-    obj.summary = message.summary;
+    obj.proposer = message.proposer === "" ? undefined : message.proposer;
+    obj.metadata = message.metadata === "" ? undefined : message.metadata;
+    obj.title = message.title === "" ? undefined : message.title;
+    obj.summary = message.summary === "" ? undefined : message.summary;
     return obj;
   },
   fromAminoMsg(object: MsgSubmitProposalAminoMsg): MsgSubmitProposal {
@@ -776,7 +935,7 @@ export const MsgSubmitProposalResponse = {
     if (isSet(object.proposalId)) obj.proposalId = BigInt(object.proposalId.toString());
     return obj;
   },
-  toJSON(message: MsgSubmitProposalResponse): unknown {
+  toJSON(message: MsgSubmitProposalResponse): JsonSafe<MsgSubmitProposalResponse> {
     const obj: any = {};
     message.proposalId !== undefined && (obj.proposalId = (message.proposalId || BigInt(0)).toString());
     return obj;
@@ -797,7 +956,7 @@ export const MsgSubmitProposalResponse = {
   },
   toAmino(message: MsgSubmitProposalResponse): MsgSubmitProposalResponseAmino {
     const obj: any = {};
-    obj.proposal_id = message.proposalId ? message.proposalId.toString() : undefined;
+    obj.proposal_id = message.proposalId !== BigInt(0) ? message.proposalId?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: MsgSubmitProposalResponseAminoMsg): MsgSubmitProposalResponse {
@@ -859,7 +1018,7 @@ export const MsgExecLegacyContent = {
     if (isSet(object.authority)) obj.authority = String(object.authority);
     return obj;
   },
-  toJSON(message: MsgExecLegacyContent): unknown {
+  toJSON(message: MsgExecLegacyContent): JsonSafe<MsgExecLegacyContent> {
     const obj: any = {};
     message.content !== undefined &&
       (obj.content = message.content ? Any.toJSON(message.content) : undefined);
@@ -887,7 +1046,7 @@ export const MsgExecLegacyContent = {
   toAmino(message: MsgExecLegacyContent): MsgExecLegacyContentAmino {
     const obj: any = {};
     obj.content = message.content ? Any.toAmino(message.content) : undefined;
-    obj.authority = message.authority;
+    obj.authority = message.authority === "" ? undefined : message.authority;
     return obj;
   },
   fromAminoMsg(object: MsgExecLegacyContentAminoMsg): MsgExecLegacyContent {
@@ -938,7 +1097,7 @@ export const MsgExecLegacyContentResponse = {
     const obj = createBaseMsgExecLegacyContentResponse();
     return obj;
   },
-  toJSON(_: MsgExecLegacyContentResponse): unknown {
+  toJSON(_: MsgExecLegacyContentResponse): JsonSafe<MsgExecLegacyContentResponse> {
     const obj: any = {};
     return obj;
   },
@@ -1029,7 +1188,7 @@ export const MsgVote = {
     if (isSet(object.metadata)) obj.metadata = String(object.metadata);
     return obj;
   },
-  toJSON(message: MsgVote): unknown {
+  toJSON(message: MsgVote): JsonSafe<MsgVote> {
     const obj: any = {};
     message.proposalId !== undefined && (obj.proposalId = (message.proposalId || BigInt(0)).toString());
     message.voter !== undefined && (obj.voter = message.voter);
@@ -1056,7 +1215,7 @@ export const MsgVote = {
       message.voter = object.voter;
     }
     if (object.option !== undefined && object.option !== null) {
-      message.option = voteOptionFromJSON(object.option);
+      message.option = object.option;
     }
     if (object.metadata !== undefined && object.metadata !== null) {
       message.metadata = object.metadata;
@@ -1065,10 +1224,10 @@ export const MsgVote = {
   },
   toAmino(message: MsgVote): MsgVoteAmino {
     const obj: any = {};
-    obj.proposal_id = message.proposalId ? message.proposalId.toString() : "0";
-    obj.voter = message.voter;
-    obj.option = message.option;
-    obj.metadata = message.metadata;
+    obj.proposal_id = message.proposalId ? message.proposalId?.toString() : "0";
+    obj.voter = message.voter === "" ? undefined : message.voter;
+    obj.option = message.option === 0 ? undefined : message.option;
+    obj.metadata = message.metadata === "" ? undefined : message.metadata;
     return obj;
   },
   fromAminoMsg(object: MsgVoteAminoMsg): MsgVote {
@@ -1119,7 +1278,7 @@ export const MsgVoteResponse = {
     const obj = createBaseMsgVoteResponse();
     return obj;
   },
-  toJSON(_: MsgVoteResponse): unknown {
+  toJSON(_: MsgVoteResponse): JsonSafe<MsgVoteResponse> {
     const obj: any = {};
     return obj;
   },
@@ -1211,7 +1370,7 @@ export const MsgVoteWeighted = {
     if (isSet(object.metadata)) obj.metadata = String(object.metadata);
     return obj;
   },
-  toJSON(message: MsgVoteWeighted): unknown {
+  toJSON(message: MsgVoteWeighted): JsonSafe<MsgVoteWeighted> {
     const obj: any = {};
     message.proposalId !== undefined && (obj.proposalId = (message.proposalId || BigInt(0)).toString());
     message.voter !== undefined && (obj.voter = message.voter);
@@ -1249,14 +1408,14 @@ export const MsgVoteWeighted = {
   },
   toAmino(message: MsgVoteWeighted): MsgVoteWeightedAmino {
     const obj: any = {};
-    obj.proposal_id = message.proposalId ? message.proposalId.toString() : "0";
-    obj.voter = message.voter;
+    obj.proposal_id = message.proposalId ? message.proposalId?.toString() : "0";
+    obj.voter = message.voter === "" ? undefined : message.voter;
     if (message.options) {
       obj.options = message.options.map((e) => (e ? WeightedVoteOption.toAmino(e) : undefined));
     } else {
-      obj.options = [];
+      obj.options = message.options;
     }
-    obj.metadata = message.metadata;
+    obj.metadata = message.metadata === "" ? undefined : message.metadata;
     return obj;
   },
   fromAminoMsg(object: MsgVoteWeightedAminoMsg): MsgVoteWeighted {
@@ -1307,7 +1466,7 @@ export const MsgVoteWeightedResponse = {
     const obj = createBaseMsgVoteWeightedResponse();
     return obj;
   },
-  toJSON(_: MsgVoteWeightedResponse): unknown {
+  toJSON(_: MsgVoteWeightedResponse): JsonSafe<MsgVoteWeightedResponse> {
     const obj: any = {};
     return obj;
   },
@@ -1390,7 +1549,7 @@ export const MsgDeposit = {
     if (Array.isArray(object?.amount)) obj.amount = object.amount.map((e: any) => Coin.fromJSON(e));
     return obj;
   },
-  toJSON(message: MsgDeposit): unknown {
+  toJSON(message: MsgDeposit): JsonSafe<MsgDeposit> {
     const obj: any = {};
     message.proposalId !== undefined && (obj.proposalId = (message.proposalId || BigInt(0)).toString());
     message.depositor !== undefined && (obj.depositor = message.depositor);
@@ -1423,12 +1582,12 @@ export const MsgDeposit = {
   },
   toAmino(message: MsgDeposit): MsgDepositAmino {
     const obj: any = {};
-    obj.proposal_id = message.proposalId ? message.proposalId.toString() : "0";
-    obj.depositor = message.depositor;
+    obj.proposal_id = message.proposalId ? message.proposalId?.toString() : "0";
+    obj.depositor = message.depositor === "" ? undefined : message.depositor;
     if (message.amount) {
       obj.amount = message.amount.map((e) => (e ? Coin.toAmino(e) : undefined));
     } else {
-      obj.amount = [];
+      obj.amount = message.amount;
     }
     return obj;
   },
@@ -1480,7 +1639,7 @@ export const MsgDepositResponse = {
     const obj = createBaseMsgDepositResponse();
     return obj;
   },
-  toJSON(_: MsgDepositResponse): unknown {
+  toJSON(_: MsgDepositResponse): JsonSafe<MsgDepositResponse> {
     const obj: any = {};
     return obj;
   },
@@ -1555,7 +1714,7 @@ export const MsgUpdateParams = {
     if (isSet(object.params)) obj.params = Params.fromJSON(object.params);
     return obj;
   },
-  toJSON(message: MsgUpdateParams): unknown {
+  toJSON(message: MsgUpdateParams): JsonSafe<MsgUpdateParams> {
     const obj: any = {};
     message.authority !== undefined && (obj.authority = message.authority);
     message.params !== undefined && (obj.params = message.params ? Params.toJSON(message.params) : undefined);
@@ -1581,8 +1740,8 @@ export const MsgUpdateParams = {
   },
   toAmino(message: MsgUpdateParams): MsgUpdateParamsAmino {
     const obj: any = {};
-    obj.authority = message.authority;
-    obj.params = message.params ? Params.toAmino(message.params) : Params.fromPartial({});
+    obj.authority = message.authority === "" ? undefined : message.authority;
+    obj.params = message.params ? Params.toAmino(message.params) : Params.toAmino(Params.fromPartial({}));
     return obj;
   },
   fromAminoMsg(object: MsgUpdateParamsAminoMsg): MsgUpdateParams {
@@ -1633,7 +1792,7 @@ export const MsgUpdateParamsResponse = {
     const obj = createBaseMsgUpdateParamsResponse();
     return obj;
   },
-  toJSON(_: MsgUpdateParamsResponse): unknown {
+  toJSON(_: MsgUpdateParamsResponse): JsonSafe<MsgUpdateParamsResponse> {
     const obj: any = {};
     return obj;
   },
@@ -1700,7 +1859,7 @@ export const MsgProposeLaw = {
     if (isSet(object.authority)) obj.authority = String(object.authority);
     return obj;
   },
-  toJSON(message: MsgProposeLaw): unknown {
+  toJSON(message: MsgProposeLaw): JsonSafe<MsgProposeLaw> {
     const obj: any = {};
     message.authority !== undefined && (obj.authority = message.authority);
     return obj;
@@ -1719,7 +1878,7 @@ export const MsgProposeLaw = {
   },
   toAmino(message: MsgProposeLaw): MsgProposeLawAmino {
     const obj: any = {};
-    obj.authority = message.authority;
+    obj.authority = message.authority === "" ? undefined : message.authority;
     return obj;
   },
   fromAminoMsg(object: MsgProposeLawAminoMsg): MsgProposeLaw {
@@ -1770,7 +1929,7 @@ export const MsgProposeLawResponse = {
     const obj = createBaseMsgProposeLawResponse();
     return obj;
   },
-  toJSON(_: MsgProposeLawResponse): unknown {
+  toJSON(_: MsgProposeLawResponse): JsonSafe<MsgProposeLawResponse> {
     const obj: any = {};
     return obj;
   },
@@ -1848,7 +2007,7 @@ export const MsgProposeConstitutionAmendment = {
     if (isSet(object.amendment)) obj.amendment = String(object.amendment);
     return obj;
   },
-  toJSON(message: MsgProposeConstitutionAmendment): unknown {
+  toJSON(message: MsgProposeConstitutionAmendment): JsonSafe<MsgProposeConstitutionAmendment> {
     const obj: any = {};
     message.authority !== undefined && (obj.authority = message.authority);
     message.amendment !== undefined && (obj.amendment = message.amendment);
@@ -1872,8 +2031,8 @@ export const MsgProposeConstitutionAmendment = {
   },
   toAmino(message: MsgProposeConstitutionAmendment): MsgProposeConstitutionAmendmentAmino {
     const obj: any = {};
-    obj.authority = message.authority;
-    obj.amendment = message.amendment;
+    obj.authority = message.authority === "" ? undefined : message.authority;
+    obj.amendment = message.amendment === "" ? undefined : message.amendment;
     return obj;
   },
   fromAminoMsg(object: MsgProposeConstitutionAmendmentAminoMsg): MsgProposeConstitutionAmendment {
@@ -1927,7 +2086,7 @@ export const MsgProposeConstitutionAmendmentResponse = {
     const obj = createBaseMsgProposeConstitutionAmendmentResponse();
     return obj;
   },
-  toJSON(_: MsgProposeConstitutionAmendmentResponse): unknown {
+  toJSON(_: MsgProposeConstitutionAmendmentResponse): JsonSafe<MsgProposeConstitutionAmendmentResponse> {
     const obj: any = {};
     return obj;
   },
@@ -2008,7 +2167,7 @@ export const MsgCreateGovernor = {
     if (isSet(object.description)) obj.description = GovernorDescription.fromJSON(object.description);
     return obj;
   },
-  toJSON(message: MsgCreateGovernor): unknown {
+  toJSON(message: MsgCreateGovernor): JsonSafe<MsgCreateGovernor> {
     const obj: any = {};
     message.address !== undefined && (obj.address = message.address);
     message.description !== undefined &&
@@ -2035,10 +2194,10 @@ export const MsgCreateGovernor = {
   },
   toAmino(message: MsgCreateGovernor): MsgCreateGovernorAmino {
     const obj: any = {};
-    obj.address = message.address;
+    obj.address = message.address === "" ? undefined : message.address;
     obj.description = message.description
       ? GovernorDescription.toAmino(message.description)
-      : GovernorDescription.fromPartial({});
+      : GovernorDescription.toAmino(GovernorDescription.fromPartial({}));
     return obj;
   },
   fromAminoMsg(object: MsgCreateGovernorAminoMsg): MsgCreateGovernor {
@@ -2089,7 +2248,7 @@ export const MsgCreateGovernorResponse = {
     const obj = createBaseMsgCreateGovernorResponse();
     return obj;
   },
-  toJSON(_: MsgCreateGovernorResponse): unknown {
+  toJSON(_: MsgCreateGovernorResponse): JsonSafe<MsgCreateGovernorResponse> {
     const obj: any = {};
     return obj;
   },
@@ -2164,7 +2323,7 @@ export const MsgEditGovernor = {
     if (isSet(object.description)) obj.description = GovernorDescription.fromJSON(object.description);
     return obj;
   },
-  toJSON(message: MsgEditGovernor): unknown {
+  toJSON(message: MsgEditGovernor): JsonSafe<MsgEditGovernor> {
     const obj: any = {};
     message.address !== undefined && (obj.address = message.address);
     message.description !== undefined &&
@@ -2191,10 +2350,10 @@ export const MsgEditGovernor = {
   },
   toAmino(message: MsgEditGovernor): MsgEditGovernorAmino {
     const obj: any = {};
-    obj.address = message.address;
+    obj.address = message.address === "" ? undefined : message.address;
     obj.description = message.description
       ? GovernorDescription.toAmino(message.description)
-      : GovernorDescription.fromPartial({});
+      : GovernorDescription.toAmino(GovernorDescription.fromPartial({}));
     return obj;
   },
   fromAminoMsg(object: MsgEditGovernorAminoMsg): MsgEditGovernor {
@@ -2245,7 +2404,7 @@ export const MsgEditGovernorResponse = {
     const obj = createBaseMsgEditGovernorResponse();
     return obj;
   },
-  toJSON(_: MsgEditGovernorResponse): unknown {
+  toJSON(_: MsgEditGovernorResponse): JsonSafe<MsgEditGovernorResponse> {
     const obj: any = {};
     return obj;
   },
@@ -2320,7 +2479,7 @@ export const MsgUpdateGovernorStatus = {
     if (isSet(object.status)) obj.status = governorStatusFromJSON(object.status);
     return obj;
   },
-  toJSON(message: MsgUpdateGovernorStatus): unknown {
+  toJSON(message: MsgUpdateGovernorStatus): JsonSafe<MsgUpdateGovernorStatus> {
     const obj: any = {};
     message.address !== undefined && (obj.address = message.address);
     message.status !== undefined && (obj.status = governorStatusToJSON(message.status));
@@ -2338,14 +2497,14 @@ export const MsgUpdateGovernorStatus = {
       message.address = object.address;
     }
     if (object.status !== undefined && object.status !== null) {
-      message.status = governorStatusFromJSON(object.status);
+      message.status = object.status;
     }
     return message;
   },
   toAmino(message: MsgUpdateGovernorStatus): MsgUpdateGovernorStatusAmino {
     const obj: any = {};
-    obj.address = message.address;
-    obj.status = message.status;
+    obj.address = message.address === "" ? undefined : message.address;
+    obj.status = message.status === 0 ? undefined : message.status;
     return obj;
   },
   fromAminoMsg(object: MsgUpdateGovernorStatusAminoMsg): MsgUpdateGovernorStatus {
@@ -2396,7 +2555,7 @@ export const MsgUpdateGovernorStatusResponse = {
     const obj = createBaseMsgUpdateGovernorStatusResponse();
     return obj;
   },
-  toJSON(_: MsgUpdateGovernorStatusResponse): unknown {
+  toJSON(_: MsgUpdateGovernorStatusResponse): JsonSafe<MsgUpdateGovernorStatusResponse> {
     const obj: any = {};
     return obj;
   },
@@ -2471,7 +2630,7 @@ export const MsgDelegateGovernor = {
     if (isSet(object.governorAddress)) obj.governorAddress = String(object.governorAddress);
     return obj;
   },
-  toJSON(message: MsgDelegateGovernor): unknown {
+  toJSON(message: MsgDelegateGovernor): JsonSafe<MsgDelegateGovernor> {
     const obj: any = {};
     message.delegatorAddress !== undefined && (obj.delegatorAddress = message.delegatorAddress);
     message.governorAddress !== undefined && (obj.governorAddress = message.governorAddress);
@@ -2495,8 +2654,8 @@ export const MsgDelegateGovernor = {
   },
   toAmino(message: MsgDelegateGovernor): MsgDelegateGovernorAmino {
     const obj: any = {};
-    obj.delegator_address = message.delegatorAddress;
-    obj.governor_address = message.governorAddress;
+    obj.delegator_address = message.delegatorAddress === "" ? undefined : message.delegatorAddress;
+    obj.governor_address = message.governorAddress === "" ? undefined : message.governorAddress;
     return obj;
   },
   fromAminoMsg(object: MsgDelegateGovernorAminoMsg): MsgDelegateGovernor {
@@ -2547,7 +2706,7 @@ export const MsgDelegateGovernorResponse = {
     const obj = createBaseMsgDelegateGovernorResponse();
     return obj;
   },
-  toJSON(_: MsgDelegateGovernorResponse): unknown {
+  toJSON(_: MsgDelegateGovernorResponse): JsonSafe<MsgDelegateGovernorResponse> {
     const obj: any = {};
     return obj;
   },
@@ -2614,7 +2773,7 @@ export const MsgUndelegateGovernor = {
     if (isSet(object.delegatorAddress)) obj.delegatorAddress = String(object.delegatorAddress);
     return obj;
   },
-  toJSON(message: MsgUndelegateGovernor): unknown {
+  toJSON(message: MsgUndelegateGovernor): JsonSafe<MsgUndelegateGovernor> {
     const obj: any = {};
     message.delegatorAddress !== undefined && (obj.delegatorAddress = message.delegatorAddress);
     return obj;
@@ -2633,7 +2792,7 @@ export const MsgUndelegateGovernor = {
   },
   toAmino(message: MsgUndelegateGovernor): MsgUndelegateGovernorAmino {
     const obj: any = {};
-    obj.delegator_address = message.delegatorAddress;
+    obj.delegator_address = message.delegatorAddress === "" ? undefined : message.delegatorAddress;
     return obj;
   },
   fromAminoMsg(object: MsgUndelegateGovernorAminoMsg): MsgUndelegateGovernor {
@@ -2684,7 +2843,7 @@ export const MsgUndelegateGovernorResponse = {
     const obj = createBaseMsgUndelegateGovernorResponse();
     return obj;
   },
-  toJSON(_: MsgUndelegateGovernorResponse): unknown {
+  toJSON(_: MsgUndelegateGovernorResponse): JsonSafe<MsgUndelegateGovernorResponse> {
     const obj: any = {};
     return obj;
   },

@@ -1,6 +1,7 @@
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "../../../../binary";
 import { isSet } from "../../../../helpers";
+import { JsonSafe } from "../../../../json-safe";
 export const protobufPackage = "cosmos.auth.module.v1";
 /** Module is the config object for the auth module. */
 export interface Module {
@@ -15,13 +16,24 @@ export interface ModuleProtoMsg {
   typeUrl: "/cosmos.auth.module.v1.Module";
   value: Uint8Array;
 }
-/** Module is the config object for the auth module. */
+/**
+ * Module is the config object for the auth module.
+ * @name ModuleAmino
+ * @package cosmos.auth.module.v1
+ * @see proto type: cosmos.auth.module.v1.Module
+ */
 export interface ModuleAmino {
-  /** bech32_prefix is the bech32 account prefix for the app. */
+  /**
+   * bech32_prefix is the bech32 account prefix for the app.
+   */
   bech32_prefix?: string;
-  /** module_account_permissions are module account permissions. */
+  /**
+   * module_account_permissions are module account permissions.
+   */
   module_account_permissions?: ModuleAccountPermissionAmino[];
-  /** authority defines the custom module authority. If not set, defaults to the governance module. */
+  /**
+   * authority defines the custom module authority. If not set, defaults to the governance module.
+   */
   authority?: string;
 }
 export interface ModuleAminoMsg {
@@ -42,9 +54,16 @@ export interface ModuleAccountPermissionProtoMsg {
   typeUrl: "/cosmos.auth.module.v1.ModuleAccountPermission";
   value: Uint8Array;
 }
-/** ModuleAccountPermission represents permissions for a module account. */
+/**
+ * ModuleAccountPermission represents permissions for a module account.
+ * @name ModuleAccountPermissionAmino
+ * @package cosmos.auth.module.v1
+ * @see proto type: cosmos.auth.module.v1.ModuleAccountPermission
+ */
 export interface ModuleAccountPermissionAmino {
-  /** account is the name of the module. */
+  /**
+   * account is the name of the module.
+   */
   account?: string;
   /**
    * permissions are the permissions this module has. Currently recognized
@@ -110,7 +129,7 @@ export const Module = {
     if (isSet(object.authority)) obj.authority = String(object.authority);
     return obj;
   },
-  toJSON(message: Module): unknown {
+  toJSON(message: Module): JsonSafe<Module> {
     const obj: any = {};
     message.bech32Prefix !== undefined && (obj.bech32Prefix = message.bech32Prefix);
     if (message.moduleAccountPermissions) {
@@ -145,15 +164,15 @@ export const Module = {
   },
   toAmino(message: Module): ModuleAmino {
     const obj: any = {};
-    obj.bech32_prefix = message.bech32Prefix;
+    obj.bech32_prefix = message.bech32Prefix === "" ? undefined : message.bech32Prefix;
     if (message.moduleAccountPermissions) {
       obj.module_account_permissions = message.moduleAccountPermissions.map((e) =>
         e ? ModuleAccountPermission.toAmino(e) : undefined,
       );
     } else {
-      obj.module_account_permissions = [];
+      obj.module_account_permissions = message.moduleAccountPermissions;
     }
-    obj.authority = message.authority;
+    obj.authority = message.authority === "" ? undefined : message.authority;
     return obj;
   },
   fromAminoMsg(object: ModuleAminoMsg): Module {
@@ -221,7 +240,7 @@ export const ModuleAccountPermission = {
     if (Array.isArray(object?.permissions)) obj.permissions = object.permissions.map((e: any) => String(e));
     return obj;
   },
-  toJSON(message: ModuleAccountPermission): unknown {
+  toJSON(message: ModuleAccountPermission): JsonSafe<ModuleAccountPermission> {
     const obj: any = {};
     message.account !== undefined && (obj.account = message.account);
     if (message.permissions) {
@@ -247,11 +266,11 @@ export const ModuleAccountPermission = {
   },
   toAmino(message: ModuleAccountPermission): ModuleAccountPermissionAmino {
     const obj: any = {};
-    obj.account = message.account;
+    obj.account = message.account === "" ? undefined : message.account;
     if (message.permissions) {
       obj.permissions = message.permissions.map((e) => e);
     } else {
-      obj.permissions = [];
+      obj.permissions = message.permissions;
     }
     return obj;
   },

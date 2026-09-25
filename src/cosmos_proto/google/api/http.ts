@@ -1,6 +1,7 @@
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "../../../binary";
 import { isSet } from "../../../helpers";
+import { JsonSafe } from "../../../json-safe";
 export const protobufPackage = "google.api";
 /**
  * Defines the HTTP configuration for an API service. It contains a list of
@@ -32,6 +33,9 @@ export interface HttpProtoMsg {
  * Defines the HTTP configuration for an API service. It contains a list of
  * [HttpRule][google.api.HttpRule], each specifying the mapping of an RPC method
  * to one or more HTTP REST API methods.
+ * @name HttpAmino
+ * @package google.api
+ * @see proto type: google.api.Http
  */
 export interface HttpAmino {
   /**
@@ -539,6 +543,9 @@ export interface HttpRuleProtoMsg {
  *
  * NOTE: the field paths in variables and in the `body` must not refer to
  * repeated fields or map fields.
+ * @name HttpRuleAmino
+ * @package google.api
+ * @see proto type: google.api.HttpRule
  */
 export interface HttpRuleAmino {
   /**
@@ -547,15 +554,25 @@ export interface HttpRuleAmino {
    * Refer to [selector][google.api.DocumentationRule.selector] for syntax details.
    */
   selector?: string;
-  /** Used for listing and getting information about resources. */
+  /**
+   * Used for listing and getting information about resources.
+   */
   get?: string;
-  /** Used for updating a resource. */
+  /**
+   * Used for updating a resource.
+   */
   put?: string;
-  /** Used for creating a resource. */
+  /**
+   * Used for creating a resource.
+   */
   post?: string;
-  /** Used for deleting a resource. */
+  /**
+   * Used for deleting a resource.
+   */
   delete?: string;
-  /** Used for updating a resource. */
+  /**
+   * Used for updating a resource.
+   */
   patch?: string;
   /**
    * The custom pattern is used for specifying an HTTP method that is not
@@ -599,11 +616,20 @@ export interface CustomHttpPatternProtoMsg {
   typeUrl: "/google.api.CustomHttpPattern";
   value: Uint8Array;
 }
-/** A custom pattern is used for defining custom HTTP verb. */
+/**
+ * A custom pattern is used for defining custom HTTP verb.
+ * @name CustomHttpPatternAmino
+ * @package google.api
+ * @see proto type: google.api.CustomHttpPattern
+ */
 export interface CustomHttpPatternAmino {
-  /** The name of this custom HTTP verb. */
+  /**
+   * The name of this custom HTTP verb.
+   */
   kind?: string;
-  /** The path matched by this custom verb. */
+  /**
+   * The path matched by this custom verb.
+   */
   path?: string;
 }
 export interface CustomHttpPatternAminoMsg {
@@ -654,7 +680,7 @@ export const Http = {
       obj.fullyDecodeReservedExpansion = Boolean(object.fullyDecodeReservedExpansion);
     return obj;
   },
-  toJSON(message: Http): unknown {
+  toJSON(message: Http): JsonSafe<Http> {
     const obj: any = {};
     if (message.rules) {
       obj.rules = message.rules.map((e) => (e ? HttpRule.toJSON(e) : undefined));
@@ -687,9 +713,10 @@ export const Http = {
     if (message.rules) {
       obj.rules = message.rules.map((e) => (e ? HttpRule.toAmino(e) : undefined));
     } else {
-      obj.rules = [];
+      obj.rules = message.rules;
     }
-    obj.fully_decode_reserved_expansion = message.fullyDecodeReservedExpansion;
+    obj.fully_decode_reserved_expansion =
+      message.fullyDecodeReservedExpansion === false ? undefined : message.fullyDecodeReservedExpansion;
     return obj;
   },
   fromAminoMsg(object: HttpAminoMsg): Http {
@@ -816,7 +843,7 @@ export const HttpRule = {
       obj.additionalBindings = object.additionalBindings.map((e: any) => HttpRule.fromJSON(e));
     return obj;
   },
-  toJSON(message: HttpRule): unknown {
+  toJSON(message: HttpRule): JsonSafe<HttpRule> {
     const obj: any = {};
     message.selector !== undefined && (obj.selector = message.selector);
     message.get !== undefined && (obj.get = message.get);
@@ -885,19 +912,19 @@ export const HttpRule = {
   },
   toAmino(message: HttpRule): HttpRuleAmino {
     const obj: any = {};
-    obj.selector = message.selector;
-    obj.get = message.get;
-    obj.put = message.put;
-    obj.post = message.post;
-    obj.delete = message.delete;
-    obj.patch = message.patch;
+    obj.selector = message.selector === "" ? undefined : message.selector;
+    obj.get = message.get === null ? undefined : message.get;
+    obj.put = message.put === null ? undefined : message.put;
+    obj.post = message.post === null ? undefined : message.post;
+    obj.delete = message.delete === null ? undefined : message.delete;
+    obj.patch = message.patch === null ? undefined : message.patch;
     obj.custom = message.custom ? CustomHttpPattern.toAmino(message.custom) : undefined;
-    obj.body = message.body;
-    obj.response_body = message.responseBody;
+    obj.body = message.body === "" ? undefined : message.body;
+    obj.response_body = message.responseBody === "" ? undefined : message.responseBody;
     if (message.additionalBindings) {
       obj.additional_bindings = message.additionalBindings.map((e) => (e ? HttpRule.toAmino(e) : undefined));
     } else {
-      obj.additional_bindings = [];
+      obj.additional_bindings = message.additionalBindings;
     }
     return obj;
   },
@@ -960,7 +987,7 @@ export const CustomHttpPattern = {
     if (isSet(object.path)) obj.path = String(object.path);
     return obj;
   },
-  toJSON(message: CustomHttpPattern): unknown {
+  toJSON(message: CustomHttpPattern): JsonSafe<CustomHttpPattern> {
     const obj: any = {};
     message.kind !== undefined && (obj.kind = message.kind);
     message.path !== undefined && (obj.path = message.path);
@@ -984,8 +1011,8 @@ export const CustomHttpPattern = {
   },
   toAmino(message: CustomHttpPattern): CustomHttpPatternAmino {
     const obj: any = {};
-    obj.kind = message.kind;
-    obj.path = message.path;
+    obj.kind = message.kind === "" ? undefined : message.kind;
+    obj.path = message.path === "" ? undefined : message.path;
     return obj;
   },
   fromAminoMsg(object: CustomHttpPatternAminoMsg): CustomHttpPattern {

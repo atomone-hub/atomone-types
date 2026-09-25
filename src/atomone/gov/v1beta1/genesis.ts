@@ -15,6 +15,7 @@ import {
 } from "./gov";
 import { BinaryReader, BinaryWriter } from "../../../binary";
 import { isSet } from "../../../helpers";
+import { JsonSafe } from "../../../json-safe";
 export const protobufPackage = "atomone.gov.v1beta1";
 /** GenesisState defines the gov module's genesis state. */
 export interface GenesisState {
@@ -37,21 +38,40 @@ export interface GenesisStateProtoMsg {
   typeUrl: "/atomone.gov.v1beta1.GenesisState";
   value: Uint8Array;
 }
-/** GenesisState defines the gov module's genesis state. */
+/**
+ * GenesisState defines the gov module's genesis state.
+ * @name GenesisStateAmino
+ * @package atomone.gov.v1beta1
+ * @see proto type: atomone.gov.v1beta1.GenesisState
+ */
 export interface GenesisStateAmino {
-  /** starting_proposal_id is the ID of the starting proposal. */
+  /**
+   * starting_proposal_id is the ID of the starting proposal.
+   */
   starting_proposal_id?: string;
-  /** deposits defines all the deposits present at genesis. */
+  /**
+   * deposits defines all the deposits present at genesis.
+   */
   deposits: DepositAmino[];
-  /** votes defines all the votes present at genesis. */
+  /**
+   * votes defines all the votes present at genesis.
+   */
   votes: VoteAmino[];
-  /** proposals defines all the proposals present at genesis. */
+  /**
+   * proposals defines all the proposals present at genesis.
+   */
   proposals: ProposalAmino[];
-  /** params defines all the parameters of related to deposit. */
+  /**
+   * params defines all the parameters of related to deposit.
+   */
   deposit_params: DepositParamsAmino | undefined;
-  /** params defines all the parameters of related to voting. */
+  /**
+   * params defines all the parameters of related to voting.
+   */
   voting_params: VotingParamsAmino | undefined;
-  /** params defines all the parameters of related to tally. */
+  /**
+   * params defines all the parameters of related to tally.
+   */
   tally_params: TallyParamsAmino | undefined;
 }
 export interface GenesisStateAminoMsg {
@@ -143,7 +163,7 @@ export const GenesisState = {
     if (isSet(object.tallyParams)) obj.tallyParams = TallyParams.fromJSON(object.tallyParams);
     return obj;
   },
-  toJSON(message: GenesisState): unknown {
+  toJSON(message: GenesisState): JsonSafe<GenesisState> {
     const obj: any = {};
     message.startingProposalId !== undefined &&
       (obj.startingProposalId = (message.startingProposalId || BigInt(0)).toString());
@@ -210,31 +230,32 @@ export const GenesisState = {
   },
   toAmino(message: GenesisState): GenesisStateAmino {
     const obj: any = {};
-    obj.starting_proposal_id = message.startingProposalId ? message.startingProposalId.toString() : undefined;
+    obj.starting_proposal_id =
+      message.startingProposalId !== BigInt(0) ? message.startingProposalId?.toString() : undefined;
     if (message.deposits) {
       obj.deposits = message.deposits.map((e) => (e ? Deposit.toAmino(e) : undefined));
     } else {
-      obj.deposits = [];
+      obj.deposits = message.deposits;
     }
     if (message.votes) {
       obj.votes = message.votes.map((e) => (e ? Vote.toAmino(e) : undefined));
     } else {
-      obj.votes = [];
+      obj.votes = message.votes;
     }
     if (message.proposals) {
       obj.proposals = message.proposals.map((e) => (e ? Proposal.toAmino(e) : undefined));
     } else {
-      obj.proposals = [];
+      obj.proposals = message.proposals;
     }
     obj.deposit_params = message.depositParams
       ? DepositParams.toAmino(message.depositParams)
-      : DepositParams.fromPartial({});
+      : DepositParams.toAmino(DepositParams.fromPartial({}));
     obj.voting_params = message.votingParams
       ? VotingParams.toAmino(message.votingParams)
-      : VotingParams.fromPartial({});
+      : VotingParams.toAmino(VotingParams.fromPartial({}));
     obj.tally_params = message.tallyParams
       ? TallyParams.toAmino(message.tallyParams)
-      : TallyParams.fromPartial({});
+      : TallyParams.toAmino(TallyParams.fromPartial({}));
     return obj;
   },
   fromAminoMsg(object: GenesisStateAminoMsg): GenesisState {

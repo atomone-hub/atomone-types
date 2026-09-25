@@ -1,6 +1,7 @@
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "../../../../binary";
 import { bytesFromBase64, isSet, base64FromBytes } from "../../../../helpers";
+import { JsonSafe } from "../../../../json-safe";
 export const protobufPackage = "ibc.core.client.v2";
 /** CounterpartyInfo defines the key that the counterparty will use to message our client */
 export interface CounterpartyInfo {
@@ -13,11 +14,20 @@ export interface CounterpartyInfoProtoMsg {
   typeUrl: "/ibc.core.client.v2.CounterpartyInfo";
   value: Uint8Array;
 }
-/** CounterpartyInfo defines the key that the counterparty will use to message our client */
+/**
+ * CounterpartyInfo defines the key that the counterparty will use to message our client
+ * @name CounterpartyInfoAmino
+ * @package ibc.core.client.v2
+ * @see proto type: ibc.core.client.v2.CounterpartyInfo
+ */
 export interface CounterpartyInfoAmino {
-  /** merkle prefix key is the prefix that ics provable keys are stored under */
+  /**
+   * merkle prefix key is the prefix that ics provable keys are stored under
+   */
   merkle_prefix?: string[];
-  /** client identifier is the identifier used to send packet messages to our client */
+  /**
+   * client identifier is the identifier used to send packet messages to our client
+   */
   client_id?: string;
 }
 export interface CounterpartyInfoAminoMsg {
@@ -68,7 +78,7 @@ export const CounterpartyInfo = {
     if (isSet(object.clientId)) obj.clientId = String(object.clientId);
     return obj;
   },
-  toJSON(message: CounterpartyInfo): unknown {
+  toJSON(message: CounterpartyInfo): JsonSafe<CounterpartyInfo> {
     const obj: any = {};
     if (message.merklePrefix) {
       obj.merklePrefix = message.merklePrefix.map((e) =>
@@ -99,9 +109,9 @@ export const CounterpartyInfo = {
     if (message.merklePrefix) {
       obj.merkle_prefix = message.merklePrefix.map((e) => base64FromBytes(e));
     } else {
-      obj.merkle_prefix = [];
+      obj.merkle_prefix = message.merklePrefix;
     }
-    obj.client_id = message.clientId;
+    obj.client_id = message.clientId === "" ? undefined : message.clientId;
     return obj;
   },
   fromAminoMsg(object: CounterpartyInfoAminoMsg): CounterpartyInfo {

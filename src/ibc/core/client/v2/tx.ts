@@ -2,6 +2,7 @@
 import { Config, ConfigAmino } from "./config";
 import { BinaryReader, BinaryWriter } from "../../../../binary";
 import { isSet, bytesFromBase64, base64FromBytes } from "../../../../helpers";
+import { JsonSafe } from "../../../../json-safe";
 import { TxRpc } from "../../../../types";
 export const protobufPackage = "ibc.core.client.v2";
 /** MsgRegisterCounterparty defines a message to register a counterparty on a client */
@@ -19,15 +20,28 @@ export interface MsgRegisterCounterpartyProtoMsg {
   typeUrl: "/ibc.core.client.v2.MsgRegisterCounterparty";
   value: Uint8Array;
 }
-/** MsgRegisterCounterparty defines a message to register a counterparty on a client */
+/**
+ * MsgRegisterCounterparty defines a message to register a counterparty on a client
+ * @name MsgRegisterCounterpartyAmino
+ * @package ibc.core.client.v2
+ * @see proto type: ibc.core.client.v2.MsgRegisterCounterparty
+ */
 export interface MsgRegisterCounterpartyAmino {
-  /** client identifier */
+  /**
+   * client identifier
+   */
   client_id?: string;
-  /** counterparty merkle prefix */
+  /**
+   * counterparty merkle prefix
+   */
   counterparty_merkle_prefix?: string[];
-  /** counterparty client identifier */
+  /**
+   * counterparty client identifier
+   */
   counterparty_client_id?: string;
-  /** signer address */
+  /**
+   * signer address
+   */
   signer?: string;
 }
 export interface MsgRegisterCounterpartyAminoMsg {
@@ -40,7 +54,12 @@ export interface MsgRegisterCounterpartyResponseProtoMsg {
   typeUrl: "/ibc.core.client.v2.MsgRegisterCounterpartyResponse";
   value: Uint8Array;
 }
-/** MsgRegisterCounterpartyResponse defines the Msg/RegisterCounterparty response type. */
+/**
+ * MsgRegisterCounterpartyResponse defines the Msg/RegisterCounterparty response type.
+ * @name MsgRegisterCounterpartyResponseAmino
+ * @package ibc.core.client.v2
+ * @see proto type: ibc.core.client.v2.MsgRegisterCounterpartyResponse
+ */
 export interface MsgRegisterCounterpartyResponseAmino {}
 export interface MsgRegisterCounterpartyResponseAminoMsg {
   type: "cosmos-sdk/MsgRegisterCounterpartyResponse";
@@ -63,9 +82,16 @@ export interface MsgUpdateClientConfigProtoMsg {
   typeUrl: "/ibc.core.client.v2.MsgUpdateClientConfig";
   value: Uint8Array;
 }
-/** MsgUpdateClientConfig defines the sdk.Msg type to update the configuration for a given client */
+/**
+ * MsgUpdateClientConfig defines the sdk.Msg type to update the configuration for a given client
+ * @name MsgUpdateClientConfigAmino
+ * @package ibc.core.client.v2
+ * @see proto type: ibc.core.client.v2.MsgUpdateClientConfig
+ */
 export interface MsgUpdateClientConfigAmino {
-  /** client identifier */
+  /**
+   * client identifier
+   */
   client_id?: string;
   /**
    * allowed relayers
@@ -73,7 +99,9 @@ export interface MsgUpdateClientConfigAmino {
    * NOTE: All fields in the config must be supplied.
    */
   config?: ConfigAmino | undefined;
-  /** signer address */
+  /**
+   * signer address
+   */
   signer?: string;
 }
 export interface MsgUpdateClientConfigAminoMsg {
@@ -86,7 +114,12 @@ export interface MsgUpdateClientConfigResponseProtoMsg {
   typeUrl: "/ibc.core.client.v2.MsgUpdateClientConfigResponse";
   value: Uint8Array;
 }
-/** MsgUpdateClientConfigResponse defines the MsgUpdateClientConfig response type. */
+/**
+ * MsgUpdateClientConfigResponse defines the MsgUpdateClientConfig response type.
+ * @name MsgUpdateClientConfigResponseAmino
+ * @package ibc.core.client.v2
+ * @see proto type: ibc.core.client.v2.MsgUpdateClientConfigResponse
+ */
 export interface MsgUpdateClientConfigResponseAmino {}
 export interface MsgUpdateClientConfigResponseAminoMsg {
   type: "cosmos-sdk/MsgUpdateClientConfigResponse";
@@ -152,7 +185,7 @@ export const MsgRegisterCounterparty = {
     if (isSet(object.signer)) obj.signer = String(object.signer);
     return obj;
   },
-  toJSON(message: MsgRegisterCounterparty): unknown {
+  toJSON(message: MsgRegisterCounterparty): JsonSafe<MsgRegisterCounterparty> {
     const obj: any = {};
     message.clientId !== undefined && (obj.clientId = message.clientId);
     if (message.counterpartyMerklePrefix) {
@@ -191,14 +224,15 @@ export const MsgRegisterCounterparty = {
   },
   toAmino(message: MsgRegisterCounterparty): MsgRegisterCounterpartyAmino {
     const obj: any = {};
-    obj.client_id = message.clientId;
+    obj.client_id = message.clientId === "" ? undefined : message.clientId;
     if (message.counterpartyMerklePrefix) {
       obj.counterparty_merkle_prefix = message.counterpartyMerklePrefix.map((e) => base64FromBytes(e));
     } else {
-      obj.counterparty_merkle_prefix = [];
+      obj.counterparty_merkle_prefix = message.counterpartyMerklePrefix;
     }
-    obj.counterparty_client_id = message.counterpartyClientId;
-    obj.signer = message.signer;
+    obj.counterparty_client_id =
+      message.counterpartyClientId === "" ? undefined : message.counterpartyClientId;
+    obj.signer = message.signer === "" ? undefined : message.signer;
     return obj;
   },
   fromAminoMsg(object: MsgRegisterCounterpartyAminoMsg): MsgRegisterCounterparty {
@@ -249,7 +283,7 @@ export const MsgRegisterCounterpartyResponse = {
     const obj = createBaseMsgRegisterCounterpartyResponse();
     return obj;
   },
-  toJSON(_: MsgRegisterCounterpartyResponse): unknown {
+  toJSON(_: MsgRegisterCounterpartyResponse): JsonSafe<MsgRegisterCounterpartyResponse> {
     const obj: any = {};
     return obj;
   },
@@ -338,7 +372,7 @@ export const MsgUpdateClientConfig = {
     if (isSet(object.signer)) obj.signer = String(object.signer);
     return obj;
   },
-  toJSON(message: MsgUpdateClientConfig): unknown {
+  toJSON(message: MsgUpdateClientConfig): JsonSafe<MsgUpdateClientConfig> {
     const obj: any = {};
     message.clientId !== undefined && (obj.clientId = message.clientId);
     message.config !== undefined && (obj.config = message.config ? Config.toJSON(message.config) : undefined);
@@ -369,9 +403,9 @@ export const MsgUpdateClientConfig = {
   },
   toAmino(message: MsgUpdateClientConfig): MsgUpdateClientConfigAmino {
     const obj: any = {};
-    obj.client_id = message.clientId;
+    obj.client_id = message.clientId === "" ? undefined : message.clientId;
     obj.config = message.config ? Config.toAmino(message.config) : undefined;
-    obj.signer = message.signer;
+    obj.signer = message.signer === "" ? undefined : message.signer;
     return obj;
   },
   fromAminoMsg(object: MsgUpdateClientConfigAminoMsg): MsgUpdateClientConfig {
@@ -422,7 +456,7 @@ export const MsgUpdateClientConfigResponse = {
     const obj = createBaseMsgUpdateClientConfigResponse();
     return obj;
   },
-  toJSON(_: MsgUpdateClientConfigResponse): unknown {
+  toJSON(_: MsgUpdateClientConfigResponse): JsonSafe<MsgUpdateClientConfigResponse> {
     const obj: any = {};
     return obj;
   },

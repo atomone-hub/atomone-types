@@ -1,6 +1,7 @@
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "../../../binary";
 import { bytesFromBase64, base64FromBytes } from "../../../helpers";
+import { JsonSafe } from "../../../json-safe";
 export const protobufPackage = "cosmos.genutil.v1beta1";
 /** GenesisState defines the raw genesis transaction in JSON. */
 export interface GenesisState {
@@ -11,9 +12,16 @@ export interface GenesisStateProtoMsg {
   typeUrl: "/cosmos.genutil.v1beta1.GenesisState";
   value: Uint8Array;
 }
-/** GenesisState defines the raw genesis transaction in JSON. */
+/**
+ * GenesisState defines the raw genesis transaction in JSON.
+ * @name GenesisStateAmino
+ * @package cosmos.genutil.v1beta1
+ * @see proto type: cosmos.genutil.v1beta1.GenesisState
+ */
 export interface GenesisStateAmino {
-  /** gen_txs defines the genesis transactions. */
+  /**
+   * gen_txs defines the genesis transactions.
+   */
   gen_txs: string[];
 }
 export interface GenesisStateAminoMsg {
@@ -55,7 +63,7 @@ export const GenesisState = {
     if (Array.isArray(object?.genTxs)) obj.genTxs = object.genTxs.map((e: any) => bytesFromBase64(e));
     return obj;
   },
-  toJSON(message: GenesisState): unknown {
+  toJSON(message: GenesisState): JsonSafe<GenesisState> {
     const obj: any = {};
     if (message.genTxs) {
       obj.genTxs = message.genTxs.map((e) => base64FromBytes(e !== undefined ? e : new Uint8Array()));
@@ -79,7 +87,7 @@ export const GenesisState = {
     if (message.genTxs) {
       obj.gen_txs = message.genTxs.map((e) => base64FromBytes(e));
     } else {
-      obj.gen_txs = [];
+      obj.gen_txs = message.genTxs;
     }
     return obj;
   },

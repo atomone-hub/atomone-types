@@ -3,6 +3,7 @@ import { Timestamp } from "../../../google/protobuf/timestamp";
 import { Any, AnyAmino } from "../../../google/protobuf/any";
 import { BinaryReader, BinaryWriter } from "../../../binary";
 import { isSet, fromJsonTimestamp, fromTimestamp } from "../../../helpers";
+import { JsonSafe } from "../../../json-safe";
 export const protobufPackage = "cosmos.upgrade.v1beta1";
 /** Plan specifies information about a planned upgrade and when it should occur. */
 export interface Plan {
@@ -42,7 +43,12 @@ export interface PlanProtoMsg {
   typeUrl: "/cosmos.upgrade.v1beta1.Plan";
   value: Uint8Array;
 }
-/** Plan specifies information about a planned upgrade and when it should occur. */
+/**
+ * Plan specifies information about a planned upgrade and when it should occur.
+ * @name PlanAmino
+ * @package cosmos.upgrade.v1beta1
+ * @see proto type: cosmos.upgrade.v1beta1.Plan
+ */
 export interface PlanAmino {
   /**
    * Sets the name for the upgrade. This name will be used by the upgraded
@@ -58,10 +64,12 @@ export interface PlanAmino {
    * Deprecated: Time based upgrades have been deprecated. Time based upgrade logic
    * has been removed from the SDK.
    * If this field is not empty, an error will be thrown.
+   * @deprecated
    */
-  /** @deprecated */
   time: string | undefined;
-  /** The height at which the upgrade must be performed. */
+  /**
+   * The height at which the upgrade must be performed.
+   */
   height?: string;
   /**
    * Any application specific upgrade info to be included on-chain
@@ -72,8 +80,8 @@ export interface PlanAmino {
    * Deprecated: UpgradedClientState field has been deprecated. IBC upgrade logic has been
    * moved to the IBC module in the sub module 02-client.
    * If this field is not empty, an error will be thrown.
+   * @deprecated
    */
-  /** @deprecated */
   upgraded_client_state?: AnyAmino | undefined;
 }
 export interface PlanAminoMsg {
@@ -104,14 +112,23 @@ export interface SoftwareUpgradeProposalProtoMsg {
  * upgrade.
  * Deprecated: This legacy proposal is deprecated in favor of Msg-based gov
  * proposals, see MsgSoftwareUpgrade.
+ * @name SoftwareUpgradeProposalAmino
+ * @package cosmos.upgrade.v1beta1
+ * @see proto type: cosmos.upgrade.v1beta1.SoftwareUpgradeProposal
+ * @deprecated
  */
-/** @deprecated */
 export interface SoftwareUpgradeProposalAmino {
-  /** title of the proposal */
+  /**
+   * title of the proposal
+   */
   title?: string;
-  /** description of the proposal */
+  /**
+   * description of the proposal
+   */
   description?: string;
-  /** plan of the proposal */
+  /**
+   * plan of the proposal
+   */
   plan: PlanAmino | undefined;
 }
 export interface SoftwareUpgradeProposalAminoMsg {
@@ -140,12 +157,19 @@ export interface CancelSoftwareUpgradeProposalProtoMsg {
  * upgrade.
  * Deprecated: This legacy proposal is deprecated in favor of Msg-based gov
  * proposals, see MsgCancelUpgrade.
+ * @name CancelSoftwareUpgradeProposalAmino
+ * @package cosmos.upgrade.v1beta1
+ * @see proto type: cosmos.upgrade.v1beta1.CancelSoftwareUpgradeProposal
+ * @deprecated
  */
-/** @deprecated */
 export interface CancelSoftwareUpgradeProposalAmino {
-  /** title of the proposal */
+  /**
+   * title of the proposal
+   */
   title?: string;
-  /** description of the proposal */
+  /**
+   * description of the proposal
+   */
   description?: string;
 }
 export interface CancelSoftwareUpgradeProposalAminoMsg {
@@ -171,11 +195,18 @@ export interface ModuleVersionProtoMsg {
  * ModuleVersion specifies a module and its consensus version.
  *
  * Since: cosmos-sdk 0.43
+ * @name ModuleVersionAmino
+ * @package cosmos.upgrade.v1beta1
+ * @see proto type: cosmos.upgrade.v1beta1.ModuleVersion
  */
 export interface ModuleVersionAmino {
-  /** name of the app module */
+  /**
+   * name of the app module
+   */
   name?: string;
-  /** consensus version of the app module */
+  /**
+   * consensus version of the app module
+   */
   version?: string;
 }
 export interface ModuleVersionAminoMsg {
@@ -249,7 +280,7 @@ export const Plan = {
     if (isSet(object.upgradedClientState)) obj.upgradedClientState = Any.fromJSON(object.upgradedClientState);
     return obj;
   },
-  toJSON(message: Plan): unknown {
+  toJSON(message: Plan): JsonSafe<Plan> {
     const obj: any = {};
     message.name !== undefined && (obj.name = message.name);
     message.time !== undefined && (obj.time = fromTimestamp(message.time).toISOString());
@@ -297,10 +328,10 @@ export const Plan = {
   },
   toAmino(message: Plan): PlanAmino {
     const obj: any = {};
-    obj.name = message.name;
-    obj.time = message.time ? Timestamp.toAmino(message.time) : undefined;
-    obj.height = message.height ? message.height.toString() : undefined;
-    obj.info = message.info;
+    obj.name = message.name === "" ? undefined : message.name;
+    obj.time = message.time ? Timestamp.toAmino(message.time) : Timestamp.toAmino(Timestamp.fromPartial({}));
+    obj.height = message.height !== BigInt(0) ? message.height?.toString() : undefined;
+    obj.info = message.info === "" ? undefined : message.info;
     obj.upgraded_client_state = message.upgradedClientState
       ? Any.toAmino(message.upgradedClientState)
       : undefined;
@@ -379,7 +410,7 @@ export const SoftwareUpgradeProposal = {
     if (isSet(object.plan)) obj.plan = Plan.fromJSON(object.plan);
     return obj;
   },
-  toJSON(message: SoftwareUpgradeProposal): unknown {
+  toJSON(message: SoftwareUpgradeProposal): JsonSafe<SoftwareUpgradeProposal> {
     const obj: any = {};
     message.title !== undefined && (obj.title = message.title);
     message.description !== undefined && (obj.description = message.description);
@@ -410,9 +441,9 @@ export const SoftwareUpgradeProposal = {
   },
   toAmino(message: SoftwareUpgradeProposal): SoftwareUpgradeProposalAmino {
     const obj: any = {};
-    obj.title = message.title;
-    obj.description = message.description;
-    obj.plan = message.plan ? Plan.toAmino(message.plan) : Plan.fromPartial({});
+    obj.title = message.title === "" ? undefined : message.title;
+    obj.description = message.description === "" ? undefined : message.description;
+    obj.plan = message.plan ? Plan.toAmino(message.plan) : Plan.toAmino(Plan.fromPartial({}));
     return obj;
   },
   fromAminoMsg(object: SoftwareUpgradeProposalAminoMsg): SoftwareUpgradeProposal {
@@ -480,7 +511,7 @@ export const CancelSoftwareUpgradeProposal = {
     if (isSet(object.description)) obj.description = String(object.description);
     return obj;
   },
-  toJSON(message: CancelSoftwareUpgradeProposal): unknown {
+  toJSON(message: CancelSoftwareUpgradeProposal): JsonSafe<CancelSoftwareUpgradeProposal> {
     const obj: any = {};
     message.title !== undefined && (obj.title = message.title);
     message.description !== undefined && (obj.description = message.description);
@@ -504,8 +535,8 @@ export const CancelSoftwareUpgradeProposal = {
   },
   toAmino(message: CancelSoftwareUpgradeProposal): CancelSoftwareUpgradeProposalAmino {
     const obj: any = {};
-    obj.title = message.title;
-    obj.description = message.description;
+    obj.title = message.title === "" ? undefined : message.title;
+    obj.description = message.description === "" ? undefined : message.description;
     return obj;
   },
   fromAminoMsg(object: CancelSoftwareUpgradeProposalAminoMsg): CancelSoftwareUpgradeProposal {
@@ -573,7 +604,7 @@ export const ModuleVersion = {
     if (isSet(object.version)) obj.version = BigInt(object.version.toString());
     return obj;
   },
-  toJSON(message: ModuleVersion): unknown {
+  toJSON(message: ModuleVersion): JsonSafe<ModuleVersion> {
     const obj: any = {};
     message.name !== undefined && (obj.name = message.name);
     message.version !== undefined && (obj.version = (message.version || BigInt(0)).toString());
@@ -599,8 +630,8 @@ export const ModuleVersion = {
   },
   toAmino(message: ModuleVersion): ModuleVersionAmino {
     const obj: any = {};
-    obj.name = message.name;
-    obj.version = message.version ? message.version.toString() : undefined;
+    obj.name = message.name === "" ? undefined : message.name;
+    obj.version = message.version !== BigInt(0) ? message.version?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: ModuleVersionAminoMsg): ModuleVersion {

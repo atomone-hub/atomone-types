@@ -1,6 +1,7 @@
 /* eslint-disable */
 import { Params, ParamsAmino } from "./photon";
 import { BinaryReader, BinaryWriter } from "../../../binary";
+import { JsonSafe } from "../../../json-safe";
 import { isSet } from "../../../helpers";
 import { TxRpc } from "../../../types";
 export const protobufPackage = "atomone.photon.v1";
@@ -10,7 +11,12 @@ export interface QueryParamsRequestProtoMsg {
   typeUrl: "/atomone.photon.v1.QueryParamsRequest";
   value: Uint8Array;
 }
-/** QueryParamsRequest is request type for the Query/Params RPC method. */
+/**
+ * QueryParamsRequest is request type for the Query/Params RPC method.
+ * @name QueryParamsRequestAmino
+ * @package atomone.photon.v1
+ * @see proto type: atomone.photon.v1.QueryParamsRequest
+ */
 export interface QueryParamsRequestAmino {}
 export interface QueryParamsRequestAminoMsg {
   type: "/atomone.photon.v1.QueryParamsRequest";
@@ -25,9 +31,16 @@ export interface QueryParamsResponseProtoMsg {
   typeUrl: "/atomone.photon.v1.QueryParamsResponse";
   value: Uint8Array;
 }
-/** QueryParamsResponse is response type for the Query/Params RPC method. */
+/**
+ * QueryParamsResponse is response type for the Query/Params RPC method.
+ * @name QueryParamsResponseAmino
+ * @package atomone.photon.v1
+ * @see proto type: atomone.photon.v1.QueryParamsResponse
+ */
 export interface QueryParamsResponseAmino {
-  /** params holds all the parameters of this module. */
+  /**
+   * params holds all the parameters of this module.
+   */
   params?: ParamsAmino | undefined;
 }
 export interface QueryParamsResponseAminoMsg {
@@ -40,7 +53,12 @@ export interface QueryConversionRateRequestProtoMsg {
   typeUrl: "/atomone.photon.v1.QueryConversionRateRequest";
   value: Uint8Array;
 }
-/** QueryConversionRateRequest is request type for the Query/ConversionRate RPC method. */
+/**
+ * QueryConversionRateRequest is request type for the Query/ConversionRate RPC method.
+ * @name QueryConversionRateRequestAmino
+ * @package atomone.photon.v1
+ * @see proto type: atomone.photon.v1.QueryConversionRateRequest
+ */
 export interface QueryConversionRateRequestAmino {}
 export interface QueryConversionRateRequestAminoMsg {
   type: "/atomone.photon.v1.QueryConversionRateRequest";
@@ -55,9 +73,16 @@ export interface QueryConversionRateResponseProtoMsg {
   typeUrl: "/atomone.photon.v1.QueryConversionRateResponse";
   value: Uint8Array;
 }
-/** QueryConversionRateResponse is response type for the Query/ConversionRate RPC method. */
+/**
+ * QueryConversionRateResponse is response type for the Query/ConversionRate RPC method.
+ * @name QueryConversionRateResponseAmino
+ * @package atomone.photon.v1
+ * @see proto type: atomone.photon.v1.QueryConversionRateResponse
+ */
 export interface QueryConversionRateResponseAmino {
-  /** conversion_rate represents the factor used to convert atone to photon. */
+  /**
+   * conversion_rate represents the factor used to convert atone to photon.
+   */
   conversion_rate?: string;
 }
 export interface QueryConversionRateResponseAminoMsg {
@@ -90,7 +115,7 @@ export const QueryParamsRequest = {
     const obj = createBaseQueryParamsRequest();
     return obj;
   },
-  toJSON(_: QueryParamsRequest): unknown {
+  toJSON(_: QueryParamsRequest): JsonSafe<QueryParamsRequest> {
     const obj: any = {};
     return obj;
   },
@@ -157,7 +182,7 @@ export const QueryParamsResponse = {
     if (isSet(object.params)) obj.params = Params.fromJSON(object.params);
     return obj;
   },
-  toJSON(message: QueryParamsResponse): unknown {
+  toJSON(message: QueryParamsResponse): JsonSafe<QueryParamsResponse> {
     const obj: any = {};
     message.params !== undefined && (obj.params = message.params ? Params.toJSON(message.params) : undefined);
     return obj;
@@ -223,7 +248,7 @@ export const QueryConversionRateRequest = {
     const obj = createBaseQueryConversionRateRequest();
     return obj;
   },
-  toJSON(_: QueryConversionRateRequest): unknown {
+  toJSON(_: QueryConversionRateRequest): JsonSafe<QueryConversionRateRequest> {
     const obj: any = {};
     return obj;
   },
@@ -290,7 +315,7 @@ export const QueryConversionRateResponse = {
     if (isSet(object.conversionRate)) obj.conversionRate = String(object.conversionRate);
     return obj;
   },
-  toJSON(message: QueryConversionRateResponse): unknown {
+  toJSON(message: QueryConversionRateResponse): JsonSafe<QueryConversionRateResponse> {
     const obj: any = {};
     message.conversionRate !== undefined && (obj.conversionRate = message.conversionRate);
     return obj;
@@ -309,7 +334,7 @@ export const QueryConversionRateResponse = {
   },
   toAmino(message: QueryConversionRateResponse): QueryConversionRateResponseAmino {
     const obj: any = {};
-    obj.conversion_rate = message.conversionRate;
+    obj.conversion_rate = message.conversionRate === "" ? undefined : message.conversionRate;
     return obj;
   },
   fromAminoMsg(object: QueryConversionRateResponseAminoMsg): QueryConversionRateResponse {

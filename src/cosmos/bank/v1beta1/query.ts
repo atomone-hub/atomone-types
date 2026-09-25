@@ -9,6 +9,7 @@ import { Coin, CoinAmino } from "../../base/v1beta1/coin";
 import { Params, ParamsAmino, Metadata, MetadataAmino, SendEnabled, SendEnabledAmino } from "./bank";
 import { BinaryReader, BinaryWriter } from "../../../binary";
 import { isSet } from "../../../helpers";
+import { JsonSafe } from "../../../json-safe";
 import { TxRpc } from "../../../types";
 export const protobufPackage = "cosmos.bank.v1beta1";
 /** QueryBalanceRequest is the request type for the Query/Balance RPC method. */
@@ -22,11 +23,20 @@ export interface QueryBalanceRequestProtoMsg {
   typeUrl: "/cosmos.bank.v1beta1.QueryBalanceRequest";
   value: Uint8Array;
 }
-/** QueryBalanceRequest is the request type for the Query/Balance RPC method. */
+/**
+ * QueryBalanceRequest is the request type for the Query/Balance RPC method.
+ * @name QueryBalanceRequestAmino
+ * @package cosmos.bank.v1beta1
+ * @see proto type: cosmos.bank.v1beta1.QueryBalanceRequest
+ */
 export interface QueryBalanceRequestAmino {
-  /** address is the address to query balances for. */
+  /**
+   * address is the address to query balances for.
+   */
   address?: string;
-  /** denom is the coin denom to query balances for. */
+  /**
+   * denom is the coin denom to query balances for.
+   */
   denom?: string;
 }
 export interface QueryBalanceRequestAminoMsg {
@@ -42,9 +52,16 @@ export interface QueryBalanceResponseProtoMsg {
   typeUrl: "/cosmos.bank.v1beta1.QueryBalanceResponse";
   value: Uint8Array;
 }
-/** QueryBalanceResponse is the response type for the Query/Balance RPC method. */
+/**
+ * QueryBalanceResponse is the response type for the Query/Balance RPC method.
+ * @name QueryBalanceResponseAmino
+ * @package cosmos.bank.v1beta1
+ * @see proto type: cosmos.bank.v1beta1.QueryBalanceResponse
+ */
 export interface QueryBalanceResponseAmino {
-  /** balance is the balance of the coin. */
+  /**
+   * balance is the balance of the coin.
+   */
   balance?: CoinAmino | undefined;
 }
 export interface QueryBalanceResponseAminoMsg {
@@ -68,11 +85,20 @@ export interface QueryAllBalancesRequestProtoMsg {
   typeUrl: "/cosmos.bank.v1beta1.QueryAllBalancesRequest";
   value: Uint8Array;
 }
-/** QueryBalanceRequest is the request type for the Query/AllBalances RPC method. */
+/**
+ * QueryBalanceRequest is the request type for the Query/AllBalances RPC method.
+ * @name QueryAllBalancesRequestAmino
+ * @package cosmos.bank.v1beta1
+ * @see proto type: cosmos.bank.v1beta1.QueryAllBalancesRequest
+ */
 export interface QueryAllBalancesRequestAmino {
-  /** address is the address to query balances for. */
+  /**
+   * address is the address to query balances for.
+   */
   address?: string;
-  /** pagination defines an optional pagination for the request. */
+  /**
+   * pagination defines an optional pagination for the request.
+   */
   pagination?: PageRequestAmino | undefined;
   /**
    * resolve_denom is the flag to resolve the denom into a human-readable form from the metadata.
@@ -102,11 +128,18 @@ export interface QueryAllBalancesResponseProtoMsg {
 /**
  * QueryAllBalancesResponse is the response type for the Query/AllBalances RPC
  * method.
+ * @name QueryAllBalancesResponseAmino
+ * @package cosmos.bank.v1beta1
+ * @see proto type: cosmos.bank.v1beta1.QueryAllBalancesResponse
  */
 export interface QueryAllBalancesResponseAmino {
-  /** balances is the balances of all the coins. */
+  /**
+   * balances is the balances of all the coins.
+   */
   balances: CoinAmino[];
-  /** pagination defines the pagination in the response. */
+  /**
+   * pagination defines the pagination in the response.
+   */
   pagination?: PageResponseAmino | undefined;
 }
 export interface QueryAllBalancesResponseAminoMsg {
@@ -134,11 +167,18 @@ export interface QuerySpendableBalancesRequestProtoMsg {
  * an account's spendable balances.
  *
  * Since: cosmos-sdk 0.46
+ * @name QuerySpendableBalancesRequestAmino
+ * @package cosmos.bank.v1beta1
+ * @see proto type: cosmos.bank.v1beta1.QuerySpendableBalancesRequest
  */
 export interface QuerySpendableBalancesRequestAmino {
-  /** address is the address to query spendable balances for. */
+  /**
+   * address is the address to query spendable balances for.
+   */
   address?: string;
-  /** pagination defines an optional pagination for the request. */
+  /**
+   * pagination defines an optional pagination for the request.
+   */
   pagination?: PageRequestAmino | undefined;
 }
 export interface QuerySpendableBalancesRequestAminoMsg {
@@ -166,11 +206,18 @@ export interface QuerySpendableBalancesResponseProtoMsg {
  * an account's spendable balances.
  *
  * Since: cosmos-sdk 0.46
+ * @name QuerySpendableBalancesResponseAmino
+ * @package cosmos.bank.v1beta1
+ * @see proto type: cosmos.bank.v1beta1.QuerySpendableBalancesResponse
  */
 export interface QuerySpendableBalancesResponseAmino {
-  /** balances is the spendable balances of all the coins. */
+  /**
+   * balances is the spendable balances of all the coins.
+   */
   balances: CoinAmino[];
-  /** pagination defines the pagination in the response. */
+  /**
+   * pagination defines the pagination in the response.
+   */
   pagination?: PageResponseAmino | undefined;
 }
 export interface QuerySpendableBalancesResponseAminoMsg {
@@ -198,11 +245,18 @@ export interface QuerySpendableBalanceByDenomRequestProtoMsg {
  * querying an account's spendable balance for a specific denom.
  *
  * Since: cosmos-sdk 0.47
+ * @name QuerySpendableBalanceByDenomRequestAmino
+ * @package cosmos.bank.v1beta1
+ * @see proto type: cosmos.bank.v1beta1.QuerySpendableBalanceByDenomRequest
  */
 export interface QuerySpendableBalanceByDenomRequestAmino {
-  /** address is the address to query balances for. */
+  /**
+   * address is the address to query balances for.
+   */
   address?: string;
-  /** denom is the coin denom to query balances for. */
+  /**
+   * denom is the coin denom to query balances for.
+   */
   denom?: string;
 }
 export interface QuerySpendableBalanceByDenomRequestAminoMsg {
@@ -228,9 +282,14 @@ export interface QuerySpendableBalanceByDenomResponseProtoMsg {
  * querying an account's spendable balance for a specific denom.
  *
  * Since: cosmos-sdk 0.47
+ * @name QuerySpendableBalanceByDenomResponseAmino
+ * @package cosmos.bank.v1beta1
+ * @see proto type: cosmos.bank.v1beta1.QuerySpendableBalanceByDenomResponse
  */
 export interface QuerySpendableBalanceByDenomResponseAmino {
-  /** balance is the balance of the coin. */
+  /**
+   * balance is the balance of the coin.
+   */
   balance?: CoinAmino | undefined;
 }
 export interface QuerySpendableBalanceByDenomResponseAminoMsg {
@@ -256,6 +315,9 @@ export interface QueryTotalSupplyRequestProtoMsg {
 /**
  * QueryTotalSupplyRequest is the request type for the Query/TotalSupply RPC
  * method.
+ * @name QueryTotalSupplyRequestAmino
+ * @package cosmos.bank.v1beta1
+ * @see proto type: cosmos.bank.v1beta1.QueryTotalSupplyRequest
  */
 export interface QueryTotalSupplyRequestAmino {
   /**
@@ -290,9 +352,14 @@ export interface QueryTotalSupplyResponseProtoMsg {
 /**
  * QueryTotalSupplyResponse is the response type for the Query/TotalSupply RPC
  * method
+ * @name QueryTotalSupplyResponseAmino
+ * @package cosmos.bank.v1beta1
+ * @see proto type: cosmos.bank.v1beta1.QueryTotalSupplyResponse
  */
 export interface QueryTotalSupplyResponseAmino {
-  /** supply is the supply of the coins */
+  /**
+   * supply is the supply of the coins
+   */
   supply: CoinAmino[];
   /**
    * pagination defines the pagination in the response.
@@ -314,9 +381,16 @@ export interface QuerySupplyOfRequestProtoMsg {
   typeUrl: "/cosmos.bank.v1beta1.QuerySupplyOfRequest";
   value: Uint8Array;
 }
-/** QuerySupplyOfRequest is the request type for the Query/SupplyOf RPC method. */
+/**
+ * QuerySupplyOfRequest is the request type for the Query/SupplyOf RPC method.
+ * @name QuerySupplyOfRequestAmino
+ * @package cosmos.bank.v1beta1
+ * @see proto type: cosmos.bank.v1beta1.QuerySupplyOfRequest
+ */
 export interface QuerySupplyOfRequestAmino {
-  /** denom is the coin denom to query balances for. */
+  /**
+   * denom is the coin denom to query balances for.
+   */
   denom?: string;
 }
 export interface QuerySupplyOfRequestAminoMsg {
@@ -332,9 +406,16 @@ export interface QuerySupplyOfResponseProtoMsg {
   typeUrl: "/cosmos.bank.v1beta1.QuerySupplyOfResponse";
   value: Uint8Array;
 }
-/** QuerySupplyOfResponse is the response type for the Query/SupplyOf RPC method. */
+/**
+ * QuerySupplyOfResponse is the response type for the Query/SupplyOf RPC method.
+ * @name QuerySupplyOfResponseAmino
+ * @package cosmos.bank.v1beta1
+ * @see proto type: cosmos.bank.v1beta1.QuerySupplyOfResponse
+ */
 export interface QuerySupplyOfResponseAmino {
-  /** amount is the supply of the coin. */
+  /**
+   * amount is the supply of the coin.
+   */
   amount: CoinAmino | undefined;
 }
 export interface QuerySupplyOfResponseAminoMsg {
@@ -347,7 +428,12 @@ export interface QueryParamsRequestProtoMsg {
   typeUrl: "/cosmos.bank.v1beta1.QueryParamsRequest";
   value: Uint8Array;
 }
-/** QueryParamsRequest defines the request type for querying x/bank parameters. */
+/**
+ * QueryParamsRequest defines the request type for querying x/bank parameters.
+ * @name QueryParamsRequestAmino
+ * @package cosmos.bank.v1beta1
+ * @see proto type: cosmos.bank.v1beta1.QueryParamsRequest
+ */
 export interface QueryParamsRequestAmino {}
 export interface QueryParamsRequestAminoMsg {
   type: "cosmos-sdk/QueryParamsRequest";
@@ -362,9 +448,16 @@ export interface QueryParamsResponseProtoMsg {
   typeUrl: "/cosmos.bank.v1beta1.QueryParamsResponse";
   value: Uint8Array;
 }
-/** QueryParamsResponse defines the response type for querying x/bank parameters. */
+/**
+ * QueryParamsResponse defines the response type for querying x/bank parameters.
+ * @name QueryParamsResponseAmino
+ * @package cosmos.bank.v1beta1
+ * @see proto type: cosmos.bank.v1beta1.QueryParamsResponse
+ */
 export interface QueryParamsResponseAmino {
-  /** params provides the parameters of the bank module. */
+  /**
+   * params provides the parameters of the bank module.
+   */
   params: ParamsAmino | undefined;
 }
 export interface QueryParamsResponseAminoMsg {
@@ -380,9 +473,16 @@ export interface QueryDenomsMetadataRequestProtoMsg {
   typeUrl: "/cosmos.bank.v1beta1.QueryDenomsMetadataRequest";
   value: Uint8Array;
 }
-/** QueryDenomsMetadataRequest is the request type for the Query/DenomsMetadata RPC method. */
+/**
+ * QueryDenomsMetadataRequest is the request type for the Query/DenomsMetadata RPC method.
+ * @name QueryDenomsMetadataRequestAmino
+ * @package cosmos.bank.v1beta1
+ * @see proto type: cosmos.bank.v1beta1.QueryDenomsMetadataRequest
+ */
 export interface QueryDenomsMetadataRequestAmino {
-  /** pagination defines an optional pagination for the request. */
+  /**
+   * pagination defines an optional pagination for the request.
+   */
   pagination?: PageRequestAmino | undefined;
 }
 export interface QueryDenomsMetadataRequestAminoMsg {
@@ -406,11 +506,18 @@ export interface QueryDenomsMetadataResponseProtoMsg {
 /**
  * QueryDenomsMetadataResponse is the response type for the Query/DenomsMetadata RPC
  * method.
+ * @name QueryDenomsMetadataResponseAmino
+ * @package cosmos.bank.v1beta1
+ * @see proto type: cosmos.bank.v1beta1.QueryDenomsMetadataResponse
  */
 export interface QueryDenomsMetadataResponseAmino {
-  /** metadata provides the client information for all the registered tokens. */
+  /**
+   * metadata provides the client information for all the registered tokens.
+   */
   metadatas: MetadataAmino[];
-  /** pagination defines the pagination in the response. */
+  /**
+   * pagination defines the pagination in the response.
+   */
   pagination?: PageResponseAmino | undefined;
 }
 export interface QueryDenomsMetadataResponseAminoMsg {
@@ -426,9 +533,16 @@ export interface QueryDenomMetadataRequestProtoMsg {
   typeUrl: "/cosmos.bank.v1beta1.QueryDenomMetadataRequest";
   value: Uint8Array;
 }
-/** QueryDenomMetadataRequest is the request type for the Query/DenomMetadata RPC method. */
+/**
+ * QueryDenomMetadataRequest is the request type for the Query/DenomMetadata RPC method.
+ * @name QueryDenomMetadataRequestAmino
+ * @package cosmos.bank.v1beta1
+ * @see proto type: cosmos.bank.v1beta1.QueryDenomMetadataRequest
+ */
 export interface QueryDenomMetadataRequestAmino {
-  /** denom is the coin denom to query the metadata for. */
+  /**
+   * denom is the coin denom to query the metadata for.
+   */
   denom?: string;
 }
 export interface QueryDenomMetadataRequestAminoMsg {
@@ -450,9 +564,14 @@ export interface QueryDenomMetadataResponseProtoMsg {
 /**
  * QueryDenomMetadataResponse is the response type for the Query/DenomMetadata RPC
  * method.
+ * @name QueryDenomMetadataResponseAmino
+ * @package cosmos.bank.v1beta1
+ * @see proto type: cosmos.bank.v1beta1.QueryDenomMetadataResponse
  */
 export interface QueryDenomMetadataResponseAmino {
-  /** metadata describes and provides all the client information for the requested token. */
+  /**
+   * metadata describes and provides all the client information for the requested token.
+   */
   metadata: MetadataAmino | undefined;
 }
 export interface QueryDenomMetadataResponseAminoMsg {
@@ -474,9 +593,14 @@ export interface QueryDenomMetadataByQueryStringRequestProtoMsg {
 /**
  * QueryDenomMetadataByQueryStringRequest is the request type for the Query/DenomMetadata RPC method.
  * Identical with QueryDenomMetadataRequest but receives denom as query string.
+ * @name QueryDenomMetadataByQueryStringRequestAmino
+ * @package cosmos.bank.v1beta1
+ * @see proto type: cosmos.bank.v1beta1.QueryDenomMetadataByQueryStringRequest
  */
 export interface QueryDenomMetadataByQueryStringRequestAmino {
-  /** denom is the coin denom to query the metadata for. */
+  /**
+   * denom is the coin denom to query the metadata for.
+   */
   denom?: string;
 }
 export interface QueryDenomMetadataByQueryStringRequestAminoMsg {
@@ -498,9 +622,14 @@ export interface QueryDenomMetadataByQueryStringResponseProtoMsg {
 /**
  * QueryDenomMetadataByQueryStringResponse is the response type for the Query/DenomMetadata RPC
  * method. Identical with QueryDenomMetadataResponse but receives denom as query string in request.
+ * @name QueryDenomMetadataByQueryStringResponseAmino
+ * @package cosmos.bank.v1beta1
+ * @see proto type: cosmos.bank.v1beta1.QueryDenomMetadataByQueryStringResponse
  */
 export interface QueryDenomMetadataByQueryStringResponseAmino {
-  /** metadata describes and provides all the client information for the requested token. */
+  /**
+   * metadata describes and provides all the client information for the requested token.
+   */
   metadata: MetadataAmino | undefined;
 }
 export interface QueryDenomMetadataByQueryStringResponseAminoMsg {
@@ -526,11 +655,18 @@ export interface QueryDenomOwnersRequestProtoMsg {
  * QueryDenomOwnersRequest defines the request type for the DenomOwners RPC query,
  * which queries for a paginated set of all account holders of a particular
  * denomination.
+ * @name QueryDenomOwnersRequestAmino
+ * @package cosmos.bank.v1beta1
+ * @see proto type: cosmos.bank.v1beta1.QueryDenomOwnersRequest
  */
 export interface QueryDenomOwnersRequestAmino {
-  /** denom defines the coin denomination to query all account holders for. */
+  /**
+   * denom defines the coin denomination to query all account holders for.
+   */
   denom?: string;
-  /** pagination defines an optional pagination for the request. */
+  /**
+   * pagination defines an optional pagination for the request.
+   */
   pagination?: PageRequestAmino | undefined;
 }
 export interface QueryDenomOwnersRequestAminoMsg {
@@ -560,11 +696,18 @@ export interface DenomOwnerProtoMsg {
  * balance of the denominated token.
  *
  * Since: cosmos-sdk 0.46
+ * @name DenomOwnerAmino
+ * @package cosmos.bank.v1beta1
+ * @see proto type: cosmos.bank.v1beta1.DenomOwner
  */
 export interface DenomOwnerAmino {
-  /** address defines the address that owns a particular denomination. */
+  /**
+   * address defines the address that owns a particular denomination.
+   */
   address?: string;
-  /** balance is the balance of the denominated coin for an account. */
+  /**
+   * balance is the balance of the denominated coin for an account.
+   */
   balance: CoinAmino | undefined;
 }
 export interface DenomOwnerAminoMsg {
@@ -589,10 +732,15 @@ export interface QueryDenomOwnersResponseProtoMsg {
  * QueryDenomOwnersResponse defines the RPC response of a DenomOwners RPC query.
  *
  * Since: cosmos-sdk 0.46
+ * @name QueryDenomOwnersResponseAmino
+ * @package cosmos.bank.v1beta1
+ * @see proto type: cosmos.bank.v1beta1.QueryDenomOwnersResponse
  */
 export interface QueryDenomOwnersResponseAmino {
   denom_owners?: DenomOwnerAmino[];
-  /** pagination defines the pagination in the response. */
+  /**
+   * pagination defines the pagination in the response.
+   */
   pagination?: PageResponseAmino | undefined;
 }
 export interface QueryDenomOwnersResponseAminoMsg {
@@ -622,11 +770,18 @@ export interface QueryDenomOwnersByQueryRequestProtoMsg {
  * denomination.
  *
  * Since: cosmos-sdk 0.50.3
+ * @name QueryDenomOwnersByQueryRequestAmino
+ * @package cosmos.bank.v1beta1
+ * @see proto type: cosmos.bank.v1beta1.QueryDenomOwnersByQueryRequest
  */
 export interface QueryDenomOwnersByQueryRequestAmino {
-  /** denom defines the coin denomination to query all account holders for. */
+  /**
+   * denom defines the coin denomination to query all account holders for.
+   */
   denom?: string;
-  /** pagination defines an optional pagination for the request. */
+  /**
+   * pagination defines an optional pagination for the request.
+   */
   pagination?: PageRequestAmino | undefined;
 }
 export interface QueryDenomOwnersByQueryRequestAminoMsg {
@@ -651,10 +806,15 @@ export interface QueryDenomOwnersByQueryResponseProtoMsg {
  * QueryDenomOwnersByQueryResponse defines the RPC response of a DenomOwnersByQuery RPC query.
  *
  * Since: cosmos-sdk 0.50.3
+ * @name QueryDenomOwnersByQueryResponseAmino
+ * @package cosmos.bank.v1beta1
+ * @see proto type: cosmos.bank.v1beta1.QueryDenomOwnersByQueryResponse
  */
 export interface QueryDenomOwnersByQueryResponseAmino {
   denom_owners?: DenomOwnerAmino[];
-  /** pagination defines the pagination in the response. */
+  /**
+   * pagination defines the pagination in the response.
+   */
   pagination?: PageResponseAmino | undefined;
 }
 export interface QueryDenomOwnersByQueryResponseAminoMsg {
@@ -683,9 +843,14 @@ export interface QuerySendEnabledRequestProtoMsg {
  * QuerySendEnabledRequest defines the RPC request for looking up SendEnabled entries.
  *
  * Since: cosmos-sdk 0.47
+ * @name QuerySendEnabledRequestAmino
+ * @package cosmos.bank.v1beta1
+ * @see proto type: cosmos.bank.v1beta1.QuerySendEnabledRequest
  */
 export interface QuerySendEnabledRequestAmino {
-  /** denoms is the specific denoms you want look up. Leave empty to get all entries. */
+  /**
+   * denoms is the specific denoms you want look up. Leave empty to get all entries.
+   */
   denoms?: string[];
   /**
    * pagination defines an optional pagination for the request. This field is
@@ -718,6 +883,9 @@ export interface QuerySendEnabledResponseProtoMsg {
  * QuerySendEnabledResponse defines the RPC response of a SendEnable query.
  *
  * Since: cosmos-sdk 0.47
+ * @name QuerySendEnabledResponseAmino
+ * @package cosmos.bank.v1beta1
+ * @see proto type: cosmos.bank.v1beta1.QuerySendEnabledResponse
  */
 export interface QuerySendEnabledResponseAmino {
   send_enabled?: SendEnabledAmino[];
@@ -774,7 +942,7 @@ export const QueryBalanceRequest = {
     if (isSet(object.denom)) obj.denom = String(object.denom);
     return obj;
   },
-  toJSON(message: QueryBalanceRequest): unknown {
+  toJSON(message: QueryBalanceRequest): JsonSafe<QueryBalanceRequest> {
     const obj: any = {};
     message.address !== undefined && (obj.address = message.address);
     message.denom !== undefined && (obj.denom = message.denom);
@@ -798,8 +966,8 @@ export const QueryBalanceRequest = {
   },
   toAmino(message: QueryBalanceRequest): QueryBalanceRequestAmino {
     const obj: any = {};
-    obj.address = message.address;
-    obj.denom = message.denom;
+    obj.address = message.address === "" ? undefined : message.address;
+    obj.denom = message.denom === "" ? undefined : message.denom;
     return obj;
   },
   fromAminoMsg(object: QueryBalanceRequestAminoMsg): QueryBalanceRequest {
@@ -859,7 +1027,7 @@ export const QueryBalanceResponse = {
     if (isSet(object.balance)) obj.balance = Coin.fromJSON(object.balance);
     return obj;
   },
-  toJSON(message: QueryBalanceResponse): unknown {
+  toJSON(message: QueryBalanceResponse): JsonSafe<QueryBalanceResponse> {
     const obj: any = {};
     message.balance !== undefined &&
       (obj.balance = message.balance ? Coin.toJSON(message.balance) : undefined);
@@ -957,7 +1125,7 @@ export const QueryAllBalancesRequest = {
     if (isSet(object.resolveDenom)) obj.resolveDenom = Boolean(object.resolveDenom);
     return obj;
   },
-  toJSON(message: QueryAllBalancesRequest): unknown {
+  toJSON(message: QueryAllBalancesRequest): JsonSafe<QueryAllBalancesRequest> {
     const obj: any = {};
     message.address !== undefined && (obj.address = message.address);
     message.pagination !== undefined &&
@@ -989,9 +1157,9 @@ export const QueryAllBalancesRequest = {
   },
   toAmino(message: QueryAllBalancesRequest): QueryAllBalancesRequestAmino {
     const obj: any = {};
-    obj.address = message.address;
+    obj.address = message.address === "" ? undefined : message.address;
     obj.pagination = message.pagination ? PageRequest.toAmino(message.pagination) : undefined;
-    obj.resolve_denom = message.resolveDenom;
+    obj.resolve_denom = message.resolveDenom === false ? undefined : message.resolveDenom;
     return obj;
   },
   fromAminoMsg(object: QueryAllBalancesRequestAminoMsg): QueryAllBalancesRequest {
@@ -1059,7 +1227,7 @@ export const QueryAllBalancesResponse = {
     if (isSet(object.pagination)) obj.pagination = PageResponse.fromJSON(object.pagination);
     return obj;
   },
-  toJSON(message: QueryAllBalancesResponse): unknown {
+  toJSON(message: QueryAllBalancesResponse): JsonSafe<QueryAllBalancesResponse> {
     const obj: any = {};
     if (message.balances) {
       obj.balances = message.balances.map((e) => (e ? Coin.toJSON(e) : undefined));
@@ -1091,7 +1259,7 @@ export const QueryAllBalancesResponse = {
     if (message.balances) {
       obj.balances = message.balances.map((e) => (e ? Coin.toAmino(e) : undefined));
     } else {
-      obj.balances = [];
+      obj.balances = message.balances;
     }
     obj.pagination = message.pagination ? PageResponse.toAmino(message.pagination) : undefined;
     return obj;
@@ -1161,7 +1329,7 @@ export const QuerySpendableBalancesRequest = {
     if (isSet(object.pagination)) obj.pagination = PageRequest.fromJSON(object.pagination);
     return obj;
   },
-  toJSON(message: QuerySpendableBalancesRequest): unknown {
+  toJSON(message: QuerySpendableBalancesRequest): JsonSafe<QuerySpendableBalancesRequest> {
     const obj: any = {};
     message.address !== undefined && (obj.address = message.address);
     message.pagination !== undefined &&
@@ -1188,7 +1356,7 @@ export const QuerySpendableBalancesRequest = {
   },
   toAmino(message: QuerySpendableBalancesRequest): QuerySpendableBalancesRequestAmino {
     const obj: any = {};
-    obj.address = message.address;
+    obj.address = message.address === "" ? undefined : message.address;
     obj.pagination = message.pagination ? PageRequest.toAmino(message.pagination) : undefined;
     return obj;
   },
@@ -1260,7 +1428,7 @@ export const QuerySpendableBalancesResponse = {
     if (isSet(object.pagination)) obj.pagination = PageResponse.fromJSON(object.pagination);
     return obj;
   },
-  toJSON(message: QuerySpendableBalancesResponse): unknown {
+  toJSON(message: QuerySpendableBalancesResponse): JsonSafe<QuerySpendableBalancesResponse> {
     const obj: any = {};
     if (message.balances) {
       obj.balances = message.balances.map((e) => (e ? Coin.toJSON(e) : undefined));
@@ -1292,7 +1460,7 @@ export const QuerySpendableBalancesResponse = {
     if (message.balances) {
       obj.balances = message.balances.map((e) => (e ? Coin.toAmino(e) : undefined));
     } else {
-      obj.balances = [];
+      obj.balances = message.balances;
     }
     obj.pagination = message.pagination ? PageResponse.toAmino(message.pagination) : undefined;
     return obj;
@@ -1365,7 +1533,7 @@ export const QuerySpendableBalanceByDenomRequest = {
     if (isSet(object.denom)) obj.denom = String(object.denom);
     return obj;
   },
-  toJSON(message: QuerySpendableBalanceByDenomRequest): unknown {
+  toJSON(message: QuerySpendableBalanceByDenomRequest): JsonSafe<QuerySpendableBalanceByDenomRequest> {
     const obj: any = {};
     message.address !== undefined && (obj.address = message.address);
     message.denom !== undefined && (obj.denom = message.denom);
@@ -1389,8 +1557,8 @@ export const QuerySpendableBalanceByDenomRequest = {
   },
   toAmino(message: QuerySpendableBalanceByDenomRequest): QuerySpendableBalanceByDenomRequestAmino {
     const obj: any = {};
-    obj.address = message.address;
-    obj.denom = message.denom;
+    obj.address = message.address === "" ? undefined : message.address;
+    obj.denom = message.denom === "" ? undefined : message.denom;
     return obj;
   },
   fromAminoMsg(object: QuerySpendableBalanceByDenomRequestAminoMsg): QuerySpendableBalanceByDenomRequest {
@@ -1453,7 +1621,7 @@ export const QuerySpendableBalanceByDenomResponse = {
     if (isSet(object.balance)) obj.balance = Coin.fromJSON(object.balance);
     return obj;
   },
-  toJSON(message: QuerySpendableBalanceByDenomResponse): unknown {
+  toJSON(message: QuerySpendableBalanceByDenomResponse): JsonSafe<QuerySpendableBalanceByDenomResponse> {
     const obj: any = {};
     message.balance !== undefined &&
       (obj.balance = message.balance ? Coin.toJSON(message.balance) : undefined);
@@ -1535,7 +1703,7 @@ export const QueryTotalSupplyRequest = {
     if (isSet(object.pagination)) obj.pagination = PageRequest.fromJSON(object.pagination);
     return obj;
   },
-  toJSON(message: QueryTotalSupplyRequest): unknown {
+  toJSON(message: QueryTotalSupplyRequest): JsonSafe<QueryTotalSupplyRequest> {
     const obj: any = {};
     message.pagination !== undefined &&
       (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
@@ -1625,7 +1793,7 @@ export const QueryTotalSupplyResponse = {
     if (isSet(object.pagination)) obj.pagination = PageResponse.fromJSON(object.pagination);
     return obj;
   },
-  toJSON(message: QueryTotalSupplyResponse): unknown {
+  toJSON(message: QueryTotalSupplyResponse): JsonSafe<QueryTotalSupplyResponse> {
     const obj: any = {};
     if (message.supply) {
       obj.supply = message.supply.map((e) => (e ? Coin.toJSON(e) : undefined));
@@ -1657,7 +1825,7 @@ export const QueryTotalSupplyResponse = {
     if (message.supply) {
       obj.supply = message.supply.map((e) => (e ? Coin.toAmino(e) : undefined));
     } else {
-      obj.supply = [];
+      obj.supply = message.supply;
     }
     obj.pagination = message.pagination ? PageResponse.toAmino(message.pagination) : undefined;
     return obj;
@@ -1719,7 +1887,7 @@ export const QuerySupplyOfRequest = {
     if (isSet(object.denom)) obj.denom = String(object.denom);
     return obj;
   },
-  toJSON(message: QuerySupplyOfRequest): unknown {
+  toJSON(message: QuerySupplyOfRequest): JsonSafe<QuerySupplyOfRequest> {
     const obj: any = {};
     message.denom !== undefined && (obj.denom = message.denom);
     return obj;
@@ -1738,7 +1906,7 @@ export const QuerySupplyOfRequest = {
   },
   toAmino(message: QuerySupplyOfRequest): QuerySupplyOfRequestAmino {
     const obj: any = {};
-    obj.denom = message.denom;
+    obj.denom = message.denom === "" ? undefined : message.denom;
     return obj;
   },
   fromAminoMsg(object: QuerySupplyOfRequestAminoMsg): QuerySupplyOfRequest {
@@ -1798,7 +1966,7 @@ export const QuerySupplyOfResponse = {
     if (isSet(object.amount)) obj.amount = Coin.fromJSON(object.amount);
     return obj;
   },
-  toJSON(message: QuerySupplyOfResponse): unknown {
+  toJSON(message: QuerySupplyOfResponse): JsonSafe<QuerySupplyOfResponse> {
     const obj: any = {};
     message.amount !== undefined && (obj.amount = message.amount ? Coin.toJSON(message.amount) : undefined);
     return obj;
@@ -1819,7 +1987,7 @@ export const QuerySupplyOfResponse = {
   },
   toAmino(message: QuerySupplyOfResponse): QuerySupplyOfResponseAmino {
     const obj: any = {};
-    obj.amount = message.amount ? Coin.toAmino(message.amount) : undefined;
+    obj.amount = message.amount ? Coin.toAmino(message.amount) : Coin.toAmino(Coin.fromPartial({}));
     return obj;
   },
   fromAminoMsg(object: QuerySupplyOfResponseAminoMsg): QuerySupplyOfResponse {
@@ -1870,7 +2038,7 @@ export const QueryParamsRequest = {
     const obj = createBaseQueryParamsRequest();
     return obj;
   },
-  toJSON(_: QueryParamsRequest): unknown {
+  toJSON(_: QueryParamsRequest): JsonSafe<QueryParamsRequest> {
     const obj: any = {};
     return obj;
   },
@@ -1943,7 +2111,7 @@ export const QueryParamsResponse = {
     if (isSet(object.params)) obj.params = Params.fromJSON(object.params);
     return obj;
   },
-  toJSON(message: QueryParamsResponse): unknown {
+  toJSON(message: QueryParamsResponse): JsonSafe<QueryParamsResponse> {
     const obj: any = {};
     message.params !== undefined && (obj.params = message.params ? Params.toJSON(message.params) : undefined);
     return obj;
@@ -1964,7 +2132,7 @@ export const QueryParamsResponse = {
   },
   toAmino(message: QueryParamsResponse): QueryParamsResponseAmino {
     const obj: any = {};
-    obj.params = message.params ? Params.toAmino(message.params) : Params.fromPartial({});
+    obj.params = message.params ? Params.toAmino(message.params) : Params.toAmino(Params.fromPartial({}));
     return obj;
   },
   fromAminoMsg(object: QueryParamsResponseAminoMsg): QueryParamsResponse {
@@ -2024,7 +2192,7 @@ export const QueryDenomsMetadataRequest = {
     if (isSet(object.pagination)) obj.pagination = PageRequest.fromJSON(object.pagination);
     return obj;
   },
-  toJSON(message: QueryDenomsMetadataRequest): unknown {
+  toJSON(message: QueryDenomsMetadataRequest): JsonSafe<QueryDenomsMetadataRequest> {
     const obj: any = {};
     message.pagination !== undefined &&
       (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
@@ -2115,7 +2283,7 @@ export const QueryDenomsMetadataResponse = {
     if (isSet(object.pagination)) obj.pagination = PageResponse.fromJSON(object.pagination);
     return obj;
   },
-  toJSON(message: QueryDenomsMetadataResponse): unknown {
+  toJSON(message: QueryDenomsMetadataResponse): JsonSafe<QueryDenomsMetadataResponse> {
     const obj: any = {};
     if (message.metadatas) {
       obj.metadatas = message.metadatas.map((e) => (e ? Metadata.toJSON(e) : undefined));
@@ -2147,7 +2315,7 @@ export const QueryDenomsMetadataResponse = {
     if (message.metadatas) {
       obj.metadatas = message.metadatas.map((e) => (e ? Metadata.toAmino(e) : undefined));
     } else {
-      obj.metadatas = [];
+      obj.metadatas = message.metadatas;
     }
     obj.pagination = message.pagination ? PageResponse.toAmino(message.pagination) : undefined;
     return obj;
@@ -2209,7 +2377,7 @@ export const QueryDenomMetadataRequest = {
     if (isSet(object.denom)) obj.denom = String(object.denom);
     return obj;
   },
-  toJSON(message: QueryDenomMetadataRequest): unknown {
+  toJSON(message: QueryDenomMetadataRequest): JsonSafe<QueryDenomMetadataRequest> {
     const obj: any = {};
     message.denom !== undefined && (obj.denom = message.denom);
     return obj;
@@ -2228,7 +2396,7 @@ export const QueryDenomMetadataRequest = {
   },
   toAmino(message: QueryDenomMetadataRequest): QueryDenomMetadataRequestAmino {
     const obj: any = {};
-    obj.denom = message.denom;
+    obj.denom = message.denom === "" ? undefined : message.denom;
     return obj;
   },
   fromAminoMsg(object: QueryDenomMetadataRequestAminoMsg): QueryDenomMetadataRequest {
@@ -2288,7 +2456,7 @@ export const QueryDenomMetadataResponse = {
     if (isSet(object.metadata)) obj.metadata = Metadata.fromJSON(object.metadata);
     return obj;
   },
-  toJSON(message: QueryDenomMetadataResponse): unknown {
+  toJSON(message: QueryDenomMetadataResponse): JsonSafe<QueryDenomMetadataResponse> {
     const obj: any = {};
     message.metadata !== undefined &&
       (obj.metadata = message.metadata ? Metadata.toJSON(message.metadata) : undefined);
@@ -2310,7 +2478,9 @@ export const QueryDenomMetadataResponse = {
   },
   toAmino(message: QueryDenomMetadataResponse): QueryDenomMetadataResponseAmino {
     const obj: any = {};
-    obj.metadata = message.metadata ? Metadata.toAmino(message.metadata) : Metadata.fromPartial({});
+    obj.metadata = message.metadata
+      ? Metadata.toAmino(message.metadata)
+      : Metadata.toAmino(Metadata.fromPartial({}));
     return obj;
   },
   fromAminoMsg(object: QueryDenomMetadataResponseAminoMsg): QueryDenomMetadataResponse {
@@ -2373,7 +2543,7 @@ export const QueryDenomMetadataByQueryStringRequest = {
     if (isSet(object.denom)) obj.denom = String(object.denom);
     return obj;
   },
-  toJSON(message: QueryDenomMetadataByQueryStringRequest): unknown {
+  toJSON(message: QueryDenomMetadataByQueryStringRequest): JsonSafe<QueryDenomMetadataByQueryStringRequest> {
     const obj: any = {};
     message.denom !== undefined && (obj.denom = message.denom);
     return obj;
@@ -2394,7 +2564,7 @@ export const QueryDenomMetadataByQueryStringRequest = {
   },
   toAmino(message: QueryDenomMetadataByQueryStringRequest): QueryDenomMetadataByQueryStringRequestAmino {
     const obj: any = {};
-    obj.denom = message.denom;
+    obj.denom = message.denom === "" ? undefined : message.denom;
     return obj;
   },
   fromAminoMsg(
@@ -2465,7 +2635,9 @@ export const QueryDenomMetadataByQueryStringResponse = {
     if (isSet(object.metadata)) obj.metadata = Metadata.fromJSON(object.metadata);
     return obj;
   },
-  toJSON(message: QueryDenomMetadataByQueryStringResponse): unknown {
+  toJSON(
+    message: QueryDenomMetadataByQueryStringResponse,
+  ): JsonSafe<QueryDenomMetadataByQueryStringResponse> {
     const obj: any = {};
     message.metadata !== undefined &&
       (obj.metadata = message.metadata ? Metadata.toJSON(message.metadata) : undefined);
@@ -2489,7 +2661,9 @@ export const QueryDenomMetadataByQueryStringResponse = {
   },
   toAmino(message: QueryDenomMetadataByQueryStringResponse): QueryDenomMetadataByQueryStringResponseAmino {
     const obj: any = {};
-    obj.metadata = message.metadata ? Metadata.toAmino(message.metadata) : Metadata.fromPartial({});
+    obj.metadata = message.metadata
+      ? Metadata.toAmino(message.metadata)
+      : Metadata.toAmino(Metadata.fromPartial({}));
     return obj;
   },
   fromAminoMsg(
@@ -2565,7 +2739,7 @@ export const QueryDenomOwnersRequest = {
     if (isSet(object.pagination)) obj.pagination = PageRequest.fromJSON(object.pagination);
     return obj;
   },
-  toJSON(message: QueryDenomOwnersRequest): unknown {
+  toJSON(message: QueryDenomOwnersRequest): JsonSafe<QueryDenomOwnersRequest> {
     const obj: any = {};
     message.denom !== undefined && (obj.denom = message.denom);
     message.pagination !== undefined &&
@@ -2592,7 +2766,7 @@ export const QueryDenomOwnersRequest = {
   },
   toAmino(message: QueryDenomOwnersRequest): QueryDenomOwnersRequestAmino {
     const obj: any = {};
-    obj.denom = message.denom;
+    obj.denom = message.denom === "" ? undefined : message.denom;
     obj.pagination = message.pagination ? PageRequest.toAmino(message.pagination) : undefined;
     return obj;
   },
@@ -2661,7 +2835,7 @@ export const DenomOwner = {
     if (isSet(object.balance)) obj.balance = Coin.fromJSON(object.balance);
     return obj;
   },
-  toJSON(message: DenomOwner): unknown {
+  toJSON(message: DenomOwner): JsonSafe<DenomOwner> {
     const obj: any = {};
     message.address !== undefined && (obj.address = message.address);
     message.balance !== undefined &&
@@ -2688,8 +2862,8 @@ export const DenomOwner = {
   },
   toAmino(message: DenomOwner): DenomOwnerAmino {
     const obj: any = {};
-    obj.address = message.address;
-    obj.balance = message.balance ? Coin.toAmino(message.balance) : undefined;
+    obj.address = message.address === "" ? undefined : message.address;
+    obj.balance = message.balance ? Coin.toAmino(message.balance) : Coin.toAmino(Coin.fromPartial({}));
     return obj;
   },
   fromAminoMsg(object: DenomOwnerAminoMsg): DenomOwner {
@@ -2758,7 +2932,7 @@ export const QueryDenomOwnersResponse = {
     if (isSet(object.pagination)) obj.pagination = PageResponse.fromJSON(object.pagination);
     return obj;
   },
-  toJSON(message: QueryDenomOwnersResponse): unknown {
+  toJSON(message: QueryDenomOwnersResponse): JsonSafe<QueryDenomOwnersResponse> {
     const obj: any = {};
     if (message.denomOwners) {
       obj.denomOwners = message.denomOwners.map((e) => (e ? DenomOwner.toJSON(e) : undefined));
@@ -2790,7 +2964,7 @@ export const QueryDenomOwnersResponse = {
     if (message.denomOwners) {
       obj.denom_owners = message.denomOwners.map((e) => (e ? DenomOwner.toAmino(e) : undefined));
     } else {
-      obj.denom_owners = [];
+      obj.denom_owners = message.denomOwners;
     }
     obj.pagination = message.pagination ? PageResponse.toAmino(message.pagination) : undefined;
     return obj;
@@ -2863,7 +3037,7 @@ export const QueryDenomOwnersByQueryRequest = {
     if (isSet(object.pagination)) obj.pagination = PageRequest.fromJSON(object.pagination);
     return obj;
   },
-  toJSON(message: QueryDenomOwnersByQueryRequest): unknown {
+  toJSON(message: QueryDenomOwnersByQueryRequest): JsonSafe<QueryDenomOwnersByQueryRequest> {
     const obj: any = {};
     message.denom !== undefined && (obj.denom = message.denom);
     message.pagination !== undefined &&
@@ -2890,7 +3064,7 @@ export const QueryDenomOwnersByQueryRequest = {
   },
   toAmino(message: QueryDenomOwnersByQueryRequest): QueryDenomOwnersByQueryRequestAmino {
     const obj: any = {};
-    obj.denom = message.denom;
+    obj.denom = message.denom === "" ? undefined : message.denom;
     obj.pagination = message.pagination ? PageRequest.toAmino(message.pagination) : undefined;
     return obj;
   },
@@ -2963,7 +3137,7 @@ export const QueryDenomOwnersByQueryResponse = {
     if (isSet(object.pagination)) obj.pagination = PageResponse.fromJSON(object.pagination);
     return obj;
   },
-  toJSON(message: QueryDenomOwnersByQueryResponse): unknown {
+  toJSON(message: QueryDenomOwnersByQueryResponse): JsonSafe<QueryDenomOwnersByQueryResponse> {
     const obj: any = {};
     if (message.denomOwners) {
       obj.denomOwners = message.denomOwners.map((e) => (e ? DenomOwner.toJSON(e) : undefined));
@@ -2995,7 +3169,7 @@ export const QueryDenomOwnersByQueryResponse = {
     if (message.denomOwners) {
       obj.denom_owners = message.denomOwners.map((e) => (e ? DenomOwner.toAmino(e) : undefined));
     } else {
-      obj.denom_owners = [];
+      obj.denom_owners = message.denomOwners;
     }
     obj.pagination = message.pagination ? PageResponse.toAmino(message.pagination) : undefined;
     return obj;
@@ -3065,7 +3239,7 @@ export const QuerySendEnabledRequest = {
     if (isSet(object.pagination)) obj.pagination = PageRequest.fromJSON(object.pagination);
     return obj;
   },
-  toJSON(message: QuerySendEnabledRequest): unknown {
+  toJSON(message: QuerySendEnabledRequest): JsonSafe<QuerySendEnabledRequest> {
     const obj: any = {};
     if (message.denoms) {
       obj.denoms = message.denoms.map((e) => e);
@@ -3097,7 +3271,7 @@ export const QuerySendEnabledRequest = {
     if (message.denoms) {
       obj.denoms = message.denoms.map((e) => e);
     } else {
-      obj.denoms = [];
+      obj.denoms = message.denoms;
     }
     obj.pagination = message.pagination ? PageRequest.toAmino(message.pagination) : undefined;
     return obj;
@@ -3168,7 +3342,7 @@ export const QuerySendEnabledResponse = {
     if (isSet(object.pagination)) obj.pagination = PageResponse.fromJSON(object.pagination);
     return obj;
   },
-  toJSON(message: QuerySendEnabledResponse): unknown {
+  toJSON(message: QuerySendEnabledResponse): JsonSafe<QuerySendEnabledResponse> {
     const obj: any = {};
     if (message.sendEnabled) {
       obj.sendEnabled = message.sendEnabled.map((e) => (e ? SendEnabled.toJSON(e) : undefined));
@@ -3200,7 +3374,7 @@ export const QuerySendEnabledResponse = {
     if (message.sendEnabled) {
       obj.send_enabled = message.sendEnabled.map((e) => (e ? SendEnabled.toAmino(e) : undefined));
     } else {
-      obj.send_enabled = [];
+      obj.send_enabled = message.sendEnabled;
     }
     obj.pagination = message.pagination ? PageResponse.toAmino(message.pagination) : undefined;
     return obj;

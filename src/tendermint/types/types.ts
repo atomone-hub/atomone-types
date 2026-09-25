@@ -11,6 +11,7 @@ import {
 } from "./validator";
 import { BinaryReader, BinaryWriter } from "../../binary";
 import { isSet, bytesFromBase64, base64FromBytes, fromJsonTimestamp, fromTimestamp } from "../../helpers";
+import { JsonSafe } from "../../json-safe";
 export const protobufPackage = "tendermint.types";
 /** SignedMsgType is a type of signed message in the consensus. */
 export enum SignedMsgType {
@@ -67,7 +68,12 @@ export interface PartSetHeaderProtoMsg {
   typeUrl: "/tendermint.types.PartSetHeader";
   value: Uint8Array;
 }
-/** PartsetHeader */
+/**
+ * PartsetHeader
+ * @name PartSetHeaderAmino
+ * @package tendermint.types
+ * @see proto type: tendermint.types.PartSetHeader
+ */
 export interface PartSetHeaderAmino {
   total?: number;
   hash?: string;
@@ -85,6 +91,11 @@ export interface PartProtoMsg {
   typeUrl: "/tendermint.types.Part";
   value: Uint8Array;
 }
+/**
+ * @name PartAmino
+ * @package tendermint.types
+ * @see proto type: tendermint.types.Part
+ */
 export interface PartAmino {
   index?: number;
   bytes?: string;
@@ -103,7 +114,12 @@ export interface BlockIDProtoMsg {
   typeUrl: "/tendermint.types.BlockID";
   value: Uint8Array;
 }
-/** BlockID */
+/**
+ * BlockID
+ * @name BlockIDAmino
+ * @package tendermint.types
+ * @see proto type: tendermint.types.BlockID
+ */
 export interface BlockIDAmino {
   hash?: string;
   part_set_header?: PartSetHeaderAmino | undefined;
@@ -123,6 +139,7 @@ export interface Header {
   lastBlockId: BlockID | undefined;
   /** hashes of block data */
   lastCommitHash: Uint8Array;
+  /** transactions */
   dataHash: Uint8Array;
   /** hashes from the app output from the prev block */
   validatorsHash: Uint8Array;
@@ -132,6 +149,7 @@ export interface Header {
   consensusHash: Uint8Array;
   /** state after txs from the previous block */
   appHash: Uint8Array;
+  /** root hash of all results from the txs from the previous block */
   lastResultsHash: Uint8Array;
   /** consensus info */
   evidenceHash: Uint8Array;
@@ -142,30 +160,59 @@ export interface HeaderProtoMsg {
   typeUrl: "/tendermint.types.Header";
   value: Uint8Array;
 }
-/** Header defines the structure of a block header. */
+/**
+ * Header defines the structure of a block header.
+ * @name HeaderAmino
+ * @package tendermint.types
+ * @see proto type: tendermint.types.Header
+ */
 export interface HeaderAmino {
-  /** basic block info */
+  /**
+   * basic block info
+   */
   version?: ConsensusAmino | undefined;
   chain_id?: string;
   height?: string;
   time?: string | undefined;
-  /** prev block info */
+  /**
+   * prev block info
+   */
   last_block_id?: BlockIDAmino | undefined;
-  /** hashes of block data */
+  /**
+   * hashes of block data
+   */
   last_commit_hash?: string;
+  /**
+   * transactions
+   */
   data_hash?: string;
-  /** hashes from the app output from the prev block */
+  /**
+   * hashes from the app output from the prev block
+   */
   validators_hash?: string;
-  /** validators for the next block */
+  /**
+   * validators for the next block
+   */
   next_validators_hash?: string;
-  /** consensus params for current block */
+  /**
+   * consensus params for current block
+   */
   consensus_hash?: string;
-  /** state after txs from the previous block */
+  /**
+   * state after txs from the previous block
+   */
   app_hash?: string;
+  /**
+   * root hash of all results from the txs from the previous block
+   */
   last_results_hash?: string;
-  /** consensus info */
+  /**
+   * consensus info
+   */
   evidence_hash?: string;
-  /** original proposer of the block */
+  /**
+   * original proposer of the block
+   */
   proposer_address?: string;
 }
 export interface HeaderAminoMsg {
@@ -185,7 +232,12 @@ export interface DataProtoMsg {
   typeUrl: "/tendermint.types.Data";
   value: Uint8Array;
 }
-/** Data contains the set of transactions included in the block */
+/**
+ * Data contains the set of transactions included in the block
+ * @name DataAmino
+ * @package tendermint.types
+ * @see proto type: tendermint.types.Data
+ */
 export interface DataAmino {
   /**
    * Txs that will be applied by state @ block.Height+1.
@@ -235,12 +287,17 @@ export interface VoteProtoMsg {
 /**
  * Vote represents a prevote or precommit vote from validators for
  * consensus.
+ * @name VoteAmino
+ * @package tendermint.types
+ * @see proto type: tendermint.types.Vote
  */
 export interface VoteAmino {
   type?: SignedMsgType;
   height?: string;
   round?: number;
-  /** zero if vote is nil. */
+  /**
+   * zero if vote is nil.
+   */
   block_id?: BlockIDAmino | undefined;
   timestamp?: string | undefined;
   validator_address?: string;
@@ -277,7 +334,12 @@ export interface CommitProtoMsg {
   typeUrl: "/tendermint.types.Commit";
   value: Uint8Array;
 }
-/** Commit contains the evidence that a block was committed by a set of validators. */
+/**
+ * Commit contains the evidence that a block was committed by a set of validators.
+ * @name CommitAmino
+ * @package tendermint.types
+ * @see proto type: tendermint.types.Commit
+ */
 export interface CommitAmino {
   height?: string;
   round?: number;
@@ -299,7 +361,12 @@ export interface CommitSigProtoMsg {
   typeUrl: "/tendermint.types.CommitSig";
   value: Uint8Array;
 }
-/** CommitSig is a part of the Vote included in a Commit. */
+/**
+ * CommitSig is a part of the Vote included in a Commit.
+ * @name CommitSigAmino
+ * @package tendermint.types
+ * @see proto type: tendermint.types.CommitSig
+ */
 export interface CommitSigAmino {
   block_id_flag?: BlockIDFlag;
   validator_address?: string;
@@ -320,6 +387,11 @@ export interface ExtendedCommitProtoMsg {
   typeUrl: "/tendermint.types.ExtendedCommit";
   value: Uint8Array;
 }
+/**
+ * @name ExtendedCommitAmino
+ * @package tendermint.types
+ * @see proto type: tendermint.types.ExtendedCommit
+ */
 export interface ExtendedCommitAmino {
   height?: string;
   round?: number;
@@ -353,15 +425,22 @@ export interface ExtendedCommitSigProtoMsg {
  * ExtendedCommitSig retains all the same fields as CommitSig but adds vote
  * extension-related fields. We use two signatures to ensure backwards compatibility.
  * That is the digest of the original signature is still the same in prior versions
+ * @name ExtendedCommitSigAmino
+ * @package tendermint.types
+ * @see proto type: tendermint.types.ExtendedCommitSig
  */
 export interface ExtendedCommitSigAmino {
   block_id_flag?: BlockIDFlag;
   validator_address?: string;
   timestamp?: string | undefined;
   signature?: string;
-  /** Vote extension data */
+  /**
+   * Vote extension data
+   */
   extension?: string;
-  /** Vote extension signature */
+  /**
+   * Vote extension signature
+   */
   extension_signature?: string;
 }
 export interface ExtendedCommitSigAminoMsg {
@@ -381,6 +460,11 @@ export interface ProposalProtoMsg {
   typeUrl: "/tendermint.types.Proposal";
   value: Uint8Array;
 }
+/**
+ * @name ProposalAmino
+ * @package tendermint.types
+ * @see proto type: tendermint.types.Proposal
+ */
 export interface ProposalAmino {
   type?: SignedMsgType;
   height?: string;
@@ -402,6 +486,11 @@ export interface SignedHeaderProtoMsg {
   typeUrl: "/tendermint.types.SignedHeader";
   value: Uint8Array;
 }
+/**
+ * @name SignedHeaderAmino
+ * @package tendermint.types
+ * @see proto type: tendermint.types.SignedHeader
+ */
 export interface SignedHeaderAmino {
   header?: HeaderAmino | undefined;
   commit?: CommitAmino | undefined;
@@ -418,6 +507,11 @@ export interface LightBlockProtoMsg {
   typeUrl: "/tendermint.types.LightBlock";
   value: Uint8Array;
 }
+/**
+ * @name LightBlockAmino
+ * @package tendermint.types
+ * @see proto type: tendermint.types.LightBlock
+ */
 export interface LightBlockAmino {
   signed_header?: SignedHeaderAmino | undefined;
   validator_set?: ValidatorSetAmino | undefined;
@@ -436,6 +530,11 @@ export interface BlockMetaProtoMsg {
   typeUrl: "/tendermint.types.BlockMeta";
   value: Uint8Array;
 }
+/**
+ * @name BlockMetaAmino
+ * @package tendermint.types
+ * @see proto type: tendermint.types.BlockMeta
+ */
 export interface BlockMetaAmino {
   block_id?: BlockIDAmino | undefined;
   block_size?: string;
@@ -456,7 +555,12 @@ export interface TxProofProtoMsg {
   typeUrl: "/tendermint.types.TxProof";
   value: Uint8Array;
 }
-/** TxProof represents a Merkle proof of the presence of a transaction in the Merkle tree. */
+/**
+ * TxProof represents a Merkle proof of the presence of a transaction in the Merkle tree.
+ * @name TxProofAmino
+ * @package tendermint.types
+ * @see proto type: tendermint.types.TxProof
+ */
 export interface TxProofAmino {
   root_hash?: string;
   data?: string;
@@ -509,7 +613,7 @@ export const PartSetHeader = {
     if (isSet(object.hash)) obj.hash = bytesFromBase64(object.hash);
     return obj;
   },
-  toJSON(message: PartSetHeader): unknown {
+  toJSON(message: PartSetHeader): JsonSafe<PartSetHeader> {
     const obj: any = {};
     message.total !== undefined && (obj.total = Math.round(message.total));
     message.hash !== undefined &&
@@ -534,7 +638,7 @@ export const PartSetHeader = {
   },
   toAmino(message: PartSetHeader): PartSetHeaderAmino {
     const obj: any = {};
-    obj.total = message.total;
+    obj.total = message.total === 0 ? undefined : message.total;
     obj.hash = message.hash ? base64FromBytes(message.hash) : undefined;
     return obj;
   },
@@ -605,7 +709,7 @@ export const Part = {
     if (isSet(object.proof)) obj.proof = Proof.fromJSON(object.proof);
     return obj;
   },
-  toJSON(message: Part): unknown {
+  toJSON(message: Part): JsonSafe<Part> {
     const obj: any = {};
     message.index !== undefined && (obj.index = Math.round(message.index));
     message.bytes !== undefined &&
@@ -637,7 +741,7 @@ export const Part = {
   },
   toAmino(message: Part): PartAmino {
     const obj: any = {};
-    obj.index = message.index;
+    obj.index = message.index === 0 ? undefined : message.index;
     obj.bytes = message.bytes ? base64FromBytes(message.bytes) : undefined;
     obj.proof = message.proof ? Proof.toAmino(message.proof) : undefined;
     return obj;
@@ -701,7 +805,7 @@ export const BlockID = {
     if (isSet(object.partSetHeader)) obj.partSetHeader = PartSetHeader.fromJSON(object.partSetHeader);
     return obj;
   },
-  toJSON(message: BlockID): unknown {
+  toJSON(message: BlockID): JsonSafe<BlockID> {
     const obj: any = {};
     message.hash !== undefined &&
       (obj.hash = base64FromBytes(message.hash !== undefined ? message.hash : new Uint8Array()));
@@ -888,7 +992,7 @@ export const Header = {
     if (isSet(object.proposerAddress)) obj.proposerAddress = bytesFromBase64(object.proposerAddress);
     return obj;
   },
-  toJSON(message: Header): unknown {
+  toJSON(message: Header): JsonSafe<Header> {
     const obj: any = {};
     message.version !== undefined &&
       (obj.version = message.version ? Consensus.toJSON(message.version) : undefined);
@@ -1006,8 +1110,8 @@ export const Header = {
   toAmino(message: Header): HeaderAmino {
     const obj: any = {};
     obj.version = message.version ? Consensus.toAmino(message.version) : undefined;
-    obj.chain_id = message.chainId;
-    obj.height = message.height ? message.height.toString() : undefined;
+    obj.chain_id = message.chainId === "" ? undefined : message.chainId;
+    obj.height = message.height !== BigInt(0) ? message.height?.toString() : undefined;
     obj.time = message.time ? Timestamp.toAmino(message.time) : undefined;
     obj.last_block_id = message.lastBlockId ? BlockID.toAmino(message.lastBlockId) : undefined;
     obj.last_commit_hash = message.lastCommitHash ? base64FromBytes(message.lastCommitHash) : undefined;
@@ -1074,7 +1178,7 @@ export const Data = {
     if (Array.isArray(object?.txs)) obj.txs = object.txs.map((e: any) => bytesFromBase64(e));
     return obj;
   },
-  toJSON(message: Data): unknown {
+  toJSON(message: Data): JsonSafe<Data> {
     const obj: any = {};
     if (message.txs) {
       obj.txs = message.txs.map((e) => base64FromBytes(e !== undefined ? e : new Uint8Array()));
@@ -1098,7 +1202,7 @@ export const Data = {
     if (message.txs) {
       obj.txs = message.txs.map((e) => base64FromBytes(e));
     } else {
-      obj.txs = [];
+      obj.txs = message.txs;
     }
     return obj;
   },
@@ -1225,7 +1329,7 @@ export const Vote = {
     if (isSet(object.extensionSignature)) obj.extensionSignature = bytesFromBase64(object.extensionSignature);
     return obj;
   },
-  toJSON(message: Vote): unknown {
+  toJSON(message: Vote): JsonSafe<Vote> {
     const obj: any = {};
     message.type !== undefined && (obj.type = signedMsgTypeToJSON(message.type));
     message.height !== undefined && (obj.height = (message.height || BigInt(0)).toString());
@@ -1275,7 +1379,7 @@ export const Vote = {
   fromAmino(object: VoteAmino): Vote {
     const message = createBaseVote();
     if (object.type !== undefined && object.type !== null) {
-      message.type = signedMsgTypeFromJSON(object.type);
+      message.type = object.type;
     }
     if (object.height !== undefined && object.height !== null) {
       message.height = BigInt(object.height);
@@ -1308,13 +1412,13 @@ export const Vote = {
   },
   toAmino(message: Vote): VoteAmino {
     const obj: any = {};
-    obj.type = message.type;
-    obj.height = message.height ? message.height.toString() : undefined;
-    obj.round = message.round;
+    obj.type = message.type === 0 ? undefined : message.type;
+    obj.height = message.height !== BigInt(0) ? message.height?.toString() : undefined;
+    obj.round = message.round === 0 ? undefined : message.round;
     obj.block_id = message.blockId ? BlockID.toAmino(message.blockId) : undefined;
     obj.timestamp = message.timestamp ? Timestamp.toAmino(message.timestamp) : undefined;
     obj.validator_address = message.validatorAddress ? base64FromBytes(message.validatorAddress) : undefined;
-    obj.validator_index = message.validatorIndex;
+    obj.validator_index = message.validatorIndex === 0 ? undefined : message.validatorIndex;
     obj.signature = message.signature ? base64FromBytes(message.signature) : undefined;
     obj.extension = message.extension ? base64FromBytes(message.extension) : undefined;
     obj.extension_signature = message.extensionSignature
@@ -1398,7 +1502,7 @@ export const Commit = {
       obj.signatures = object.signatures.map((e: any) => CommitSig.fromJSON(e));
     return obj;
   },
-  toJSON(message: Commit): unknown {
+  toJSON(message: Commit): JsonSafe<Commit> {
     const obj: any = {};
     message.height !== undefined && (obj.height = (message.height || BigInt(0)).toString());
     message.round !== undefined && (obj.round = Math.round(message.round));
@@ -1439,13 +1543,13 @@ export const Commit = {
   },
   toAmino(message: Commit): CommitAmino {
     const obj: any = {};
-    obj.height = message.height ? message.height.toString() : undefined;
-    obj.round = message.round;
+    obj.height = message.height !== BigInt(0) ? message.height?.toString() : undefined;
+    obj.round = message.round === 0 ? undefined : message.round;
     obj.block_id = message.blockId ? BlockID.toAmino(message.blockId) : undefined;
     if (message.signatures) {
       obj.signatures = message.signatures.map((e) => (e ? CommitSig.toAmino(e) : undefined));
     } else {
-      obj.signatures = [];
+      obj.signatures = message.signatures;
     }
     return obj;
   },
@@ -1524,7 +1628,7 @@ export const CommitSig = {
     if (isSet(object.signature)) obj.signature = bytesFromBase64(object.signature);
     return obj;
   },
-  toJSON(message: CommitSig): unknown {
+  toJSON(message: CommitSig): JsonSafe<CommitSig> {
     const obj: any = {};
     message.blockIdFlag !== undefined && (obj.blockIdFlag = blockIDFlagToJSON(message.blockIdFlag));
     message.validatorAddress !== undefined &&
@@ -1551,7 +1655,7 @@ export const CommitSig = {
   fromAmino(object: CommitSigAmino): CommitSig {
     const message = createBaseCommitSig();
     if (object.block_id_flag !== undefined && object.block_id_flag !== null) {
-      message.blockIdFlag = blockIDFlagFromJSON(object.block_id_flag);
+      message.blockIdFlag = object.block_id_flag;
     }
     if (object.validator_address !== undefined && object.validator_address !== null) {
       message.validatorAddress = bytesFromBase64(object.validator_address);
@@ -1566,7 +1670,7 @@ export const CommitSig = {
   },
   toAmino(message: CommitSig): CommitSigAmino {
     const obj: any = {};
-    obj.block_id_flag = message.blockIdFlag;
+    obj.block_id_flag = message.blockIdFlag === 0 ? undefined : message.blockIdFlag;
     obj.validator_address = message.validatorAddress ? base64FromBytes(message.validatorAddress) : undefined;
     obj.timestamp = message.timestamp ? Timestamp.toAmino(message.timestamp) : undefined;
     obj.signature = message.signature ? base64FromBytes(message.signature) : undefined;
@@ -1648,7 +1752,7 @@ export const ExtendedCommit = {
       obj.extendedSignatures = object.extendedSignatures.map((e: any) => ExtendedCommitSig.fromJSON(e));
     return obj;
   },
-  toJSON(message: ExtendedCommit): unknown {
+  toJSON(message: ExtendedCommit): JsonSafe<ExtendedCommit> {
     const obj: any = {};
     message.height !== undefined && (obj.height = (message.height || BigInt(0)).toString());
     message.round !== undefined && (obj.round = Math.round(message.round));
@@ -1692,15 +1796,15 @@ export const ExtendedCommit = {
   },
   toAmino(message: ExtendedCommit): ExtendedCommitAmino {
     const obj: any = {};
-    obj.height = message.height ? message.height.toString() : undefined;
-    obj.round = message.round;
+    obj.height = message.height !== BigInt(0) ? message.height?.toString() : undefined;
+    obj.round = message.round === 0 ? undefined : message.round;
     obj.block_id = message.blockId ? BlockID.toAmino(message.blockId) : undefined;
     if (message.extendedSignatures) {
       obj.extended_signatures = message.extendedSignatures.map((e) =>
         e ? ExtendedCommitSig.toAmino(e) : undefined,
       );
     } else {
-      obj.extended_signatures = [];
+      obj.extended_signatures = message.extendedSignatures;
     }
     return obj;
   },
@@ -1795,7 +1899,7 @@ export const ExtendedCommitSig = {
     if (isSet(object.extensionSignature)) obj.extensionSignature = bytesFromBase64(object.extensionSignature);
     return obj;
   },
-  toJSON(message: ExtendedCommitSig): unknown {
+  toJSON(message: ExtendedCommitSig): JsonSafe<ExtendedCommitSig> {
     const obj: any = {};
     message.blockIdFlag !== undefined && (obj.blockIdFlag = blockIDFlagToJSON(message.blockIdFlag));
     message.validatorAddress !== undefined &&
@@ -1832,7 +1936,7 @@ export const ExtendedCommitSig = {
   fromAmino(object: ExtendedCommitSigAmino): ExtendedCommitSig {
     const message = createBaseExtendedCommitSig();
     if (object.block_id_flag !== undefined && object.block_id_flag !== null) {
-      message.blockIdFlag = blockIDFlagFromJSON(object.block_id_flag);
+      message.blockIdFlag = object.block_id_flag;
     }
     if (object.validator_address !== undefined && object.validator_address !== null) {
       message.validatorAddress = bytesFromBase64(object.validator_address);
@@ -1853,7 +1957,7 @@ export const ExtendedCommitSig = {
   },
   toAmino(message: ExtendedCommitSig): ExtendedCommitSigAmino {
     const obj: any = {};
-    obj.block_id_flag = message.blockIdFlag;
+    obj.block_id_flag = message.blockIdFlag === 0 ? undefined : message.blockIdFlag;
     obj.validator_address = message.validatorAddress ? base64FromBytes(message.validatorAddress) : undefined;
     obj.timestamp = message.timestamp ? Timestamp.toAmino(message.timestamp) : undefined;
     obj.signature = message.signature ? base64FromBytes(message.signature) : undefined;
@@ -1962,7 +2066,7 @@ export const Proposal = {
     if (isSet(object.signature)) obj.signature = bytesFromBase64(object.signature);
     return obj;
   },
-  toJSON(message: Proposal): unknown {
+  toJSON(message: Proposal): JsonSafe<Proposal> {
     const obj: any = {};
     message.type !== undefined && (obj.type = signedMsgTypeToJSON(message.type));
     message.height !== undefined && (obj.height = (message.height || BigInt(0)).toString());
@@ -1997,7 +2101,7 @@ export const Proposal = {
   fromAmino(object: ProposalAmino): Proposal {
     const message = createBaseProposal();
     if (object.type !== undefined && object.type !== null) {
-      message.type = signedMsgTypeFromJSON(object.type);
+      message.type = object.type;
     }
     if (object.height !== undefined && object.height !== null) {
       message.height = BigInt(object.height);
@@ -2021,10 +2125,10 @@ export const Proposal = {
   },
   toAmino(message: Proposal): ProposalAmino {
     const obj: any = {};
-    obj.type = message.type;
-    obj.height = message.height ? message.height.toString() : undefined;
-    obj.round = message.round;
-    obj.pol_round = message.polRound;
+    obj.type = message.type === 0 ? undefined : message.type;
+    obj.height = message.height !== BigInt(0) ? message.height?.toString() : undefined;
+    obj.round = message.round === 0 ? undefined : message.round;
+    obj.pol_round = message.polRound === 0 ? undefined : message.polRound;
     obj.block_id = message.blockId ? BlockID.toAmino(message.blockId) : undefined;
     obj.timestamp = message.timestamp ? Timestamp.toAmino(message.timestamp) : undefined;
     obj.signature = message.signature ? base64FromBytes(message.signature) : undefined;
@@ -2089,7 +2193,7 @@ export const SignedHeader = {
     if (isSet(object.commit)) obj.commit = Commit.fromJSON(object.commit);
     return obj;
   },
-  toJSON(message: SignedHeader): unknown {
+  toJSON(message: SignedHeader): JsonSafe<SignedHeader> {
     const obj: any = {};
     message.header !== undefined && (obj.header = message.header ? Header.toJSON(message.header) : undefined);
     message.commit !== undefined && (obj.commit = message.commit ? Commit.toJSON(message.commit) : undefined);
@@ -2180,7 +2284,7 @@ export const LightBlock = {
     if (isSet(object.validatorSet)) obj.validatorSet = ValidatorSet.fromJSON(object.validatorSet);
     return obj;
   },
-  toJSON(message: LightBlock): unknown {
+  toJSON(message: LightBlock): JsonSafe<LightBlock> {
     const obj: any = {};
     message.signedHeader !== undefined &&
       (obj.signedHeader = message.signedHeader ? SignedHeader.toJSON(message.signedHeader) : undefined);
@@ -2289,7 +2393,7 @@ export const BlockMeta = {
     if (isSet(object.numTxs)) obj.numTxs = BigInt(object.numTxs.toString());
     return obj;
   },
-  toJSON(message: BlockMeta): unknown {
+  toJSON(message: BlockMeta): JsonSafe<BlockMeta> {
     const obj: any = {};
     message.blockId !== undefined &&
       (obj.blockId = message.blockId ? BlockID.toJSON(message.blockId) : undefined);
@@ -2333,9 +2437,9 @@ export const BlockMeta = {
   toAmino(message: BlockMeta): BlockMetaAmino {
     const obj: any = {};
     obj.block_id = message.blockId ? BlockID.toAmino(message.blockId) : undefined;
-    obj.block_size = message.blockSize ? message.blockSize.toString() : undefined;
+    obj.block_size = message.blockSize !== BigInt(0) ? message.blockSize?.toString() : undefined;
     obj.header = message.header ? Header.toAmino(message.header) : undefined;
-    obj.num_txs = message.numTxs ? message.numTxs.toString() : undefined;
+    obj.num_txs = message.numTxs !== BigInt(0) ? message.numTxs?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: BlockMetaAminoMsg): BlockMeta {
@@ -2405,7 +2509,7 @@ export const TxProof = {
     if (isSet(object.proof)) obj.proof = Proof.fromJSON(object.proof);
     return obj;
   },
-  toJSON(message: TxProof): unknown {
+  toJSON(message: TxProof): JsonSafe<TxProof> {
     const obj: any = {};
     message.rootHash !== undefined &&
       (obj.rootHash = base64FromBytes(message.rootHash !== undefined ? message.rootHash : new Uint8Array()));

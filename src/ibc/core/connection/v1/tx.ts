@@ -4,6 +4,7 @@ import { Any, AnyAmino } from "../../../../google/protobuf/any";
 import { Height, HeightAmino, Params, ParamsAmino } from "../../client/v1/client";
 import { BinaryReader, BinaryWriter } from "../../../../binary";
 import { isSet, bytesFromBase64, base64FromBytes } from "../../../../helpers";
+import { JsonSafe } from "../../../../json-safe";
 import { TxRpc } from "../../../../types";
 export const protobufPackage = "ibc.core.connection.v1";
 /**
@@ -24,6 +25,9 @@ export interface MsgConnectionOpenInitProtoMsg {
 /**
  * MsgConnectionOpenInit defines the msg sent by an account on Chain A to
  * initialize a connection with Chain B.
+ * @name MsgConnectionOpenInitAmino
+ * @package ibc.core.connection.v1
+ * @see proto type: ibc.core.connection.v1.MsgConnectionOpenInit
  */
 export interface MsgConnectionOpenInitAmino {
   client_id?: string;
@@ -48,6 +52,9 @@ export interface MsgConnectionOpenInitResponseProtoMsg {
 /**
  * MsgConnectionOpenInitResponse defines the Msg/ConnectionOpenInit response
  * type.
+ * @name MsgConnectionOpenInitResponseAmino
+ * @package ibc.core.connection.v1
+ * @see proto type: ibc.core.connection.v1.MsgConnectionOpenInitResponse
  */
 export interface MsgConnectionOpenInitResponseAmino {}
 export interface MsgConnectionOpenInitResponseAminoMsg {
@@ -96,14 +103,21 @@ export interface MsgConnectionOpenTryProtoMsg {
 /**
  * MsgConnectionOpenTry defines a msg sent by a Relayer to try to open a
  * connection on Chain B.
+ * @name MsgConnectionOpenTryAmino
+ * @package ibc.core.connection.v1
+ * @see proto type: ibc.core.connection.v1.MsgConnectionOpenTry
  */
 export interface MsgConnectionOpenTryAmino {
   client_id?: string;
-  /** Deprecated: this field is unused. Crossing hellos are no longer supported in core IBC. */
-  /** @deprecated */
+  /**
+   * Deprecated: this field is unused. Crossing hellos are no longer supported in core IBC.
+   * @deprecated
+   */
   previous_connection_id?: string;
-  /** Deprecated: this field is unused. */
-  /** @deprecated */
+  /**
+   * Deprecated: this field is unused.
+   * @deprecated
+   */
   client_state?: AnyAmino | undefined;
   counterparty?: CounterpartyAmino | undefined;
   delay_period?: string;
@@ -114,18 +128,26 @@ export interface MsgConnectionOpenTryAmino {
    * INIT`
    */
   proof_init?: string;
-  /** Deprecated: this field is unused. */
-  /** @deprecated */
+  /**
+   * Deprecated: this field is unused.
+   * @deprecated
+   */
   proof_client?: string;
-  /** Deprecated: this field is unused. */
-  /** @deprecated */
+  /**
+   * Deprecated: this field is unused.
+   * @deprecated
+   */
   proof_consensus?: string;
-  /** Deprecated: this field is unused. */
-  /** @deprecated */
+  /**
+   * Deprecated: this field is unused.
+   * @deprecated
+   */
   consensus_height?: HeightAmino | undefined;
   signer?: string;
-  /** Deprecated: this field is unused. */
-  /** @deprecated */
+  /**
+   * Deprecated: this field is unused.
+   * @deprecated
+   */
   host_consensus_state_proof?: string;
 }
 export interface MsgConnectionOpenTryAminoMsg {
@@ -138,7 +160,12 @@ export interface MsgConnectionOpenTryResponseProtoMsg {
   typeUrl: "/ibc.core.connection.v1.MsgConnectionOpenTryResponse";
   value: Uint8Array;
 }
-/** MsgConnectionOpenTryResponse defines the Msg/ConnectionOpenTry response type. */
+/**
+ * MsgConnectionOpenTryResponse defines the Msg/ConnectionOpenTry response type.
+ * @name MsgConnectionOpenTryResponseAmino
+ * @package ibc.core.connection.v1
+ * @see proto type: ibc.core.connection.v1.MsgConnectionOpenTryResponse
+ */
 export interface MsgConnectionOpenTryResponseAmino {}
 export interface MsgConnectionOpenTryResponseAminoMsg {
   type: "cosmos-sdk/MsgConnectionOpenTryResponse";
@@ -182,13 +209,18 @@ export interface MsgConnectionOpenAckProtoMsg {
 /**
  * MsgConnectionOpenAck defines a msg sent by a Relayer to Chain A to
  * acknowledge the change of connection state to TRYOPEN on Chain B.
+ * @name MsgConnectionOpenAckAmino
+ * @package ibc.core.connection.v1
+ * @see proto type: ibc.core.connection.v1.MsgConnectionOpenAck
  */
 export interface MsgConnectionOpenAckAmino {
   connection_id?: string;
   counterparty_connection_id?: string;
   version?: VersionAmino | undefined;
-  /** Deprecated: this field is unused. */
-  /** @deprecated */
+  /**
+   * Deprecated: this field is unused.
+   * @deprecated
+   */
   client_state?: AnyAmino | undefined;
   proof_height?: HeightAmino | undefined;
   /**
@@ -196,18 +228,26 @@ export interface MsgConnectionOpenAckAmino {
    * TRYOPEN`
    */
   proof_try?: string;
-  /** Deprecated: this field is unused. */
-  /** @deprecated */
+  /**
+   * Deprecated: this field is unused.
+   * @deprecated
+   */
   proof_client?: string;
-  /** Deprecated: this field is unused. */
-  /** @deprecated */
+  /**
+   * Deprecated: this field is unused.
+   * @deprecated
+   */
   proof_consensus?: string;
-  /** Deprecated: this field is unused. */
-  /** @deprecated */
+  /**
+   * Deprecated: this field is unused.
+   * @deprecated
+   */
   consensus_height?: HeightAmino | undefined;
   signer?: string;
-  /** Deprecated: this field is unused. */
-  /** @deprecated */
+  /**
+   * Deprecated: this field is unused.
+   * @deprecated
+   */
   host_consensus_state_proof?: string;
 }
 export interface MsgConnectionOpenAckAminoMsg {
@@ -220,7 +260,12 @@ export interface MsgConnectionOpenAckResponseProtoMsg {
   typeUrl: "/ibc.core.connection.v1.MsgConnectionOpenAckResponse";
   value: Uint8Array;
 }
-/** MsgConnectionOpenAckResponse defines the Msg/ConnectionOpenAck response type. */
+/**
+ * MsgConnectionOpenAckResponse defines the Msg/ConnectionOpenAck response type.
+ * @name MsgConnectionOpenAckResponseAmino
+ * @package ibc.core.connection.v1
+ * @see proto type: ibc.core.connection.v1.MsgConnectionOpenAckResponse
+ */
 export interface MsgConnectionOpenAckResponseAmino {}
 export interface MsgConnectionOpenAckResponseAminoMsg {
   type: "cosmos-sdk/MsgConnectionOpenAckResponse";
@@ -244,10 +289,15 @@ export interface MsgConnectionOpenConfirmProtoMsg {
 /**
  * MsgConnectionOpenConfirm defines a msg sent by a Relayer to Chain B to
  * acknowledge the change of connection state to OPEN on Chain A.
+ * @name MsgConnectionOpenConfirmAmino
+ * @package ibc.core.connection.v1
+ * @see proto type: ibc.core.connection.v1.MsgConnectionOpenConfirm
  */
 export interface MsgConnectionOpenConfirmAmino {
   connection_id?: string;
-  /** proof for the change of the connection state on Chain A: `INIT -> OPEN` */
+  /**
+   * proof for the change of the connection state on Chain A: `INIT -> OPEN`
+   */
   proof_ack?: string;
   proof_height?: HeightAmino | undefined;
   signer?: string;
@@ -268,6 +318,9 @@ export interface MsgConnectionOpenConfirmResponseProtoMsg {
 /**
  * MsgConnectionOpenConfirmResponse defines the Msg/ConnectionOpenConfirm
  * response type.
+ * @name MsgConnectionOpenConfirmResponseAmino
+ * @package ibc.core.connection.v1
+ * @see proto type: ibc.core.connection.v1.MsgConnectionOpenConfirmResponse
  */
 export interface MsgConnectionOpenConfirmResponseAmino {}
 export interface MsgConnectionOpenConfirmResponseAminoMsg {
@@ -289,9 +342,16 @@ export interface MsgUpdateParamsProtoMsg {
   typeUrl: "/ibc.core.connection.v1.MsgUpdateParams";
   value: Uint8Array;
 }
-/** MsgUpdateParams defines the sdk.Msg type to update the connection parameters. */
+/**
+ * MsgUpdateParams defines the sdk.Msg type to update the connection parameters.
+ * @name MsgUpdateParamsAmino
+ * @package ibc.core.connection.v1
+ * @see proto type: ibc.core.connection.v1.MsgUpdateParams
+ */
 export interface MsgUpdateParamsAmino {
-  /** signer address */
+  /**
+   * signer address
+   */
   signer?: string;
   /**
    * params defines the connection parameters to update.
@@ -310,7 +370,12 @@ export interface MsgUpdateParamsResponseProtoMsg {
   typeUrl: "/ibc.core.connection.v1.MsgUpdateParamsResponse";
   value: Uint8Array;
 }
-/** MsgUpdateParamsResponse defines the MsgUpdateParams response type. */
+/**
+ * MsgUpdateParamsResponse defines the MsgUpdateParams response type.
+ * @name MsgUpdateParamsResponseAmino
+ * @package ibc.core.connection.v1
+ * @see proto type: ibc.core.connection.v1.MsgUpdateParamsResponse
+ */
 export interface MsgUpdateParamsResponseAmino {}
 export interface MsgUpdateParamsResponseAminoMsg {
   type: "cosmos-sdk/MsgUpdateParamsResponse";
@@ -383,7 +448,7 @@ export const MsgConnectionOpenInit = {
     if (isSet(object.signer)) obj.signer = String(object.signer);
     return obj;
   },
-  toJSON(message: MsgConnectionOpenInit): unknown {
+  toJSON(message: MsgConnectionOpenInit): JsonSafe<MsgConnectionOpenInit> {
     const obj: any = {};
     message.clientId !== undefined && (obj.clientId = message.clientId);
     message.counterparty !== undefined &&
@@ -430,11 +495,11 @@ export const MsgConnectionOpenInit = {
   },
   toAmino(message: MsgConnectionOpenInit): MsgConnectionOpenInitAmino {
     const obj: any = {};
-    obj.client_id = message.clientId;
+    obj.client_id = message.clientId === "" ? undefined : message.clientId;
     obj.counterparty = message.counterparty ? Counterparty.toAmino(message.counterparty) : undefined;
     obj.version = message.version ? Version.toAmino(message.version) : undefined;
-    obj.delay_period = message.delayPeriod ? message.delayPeriod.toString() : undefined;
-    obj.signer = message.signer;
+    obj.delay_period = message.delayPeriod !== BigInt(0) ? message.delayPeriod?.toString() : undefined;
+    obj.signer = message.signer === "" ? undefined : message.signer;
     return obj;
   },
   fromAminoMsg(object: MsgConnectionOpenInitAminoMsg): MsgConnectionOpenInit {
@@ -485,7 +550,7 @@ export const MsgConnectionOpenInitResponse = {
     const obj = createBaseMsgConnectionOpenInitResponse();
     return obj;
   },
-  toJSON(_: MsgConnectionOpenInitResponse): unknown {
+  toJSON(_: MsgConnectionOpenInitResponse): JsonSafe<MsgConnectionOpenInitResponse> {
     const obj: any = {};
     return obj;
   },
@@ -656,7 +721,7 @@ export const MsgConnectionOpenTry = {
       obj.hostConsensusStateProof = bytesFromBase64(object.hostConsensusStateProof);
     return obj;
   },
-  toJSON(message: MsgConnectionOpenTry): unknown {
+  toJSON(message: MsgConnectionOpenTry): JsonSafe<MsgConnectionOpenTry> {
     const obj: any = {};
     message.clientId !== undefined && (obj.clientId = message.clientId);
     message.previousConnectionId !== undefined && (obj.previousConnectionId = message.previousConnectionId);
@@ -763,24 +828,25 @@ export const MsgConnectionOpenTry = {
   },
   toAmino(message: MsgConnectionOpenTry): MsgConnectionOpenTryAmino {
     const obj: any = {};
-    obj.client_id = message.clientId;
-    obj.previous_connection_id = message.previousConnectionId;
+    obj.client_id = message.clientId === "" ? undefined : message.clientId;
+    obj.previous_connection_id =
+      message.previousConnectionId === "" ? undefined : message.previousConnectionId;
     obj.client_state = message.clientState ? Any.toAmino(message.clientState) : undefined;
     obj.counterparty = message.counterparty ? Counterparty.toAmino(message.counterparty) : undefined;
-    obj.delay_period = message.delayPeriod ? message.delayPeriod.toString() : undefined;
+    obj.delay_period = message.delayPeriod !== BigInt(0) ? message.delayPeriod?.toString() : undefined;
     if (message.counterpartyVersions) {
       obj.counterparty_versions = message.counterpartyVersions.map((e) =>
         e ? Version.toAmino(e) : undefined,
       );
     } else {
-      obj.counterparty_versions = [];
+      obj.counterparty_versions = message.counterpartyVersions;
     }
     obj.proof_height = message.proofHeight ? Height.toAmino(message.proofHeight) : {};
     obj.proof_init = message.proofInit ? base64FromBytes(message.proofInit) : undefined;
     obj.proof_client = message.proofClient ? base64FromBytes(message.proofClient) : undefined;
     obj.proof_consensus = message.proofConsensus ? base64FromBytes(message.proofConsensus) : undefined;
     obj.consensus_height = message.consensusHeight ? Height.toAmino(message.consensusHeight) : {};
-    obj.signer = message.signer;
+    obj.signer = message.signer === "" ? undefined : message.signer;
     obj.host_consensus_state_proof = message.hostConsensusStateProof
       ? base64FromBytes(message.hostConsensusStateProof)
       : undefined;
@@ -834,7 +900,7 @@ export const MsgConnectionOpenTryResponse = {
     const obj = createBaseMsgConnectionOpenTryResponse();
     return obj;
   },
-  toJSON(_: MsgConnectionOpenTryResponse): unknown {
+  toJSON(_: MsgConnectionOpenTryResponse): JsonSafe<MsgConnectionOpenTryResponse> {
     const obj: any = {};
     return obj;
   },
@@ -989,7 +1055,7 @@ export const MsgConnectionOpenAck = {
       obj.hostConsensusStateProof = bytesFromBase64(object.hostConsensusStateProof);
     return obj;
   },
-  toJSON(message: MsgConnectionOpenAck): unknown {
+  toJSON(message: MsgConnectionOpenAck): JsonSafe<MsgConnectionOpenAck> {
     const obj: any = {};
     message.connectionId !== undefined && (obj.connectionId = message.connectionId);
     message.counterpartyConnectionId !== undefined &&
@@ -1081,8 +1147,9 @@ export const MsgConnectionOpenAck = {
   },
   toAmino(message: MsgConnectionOpenAck): MsgConnectionOpenAckAmino {
     const obj: any = {};
-    obj.connection_id = message.connectionId;
-    obj.counterparty_connection_id = message.counterpartyConnectionId;
+    obj.connection_id = message.connectionId === "" ? undefined : message.connectionId;
+    obj.counterparty_connection_id =
+      message.counterpartyConnectionId === "" ? undefined : message.counterpartyConnectionId;
     obj.version = message.version ? Version.toAmino(message.version) : undefined;
     obj.client_state = message.clientState ? Any.toAmino(message.clientState) : undefined;
     obj.proof_height = message.proofHeight ? Height.toAmino(message.proofHeight) : {};
@@ -1090,7 +1157,7 @@ export const MsgConnectionOpenAck = {
     obj.proof_client = message.proofClient ? base64FromBytes(message.proofClient) : undefined;
     obj.proof_consensus = message.proofConsensus ? base64FromBytes(message.proofConsensus) : undefined;
     obj.consensus_height = message.consensusHeight ? Height.toAmino(message.consensusHeight) : {};
-    obj.signer = message.signer;
+    obj.signer = message.signer === "" ? undefined : message.signer;
     obj.host_consensus_state_proof = message.hostConsensusStateProof
       ? base64FromBytes(message.hostConsensusStateProof)
       : undefined;
@@ -1144,7 +1211,7 @@ export const MsgConnectionOpenAckResponse = {
     const obj = createBaseMsgConnectionOpenAckResponse();
     return obj;
   },
-  toJSON(_: MsgConnectionOpenAckResponse): unknown {
+  toJSON(_: MsgConnectionOpenAckResponse): JsonSafe<MsgConnectionOpenAckResponse> {
     const obj: any = {};
     return obj;
   },
@@ -1241,7 +1308,7 @@ export const MsgConnectionOpenConfirm = {
     if (isSet(object.signer)) obj.signer = String(object.signer);
     return obj;
   },
-  toJSON(message: MsgConnectionOpenConfirm): unknown {
+  toJSON(message: MsgConnectionOpenConfirm): JsonSafe<MsgConnectionOpenConfirm> {
     const obj: any = {};
     message.connectionId !== undefined && (obj.connectionId = message.connectionId);
     message.proofAck !== undefined &&
@@ -1279,10 +1346,10 @@ export const MsgConnectionOpenConfirm = {
   },
   toAmino(message: MsgConnectionOpenConfirm): MsgConnectionOpenConfirmAmino {
     const obj: any = {};
-    obj.connection_id = message.connectionId;
+    obj.connection_id = message.connectionId === "" ? undefined : message.connectionId;
     obj.proof_ack = message.proofAck ? base64FromBytes(message.proofAck) : undefined;
     obj.proof_height = message.proofHeight ? Height.toAmino(message.proofHeight) : {};
-    obj.signer = message.signer;
+    obj.signer = message.signer === "" ? undefined : message.signer;
     return obj;
   },
   fromAminoMsg(object: MsgConnectionOpenConfirmAminoMsg): MsgConnectionOpenConfirm {
@@ -1333,7 +1400,7 @@ export const MsgConnectionOpenConfirmResponse = {
     const obj = createBaseMsgConnectionOpenConfirmResponse();
     return obj;
   },
-  toJSON(_: MsgConnectionOpenConfirmResponse): unknown {
+  toJSON(_: MsgConnectionOpenConfirmResponse): JsonSafe<MsgConnectionOpenConfirmResponse> {
     const obj: any = {};
     return obj;
   },
@@ -1414,7 +1481,7 @@ export const MsgUpdateParams = {
     if (isSet(object.params)) obj.params = Params.fromJSON(object.params);
     return obj;
   },
-  toJSON(message: MsgUpdateParams): unknown {
+  toJSON(message: MsgUpdateParams): JsonSafe<MsgUpdateParams> {
     const obj: any = {};
     message.signer !== undefined && (obj.signer = message.signer);
     message.params !== undefined && (obj.params = message.params ? Params.toJSON(message.params) : undefined);
@@ -1440,7 +1507,7 @@ export const MsgUpdateParams = {
   },
   toAmino(message: MsgUpdateParams): MsgUpdateParamsAmino {
     const obj: any = {};
-    obj.signer = message.signer;
+    obj.signer = message.signer === "" ? undefined : message.signer;
     obj.params = message.params ? Params.toAmino(message.params) : undefined;
     return obj;
   },
@@ -1492,7 +1559,7 @@ export const MsgUpdateParamsResponse = {
     const obj = createBaseMsgUpdateParamsResponse();
     return obj;
   },
-  toJSON(_: MsgUpdateParamsResponse): unknown {
+  toJSON(_: MsgUpdateParamsResponse): JsonSafe<MsgUpdateParamsResponse> {
     const obj: any = {};
     return obj;
   },

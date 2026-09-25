@@ -1,6 +1,7 @@
 /* eslint-disable */
 import { Config, ConfigAmino } from "./config";
 import { BinaryReader, BinaryWriter } from "../../../binary";
+import { JsonSafe } from "../../../json-safe";
 import { isSet } from "../../../helpers";
 import { TxRpc } from "../../../types";
 export const protobufPackage = "cosmos.app.v1alpha1";
@@ -10,7 +11,12 @@ export interface QueryConfigRequestProtoMsg {
   typeUrl: "/cosmos.app.v1alpha1.QueryConfigRequest";
   value: Uint8Array;
 }
-/** QueryConfigRequest is the Query/Config request type. */
+/**
+ * QueryConfigRequest is the Query/Config request type.
+ * @name QueryConfigRequestAmino
+ * @package cosmos.app.v1alpha1
+ * @see proto type: cosmos.app.v1alpha1.QueryConfigRequest
+ */
 export interface QueryConfigRequestAmino {}
 export interface QueryConfigRequestAminoMsg {
   type: "cosmos-sdk/QueryConfigRequest";
@@ -25,9 +31,16 @@ export interface QueryConfigResponseProtoMsg {
   typeUrl: "/cosmos.app.v1alpha1.QueryConfigResponse";
   value: Uint8Array;
 }
-/** QueryConfigRequest is the Query/Config response type. */
+/**
+ * QueryConfigRequest is the Query/Config response type.
+ * @name QueryConfigResponseAmino
+ * @package cosmos.app.v1alpha1
+ * @see proto type: cosmos.app.v1alpha1.QueryConfigResponse
+ */
 export interface QueryConfigResponseAmino {
-  /** config is the current app config. */
+  /**
+   * config is the current app config.
+   */
   config?: ConfigAmino | undefined;
 }
 export interface QueryConfigResponseAminoMsg {
@@ -60,7 +73,7 @@ export const QueryConfigRequest = {
     const obj = createBaseQueryConfigRequest();
     return obj;
   },
-  toJSON(_: QueryConfigRequest): unknown {
+  toJSON(_: QueryConfigRequest): JsonSafe<QueryConfigRequest> {
     const obj: any = {};
     return obj;
   },
@@ -133,7 +146,7 @@ export const QueryConfigResponse = {
     if (isSet(object.config)) obj.config = Config.fromJSON(object.config);
     return obj;
   },
-  toJSON(message: QueryConfigResponse): unknown {
+  toJSON(message: QueryConfigResponse): JsonSafe<QueryConfigResponse> {
     const obj: any = {};
     message.config !== undefined && (obj.config = message.config ? Config.toJSON(message.config) : undefined);
     return obj;

@@ -12,6 +12,7 @@ import { Coin, CoinAmino } from "../../base/v1beta1/coin";
 import { Timestamp } from "../../../google/protobuf/timestamp";
 import { BinaryReader, BinaryWriter } from "../../../binary";
 import { isSet, fromJsonTimestamp, fromTimestamp } from "../../../helpers";
+import { JsonSafe } from "../../../json-safe";
 import { encodePubkey, decodePubkey } from "@cosmjs/proto-signing";
 import { TxRpc } from "../../../types";
 export const protobufPackage = "cosmos.staking.v1beta1";
@@ -35,7 +36,12 @@ export interface MsgCreateValidatorProtoMsg {
   typeUrl: "/cosmos.staking.v1beta1.MsgCreateValidator";
   value: Uint8Array;
 }
-/** MsgCreateValidator defines a SDK message for creating a new validator. */
+/**
+ * MsgCreateValidator defines a SDK message for creating a new validator.
+ * @name MsgCreateValidatorAmino
+ * @package cosmos.staking.v1beta1
+ * @see proto type: cosmos.staking.v1beta1.MsgCreateValidator
+ */
 export interface MsgCreateValidatorAmino {
   description: DescriptionAmino | undefined;
   commission: CommissionRatesAmino | undefined;
@@ -44,8 +50,8 @@ export interface MsgCreateValidatorAmino {
    * Deprecated: Use of Delegator Address in MsgCreateValidator is deprecated.
    * The validator address bytes and delegator address bytes refer to the same account while creating validator (defer
    * only in bech32 notation).
+   * @deprecated
    */
-  /** @deprecated */
   delegator_address?: string;
   validator_address?: string;
   pubkey?: AnyAmino | undefined;
@@ -61,7 +67,12 @@ export interface MsgCreateValidatorResponseProtoMsg {
   typeUrl: "/cosmos.staking.v1beta1.MsgCreateValidatorResponse";
   value: Uint8Array;
 }
-/** MsgCreateValidatorResponse defines the Msg/CreateValidator response type. */
+/**
+ * MsgCreateValidatorResponse defines the Msg/CreateValidator response type.
+ * @name MsgCreateValidatorResponseAmino
+ * @package cosmos.staking.v1beta1
+ * @see proto type: cosmos.staking.v1beta1.MsgCreateValidatorResponse
+ */
 export interface MsgCreateValidatorResponseAmino {}
 export interface MsgCreateValidatorResponseAminoMsg {
   type: "cosmos-sdk/MsgCreateValidatorResponse";
@@ -84,7 +95,12 @@ export interface MsgEditValidatorProtoMsg {
   typeUrl: "/cosmos.staking.v1beta1.MsgEditValidator";
   value: Uint8Array;
 }
-/** MsgEditValidator defines a SDK message for editing an existing validator. */
+/**
+ * MsgEditValidator defines a SDK message for editing an existing validator.
+ * @name MsgEditValidatorAmino
+ * @package cosmos.staking.v1beta1
+ * @see proto type: cosmos.staking.v1beta1.MsgEditValidator
+ */
 export interface MsgEditValidatorAmino {
   description: DescriptionAmino | undefined;
   validator_address?: string;
@@ -107,7 +123,12 @@ export interface MsgEditValidatorResponseProtoMsg {
   typeUrl: "/cosmos.staking.v1beta1.MsgEditValidatorResponse";
   value: Uint8Array;
 }
-/** MsgEditValidatorResponse defines the Msg/EditValidator response type. */
+/**
+ * MsgEditValidatorResponse defines the Msg/EditValidator response type.
+ * @name MsgEditValidatorResponseAmino
+ * @package cosmos.staking.v1beta1
+ * @see proto type: cosmos.staking.v1beta1.MsgEditValidatorResponse
+ */
 export interface MsgEditValidatorResponseAmino {}
 export interface MsgEditValidatorResponseAminoMsg {
   type: "cosmos-sdk/MsgEditValidatorResponse";
@@ -129,6 +150,9 @@ export interface MsgDelegateProtoMsg {
 /**
  * MsgDelegate defines a SDK message for performing a delegation of coins
  * from a delegator to a validator.
+ * @name MsgDelegateAmino
+ * @package cosmos.staking.v1beta1
+ * @see proto type: cosmos.staking.v1beta1.MsgDelegate
  */
 export interface MsgDelegateAmino {
   delegator_address?: string;
@@ -145,7 +169,12 @@ export interface MsgDelegateResponseProtoMsg {
   typeUrl: "/cosmos.staking.v1beta1.MsgDelegateResponse";
   value: Uint8Array;
 }
-/** MsgDelegateResponse defines the Msg/Delegate response type. */
+/**
+ * MsgDelegateResponse defines the Msg/Delegate response type.
+ * @name MsgDelegateResponseAmino
+ * @package cosmos.staking.v1beta1
+ * @see proto type: cosmos.staking.v1beta1.MsgDelegateResponse
+ */
 export interface MsgDelegateResponseAmino {}
 export interface MsgDelegateResponseAminoMsg {
   type: "cosmos-sdk/MsgDelegateResponse";
@@ -168,6 +197,9 @@ export interface MsgBeginRedelegateProtoMsg {
 /**
  * MsgBeginRedelegate defines a SDK message for performing a redelegation
  * of coins from a delegator and source validator to a destination validator.
+ * @name MsgBeginRedelegateAmino
+ * @package cosmos.staking.v1beta1
+ * @see proto type: cosmos.staking.v1beta1.MsgBeginRedelegate
  */
 export interface MsgBeginRedelegateAmino {
   delegator_address?: string;
@@ -187,7 +219,12 @@ export interface MsgBeginRedelegateResponseProtoMsg {
   typeUrl: "/cosmos.staking.v1beta1.MsgBeginRedelegateResponse";
   value: Uint8Array;
 }
-/** MsgBeginRedelegateResponse defines the Msg/BeginRedelegate response type. */
+/**
+ * MsgBeginRedelegateResponse defines the Msg/BeginRedelegate response type.
+ * @name MsgBeginRedelegateResponseAmino
+ * @package cosmos.staking.v1beta1
+ * @see proto type: cosmos.staking.v1beta1.MsgBeginRedelegateResponse
+ */
 export interface MsgBeginRedelegateResponseAmino {
   completion_time: string | undefined;
 }
@@ -211,6 +248,9 @@ export interface MsgUndelegateProtoMsg {
 /**
  * MsgUndelegate defines a SDK message for performing an undelegation from a
  * delegate and a validator.
+ * @name MsgUndelegateAmino
+ * @package cosmos.staking.v1beta1
+ * @see proto type: cosmos.staking.v1beta1.MsgUndelegate
  */
 export interface MsgUndelegateAmino {
   delegator_address?: string;
@@ -235,7 +275,12 @@ export interface MsgUndelegateResponseProtoMsg {
   typeUrl: "/cosmos.staking.v1beta1.MsgUndelegateResponse";
   value: Uint8Array;
 }
-/** MsgUndelegateResponse defines the Msg/Undelegate response type. */
+/**
+ * MsgUndelegateResponse defines the Msg/Undelegate response type.
+ * @name MsgUndelegateResponseAmino
+ * @package cosmos.staking.v1beta1
+ * @see proto type: cosmos.staking.v1beta1.MsgUndelegateResponse
+ */
 export interface MsgUndelegateResponseAmino {
   completion_time: string | undefined;
   /**
@@ -270,13 +315,20 @@ export interface MsgCancelUnbondingDelegationProtoMsg {
  * MsgCancelUnbondingDelegation defines the SDK message for performing a cancel unbonding delegation for delegator
  *
  * Since: cosmos-sdk 0.46
+ * @name MsgCancelUnbondingDelegationAmino
+ * @package cosmos.staking.v1beta1
+ * @see proto type: cosmos.staking.v1beta1.MsgCancelUnbondingDelegation
  */
 export interface MsgCancelUnbondingDelegationAmino {
   delegator_address?: string;
   validator_address?: string;
-  /** amount is always less than or equal to unbonding delegation entry balance */
+  /**
+   * amount is always less than or equal to unbonding delegation entry balance
+   */
   amount: CoinAmino | undefined;
-  /** creation_height is the height which the unbonding took place. */
+  /**
+   * creation_height is the height which the unbonding took place.
+   */
   creation_height?: string;
 }
 export interface MsgCancelUnbondingDelegationAminoMsg {
@@ -297,6 +349,9 @@ export interface MsgCancelUnbondingDelegationResponseProtoMsg {
  * MsgCancelUnbondingDelegationResponse
  *
  * Since: cosmos-sdk 0.46
+ * @name MsgCancelUnbondingDelegationResponseAmino
+ * @package cosmos.staking.v1beta1
+ * @see proto type: cosmos.staking.v1beta1.MsgCancelUnbondingDelegationResponse
  */
 export interface MsgCancelUnbondingDelegationResponseAmino {}
 export interface MsgCancelUnbondingDelegationResponseAminoMsg {
@@ -326,9 +381,14 @@ export interface MsgUpdateParamsProtoMsg {
  * MsgUpdateParams is the Msg/UpdateParams request type.
  *
  * Since: cosmos-sdk 0.47
+ * @name MsgUpdateParamsAmino
+ * @package cosmos.staking.v1beta1
+ * @see proto type: cosmos.staking.v1beta1.MsgUpdateParams
  */
 export interface MsgUpdateParamsAmino {
-  /** authority is the address that controls the module (defaults to x/gov unless overwritten). */
+  /**
+   * authority is the address that controls the module (defaults to x/gov unless overwritten).
+   */
   authority?: string;
   /**
    * params defines the x/staking parameters to update.
@@ -357,6 +417,9 @@ export interface MsgUpdateParamsResponseProtoMsg {
  * MsgUpdateParams message.
  *
  * Since: cosmos-sdk 0.47
+ * @name MsgUpdateParamsResponseAmino
+ * @package cosmos.staking.v1beta1
+ * @see proto type: cosmos.staking.v1beta1.MsgUpdateParamsResponse
  */
 export interface MsgUpdateParamsResponseAmino {}
 export interface MsgUpdateParamsResponseAminoMsg {
@@ -380,6 +443,9 @@ export interface MsgRotateConsPubKeyProtoMsg {
  * MsgRotateConsPubKey is the Msg/RotateConsPubKey request type.
  *
  * Since: cosmos-sdk 0.51
+ * @name MsgRotateConsPubKeyAmino
+ * @package cosmos.staking.v1beta1
+ * @see proto type: cosmos.staking.v1beta1.MsgRotateConsPubKey
  */
 export interface MsgRotateConsPubKeyAmino {
   validator_address?: string;
@@ -405,6 +471,9 @@ export interface MsgRotateConsPubKeyResponseProtoMsg {
  * MsgRotateConsPubKey message.
  *
  * Since: cosmos-sdk 0.51
+ * @name MsgRotateConsPubKeyResponseAmino
+ * @package cosmos.staking.v1beta1
+ * @see proto type: cosmos.staking.v1beta1.MsgRotateConsPubKeyResponse
  */
 export interface MsgRotateConsPubKeyResponseAmino {}
 export interface MsgRotateConsPubKeyResponseAminoMsg {
@@ -494,7 +563,7 @@ export const MsgCreateValidator = {
     if (isSet(object.value)) obj.value = Coin.fromJSON(object.value);
     return obj;
   },
-  toJSON(message: MsgCreateValidator): unknown {
+  toJSON(message: MsgCreateValidator): JsonSafe<MsgCreateValidator> {
     const obj: any = {};
     message.description !== undefined &&
       (obj.description = message.description ? Description.toJSON(message.description) : undefined);
@@ -555,15 +624,15 @@ export const MsgCreateValidator = {
     const obj: any = {};
     obj.description = message.description
       ? Description.toAmino(message.description)
-      : Description.fromPartial({});
+      : Description.toAmino(Description.fromPartial({}));
     obj.commission = message.commission
       ? CommissionRates.toAmino(message.commission)
-      : CommissionRates.fromPartial({});
+      : CommissionRates.toAmino(CommissionRates.fromPartial({}));
     obj.min_self_delegation = message.minSelfDelegation ?? "";
-    obj.delegator_address = message.delegatorAddress;
-    obj.validator_address = message.validatorAddress;
+    obj.delegator_address = message.delegatorAddress === "" ? undefined : message.delegatorAddress;
+    obj.validator_address = message.validatorAddress === "" ? undefined : message.validatorAddress;
     obj.pubkey = message.pubkey ? decodePubkey(message.pubkey) : undefined;
-    obj.value = message.value ? Coin.toAmino(message.value) : undefined;
+    obj.value = message.value ? Coin.toAmino(message.value) : Coin.toAmino(Coin.fromPartial({}));
     return obj;
   },
   fromAminoMsg(object: MsgCreateValidatorAminoMsg): MsgCreateValidator {
@@ -614,7 +683,7 @@ export const MsgCreateValidatorResponse = {
     const obj = createBaseMsgCreateValidatorResponse();
     return obj;
   },
-  toJSON(_: MsgCreateValidatorResponse): unknown {
+  toJSON(_: MsgCreateValidatorResponse): JsonSafe<MsgCreateValidatorResponse> {
     const obj: any = {};
     return obj;
   },
@@ -711,7 +780,7 @@ export const MsgEditValidator = {
     if (isSet(object.minSelfDelegation)) obj.minSelfDelegation = String(object.minSelfDelegation);
     return obj;
   },
-  toJSON(message: MsgEditValidator): unknown {
+  toJSON(message: MsgEditValidator): JsonSafe<MsgEditValidator> {
     const obj: any = {};
     message.description !== undefined &&
       (obj.description = message.description ? Description.toJSON(message.description) : undefined);
@@ -750,10 +819,10 @@ export const MsgEditValidator = {
     const obj: any = {};
     obj.description = message.description
       ? Description.toAmino(message.description)
-      : Description.fromPartial({});
-    obj.validator_address = message.validatorAddress;
-    obj.commission_rate = message.commissionRate;
-    obj.min_self_delegation = message.minSelfDelegation;
+      : Description.toAmino(Description.fromPartial({}));
+    obj.validator_address = message.validatorAddress === "" ? undefined : message.validatorAddress;
+    obj.commission_rate = message.commissionRate === "" ? undefined : message.commissionRate;
+    obj.min_self_delegation = message.minSelfDelegation === "" ? undefined : message.minSelfDelegation;
     return obj;
   },
   fromAminoMsg(object: MsgEditValidatorAminoMsg): MsgEditValidator {
@@ -804,7 +873,7 @@ export const MsgEditValidatorResponse = {
     const obj = createBaseMsgEditValidatorResponse();
     return obj;
   },
-  toJSON(_: MsgEditValidatorResponse): unknown {
+  toJSON(_: MsgEditValidatorResponse): JsonSafe<MsgEditValidatorResponse> {
     const obj: any = {};
     return obj;
   },
@@ -893,7 +962,7 @@ export const MsgDelegate = {
     if (isSet(object.amount)) obj.amount = Coin.fromJSON(object.amount);
     return obj;
   },
-  toJSON(message: MsgDelegate): unknown {
+  toJSON(message: MsgDelegate): JsonSafe<MsgDelegate> {
     const obj: any = {};
     message.delegatorAddress !== undefined && (obj.delegatorAddress = message.delegatorAddress);
     message.validatorAddress !== undefined && (obj.validatorAddress = message.validatorAddress);
@@ -924,9 +993,9 @@ export const MsgDelegate = {
   },
   toAmino(message: MsgDelegate): MsgDelegateAmino {
     const obj: any = {};
-    obj.delegator_address = message.delegatorAddress;
-    obj.validator_address = message.validatorAddress;
-    obj.amount = message.amount ? Coin.toAmino(message.amount) : undefined;
+    obj.delegator_address = message.delegatorAddress === "" ? undefined : message.delegatorAddress;
+    obj.validator_address = message.validatorAddress === "" ? undefined : message.validatorAddress;
+    obj.amount = message.amount ? Coin.toAmino(message.amount) : Coin.toAmino(Coin.fromPartial({}));
     return obj;
   },
   fromAminoMsg(object: MsgDelegateAminoMsg): MsgDelegate {
@@ -977,7 +1046,7 @@ export const MsgDelegateResponse = {
     const obj = createBaseMsgDelegateResponse();
     return obj;
   },
-  toJSON(_: MsgDelegateResponse): unknown {
+  toJSON(_: MsgDelegateResponse): JsonSafe<MsgDelegateResponse> {
     const obj: any = {};
     return obj;
   },
@@ -1074,7 +1143,7 @@ export const MsgBeginRedelegate = {
     if (isSet(object.amount)) obj.amount = Coin.fromJSON(object.amount);
     return obj;
   },
-  toJSON(message: MsgBeginRedelegate): unknown {
+  toJSON(message: MsgBeginRedelegate): JsonSafe<MsgBeginRedelegate> {
     const obj: any = {};
     message.delegatorAddress !== undefined && (obj.delegatorAddress = message.delegatorAddress);
     message.validatorSrcAddress !== undefined && (obj.validatorSrcAddress = message.validatorSrcAddress);
@@ -1110,10 +1179,10 @@ export const MsgBeginRedelegate = {
   },
   toAmino(message: MsgBeginRedelegate): MsgBeginRedelegateAmino {
     const obj: any = {};
-    obj.delegator_address = message.delegatorAddress;
-    obj.validator_src_address = message.validatorSrcAddress;
-    obj.validator_dst_address = message.validatorDstAddress;
-    obj.amount = message.amount ? Coin.toAmino(message.amount) : undefined;
+    obj.delegator_address = message.delegatorAddress === "" ? undefined : message.delegatorAddress;
+    obj.validator_src_address = message.validatorSrcAddress === "" ? undefined : message.validatorSrcAddress;
+    obj.validator_dst_address = message.validatorDstAddress === "" ? undefined : message.validatorDstAddress;
+    obj.amount = message.amount ? Coin.toAmino(message.amount) : Coin.toAmino(Coin.fromPartial({}));
     return obj;
   },
   fromAminoMsg(object: MsgBeginRedelegateAminoMsg): MsgBeginRedelegate {
@@ -1173,7 +1242,7 @@ export const MsgBeginRedelegateResponse = {
     if (isSet(object.completionTime)) obj.completionTime = fromJsonTimestamp(object.completionTime);
     return obj;
   },
-  toJSON(message: MsgBeginRedelegateResponse): unknown {
+  toJSON(message: MsgBeginRedelegateResponse): JsonSafe<MsgBeginRedelegateResponse> {
     const obj: any = {};
     message.completionTime !== undefined &&
       (obj.completionTime = fromTimestamp(message.completionTime).toISOString());
@@ -1195,7 +1264,9 @@ export const MsgBeginRedelegateResponse = {
   },
   toAmino(message: MsgBeginRedelegateResponse): MsgBeginRedelegateResponseAmino {
     const obj: any = {};
-    obj.completion_time = message.completionTime ? Timestamp.toAmino(message.completionTime) : undefined;
+    obj.completion_time = message.completionTime
+      ? Timestamp.toAmino(message.completionTime)
+      : Timestamp.toAmino(Timestamp.fromPartial({}));
     return obj;
   },
   fromAminoMsg(object: MsgBeginRedelegateResponseAminoMsg): MsgBeginRedelegateResponse {
@@ -1271,7 +1342,7 @@ export const MsgUndelegate = {
     if (isSet(object.amount)) obj.amount = Coin.fromJSON(object.amount);
     return obj;
   },
-  toJSON(message: MsgUndelegate): unknown {
+  toJSON(message: MsgUndelegate): JsonSafe<MsgUndelegate> {
     const obj: any = {};
     message.delegatorAddress !== undefined && (obj.delegatorAddress = message.delegatorAddress);
     message.validatorAddress !== undefined && (obj.validatorAddress = message.validatorAddress);
@@ -1302,9 +1373,9 @@ export const MsgUndelegate = {
   },
   toAmino(message: MsgUndelegate): MsgUndelegateAmino {
     const obj: any = {};
-    obj.delegator_address = message.delegatorAddress;
-    obj.validator_address = message.validatorAddress;
-    obj.amount = message.amount ? Coin.toAmino(message.amount) : undefined;
+    obj.delegator_address = message.delegatorAddress === "" ? undefined : message.delegatorAddress;
+    obj.validator_address = message.validatorAddress === "" ? undefined : message.validatorAddress;
+    obj.amount = message.amount ? Coin.toAmino(message.amount) : Coin.toAmino(Coin.fromPartial({}));
     return obj;
   },
   fromAminoMsg(object: MsgUndelegateAminoMsg): MsgUndelegate {
@@ -1372,7 +1443,7 @@ export const MsgUndelegateResponse = {
     if (isSet(object.amount)) obj.amount = Coin.fromJSON(object.amount);
     return obj;
   },
-  toJSON(message: MsgUndelegateResponse): unknown {
+  toJSON(message: MsgUndelegateResponse): JsonSafe<MsgUndelegateResponse> {
     const obj: any = {};
     message.completionTime !== undefined &&
       (obj.completionTime = fromTimestamp(message.completionTime).toISOString());
@@ -1401,8 +1472,10 @@ export const MsgUndelegateResponse = {
   },
   toAmino(message: MsgUndelegateResponse): MsgUndelegateResponseAmino {
     const obj: any = {};
-    obj.completion_time = message.completionTime ? Timestamp.toAmino(message.completionTime) : undefined;
-    obj.amount = message.amount ? Coin.toAmino(message.amount) : undefined;
+    obj.completion_time = message.completionTime
+      ? Timestamp.toAmino(message.completionTime)
+      : Timestamp.toAmino(Timestamp.fromPartial({}));
+    obj.amount = message.amount ? Coin.toAmino(message.amount) : Coin.toAmino(Coin.fromPartial({}));
     return obj;
   },
   fromAminoMsg(object: MsgUndelegateResponseAminoMsg): MsgUndelegateResponse {
@@ -1486,7 +1559,7 @@ export const MsgCancelUnbondingDelegation = {
     if (isSet(object.creationHeight)) obj.creationHeight = BigInt(object.creationHeight.toString());
     return obj;
   },
-  toJSON(message: MsgCancelUnbondingDelegation): unknown {
+  toJSON(message: MsgCancelUnbondingDelegation): JsonSafe<MsgCancelUnbondingDelegation> {
     const obj: any = {};
     message.delegatorAddress !== undefined && (obj.delegatorAddress = message.delegatorAddress);
     message.validatorAddress !== undefined && (obj.validatorAddress = message.validatorAddress);
@@ -1525,10 +1598,11 @@ export const MsgCancelUnbondingDelegation = {
   },
   toAmino(message: MsgCancelUnbondingDelegation): MsgCancelUnbondingDelegationAmino {
     const obj: any = {};
-    obj.delegator_address = message.delegatorAddress;
-    obj.validator_address = message.validatorAddress;
-    obj.amount = message.amount ? Coin.toAmino(message.amount) : undefined;
-    obj.creation_height = message.creationHeight ? message.creationHeight.toString() : undefined;
+    obj.delegator_address = message.delegatorAddress === "" ? undefined : message.delegatorAddress;
+    obj.validator_address = message.validatorAddress === "" ? undefined : message.validatorAddress;
+    obj.amount = message.amount ? Coin.toAmino(message.amount) : Coin.toAmino(Coin.fromPartial({}));
+    obj.creation_height =
+      message.creationHeight !== BigInt(0) ? message.creationHeight?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: MsgCancelUnbondingDelegationAminoMsg): MsgCancelUnbondingDelegation {
@@ -1582,7 +1656,7 @@ export const MsgCancelUnbondingDelegationResponse = {
     const obj = createBaseMsgCancelUnbondingDelegationResponse();
     return obj;
   },
-  toJSON(_: MsgCancelUnbondingDelegationResponse): unknown {
+  toJSON(_: MsgCancelUnbondingDelegationResponse): JsonSafe<MsgCancelUnbondingDelegationResponse> {
     const obj: any = {};
     return obj;
   },
@@ -1663,7 +1737,7 @@ export const MsgUpdateParams = {
     if (isSet(object.params)) obj.params = Params.fromJSON(object.params);
     return obj;
   },
-  toJSON(message: MsgUpdateParams): unknown {
+  toJSON(message: MsgUpdateParams): JsonSafe<MsgUpdateParams> {
     const obj: any = {};
     message.authority !== undefined && (obj.authority = message.authority);
     message.params !== undefined && (obj.params = message.params ? Params.toJSON(message.params) : undefined);
@@ -1689,8 +1763,8 @@ export const MsgUpdateParams = {
   },
   toAmino(message: MsgUpdateParams): MsgUpdateParamsAmino {
     const obj: any = {};
-    obj.authority = message.authority;
-    obj.params = message.params ? Params.toAmino(message.params) : Params.fromPartial({});
+    obj.authority = message.authority === "" ? undefined : message.authority;
+    obj.params = message.params ? Params.toAmino(message.params) : Params.toAmino(Params.fromPartial({}));
     return obj;
   },
   fromAminoMsg(object: MsgUpdateParamsAminoMsg): MsgUpdateParams {
@@ -1741,7 +1815,7 @@ export const MsgUpdateParamsResponse = {
     const obj = createBaseMsgUpdateParamsResponse();
     return obj;
   },
-  toJSON(_: MsgUpdateParamsResponse): unknown {
+  toJSON(_: MsgUpdateParamsResponse): JsonSafe<MsgUpdateParamsResponse> {
     const obj: any = {};
     return obj;
   },
@@ -1822,7 +1896,7 @@ export const MsgRotateConsPubKey = {
     if (isSet(object.newPubkey)) obj.newPubkey = Any.fromJSON(object.newPubkey);
     return obj;
   },
-  toJSON(message: MsgRotateConsPubKey): unknown {
+  toJSON(message: MsgRotateConsPubKey): JsonSafe<MsgRotateConsPubKey> {
     const obj: any = {};
     message.validatorAddress !== undefined && (obj.validatorAddress = message.validatorAddress);
     message.newPubkey !== undefined &&
@@ -1849,7 +1923,7 @@ export const MsgRotateConsPubKey = {
   },
   toAmino(message: MsgRotateConsPubKey): MsgRotateConsPubKeyAmino {
     const obj: any = {};
-    obj.validator_address = message.validatorAddress;
+    obj.validator_address = message.validatorAddress === "" ? undefined : message.validatorAddress;
     obj.new_pubkey = message.newPubkey ? decodePubkey(message.newPubkey) : undefined;
     return obj;
   },
@@ -1901,7 +1975,7 @@ export const MsgRotateConsPubKeyResponse = {
     const obj = createBaseMsgRotateConsPubKeyResponse();
     return obj;
   },
-  toJSON(_: MsgRotateConsPubKeyResponse): unknown {
+  toJSON(_: MsgRotateConsPubKeyResponse): JsonSafe<MsgRotateConsPubKeyResponse> {
     const obj: any = {};
     return obj;
   },

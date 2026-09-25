@@ -3,6 +3,7 @@ import { Payload, PayloadAmino, Packet, PacketAmino, Acknowledgement, Acknowledg
 import { Height, HeightAmino } from "../../client/v1/client";
 import { BinaryReader, BinaryWriter } from "../../../../binary";
 import { isSet, bytesFromBase64, base64FromBytes } from "../../../../helpers";
+import { JsonSafe } from "../../../../json-safe";
 import { TxRpc } from "../../../../types";
 export const protobufPackage = "ibc.core.channel.v2";
 /** ResponseResultType defines the possible outcomes of the execution of a message */
@@ -64,7 +65,12 @@ export interface MsgSendPacketProtoMsg {
   typeUrl: "/ibc.core.channel.v2.MsgSendPacket";
   value: Uint8Array;
 }
-/** MsgSendPacket sends an outgoing IBC packet. */
+/**
+ * MsgSendPacket sends an outgoing IBC packet.
+ * @name MsgSendPacketAmino
+ * @package ibc.core.channel.v2
+ * @see proto type: ibc.core.channel.v2.MsgSendPacket
+ */
 export interface MsgSendPacketAmino {
   source_client?: string;
   timeout_timestamp?: string;
@@ -83,7 +89,12 @@ export interface MsgSendPacketResponseProtoMsg {
   typeUrl: "/ibc.core.channel.v2.MsgSendPacketResponse";
   value: Uint8Array;
 }
-/** MsgSendPacketResponse defines the Msg/SendPacket response type. */
+/**
+ * MsgSendPacketResponse defines the Msg/SendPacket response type.
+ * @name MsgSendPacketResponseAmino
+ * @package ibc.core.channel.v2
+ * @see proto type: ibc.core.channel.v2.MsgSendPacketResponse
+ */
 export interface MsgSendPacketResponseAmino {
   sequence?: string;
 }
@@ -102,7 +113,12 @@ export interface MsgRecvPacketProtoMsg {
   typeUrl: "/ibc.core.channel.v2.MsgRecvPacket";
   value: Uint8Array;
 }
-/** MsgRecvPacket receives an incoming IBC packet. */
+/**
+ * MsgRecvPacket receives an incoming IBC packet.
+ * @name MsgRecvPacketAmino
+ * @package ibc.core.channel.v2
+ * @see proto type: ibc.core.channel.v2.MsgRecvPacket
+ */
 export interface MsgRecvPacketAmino {
   packet?: PacketAmino | undefined;
   proof_commitment?: string;
@@ -121,7 +137,12 @@ export interface MsgRecvPacketResponseProtoMsg {
   typeUrl: "/ibc.core.channel.v2.MsgRecvPacketResponse";
   value: Uint8Array;
 }
-/** MsgRecvPacketResponse defines the Msg/RecvPacket response type. */
+/**
+ * MsgRecvPacketResponse defines the Msg/RecvPacket response type.
+ * @name MsgRecvPacketResponseAmino
+ * @package ibc.core.channel.v2
+ * @see proto type: ibc.core.channel.v2.MsgRecvPacketResponse
+ */
 export interface MsgRecvPacketResponseAmino {
   result?: ResponseResultType;
 }
@@ -140,7 +161,12 @@ export interface MsgTimeoutProtoMsg {
   typeUrl: "/ibc.core.channel.v2.MsgTimeout";
   value: Uint8Array;
 }
-/** MsgTimeout receives timed-out packet */
+/**
+ * MsgTimeout receives timed-out packet
+ * @name MsgTimeoutAmino
+ * @package ibc.core.channel.v2
+ * @see proto type: ibc.core.channel.v2.MsgTimeout
+ */
 export interface MsgTimeoutAmino {
   packet?: PacketAmino | undefined;
   proof_unreceived?: string;
@@ -159,7 +185,12 @@ export interface MsgTimeoutResponseProtoMsg {
   typeUrl: "/ibc.core.channel.v2.MsgTimeoutResponse";
   value: Uint8Array;
 }
-/** MsgTimeoutResponse defines the Msg/Timeout response type. */
+/**
+ * MsgTimeoutResponse defines the Msg/Timeout response type.
+ * @name MsgTimeoutResponseAmino
+ * @package ibc.core.channel.v2
+ * @see proto type: ibc.core.channel.v2.MsgTimeoutResponse
+ */
 export interface MsgTimeoutResponseAmino {
   result?: ResponseResultType;
 }
@@ -179,7 +210,12 @@ export interface MsgAcknowledgementProtoMsg {
   typeUrl: "/ibc.core.channel.v2.MsgAcknowledgement";
   value: Uint8Array;
 }
-/** MsgAcknowledgement receives incoming IBC acknowledgement. */
+/**
+ * MsgAcknowledgement receives incoming IBC acknowledgement.
+ * @name MsgAcknowledgementAmino
+ * @package ibc.core.channel.v2
+ * @see proto type: ibc.core.channel.v2.MsgAcknowledgement
+ */
 export interface MsgAcknowledgementAmino {
   packet?: PacketAmino | undefined;
   acknowledgement?: AcknowledgementAmino | undefined;
@@ -199,7 +235,12 @@ export interface MsgAcknowledgementResponseProtoMsg {
   typeUrl: "/ibc.core.channel.v2.MsgAcknowledgementResponse";
   value: Uint8Array;
 }
-/** MsgAcknowledgementResponse defines the Msg/Acknowledgement response type. */
+/**
+ * MsgAcknowledgementResponse defines the Msg/Acknowledgement response type.
+ * @name MsgAcknowledgementResponseAmino
+ * @package ibc.core.channel.v2
+ * @see proto type: ibc.core.channel.v2.MsgAcknowledgementResponse
+ */
 export interface MsgAcknowledgementResponseAmino {
   result?: ResponseResultType;
 }
@@ -266,7 +307,7 @@ export const MsgSendPacket = {
     if (isSet(object.signer)) obj.signer = String(object.signer);
     return obj;
   },
-  toJSON(message: MsgSendPacket): unknown {
+  toJSON(message: MsgSendPacket): JsonSafe<MsgSendPacket> {
     const obj: any = {};
     message.sourceClient !== undefined && (obj.sourceClient = message.sourceClient);
     message.timeoutTimestamp !== undefined &&
@@ -305,14 +346,15 @@ export const MsgSendPacket = {
   },
   toAmino(message: MsgSendPacket): MsgSendPacketAmino {
     const obj: any = {};
-    obj.source_client = message.sourceClient;
-    obj.timeout_timestamp = message.timeoutTimestamp ? message.timeoutTimestamp.toString() : undefined;
+    obj.source_client = message.sourceClient === "" ? undefined : message.sourceClient;
+    obj.timeout_timestamp =
+      message.timeoutTimestamp !== BigInt(0) ? message.timeoutTimestamp?.toString() : undefined;
     if (message.payloads) {
       obj.payloads = message.payloads.map((e) => (e ? Payload.toAmino(e) : undefined));
     } else {
-      obj.payloads = [];
+      obj.payloads = message.payloads;
     }
-    obj.signer = message.signer;
+    obj.signer = message.signer === "" ? undefined : message.signer;
     return obj;
   },
   fromAminoMsg(object: MsgSendPacketAminoMsg): MsgSendPacket {
@@ -372,7 +414,7 @@ export const MsgSendPacketResponse = {
     if (isSet(object.sequence)) obj.sequence = BigInt(object.sequence.toString());
     return obj;
   },
-  toJSON(message: MsgSendPacketResponse): unknown {
+  toJSON(message: MsgSendPacketResponse): JsonSafe<MsgSendPacketResponse> {
     const obj: any = {};
     message.sequence !== undefined && (obj.sequence = (message.sequence || BigInt(0)).toString());
     return obj;
@@ -393,7 +435,7 @@ export const MsgSendPacketResponse = {
   },
   toAmino(message: MsgSendPacketResponse): MsgSendPacketResponseAmino {
     const obj: any = {};
-    obj.sequence = message.sequence ? message.sequence.toString() : undefined;
+    obj.sequence = message.sequence !== BigInt(0) ? message.sequence?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: MsgSendPacketResponseAminoMsg): MsgSendPacketResponse {
@@ -477,7 +519,7 @@ export const MsgRecvPacket = {
     if (isSet(object.signer)) obj.signer = String(object.signer);
     return obj;
   },
-  toJSON(message: MsgRecvPacket): unknown {
+  toJSON(message: MsgRecvPacket): JsonSafe<MsgRecvPacket> {
     const obj: any = {};
     message.packet !== undefined && (obj.packet = message.packet ? Packet.toJSON(message.packet) : undefined);
     message.proofCommitment !== undefined &&
@@ -522,7 +564,7 @@ export const MsgRecvPacket = {
     obj.packet = message.packet ? Packet.toAmino(message.packet) : undefined;
     obj.proof_commitment = message.proofCommitment ? base64FromBytes(message.proofCommitment) : undefined;
     obj.proof_height = message.proofHeight ? Height.toAmino(message.proofHeight) : {};
-    obj.signer = message.signer;
+    obj.signer = message.signer === "" ? undefined : message.signer;
     return obj;
   },
   fromAminoMsg(object: MsgRecvPacketAminoMsg): MsgRecvPacket {
@@ -582,7 +624,7 @@ export const MsgRecvPacketResponse = {
     if (isSet(object.result)) obj.result = responseResultTypeFromJSON(object.result);
     return obj;
   },
-  toJSON(message: MsgRecvPacketResponse): unknown {
+  toJSON(message: MsgRecvPacketResponse): JsonSafe<MsgRecvPacketResponse> {
     const obj: any = {};
     message.result !== undefined && (obj.result = responseResultTypeToJSON(message.result));
     return obj;
@@ -595,13 +637,13 @@ export const MsgRecvPacketResponse = {
   fromAmino(object: MsgRecvPacketResponseAmino): MsgRecvPacketResponse {
     const message = createBaseMsgRecvPacketResponse();
     if (object.result !== undefined && object.result !== null) {
-      message.result = responseResultTypeFromJSON(object.result);
+      message.result = object.result;
     }
     return message;
   },
   toAmino(message: MsgRecvPacketResponse): MsgRecvPacketResponseAmino {
     const obj: any = {};
-    obj.result = message.result;
+    obj.result = message.result === 0 ? undefined : message.result;
     return obj;
   },
   fromAminoMsg(object: MsgRecvPacketResponseAminoMsg): MsgRecvPacketResponse {
@@ -685,7 +727,7 @@ export const MsgTimeout = {
     if (isSet(object.signer)) obj.signer = String(object.signer);
     return obj;
   },
-  toJSON(message: MsgTimeout): unknown {
+  toJSON(message: MsgTimeout): JsonSafe<MsgTimeout> {
     const obj: any = {};
     message.packet !== undefined && (obj.packet = message.packet ? Packet.toJSON(message.packet) : undefined);
     message.proofUnreceived !== undefined &&
@@ -730,7 +772,7 @@ export const MsgTimeout = {
     obj.packet = message.packet ? Packet.toAmino(message.packet) : undefined;
     obj.proof_unreceived = message.proofUnreceived ? base64FromBytes(message.proofUnreceived) : undefined;
     obj.proof_height = message.proofHeight ? Height.toAmino(message.proofHeight) : {};
-    obj.signer = message.signer;
+    obj.signer = message.signer === "" ? undefined : message.signer;
     return obj;
   },
   fromAminoMsg(object: MsgTimeoutAminoMsg): MsgTimeout {
@@ -790,7 +832,7 @@ export const MsgTimeoutResponse = {
     if (isSet(object.result)) obj.result = responseResultTypeFromJSON(object.result);
     return obj;
   },
-  toJSON(message: MsgTimeoutResponse): unknown {
+  toJSON(message: MsgTimeoutResponse): JsonSafe<MsgTimeoutResponse> {
     const obj: any = {};
     message.result !== undefined && (obj.result = responseResultTypeToJSON(message.result));
     return obj;
@@ -803,13 +845,13 @@ export const MsgTimeoutResponse = {
   fromAmino(object: MsgTimeoutResponseAmino): MsgTimeoutResponse {
     const message = createBaseMsgTimeoutResponse();
     if (object.result !== undefined && object.result !== null) {
-      message.result = responseResultTypeFromJSON(object.result);
+      message.result = object.result;
     }
     return message;
   },
   toAmino(message: MsgTimeoutResponse): MsgTimeoutResponseAmino {
     const obj: any = {};
-    obj.result = message.result;
+    obj.result = message.result === 0 ? undefined : message.result;
     return obj;
   },
   fromAminoMsg(object: MsgTimeoutResponseAminoMsg): MsgTimeoutResponse {
@@ -901,7 +943,7 @@ export const MsgAcknowledgement = {
     if (isSet(object.signer)) obj.signer = String(object.signer);
     return obj;
   },
-  toJSON(message: MsgAcknowledgement): unknown {
+  toJSON(message: MsgAcknowledgement): JsonSafe<MsgAcknowledgement> {
     const obj: any = {};
     message.packet !== undefined && (obj.packet = message.packet ? Packet.toJSON(message.packet) : undefined);
     message.acknowledgement !== undefined &&
@@ -959,7 +1001,7 @@ export const MsgAcknowledgement = {
       : undefined;
     obj.proof_acked = message.proofAcked ? base64FromBytes(message.proofAcked) : undefined;
     obj.proof_height = message.proofHeight ? Height.toAmino(message.proofHeight) : {};
-    obj.signer = message.signer;
+    obj.signer = message.signer === "" ? undefined : message.signer;
     return obj;
   },
   fromAminoMsg(object: MsgAcknowledgementAminoMsg): MsgAcknowledgement {
@@ -1019,7 +1061,7 @@ export const MsgAcknowledgementResponse = {
     if (isSet(object.result)) obj.result = responseResultTypeFromJSON(object.result);
     return obj;
   },
-  toJSON(message: MsgAcknowledgementResponse): unknown {
+  toJSON(message: MsgAcknowledgementResponse): JsonSafe<MsgAcknowledgementResponse> {
     const obj: any = {};
     message.result !== undefined && (obj.result = responseResultTypeToJSON(message.result));
     return obj;
@@ -1032,13 +1074,13 @@ export const MsgAcknowledgementResponse = {
   fromAmino(object: MsgAcknowledgementResponseAmino): MsgAcknowledgementResponse {
     const message = createBaseMsgAcknowledgementResponse();
     if (object.result !== undefined && object.result !== null) {
-      message.result = responseResultTypeFromJSON(object.result);
+      message.result = object.result;
     }
     return message;
   },
   toAmino(message: MsgAcknowledgementResponse): MsgAcknowledgementResponseAmino {
     const obj: any = {};
-    obj.result = message.result;
+    obj.result = message.result === 0 ? undefined : message.result;
     return obj;
   },
   fromAminoMsg(object: MsgAcknowledgementResponseAminoMsg): MsgAcknowledgementResponse {

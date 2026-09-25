@@ -3,6 +3,7 @@ import { Timestamp } from "../../../google/protobuf/timestamp";
 import { Duration, DurationAmino } from "../../../google/protobuf/duration";
 import { BinaryReader, BinaryWriter } from "../../../binary";
 import { isSet, fromJsonTimestamp, fromTimestamp, bytesFromBase64, base64FromBytes } from "../../../helpers";
+import { JsonSafe } from "../../../json-safe";
 export const protobufPackage = "cosmos.slashing.v1beta1";
 /**
  * ValidatorSigningInfo defines a validator's signing info for monitoring their
@@ -39,10 +40,15 @@ export interface ValidatorSigningInfoProtoMsg {
 /**
  * ValidatorSigningInfo defines a validator's signing info for monitoring their
  * liveness activity.
+ * @name ValidatorSigningInfoAmino
+ * @package cosmos.slashing.v1beta1
+ * @see proto type: cosmos.slashing.v1beta1.ValidatorSigningInfo
  */
 export interface ValidatorSigningInfoAmino {
   address?: string;
-  /** Height at which validator was first a candidate OR was un-jailed */
+  /**
+   * Height at which validator was first a candidate OR was un-jailed
+   */
   start_height?: string;
   /**
    * Index which is incremented every time a validator is bonded in a block and
@@ -50,7 +56,9 @@ export interface ValidatorSigningInfoAmino {
    * signed_blocks_window param determines the index in the missed block bitmap.
    */
   index_offset?: string;
-  /** Timestamp until which the validator is jailed due to liveness downtime. */
+  /**
+   * Timestamp until which the validator is jailed due to liveness downtime.
+   */
   jailed_until: string | undefined;
   /**
    * Whether or not a validator has been tombstoned (killed out of validator
@@ -80,7 +88,12 @@ export interface ParamsProtoMsg {
   typeUrl: "/cosmos.slashing.v1beta1.Params";
   value: Uint8Array;
 }
-/** Params represents the parameters used for by the slashing module. */
+/**
+ * Params represents the parameters used for by the slashing module.
+ * @name ParamsAmino
+ * @package cosmos.slashing.v1beta1
+ * @see proto type: cosmos.slashing.v1beta1.Params
+ */
 export interface ParamsAmino {
   signed_blocks_window?: string;
   min_signed_per_window: string;
@@ -168,7 +181,7 @@ export const ValidatorSigningInfo = {
       obj.missedBlocksCounter = BigInt(object.missedBlocksCounter.toString());
     return obj;
   },
-  toJSON(message: ValidatorSigningInfo): unknown {
+  toJSON(message: ValidatorSigningInfo): JsonSafe<ValidatorSigningInfo> {
     const obj: any = {};
     message.address !== undefined && (obj.address = message.address);
     message.startHeight !== undefined && (obj.startHeight = (message.startHeight || BigInt(0)).toString());
@@ -221,14 +234,15 @@ export const ValidatorSigningInfo = {
   },
   toAmino(message: ValidatorSigningInfo): ValidatorSigningInfoAmino {
     const obj: any = {};
-    obj.address = message.address;
-    obj.start_height = message.startHeight ? message.startHeight.toString() : undefined;
-    obj.index_offset = message.indexOffset ? message.indexOffset.toString() : undefined;
-    obj.jailed_until = message.jailedUntil ? Timestamp.toAmino(message.jailedUntil) : undefined;
-    obj.tombstoned = message.tombstoned;
-    obj.missed_blocks_counter = message.missedBlocksCounter
-      ? message.missedBlocksCounter.toString()
-      : undefined;
+    obj.address = message.address === "" ? undefined : message.address;
+    obj.start_height = message.startHeight !== BigInt(0) ? message.startHeight?.toString() : undefined;
+    obj.index_offset = message.indexOffset !== BigInt(0) ? message.indexOffset?.toString() : undefined;
+    obj.jailed_until = message.jailedUntil
+      ? Timestamp.toAmino(message.jailedUntil)
+      : Timestamp.toAmino(Timestamp.fromPartial({}));
+    obj.tombstoned = message.tombstoned === false ? undefined : message.tombstoned;
+    obj.missed_blocks_counter =
+      message.missedBlocksCounter !== BigInt(0) ? message.missedBlocksCounter?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: ValidatorSigningInfoAminoMsg): ValidatorSigningInfo {
@@ -324,7 +338,7 @@ export const Params = {
       obj.slashFractionDowntime = bytesFromBase64(object.slashFractionDowntime);
     return obj;
   },
-  toJSON(message: Params): unknown {
+  toJSON(message: Params): JsonSafe<Params> {
     const obj: any = {};
     message.signedBlocksWindow !== undefined &&
       (obj.signedBlocksWindow = (message.signedBlocksWindow || BigInt(0)).toString());
@@ -380,11 +394,12 @@ export const Params = {
   },
   toAmino(message: Params): ParamsAmino {
     const obj: any = {};
-    obj.signed_blocks_window = message.signedBlocksWindow ? message.signedBlocksWindow.toString() : undefined;
+    obj.signed_blocks_window =
+      message.signedBlocksWindow !== BigInt(0) ? message.signedBlocksWindow?.toString() : undefined;
     obj.min_signed_per_window = message.minSignedPerWindow ? base64FromBytes(message.minSignedPerWindow) : "";
     obj.downtime_jail_duration = message.downtimeJailDuration
       ? Duration.toAmino(message.downtimeJailDuration)
-      : undefined;
+      : Duration.toAmino(Duration.fromPartial({}));
     obj.slash_fraction_double_sign = message.slashFractionDoubleSign
       ? base64FromBytes(message.slashFractionDoubleSign)
       : "";

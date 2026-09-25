@@ -1,6 +1,7 @@
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "../../../../binary";
 import { isSet, bytesFromBase64, base64FromBytes } from "../../../../helpers";
+import { JsonSafe } from "../../../../json-safe";
 import { TxRpc } from "../../../../types";
 export const protobufPackage = "ibc.lightclients.wasm.v1";
 /** MsgStoreCode defines the request type for the StoreCode rpc. */
@@ -14,11 +15,20 @@ export interface MsgStoreCodeProtoMsg {
   typeUrl: "/ibc.lightclients.wasm.v1.MsgStoreCode";
   value: Uint8Array;
 }
-/** MsgStoreCode defines the request type for the StoreCode rpc. */
+/**
+ * MsgStoreCode defines the request type for the StoreCode rpc.
+ * @name MsgStoreCodeAmino
+ * @package ibc.lightclients.wasm.v1
+ * @see proto type: ibc.lightclients.wasm.v1.MsgStoreCode
+ */
 export interface MsgStoreCodeAmino {
-  /** signer address */
+  /**
+   * signer address
+   */
   signer?: string;
-  /** wasm byte code of light client contract. It can be raw or gzip compressed */
+  /**
+   * wasm byte code of light client contract. It can be raw or gzip compressed
+   */
   wasm_byte_code?: string;
 }
 export interface MsgStoreCodeAminoMsg {
@@ -34,9 +44,16 @@ export interface MsgStoreCodeResponseProtoMsg {
   typeUrl: "/ibc.lightclients.wasm.v1.MsgStoreCodeResponse";
   value: Uint8Array;
 }
-/** MsgStoreCodeResponse defines the response type for the StoreCode rpc */
+/**
+ * MsgStoreCodeResponse defines the response type for the StoreCode rpc
+ * @name MsgStoreCodeResponseAmino
+ * @package ibc.lightclients.wasm.v1
+ * @see proto type: ibc.lightclients.wasm.v1.MsgStoreCodeResponse
+ */
 export interface MsgStoreCodeResponseAmino {
-  /** checksum is the sha256 hash of the stored code */
+  /**
+   * checksum is the sha256 hash of the stored code
+   */
   checksum?: string;
 }
 export interface MsgStoreCodeResponseAminoMsg {
@@ -54,11 +71,20 @@ export interface MsgRemoveChecksumProtoMsg {
   typeUrl: "/ibc.lightclients.wasm.v1.MsgRemoveChecksum";
   value: Uint8Array;
 }
-/** MsgRemoveChecksum defines the request type for the MsgRemoveChecksum rpc. */
+/**
+ * MsgRemoveChecksum defines the request type for the MsgRemoveChecksum rpc.
+ * @name MsgRemoveChecksumAmino
+ * @package ibc.lightclients.wasm.v1
+ * @see proto type: ibc.lightclients.wasm.v1.MsgRemoveChecksum
+ */
 export interface MsgRemoveChecksumAmino {
-  /** signer address */
+  /**
+   * signer address
+   */
   signer?: string;
-  /** checksum is the sha256 hash to be removed from the store */
+  /**
+   * checksum is the sha256 hash to be removed from the store
+   */
   checksum?: string;
 }
 export interface MsgRemoveChecksumAminoMsg {
@@ -71,7 +97,12 @@ export interface MsgRemoveChecksumResponseProtoMsg {
   typeUrl: "/ibc.lightclients.wasm.v1.MsgRemoveChecksumResponse";
   value: Uint8Array;
 }
-/** MsgStoreChecksumResponse defines the response type for the StoreCode rpc */
+/**
+ * MsgStoreChecksumResponse defines the response type for the StoreCode rpc
+ * @name MsgRemoveChecksumResponseAmino
+ * @package ibc.lightclients.wasm.v1
+ * @see proto type: ibc.lightclients.wasm.v1.MsgRemoveChecksumResponse
+ */
 export interface MsgRemoveChecksumResponseAmino {}
 export interface MsgRemoveChecksumResponseAminoMsg {
   type: "cosmos-sdk/MsgRemoveChecksumResponse";
@@ -92,15 +123,28 @@ export interface MsgMigrateContractProtoMsg {
   typeUrl: "/ibc.lightclients.wasm.v1.MsgMigrateContract";
   value: Uint8Array;
 }
-/** MsgMigrateContract defines the request type for the MigrateContract rpc. */
+/**
+ * MsgMigrateContract defines the request type for the MigrateContract rpc.
+ * @name MsgMigrateContractAmino
+ * @package ibc.lightclients.wasm.v1
+ * @see proto type: ibc.lightclients.wasm.v1.MsgMigrateContract
+ */
 export interface MsgMigrateContractAmino {
-  /** signer address */
+  /**
+   * signer address
+   */
   signer?: string;
-  /** the client id of the contract */
+  /**
+   * the client id of the contract
+   */
   client_id?: string;
-  /** checksum is the sha256 hash of the new wasm byte code for the contract */
+  /**
+   * checksum is the sha256 hash of the new wasm byte code for the contract
+   */
   checksum?: string;
-  /** the json encoded message to be passed to the contract on migration */
+  /**
+   * the json encoded message to be passed to the contract on migration
+   */
   msg?: string;
 }
 export interface MsgMigrateContractAminoMsg {
@@ -113,7 +157,12 @@ export interface MsgMigrateContractResponseProtoMsg {
   typeUrl: "/ibc.lightclients.wasm.v1.MsgMigrateContractResponse";
   value: Uint8Array;
 }
-/** MsgMigrateContractResponse defines the response type for the MigrateContract rpc */
+/**
+ * MsgMigrateContractResponse defines the response type for the MigrateContract rpc
+ * @name MsgMigrateContractResponseAmino
+ * @package ibc.lightclients.wasm.v1
+ * @see proto type: ibc.lightclients.wasm.v1.MsgMigrateContractResponse
+ */
 export interface MsgMigrateContractResponseAmino {}
 export interface MsgMigrateContractResponseAminoMsg {
   type: "cosmos-sdk/MsgMigrateContractResponse";
@@ -162,7 +211,7 @@ export const MsgStoreCode = {
     if (isSet(object.wasmByteCode)) obj.wasmByteCode = bytesFromBase64(object.wasmByteCode);
     return obj;
   },
-  toJSON(message: MsgStoreCode): unknown {
+  toJSON(message: MsgStoreCode): JsonSafe<MsgStoreCode> {
     const obj: any = {};
     message.signer !== undefined && (obj.signer = message.signer);
     message.wasmByteCode !== undefined &&
@@ -189,7 +238,7 @@ export const MsgStoreCode = {
   },
   toAmino(message: MsgStoreCode): MsgStoreCodeAmino {
     const obj: any = {};
-    obj.signer = message.signer;
+    obj.signer = message.signer === "" ? undefined : message.signer;
     obj.wasm_byte_code = message.wasmByteCode ? base64FromBytes(message.wasmByteCode) : undefined;
     return obj;
   },
@@ -250,7 +299,7 @@ export const MsgStoreCodeResponse = {
     if (isSet(object.checksum)) obj.checksum = bytesFromBase64(object.checksum);
     return obj;
   },
-  toJSON(message: MsgStoreCodeResponse): unknown {
+  toJSON(message: MsgStoreCodeResponse): JsonSafe<MsgStoreCodeResponse> {
     const obj: any = {};
     message.checksum !== undefined &&
       (obj.checksum = base64FromBytes(message.checksum !== undefined ? message.checksum : new Uint8Array()));
@@ -338,7 +387,7 @@ export const MsgRemoveChecksum = {
     if (isSet(object.checksum)) obj.checksum = bytesFromBase64(object.checksum);
     return obj;
   },
-  toJSON(message: MsgRemoveChecksum): unknown {
+  toJSON(message: MsgRemoveChecksum): JsonSafe<MsgRemoveChecksum> {
     const obj: any = {};
     message.signer !== undefined && (obj.signer = message.signer);
     message.checksum !== undefined &&
@@ -363,7 +412,7 @@ export const MsgRemoveChecksum = {
   },
   toAmino(message: MsgRemoveChecksum): MsgRemoveChecksumAmino {
     const obj: any = {};
-    obj.signer = message.signer;
+    obj.signer = message.signer === "" ? undefined : message.signer;
     obj.checksum = message.checksum ? base64FromBytes(message.checksum) : undefined;
     return obj;
   },
@@ -415,7 +464,7 @@ export const MsgRemoveChecksumResponse = {
     const obj = createBaseMsgRemoveChecksumResponse();
     return obj;
   },
-  toJSON(_: MsgRemoveChecksumResponse): unknown {
+  toJSON(_: MsgRemoveChecksumResponse): JsonSafe<MsgRemoveChecksumResponse> {
     const obj: any = {};
     return obj;
   },
@@ -512,7 +561,7 @@ export const MsgMigrateContract = {
     if (isSet(object.msg)) obj.msg = bytesFromBase64(object.msg);
     return obj;
   },
-  toJSON(message: MsgMigrateContract): unknown {
+  toJSON(message: MsgMigrateContract): JsonSafe<MsgMigrateContract> {
     const obj: any = {};
     message.signer !== undefined && (obj.signer = message.signer);
     message.clientId !== undefined && (obj.clientId = message.clientId);
@@ -548,8 +597,8 @@ export const MsgMigrateContract = {
   },
   toAmino(message: MsgMigrateContract): MsgMigrateContractAmino {
     const obj: any = {};
-    obj.signer = message.signer;
-    obj.client_id = message.clientId;
+    obj.signer = message.signer === "" ? undefined : message.signer;
+    obj.client_id = message.clientId === "" ? undefined : message.clientId;
     obj.checksum = message.checksum ? base64FromBytes(message.checksum) : undefined;
     obj.msg = message.msg ? base64FromBytes(message.msg) : undefined;
     return obj;
@@ -602,7 +651,7 @@ export const MsgMigrateContractResponse = {
     const obj = createBaseMsgMigrateContractResponse();
     return obj;
   },
-  toJSON(_: MsgMigrateContractResponse): unknown {
+  toJSON(_: MsgMigrateContractResponse): JsonSafe<MsgMigrateContractResponse> {
     const obj: any = {};
     return obj;
   },

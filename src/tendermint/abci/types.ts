@@ -6,6 +6,7 @@ import { PublicKey, PublicKeyAmino } from "../crypto/keys";
 import { BlockIDFlag, blockIDFlagFromJSON, blockIDFlagToJSON } from "../types/validator";
 import { BinaryReader, BinaryWriter } from "../../binary";
 import { isSet, fromJsonTimestamp, bytesFromBase64, fromTimestamp, base64FromBytes } from "../../helpers";
+import { JsonSafe } from "../../json-safe";
 export const protobufPackage = "tendermint.abci";
 export enum CheckTxType {
   NEW = 0,
@@ -307,6 +308,11 @@ export interface RequestProtoMsg {
   typeUrl: "/tendermint.abci.Request";
   value: Uint8Array;
 }
+/**
+ * @name RequestAmino
+ * @package tendermint.abci
+ * @see proto type: tendermint.abci.Request
+ */
 export interface RequestAmino {
   echo?: RequestEchoAmino | undefined;
   flush?: RequestFlushAmino | undefined;
@@ -336,6 +342,11 @@ export interface RequestEchoProtoMsg {
   typeUrl: "/tendermint.abci.RequestEcho";
   value: Uint8Array;
 }
+/**
+ * @name RequestEchoAmino
+ * @package tendermint.abci
+ * @see proto type: tendermint.abci.RequestEcho
+ */
 export interface RequestEchoAmino {
   message?: string;
 }
@@ -348,6 +359,11 @@ export interface RequestFlushProtoMsg {
   typeUrl: "/tendermint.abci.RequestFlush";
   value: Uint8Array;
 }
+/**
+ * @name RequestFlushAmino
+ * @package tendermint.abci
+ * @see proto type: tendermint.abci.RequestFlush
+ */
 export interface RequestFlushAmino {}
 export interface RequestFlushAminoMsg {
   type: "/tendermint.abci.RequestFlush";
@@ -363,6 +379,11 @@ export interface RequestInfoProtoMsg {
   typeUrl: "/tendermint.abci.RequestInfo";
   value: Uint8Array;
 }
+/**
+ * @name RequestInfoAmino
+ * @package tendermint.abci
+ * @see proto type: tendermint.abci.RequestInfo
+ */
 export interface RequestInfoAmino {
   version?: string;
   block_version?: string;
@@ -385,6 +406,11 @@ export interface RequestInitChainProtoMsg {
   typeUrl: "/tendermint.abci.RequestInitChain";
   value: Uint8Array;
 }
+/**
+ * @name RequestInitChainAmino
+ * @package tendermint.abci
+ * @see proto type: tendermint.abci.RequestInitChain
+ */
 export interface RequestInitChainAmino {
   time?: string | undefined;
   chain_id?: string;
@@ -407,6 +433,11 @@ export interface RequestQueryProtoMsg {
   typeUrl: "/tendermint.abci.RequestQuery";
   value: Uint8Array;
 }
+/**
+ * @name RequestQueryAmino
+ * @package tendermint.abci
+ * @see proto type: tendermint.abci.RequestQuery
+ */
 export interface RequestQueryAmino {
   data?: string;
   path?: string;
@@ -425,6 +456,11 @@ export interface RequestCheckTxProtoMsg {
   typeUrl: "/tendermint.abci.RequestCheckTx";
   value: Uint8Array;
 }
+/**
+ * @name RequestCheckTxAmino
+ * @package tendermint.abci
+ * @see proto type: tendermint.abci.RequestCheckTx
+ */
 export interface RequestCheckTxAmino {
   tx?: string;
   type?: CheckTxType;
@@ -438,6 +474,11 @@ export interface RequestCommitProtoMsg {
   typeUrl: "/tendermint.abci.RequestCommit";
   value: Uint8Array;
 }
+/**
+ * @name RequestCommitAmino
+ * @package tendermint.abci
+ * @see proto type: tendermint.abci.RequestCommit
+ */
 export interface RequestCommitAmino {}
 export interface RequestCommitAminoMsg {
   type: "/tendermint.abci.RequestCommit";
@@ -449,7 +490,12 @@ export interface RequestListSnapshotsProtoMsg {
   typeUrl: "/tendermint.abci.RequestListSnapshots";
   value: Uint8Array;
 }
-/** lists available snapshots */
+/**
+ * lists available snapshots
+ * @name RequestListSnapshotsAmino
+ * @package tendermint.abci
+ * @see proto type: tendermint.abci.RequestListSnapshots
+ */
 export interface RequestListSnapshotsAmino {}
 export interface RequestListSnapshotsAminoMsg {
   type: "/tendermint.abci.RequestListSnapshots";
@@ -466,11 +512,20 @@ export interface RequestOfferSnapshotProtoMsg {
   typeUrl: "/tendermint.abci.RequestOfferSnapshot";
   value: Uint8Array;
 }
-/** offers a snapshot to the application */
+/**
+ * offers a snapshot to the application
+ * @name RequestOfferSnapshotAmino
+ * @package tendermint.abci
+ * @see proto type: tendermint.abci.RequestOfferSnapshot
+ */
 export interface RequestOfferSnapshotAmino {
-  /** snapshot offered by peers */
+  /**
+   * snapshot offered by peers
+   */
   snapshot?: SnapshotAmino | undefined;
-  /** light client-verified app hash for snapshot height */
+  /**
+   * light client-verified app hash for snapshot height
+   */
   app_hash?: string;
 }
 export interface RequestOfferSnapshotAminoMsg {
@@ -487,7 +542,12 @@ export interface RequestLoadSnapshotChunkProtoMsg {
   typeUrl: "/tendermint.abci.RequestLoadSnapshotChunk";
   value: Uint8Array;
 }
-/** loads a snapshot chunk */
+/**
+ * loads a snapshot chunk
+ * @name RequestLoadSnapshotChunkAmino
+ * @package tendermint.abci
+ * @see proto type: tendermint.abci.RequestLoadSnapshotChunk
+ */
 export interface RequestLoadSnapshotChunkAmino {
   height?: string;
   format?: number;
@@ -507,7 +567,12 @@ export interface RequestApplySnapshotChunkProtoMsg {
   typeUrl: "/tendermint.abci.RequestApplySnapshotChunk";
   value: Uint8Array;
 }
-/** Applies a snapshot chunk */
+/**
+ * Applies a snapshot chunk
+ * @name RequestApplySnapshotChunkAmino
+ * @package tendermint.abci
+ * @see proto type: tendermint.abci.RequestApplySnapshotChunk
+ */
 export interface RequestApplySnapshotChunkAmino {
   index?: number;
   chunk?: string;
@@ -537,8 +602,15 @@ export interface RequestPrepareProposalProtoMsg {
   typeUrl: "/tendermint.abci.RequestPrepareProposal";
   value: Uint8Array;
 }
+/**
+ * @name RequestPrepareProposalAmino
+ * @package tendermint.abci
+ * @see proto type: tendermint.abci.RequestPrepareProposal
+ */
 export interface RequestPrepareProposalAmino {
-  /** the modified transactions cannot exceed this size. */
+  /**
+   * the modified transactions cannot exceed this size.
+   */
   max_tx_bytes?: string;
   /**
    * txs is an array of transactions that will be included in a block,
@@ -550,7 +622,9 @@ export interface RequestPrepareProposalAmino {
   height?: string;
   time?: string | undefined;
   next_validators_hash?: string;
-  /** address of the public key of the validator proposing the block. */
+  /**
+   * address of the public key of the validator proposing the block.
+   */
   proposer_address?: string;
 }
 export interface RequestPrepareProposalAminoMsg {
@@ -573,16 +647,25 @@ export interface RequestProcessProposalProtoMsg {
   typeUrl: "/tendermint.abci.RequestProcessProposal";
   value: Uint8Array;
 }
+/**
+ * @name RequestProcessProposalAmino
+ * @package tendermint.abci
+ * @see proto type: tendermint.abci.RequestProcessProposal
+ */
 export interface RequestProcessProposalAmino {
   txs?: string[];
   proposed_last_commit?: CommitInfoAmino | undefined;
   misbehavior?: MisbehaviorAmino[];
-  /** hash is the merkle root hash of the fields of the proposed block. */
+  /**
+   * hash is the merkle root hash of the fields of the proposed block.
+   */
   hash?: string;
   height?: string;
   time?: string | undefined;
   next_validators_hash?: string;
-  /** address of the public key of the original proposer of the block. */
+  /**
+   * address of the public key of the original proposer of the block.
+   */
   proposer_address?: string;
 }
 export interface RequestProcessProposalAminoMsg {
@@ -608,19 +691,32 @@ export interface RequestExtendVoteProtoMsg {
   typeUrl: "/tendermint.abci.RequestExtendVote";
   value: Uint8Array;
 }
-/** Extends a vote with application-injected data */
+/**
+ * Extends a vote with application-injected data
+ * @name RequestExtendVoteAmino
+ * @package tendermint.abci
+ * @see proto type: tendermint.abci.RequestExtendVote
+ */
 export interface RequestExtendVoteAmino {
-  /** the hash of the block that this vote may be referring to */
+  /**
+   * the hash of the block that this vote may be referring to
+   */
   hash?: string;
-  /** the height of the extended vote */
+  /**
+   * the height of the extended vote
+   */
   height?: string;
-  /** info of the block that this vote may be referring to */
+  /**
+   * info of the block that this vote may be referring to
+   */
   time?: string | undefined;
   txs?: string[];
   proposed_last_commit?: CommitInfoAmino | undefined;
   misbehavior?: MisbehaviorAmino[];
   next_validators_hash?: string;
-  /** address of the public key of the original proposer of the block. */
+  /**
+   * address of the public key of the original proposer of the block.
+   */
   proposer_address?: string;
 }
 export interface RequestExtendVoteAminoMsg {
@@ -640,11 +736,20 @@ export interface RequestVerifyVoteExtensionProtoMsg {
   typeUrl: "/tendermint.abci.RequestVerifyVoteExtension";
   value: Uint8Array;
 }
-/** Verify the vote extension */
+/**
+ * Verify the vote extension
+ * @name RequestVerifyVoteExtensionAmino
+ * @package tendermint.abci
+ * @see proto type: tendermint.abci.RequestVerifyVoteExtension
+ */
 export interface RequestVerifyVoteExtensionAmino {
-  /** the hash of the block that this received vote corresponds to */
+  /**
+   * the hash of the block that this received vote corresponds to
+   */
   hash?: string;
-  /** the validator that signed the vote extension */
+  /**
+   * the validator that signed the vote extension
+   */
   validator_address?: string;
   height?: string;
   vote_extension?: string;
@@ -669,16 +774,25 @@ export interface RequestFinalizeBlockProtoMsg {
   typeUrl: "/tendermint.abci.RequestFinalizeBlock";
   value: Uint8Array;
 }
+/**
+ * @name RequestFinalizeBlockAmino
+ * @package tendermint.abci
+ * @see proto type: tendermint.abci.RequestFinalizeBlock
+ */
 export interface RequestFinalizeBlockAmino {
   txs?: string[];
   decided_last_commit?: CommitInfoAmino | undefined;
   misbehavior?: MisbehaviorAmino[];
-  /** hash is the merkle root hash of the fields of the decided block. */
+  /**
+   * hash is the merkle root hash of the fields of the decided block.
+   */
   hash?: string;
   height?: string;
   time?: string | undefined;
   next_validators_hash?: string;
-  /** proposer_address is the address of the public key of the original proposer of the block. */
+  /**
+   * proposer_address is the address of the public key of the original proposer of the block.
+   */
   proposer_address?: string;
 }
 export interface RequestFinalizeBlockAminoMsg {
@@ -708,6 +822,11 @@ export interface ResponseProtoMsg {
   typeUrl: "/tendermint.abci.Response";
   value: Uint8Array;
 }
+/**
+ * @name ResponseAmino
+ * @package tendermint.abci
+ * @see proto type: tendermint.abci.Response
+ */
 export interface ResponseAmino {
   exception?: ResponseExceptionAmino | undefined;
   echo?: ResponseEchoAmino | undefined;
@@ -739,7 +858,12 @@ export interface ResponseExceptionProtoMsg {
   typeUrl: "/tendermint.abci.ResponseException";
   value: Uint8Array;
 }
-/** nondeterministic */
+/**
+ * nondeterministic
+ * @name ResponseExceptionAmino
+ * @package tendermint.abci
+ * @see proto type: tendermint.abci.ResponseException
+ */
 export interface ResponseExceptionAmino {
   error?: string;
 }
@@ -754,6 +878,11 @@ export interface ResponseEchoProtoMsg {
   typeUrl: "/tendermint.abci.ResponseEcho";
   value: Uint8Array;
 }
+/**
+ * @name ResponseEchoAmino
+ * @package tendermint.abci
+ * @see proto type: tendermint.abci.ResponseEcho
+ */
 export interface ResponseEchoAmino {
   message?: string;
 }
@@ -766,6 +895,11 @@ export interface ResponseFlushProtoMsg {
   typeUrl: "/tendermint.abci.ResponseFlush";
   value: Uint8Array;
 }
+/**
+ * @name ResponseFlushAmino
+ * @package tendermint.abci
+ * @see proto type: tendermint.abci.ResponseFlush
+ */
 export interface ResponseFlushAmino {}
 export interface ResponseFlushAminoMsg {
   type: "/tendermint.abci.ResponseFlush";
@@ -782,6 +916,11 @@ export interface ResponseInfoProtoMsg {
   typeUrl: "/tendermint.abci.ResponseInfo";
   value: Uint8Array;
 }
+/**
+ * @name ResponseInfoAmino
+ * @package tendermint.abci
+ * @see proto type: tendermint.abci.ResponseInfo
+ */
 export interface ResponseInfoAmino {
   data?: string;
   version?: string;
@@ -802,6 +941,11 @@ export interface ResponseInitChainProtoMsg {
   typeUrl: "/tendermint.abci.ResponseInitChain";
   value: Uint8Array;
 }
+/**
+ * @name ResponseInitChainAmino
+ * @package tendermint.abci
+ * @see proto type: tendermint.abci.ResponseInitChain
+ */
 export interface ResponseInitChainAmino {
   consensus_params?: ConsensusParamsAmino | undefined;
   validators?: ValidatorUpdateAmino[];
@@ -828,11 +972,20 @@ export interface ResponseQueryProtoMsg {
   typeUrl: "/tendermint.abci.ResponseQuery";
   value: Uint8Array;
 }
+/**
+ * @name ResponseQueryAmino
+ * @package tendermint.abci
+ * @see proto type: tendermint.abci.ResponseQuery
+ */
 export interface ResponseQueryAmino {
   code?: number;
-  /** bytes data = 2; // use "value" instead. */
+  /**
+   * bytes data = 2; // use "value" instead.
+   */
   log?: string;
-  /** nondeterministic */
+  /**
+   * nondeterministic
+   */
   info?: string;
   index?: string;
   key?: string;
@@ -861,12 +1014,21 @@ export interface ResponseCheckTxProtoMsg {
   typeUrl: "/tendermint.abci.ResponseCheckTx";
   value: Uint8Array;
 }
+/**
+ * @name ResponseCheckTxAmino
+ * @package tendermint.abci
+ * @see proto type: tendermint.abci.ResponseCheckTx
+ */
 export interface ResponseCheckTxAmino {
   code?: number;
   data?: string;
-  /** nondeterministic */
+  /**
+   * nondeterministic
+   */
   log?: string;
-  /** nondeterministic */
+  /**
+   * nondeterministic
+   */
   info?: string;
   gas_wanted?: string;
   gas_used?: string;
@@ -884,6 +1046,11 @@ export interface ResponseCommitProtoMsg {
   typeUrl: "/tendermint.abci.ResponseCommit";
   value: Uint8Array;
 }
+/**
+ * @name ResponseCommitAmino
+ * @package tendermint.abci
+ * @see proto type: tendermint.abci.ResponseCommit
+ */
 export interface ResponseCommitAmino {
   retain_height?: string;
 }
@@ -898,6 +1065,11 @@ export interface ResponseListSnapshotsProtoMsg {
   typeUrl: "/tendermint.abci.ResponseListSnapshots";
   value: Uint8Array;
 }
+/**
+ * @name ResponseListSnapshotsAmino
+ * @package tendermint.abci
+ * @see proto type: tendermint.abci.ResponseListSnapshots
+ */
 export interface ResponseListSnapshotsAmino {
   snapshots?: SnapshotAmino[];
 }
@@ -912,6 +1084,11 @@ export interface ResponseOfferSnapshotProtoMsg {
   typeUrl: "/tendermint.abci.ResponseOfferSnapshot";
   value: Uint8Array;
 }
+/**
+ * @name ResponseOfferSnapshotAmino
+ * @package tendermint.abci
+ * @see proto type: tendermint.abci.ResponseOfferSnapshot
+ */
 export interface ResponseOfferSnapshotAmino {
   result?: ResponseOfferSnapshot_Result;
 }
@@ -926,6 +1103,11 @@ export interface ResponseLoadSnapshotChunkProtoMsg {
   typeUrl: "/tendermint.abci.ResponseLoadSnapshotChunk";
   value: Uint8Array;
 }
+/**
+ * @name ResponseLoadSnapshotChunkAmino
+ * @package tendermint.abci
+ * @see proto type: tendermint.abci.ResponseLoadSnapshotChunk
+ */
 export interface ResponseLoadSnapshotChunkAmino {
   chunk?: string;
 }
@@ -944,11 +1126,20 @@ export interface ResponseApplySnapshotChunkProtoMsg {
   typeUrl: "/tendermint.abci.ResponseApplySnapshotChunk";
   value: Uint8Array;
 }
+/**
+ * @name ResponseApplySnapshotChunkAmino
+ * @package tendermint.abci
+ * @see proto type: tendermint.abci.ResponseApplySnapshotChunk
+ */
 export interface ResponseApplySnapshotChunkAmino {
   result?: ResponseApplySnapshotChunk_Result;
-  /** Chunks to refetch and reapply */
+  /**
+   * Chunks to refetch and reapply
+   */
   refetch_chunks?: number[];
-  /** Chunk senders to reject and ban */
+  /**
+   * Chunk senders to reject and ban
+   */
   reject_senders?: string[];
 }
 export interface ResponseApplySnapshotChunkAminoMsg {
@@ -962,6 +1153,11 @@ export interface ResponsePrepareProposalProtoMsg {
   typeUrl: "/tendermint.abci.ResponsePrepareProposal";
   value: Uint8Array;
 }
+/**
+ * @name ResponsePrepareProposalAmino
+ * @package tendermint.abci
+ * @see proto type: tendermint.abci.ResponsePrepareProposal
+ */
 export interface ResponsePrepareProposalAmino {
   txs?: string[];
 }
@@ -976,6 +1172,11 @@ export interface ResponseProcessProposalProtoMsg {
   typeUrl: "/tendermint.abci.ResponseProcessProposal";
   value: Uint8Array;
 }
+/**
+ * @name ResponseProcessProposalAmino
+ * @package tendermint.abci
+ * @see proto type: tendermint.abci.ResponseProcessProposal
+ */
 export interface ResponseProcessProposalAmino {
   status?: ResponseProcessProposal_ProposalStatus;
 }
@@ -990,6 +1191,11 @@ export interface ResponseExtendVoteProtoMsg {
   typeUrl: "/tendermint.abci.ResponseExtendVote";
   value: Uint8Array;
 }
+/**
+ * @name ResponseExtendVoteAmino
+ * @package tendermint.abci
+ * @see proto type: tendermint.abci.ResponseExtendVote
+ */
 export interface ResponseExtendVoteAmino {
   vote_extension?: string;
 }
@@ -1004,6 +1210,11 @@ export interface ResponseVerifyVoteExtensionProtoMsg {
   typeUrl: "/tendermint.abci.ResponseVerifyVoteExtension";
   value: Uint8Array;
 }
+/**
+ * @name ResponseVerifyVoteExtensionAmino
+ * @package tendermint.abci
+ * @see proto type: tendermint.abci.ResponseVerifyVoteExtension
+ */
 export interface ResponseVerifyVoteExtensionAmino {
   status?: ResponseVerifyVoteExtension_VerifyStatus;
 }
@@ -1034,8 +1245,15 @@ export interface ResponseFinalizeBlockProtoMsg {
   typeUrl: "/tendermint.abci.ResponseFinalizeBlock";
   value: Uint8Array;
 }
+/**
+ * @name ResponseFinalizeBlockAmino
+ * @package tendermint.abci
+ * @see proto type: tendermint.abci.ResponseFinalizeBlock
+ */
 export interface ResponseFinalizeBlockAmino {
-  /** set of block events emmitted as part of executing the block */
+  /**
+   * set of block events emmitted as part of executing the block
+   */
   events?: EventAmino[];
   /**
    * the result of executing each transaction including the events
@@ -1043,9 +1261,13 @@ export interface ResponseFinalizeBlockAmino {
    * of the transactions delivered in the block itself
    */
   tx_results?: ExecTxResultAmino[];
-  /** a list of updates to the validator set. These will reflect the validator set at current height + 2. */
+  /**
+   * a list of updates to the validator set. These will reflect the validator set at current height + 2.
+   */
   validator_updates?: ValidatorUpdateAmino[];
-  /** updates to the consensus params, if any. */
+  /**
+   * updates to the consensus params, if any.
+   */
   consensus_param_updates?: ConsensusParamsAmino | undefined;
   /**
    * app_hash is the hash of the applications' state which is used to confirm that execution of the transactions was
@@ -1065,6 +1287,11 @@ export interface CommitInfoProtoMsg {
   typeUrl: "/tendermint.abci.CommitInfo";
   value: Uint8Array;
 }
+/**
+ * @name CommitInfoAmino
+ * @package tendermint.abci
+ * @see proto type: tendermint.abci.CommitInfo
+ */
 export interface CommitInfoAmino {
   round?: number;
   votes?: VoteInfoAmino[];
@@ -1095,9 +1322,14 @@ export interface ExtendedCommitInfoProtoMsg {
  * ExtendedCommitInfo is similar to CommitInfo except that it is only used in
  * the PrepareProposal request such that CometBFT can provide vote extensions
  * to the application.
+ * @name ExtendedCommitInfoAmino
+ * @package tendermint.abci
+ * @see proto type: tendermint.abci.ExtendedCommitInfo
  */
 export interface ExtendedCommitInfoAmino {
-  /** The round at which the block proposer decided in the previous height. */
+  /**
+   * The round at which the block proposer decided in the previous height.
+   */
   round?: number;
   /**
    * List of validators' addresses in the last validator set with their voting
@@ -1126,6 +1358,9 @@ export interface EventProtoMsg {
  * Event allows application developers to attach additional information to
  * ResponseFinalizeBlock and ResponseCheckTx.
  * Later, transactions may be queried using these events.
+ * @name EventAmino
+ * @package tendermint.abci
+ * @see proto type: tendermint.abci.Event
  */
 export interface EventAmino {
   type?: string;
@@ -1146,11 +1381,18 @@ export interface EventAttributeProtoMsg {
   typeUrl: "/tendermint.abci.EventAttribute";
   value: Uint8Array;
 }
-/** EventAttribute is a single key-value pair, associated with an event. */
+/**
+ * EventAttribute is a single key-value pair, associated with an event.
+ * @name EventAttributeAmino
+ * @package tendermint.abci
+ * @see proto type: tendermint.abci.EventAttribute
+ */
 export interface EventAttributeAmino {
   key?: string;
   value?: string;
-  /** nondeterministic */
+  /**
+   * nondeterministic
+   */
   index?: boolean;
 }
 export interface EventAttributeAminoMsg {
@@ -1182,13 +1424,20 @@ export interface ExecTxResultProtoMsg {
  * ExecTxResult contains results of executing one individual transaction.
  *
  * * Its structure is equivalent to #ResponseDeliverTx which will be deprecated/deleted
+ * @name ExecTxResultAmino
+ * @package tendermint.abci
+ * @see proto type: tendermint.abci.ExecTxResult
  */
 export interface ExecTxResultAmino {
   code?: number;
   data?: string;
-  /** nondeterministic */
+  /**
+   * nondeterministic
+   */
   log?: string;
-  /** nondeterministic */
+  /**
+   * nondeterministic
+   */
   info?: string;
   gas_wanted?: string;
   gas_used?: string;
@@ -1218,6 +1467,9 @@ export interface TxResultProtoMsg {
  * TxResult contains results of executing the transaction.
  *
  * One usage is indexing transaction results.
+ * @name TxResultAmino
+ * @package tendermint.abci
+ * @see proto type: tendermint.abci.TxResult
  */
 export interface TxResultAmino {
   height?: string;
@@ -1230,25 +1482,28 @@ export interface TxResultAminoMsg {
   value: TxResultAmino;
 }
 export interface Validator {
-  /**
-   * The first 20 bytes of SHA256(public key)
-   * PubKey pub_key = 2 [(gogoproto.nullable)=false];
-   */
+  /** The first 20 bytes of SHA256(public key) */
   address: Uint8Array;
-  /** The voting power */
+  /** PubKey pub_key = 2 [(gogoproto.nullable)=false]; */
   power: bigint;
 }
 export interface ValidatorProtoMsg {
   typeUrl: "/tendermint.abci.Validator";
   value: Uint8Array;
 }
+/**
+ * @name ValidatorAmino
+ * @package tendermint.abci
+ * @see proto type: tendermint.abci.Validator
+ */
 export interface ValidatorAmino {
   /**
    * The first 20 bytes of SHA256(public key)
-   * PubKey pub_key = 2 [(gogoproto.nullable)=false];
    */
   address?: string;
-  /** The voting power */
+  /**
+   * PubKey pub_key = 2 [(gogoproto.nullable)=false];
+   */
   power?: string;
 }
 export interface ValidatorAminoMsg {
@@ -1263,6 +1518,11 @@ export interface ValidatorUpdateProtoMsg {
   typeUrl: "/tendermint.abci.ValidatorUpdate";
   value: Uint8Array;
 }
+/**
+ * @name ValidatorUpdateAmino
+ * @package tendermint.abci
+ * @see proto type: tendermint.abci.ValidatorUpdate
+ */
 export interface ValidatorUpdateAmino {
   pub_key?: PublicKeyAmino | undefined;
   power?: string;
@@ -1279,6 +1539,11 @@ export interface VoteInfoProtoMsg {
   typeUrl: "/tendermint.abci.VoteInfo";
   value: Uint8Array;
 }
+/**
+ * @name VoteInfoAmino
+ * @package tendermint.abci
+ * @see proto type: tendermint.abci.VoteInfo
+ */
 export interface VoteInfoAmino {
   validator?: ValidatorAmino | undefined;
   block_id_flag?: BlockIDFlag;
@@ -1301,14 +1566,27 @@ export interface ExtendedVoteInfoProtoMsg {
   typeUrl: "/tendermint.abci.ExtendedVoteInfo";
   value: Uint8Array;
 }
+/**
+ * @name ExtendedVoteInfoAmino
+ * @package tendermint.abci
+ * @see proto type: tendermint.abci.ExtendedVoteInfo
+ */
 export interface ExtendedVoteInfoAmino {
-  /** The validator that sent the vote. */
+  /**
+   * The validator that sent the vote.
+   */
   validator?: ValidatorAmino | undefined;
-  /** Non-deterministic extension provided by the sending validator's application. */
+  /**
+   * Non-deterministic extension provided by the sending validator's application.
+   */
   vote_extension?: string;
-  /** Vote extension signature created by CometBFT */
+  /**
+   * Vote extension signature created by CometBFT
+   */
   extension_signature?: string;
-  /** block_id_flag indicates whether the validator voted for a block, nil, or did not vote at all */
+  /**
+   * block_id_flag indicates whether the validator voted for a block, nil, or did not vote at all
+   */
   block_id_flag?: BlockIDFlag;
 }
 export interface ExtendedVoteInfoAminoMsg {
@@ -1334,13 +1612,24 @@ export interface MisbehaviorProtoMsg {
   typeUrl: "/tendermint.abci.Misbehavior";
   value: Uint8Array;
 }
+/**
+ * @name MisbehaviorAmino
+ * @package tendermint.abci
+ * @see proto type: tendermint.abci.Misbehavior
+ */
 export interface MisbehaviorAmino {
   type?: MisbehaviorType;
-  /** The offending validator */
+  /**
+   * The offending validator
+   */
   validator?: ValidatorAmino | undefined;
-  /** The height when the offense occurred */
+  /**
+   * The height when the offense occurred
+   */
   height?: string;
-  /** The corresponding time where the offense occurred */
+  /**
+   * The corresponding time where the offense occurred
+   */
   time?: string | undefined;
   /**
    * Total voting power of the validator set in case the ABCI application does
@@ -1369,16 +1658,31 @@ export interface SnapshotProtoMsg {
   typeUrl: "/tendermint.abci.Snapshot";
   value: Uint8Array;
 }
+/**
+ * @name SnapshotAmino
+ * @package tendermint.abci
+ * @see proto type: tendermint.abci.Snapshot
+ */
 export interface SnapshotAmino {
-  /** The height at which the snapshot was taken */
+  /**
+   * The height at which the snapshot was taken
+   */
   height?: string;
-  /** The application-specific snapshot format */
+  /**
+   * The application-specific snapshot format
+   */
   format?: number;
-  /** Number of chunks in the snapshot */
+  /**
+   * Number of chunks in the snapshot
+   */
   chunks?: number;
-  /** Arbitrary snapshot hash, equal only if identical */
+  /**
+   * Arbitrary snapshot hash, equal only if identical
+   */
   hash?: string;
-  /** Arbitrary application metadata */
+  /**
+   * Arbitrary application metadata
+   */
   metadata?: string;
 }
 export interface SnapshotAminoMsg {
@@ -1545,7 +1849,7 @@ export const Request = {
     if (isSet(object.finalizeBlock)) obj.finalizeBlock = RequestFinalizeBlock.fromJSON(object.finalizeBlock);
     return obj;
   },
-  toJSON(message: Request): unknown {
+  toJSON(message: Request): JsonSafe<Request> {
     const obj: any = {};
     message.echo !== undefined && (obj.echo = message.echo ? RequestEcho.toJSON(message.echo) : undefined);
     message.flush !== undefined &&
@@ -1786,7 +2090,7 @@ export const RequestEcho = {
     if (isSet(object.message)) obj.message = String(object.message);
     return obj;
   },
-  toJSON(message: RequestEcho): unknown {
+  toJSON(message: RequestEcho): JsonSafe<RequestEcho> {
     const obj: any = {};
     message.message !== undefined && (obj.message = message.message);
     return obj;
@@ -1805,7 +2109,7 @@ export const RequestEcho = {
   },
   toAmino(message: RequestEcho): RequestEchoAmino {
     const obj: any = {};
-    obj.message = message.message;
+    obj.message = message.message === "" ? undefined : message.message;
     return obj;
   },
   fromAminoMsg(object: RequestEchoAminoMsg): RequestEcho {
@@ -1850,7 +2154,7 @@ export const RequestFlush = {
     const obj = createBaseRequestFlush();
     return obj;
   },
-  toJSON(_: RequestFlush): unknown {
+  toJSON(_: RequestFlush): JsonSafe<RequestFlush> {
     const obj: any = {};
     return obj;
   },
@@ -1941,7 +2245,7 @@ export const RequestInfo = {
     if (isSet(object.abciVersion)) obj.abciVersion = String(object.abciVersion);
     return obj;
   },
-  toJSON(message: RequestInfo): unknown {
+  toJSON(message: RequestInfo): JsonSafe<RequestInfo> {
     const obj: any = {};
     message.version !== undefined && (obj.version = message.version);
     message.blockVersion !== undefined && (obj.blockVersion = (message.blockVersion || BigInt(0)).toString());
@@ -1979,10 +2283,10 @@ export const RequestInfo = {
   },
   toAmino(message: RequestInfo): RequestInfoAmino {
     const obj: any = {};
-    obj.version = message.version;
-    obj.block_version = message.blockVersion ? message.blockVersion.toString() : undefined;
-    obj.p2p_version = message.p2pVersion ? message.p2pVersion.toString() : undefined;
-    obj.abci_version = message.abciVersion;
+    obj.version = message.version === "" ? undefined : message.version;
+    obj.block_version = message.blockVersion !== BigInt(0) ? message.blockVersion?.toString() : undefined;
+    obj.p2p_version = message.p2pVersion !== BigInt(0) ? message.p2pVersion?.toString() : undefined;
+    obj.abci_version = message.abciVersion === "" ? undefined : message.abciVersion;
     return obj;
   },
   fromAminoMsg(object: RequestInfoAminoMsg): RequestInfo {
@@ -2077,7 +2381,7 @@ export const RequestInitChain = {
     if (isSet(object.initialHeight)) obj.initialHeight = BigInt(object.initialHeight.toString());
     return obj;
   },
-  toJSON(message: RequestInitChain): unknown {
+  toJSON(message: RequestInitChain): JsonSafe<RequestInitChain> {
     const obj: any = {};
     message.time !== undefined && (obj.time = fromTimestamp(message.time).toISOString());
     message.chainId !== undefined && (obj.chainId = message.chainId);
@@ -2137,17 +2441,17 @@ export const RequestInitChain = {
   toAmino(message: RequestInitChain): RequestInitChainAmino {
     const obj: any = {};
     obj.time = message.time ? Timestamp.toAmino(message.time) : undefined;
-    obj.chain_id = message.chainId;
+    obj.chain_id = message.chainId === "" ? undefined : message.chainId;
     obj.consensus_params = message.consensusParams
       ? ConsensusParams.toAmino(message.consensusParams)
       : undefined;
     if (message.validators) {
       obj.validators = message.validators.map((e) => (e ? ValidatorUpdate.toAmino(e) : undefined));
     } else {
-      obj.validators = [];
+      obj.validators = message.validators;
     }
     obj.app_state_bytes = message.appStateBytes ? base64FromBytes(message.appStateBytes) : undefined;
-    obj.initial_height = message.initialHeight ? message.initialHeight.toString() : undefined;
+    obj.initial_height = message.initialHeight !== BigInt(0) ? message.initialHeight?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: RequestInitChainAminoMsg): RequestInitChain {
@@ -2225,7 +2529,7 @@ export const RequestQuery = {
     if (isSet(object.prove)) obj.prove = Boolean(object.prove);
     return obj;
   },
-  toJSON(message: RequestQuery): unknown {
+  toJSON(message: RequestQuery): JsonSafe<RequestQuery> {
     const obj: any = {};
     message.data !== undefined &&
       (obj.data = base64FromBytes(message.data !== undefined ? message.data : new Uint8Array()));
@@ -2263,9 +2567,9 @@ export const RequestQuery = {
   toAmino(message: RequestQuery): RequestQueryAmino {
     const obj: any = {};
     obj.data = message.data ? base64FromBytes(message.data) : undefined;
-    obj.path = message.path;
-    obj.height = message.height ? message.height.toString() : undefined;
-    obj.prove = message.prove;
+    obj.path = message.path === "" ? undefined : message.path;
+    obj.height = message.height !== BigInt(0) ? message.height?.toString() : undefined;
+    obj.prove = message.prove === false ? undefined : message.prove;
     return obj;
   },
   fromAminoMsg(object: RequestQueryAminoMsg): RequestQuery {
@@ -2327,7 +2631,7 @@ export const RequestCheckTx = {
     if (isSet(object.type)) obj.type = checkTxTypeFromJSON(object.type);
     return obj;
   },
-  toJSON(message: RequestCheckTx): unknown {
+  toJSON(message: RequestCheckTx): JsonSafe<RequestCheckTx> {
     const obj: any = {};
     message.tx !== undefined &&
       (obj.tx = base64FromBytes(message.tx !== undefined ? message.tx : new Uint8Array()));
@@ -2346,14 +2650,14 @@ export const RequestCheckTx = {
       message.tx = bytesFromBase64(object.tx);
     }
     if (object.type !== undefined && object.type !== null) {
-      message.type = checkTxTypeFromJSON(object.type);
+      message.type = object.type;
     }
     return message;
   },
   toAmino(message: RequestCheckTx): RequestCheckTxAmino {
     const obj: any = {};
     obj.tx = message.tx ? base64FromBytes(message.tx) : undefined;
-    obj.type = message.type;
+    obj.type = message.type === 0 ? undefined : message.type;
     return obj;
   },
   fromAminoMsg(object: RequestCheckTxAminoMsg): RequestCheckTx {
@@ -2398,7 +2702,7 @@ export const RequestCommit = {
     const obj = createBaseRequestCommit();
     return obj;
   },
-  toJSON(_: RequestCommit): unknown {
+  toJSON(_: RequestCommit): JsonSafe<RequestCommit> {
     const obj: any = {};
     return obj;
   },
@@ -2456,7 +2760,7 @@ export const RequestListSnapshots = {
     const obj = createBaseRequestListSnapshots();
     return obj;
   },
-  toJSON(_: RequestListSnapshots): unknown {
+  toJSON(_: RequestListSnapshots): JsonSafe<RequestListSnapshots> {
     const obj: any = {};
     return obj;
   },
@@ -2531,7 +2835,7 @@ export const RequestOfferSnapshot = {
     if (isSet(object.appHash)) obj.appHash = bytesFromBase64(object.appHash);
     return obj;
   },
-  toJSON(message: RequestOfferSnapshot): unknown {
+  toJSON(message: RequestOfferSnapshot): JsonSafe<RequestOfferSnapshot> {
     const obj: any = {};
     message.snapshot !== undefined &&
       (obj.snapshot = message.snapshot ? Snapshot.toJSON(message.snapshot) : undefined);
@@ -2630,7 +2934,7 @@ export const RequestLoadSnapshotChunk = {
     if (isSet(object.chunk)) obj.chunk = Number(object.chunk);
     return obj;
   },
-  toJSON(message: RequestLoadSnapshotChunk): unknown {
+  toJSON(message: RequestLoadSnapshotChunk): JsonSafe<RequestLoadSnapshotChunk> {
     const obj: any = {};
     message.height !== undefined && (obj.height = (message.height || BigInt(0)).toString());
     message.format !== undefined && (obj.format = Math.round(message.format));
@@ -2661,9 +2965,9 @@ export const RequestLoadSnapshotChunk = {
   },
   toAmino(message: RequestLoadSnapshotChunk): RequestLoadSnapshotChunkAmino {
     const obj: any = {};
-    obj.height = message.height ? message.height.toString() : undefined;
-    obj.format = message.format;
-    obj.chunk = message.chunk;
+    obj.height = message.height !== BigInt(0) ? message.height?.toString() : undefined;
+    obj.format = message.format === 0 ? undefined : message.format;
+    obj.chunk = message.chunk === 0 ? undefined : message.chunk;
     return obj;
   },
   fromAminoMsg(object: RequestLoadSnapshotChunkAminoMsg): RequestLoadSnapshotChunk {
@@ -2733,7 +3037,7 @@ export const RequestApplySnapshotChunk = {
     if (isSet(object.sender)) obj.sender = String(object.sender);
     return obj;
   },
-  toJSON(message: RequestApplySnapshotChunk): unknown {
+  toJSON(message: RequestApplySnapshotChunk): JsonSafe<RequestApplySnapshotChunk> {
     const obj: any = {};
     message.index !== undefined && (obj.index = Math.round(message.index));
     message.chunk !== undefined &&
@@ -2763,9 +3067,9 @@ export const RequestApplySnapshotChunk = {
   },
   toAmino(message: RequestApplySnapshotChunk): RequestApplySnapshotChunkAmino {
     const obj: any = {};
-    obj.index = message.index;
+    obj.index = message.index === 0 ? undefined : message.index;
     obj.chunk = message.chunk ? base64FromBytes(message.chunk) : undefined;
-    obj.sender = message.sender;
+    obj.sender = message.sender === "" ? undefined : message.sender;
     return obj;
   },
   fromAminoMsg(object: RequestApplySnapshotChunkAminoMsg): RequestApplySnapshotChunk {
@@ -2877,7 +3181,7 @@ export const RequestPrepareProposal = {
     if (isSet(object.proposerAddress)) obj.proposerAddress = bytesFromBase64(object.proposerAddress);
     return obj;
   },
-  toJSON(message: RequestPrepareProposal): unknown {
+  toJSON(message: RequestPrepareProposal): JsonSafe<RequestPrepareProposal> {
     const obj: any = {};
     message.maxTxBytes !== undefined && (obj.maxTxBytes = (message.maxTxBytes || BigInt(0)).toString());
     if (message.txs) {
@@ -2952,11 +3256,11 @@ export const RequestPrepareProposal = {
   },
   toAmino(message: RequestPrepareProposal): RequestPrepareProposalAmino {
     const obj: any = {};
-    obj.max_tx_bytes = message.maxTxBytes ? message.maxTxBytes.toString() : undefined;
+    obj.max_tx_bytes = message.maxTxBytes !== BigInt(0) ? message.maxTxBytes?.toString() : undefined;
     if (message.txs) {
       obj.txs = message.txs.map((e) => base64FromBytes(e));
     } else {
-      obj.txs = [];
+      obj.txs = message.txs;
     }
     obj.local_last_commit = message.localLastCommit
       ? ExtendedCommitInfo.toAmino(message.localLastCommit)
@@ -2964,9 +3268,9 @@ export const RequestPrepareProposal = {
     if (message.misbehavior) {
       obj.misbehavior = message.misbehavior.map((e) => (e ? Misbehavior.toAmino(e) : undefined));
     } else {
-      obj.misbehavior = [];
+      obj.misbehavior = message.misbehavior;
     }
-    obj.height = message.height ? message.height.toString() : undefined;
+    obj.height = message.height !== BigInt(0) ? message.height?.toString() : undefined;
     obj.time = message.time ? Timestamp.toAmino(message.time) : undefined;
     obj.next_validators_hash = message.nextValidatorsHash
       ? base64FromBytes(message.nextValidatorsHash)
@@ -3083,7 +3387,7 @@ export const RequestProcessProposal = {
     if (isSet(object.proposerAddress)) obj.proposerAddress = bytesFromBase64(object.proposerAddress);
     return obj;
   },
-  toJSON(message: RequestProcessProposal): unknown {
+  toJSON(message: RequestProcessProposal): JsonSafe<RequestProcessProposal> {
     const obj: any = {};
     if (message.txs) {
       obj.txs = message.txs.map((e) => base64FromBytes(e !== undefined ? e : new Uint8Array()));
@@ -3160,7 +3464,7 @@ export const RequestProcessProposal = {
     if (message.txs) {
       obj.txs = message.txs.map((e) => base64FromBytes(e));
     } else {
-      obj.txs = [];
+      obj.txs = message.txs;
     }
     obj.proposed_last_commit = message.proposedLastCommit
       ? CommitInfo.toAmino(message.proposedLastCommit)
@@ -3168,10 +3472,10 @@ export const RequestProcessProposal = {
     if (message.misbehavior) {
       obj.misbehavior = message.misbehavior.map((e) => (e ? Misbehavior.toAmino(e) : undefined));
     } else {
-      obj.misbehavior = [];
+      obj.misbehavior = message.misbehavior;
     }
     obj.hash = message.hash ? base64FromBytes(message.hash) : undefined;
-    obj.height = message.height ? message.height.toString() : undefined;
+    obj.height = message.height !== BigInt(0) ? message.height?.toString() : undefined;
     obj.time = message.time ? Timestamp.toAmino(message.time) : undefined;
     obj.next_validators_hash = message.nextValidatorsHash
       ? base64FromBytes(message.nextValidatorsHash)
@@ -3288,7 +3592,7 @@ export const RequestExtendVote = {
     if (isSet(object.proposerAddress)) obj.proposerAddress = bytesFromBase64(object.proposerAddress);
     return obj;
   },
-  toJSON(message: RequestExtendVote): unknown {
+  toJSON(message: RequestExtendVote): JsonSafe<RequestExtendVote> {
     const obj: any = {};
     message.hash !== undefined &&
       (obj.hash = base64FromBytes(message.hash !== undefined ? message.hash : new Uint8Array()));
@@ -3363,12 +3667,12 @@ export const RequestExtendVote = {
   toAmino(message: RequestExtendVote): RequestExtendVoteAmino {
     const obj: any = {};
     obj.hash = message.hash ? base64FromBytes(message.hash) : undefined;
-    obj.height = message.height ? message.height.toString() : undefined;
+    obj.height = message.height !== BigInt(0) ? message.height?.toString() : undefined;
     obj.time = message.time ? Timestamp.toAmino(message.time) : undefined;
     if (message.txs) {
       obj.txs = message.txs.map((e) => base64FromBytes(e));
     } else {
-      obj.txs = [];
+      obj.txs = message.txs;
     }
     obj.proposed_last_commit = message.proposedLastCommit
       ? CommitInfo.toAmino(message.proposedLastCommit)
@@ -3376,7 +3680,7 @@ export const RequestExtendVote = {
     if (message.misbehavior) {
       obj.misbehavior = message.misbehavior.map((e) => (e ? Misbehavior.toAmino(e) : undefined));
     } else {
-      obj.misbehavior = [];
+      obj.misbehavior = message.misbehavior;
     }
     obj.next_validators_hash = message.nextValidatorsHash
       ? base64FromBytes(message.nextValidatorsHash)
@@ -3459,7 +3763,7 @@ export const RequestVerifyVoteExtension = {
     if (isSet(object.voteExtension)) obj.voteExtension = bytesFromBase64(object.voteExtension);
     return obj;
   },
-  toJSON(message: RequestVerifyVoteExtension): unknown {
+  toJSON(message: RequestVerifyVoteExtension): JsonSafe<RequestVerifyVoteExtension> {
     const obj: any = {};
     message.hash !== undefined &&
       (obj.hash = base64FromBytes(message.hash !== undefined ? message.hash : new Uint8Array()));
@@ -3504,7 +3808,7 @@ export const RequestVerifyVoteExtension = {
     const obj: any = {};
     obj.hash = message.hash ? base64FromBytes(message.hash) : undefined;
     obj.validator_address = message.validatorAddress ? base64FromBytes(message.validatorAddress) : undefined;
-    obj.height = message.height ? message.height.toString() : undefined;
+    obj.height = message.height !== BigInt(0) ? message.height?.toString() : undefined;
     obj.vote_extension = message.voteExtension ? base64FromBytes(message.voteExtension) : undefined;
     return obj;
   },
@@ -3617,7 +3921,7 @@ export const RequestFinalizeBlock = {
     if (isSet(object.proposerAddress)) obj.proposerAddress = bytesFromBase64(object.proposerAddress);
     return obj;
   },
-  toJSON(message: RequestFinalizeBlock): unknown {
+  toJSON(message: RequestFinalizeBlock): JsonSafe<RequestFinalizeBlock> {
     const obj: any = {};
     if (message.txs) {
       obj.txs = message.txs.map((e) => base64FromBytes(e !== undefined ? e : new Uint8Array()));
@@ -3694,7 +3998,7 @@ export const RequestFinalizeBlock = {
     if (message.txs) {
       obj.txs = message.txs.map((e) => base64FromBytes(e));
     } else {
-      obj.txs = [];
+      obj.txs = message.txs;
     }
     obj.decided_last_commit = message.decidedLastCommit
       ? CommitInfo.toAmino(message.decidedLastCommit)
@@ -3702,10 +4006,10 @@ export const RequestFinalizeBlock = {
     if (message.misbehavior) {
       obj.misbehavior = message.misbehavior.map((e) => (e ? Misbehavior.toAmino(e) : undefined));
     } else {
-      obj.misbehavior = [];
+      obj.misbehavior = message.misbehavior;
     }
     obj.hash = message.hash ? base64FromBytes(message.hash) : undefined;
-    obj.height = message.height ? message.height.toString() : undefined;
+    obj.height = message.height !== BigInt(0) ? message.height?.toString() : undefined;
     obj.time = message.time ? Timestamp.toAmino(message.time) : undefined;
     obj.next_validators_hash = message.nextValidatorsHash
       ? base64FromBytes(message.nextValidatorsHash)
@@ -3897,7 +4201,7 @@ export const Response = {
     if (isSet(object.finalizeBlock)) obj.finalizeBlock = ResponseFinalizeBlock.fromJSON(object.finalizeBlock);
     return obj;
   },
-  toJSON(message: Response): unknown {
+  toJSON(message: Response): JsonSafe<Response> {
     const obj: any = {};
     message.exception !== undefined &&
       (obj.exception = message.exception ? ResponseException.toJSON(message.exception) : undefined);
@@ -4147,7 +4451,7 @@ export const ResponseException = {
     if (isSet(object.error)) obj.error = String(object.error);
     return obj;
   },
-  toJSON(message: ResponseException): unknown {
+  toJSON(message: ResponseException): JsonSafe<ResponseException> {
     const obj: any = {};
     message.error !== undefined && (obj.error = message.error);
     return obj;
@@ -4166,7 +4470,7 @@ export const ResponseException = {
   },
   toAmino(message: ResponseException): ResponseExceptionAmino {
     const obj: any = {};
-    obj.error = message.error;
+    obj.error = message.error === "" ? undefined : message.error;
     return obj;
   },
   fromAminoMsg(object: ResponseExceptionAminoMsg): ResponseException {
@@ -4220,7 +4524,7 @@ export const ResponseEcho = {
     if (isSet(object.message)) obj.message = String(object.message);
     return obj;
   },
-  toJSON(message: ResponseEcho): unknown {
+  toJSON(message: ResponseEcho): JsonSafe<ResponseEcho> {
     const obj: any = {};
     message.message !== undefined && (obj.message = message.message);
     return obj;
@@ -4239,7 +4543,7 @@ export const ResponseEcho = {
   },
   toAmino(message: ResponseEcho): ResponseEchoAmino {
     const obj: any = {};
-    obj.message = message.message;
+    obj.message = message.message === "" ? undefined : message.message;
     return obj;
   },
   fromAminoMsg(object: ResponseEchoAminoMsg): ResponseEcho {
@@ -4284,7 +4588,7 @@ export const ResponseFlush = {
     const obj = createBaseResponseFlush();
     return obj;
   },
-  toJSON(_: ResponseFlush): unknown {
+  toJSON(_: ResponseFlush): JsonSafe<ResponseFlush> {
     const obj: any = {};
     return obj;
   },
@@ -4383,7 +4687,7 @@ export const ResponseInfo = {
     if (isSet(object.lastBlockAppHash)) obj.lastBlockAppHash = bytesFromBase64(object.lastBlockAppHash);
     return obj;
   },
-  toJSON(message: ResponseInfo): unknown {
+  toJSON(message: ResponseInfo): JsonSafe<ResponseInfo> {
     const obj: any = {};
     message.data !== undefined && (obj.data = message.data);
     message.version !== undefined && (obj.version = message.version);
@@ -4430,10 +4734,11 @@ export const ResponseInfo = {
   },
   toAmino(message: ResponseInfo): ResponseInfoAmino {
     const obj: any = {};
-    obj.data = message.data;
-    obj.version = message.version;
-    obj.app_version = message.appVersion ? message.appVersion.toString() : undefined;
-    obj.last_block_height = message.lastBlockHeight ? message.lastBlockHeight.toString() : undefined;
+    obj.data = message.data === "" ? undefined : message.data;
+    obj.version = message.version === "" ? undefined : message.version;
+    obj.app_version = message.appVersion !== BigInt(0) ? message.appVersion?.toString() : undefined;
+    obj.last_block_height =
+      message.lastBlockHeight !== BigInt(0) ? message.lastBlockHeight?.toString() : undefined;
     obj.last_block_app_hash = message.lastBlockAppHash
       ? base64FromBytes(message.lastBlockAppHash)
       : undefined;
@@ -4507,7 +4812,7 @@ export const ResponseInitChain = {
     if (isSet(object.appHash)) obj.appHash = bytesFromBase64(object.appHash);
     return obj;
   },
-  toJSON(message: ResponseInitChain): unknown {
+  toJSON(message: ResponseInitChain): JsonSafe<ResponseInitChain> {
     const obj: any = {};
     message.consensusParams !== undefined &&
       (obj.consensusParams = message.consensusParams
@@ -4550,7 +4855,7 @@ export const ResponseInitChain = {
     if (message.validators) {
       obj.validators = message.validators.map((e) => (e ? ValidatorUpdate.toAmino(e) : undefined));
     } else {
-      obj.validators = [];
+      obj.validators = message.validators;
     }
     obj.app_hash = message.appHash ? base64FromBytes(message.appHash) : undefined;
     return obj;
@@ -4670,7 +4975,7 @@ export const ResponseQuery = {
     if (isSet(object.codespace)) obj.codespace = String(object.codespace);
     return obj;
   },
-  toJSON(message: ResponseQuery): unknown {
+  toJSON(message: ResponseQuery): JsonSafe<ResponseQuery> {
     const obj: any = {};
     message.code !== undefined && (obj.code = Math.round(message.code));
     message.log !== undefined && (obj.log = message.log);
@@ -4738,15 +5043,15 @@ export const ResponseQuery = {
   },
   toAmino(message: ResponseQuery): ResponseQueryAmino {
     const obj: any = {};
-    obj.code = message.code;
-    obj.log = message.log;
-    obj.info = message.info;
-    obj.index = message.index ? message.index.toString() : undefined;
+    obj.code = message.code === 0 ? undefined : message.code;
+    obj.log = message.log === "" ? undefined : message.log;
+    obj.info = message.info === "" ? undefined : message.info;
+    obj.index = message.index !== BigInt(0) ? message.index?.toString() : undefined;
     obj.key = message.key ? base64FromBytes(message.key) : undefined;
     obj.value = message.value ? base64FromBytes(message.value) : undefined;
     obj.proof_ops = message.proofOps ? ProofOps.toAmino(message.proofOps) : undefined;
-    obj.height = message.height ? message.height.toString() : undefined;
-    obj.codespace = message.codespace;
+    obj.height = message.height !== BigInt(0) ? message.height?.toString() : undefined;
+    obj.codespace = message.codespace === "" ? undefined : message.codespace;
     return obj;
   },
   fromAminoMsg(object: ResponseQueryAminoMsg): ResponseQuery {
@@ -4856,7 +5161,7 @@ export const ResponseCheckTx = {
     if (isSet(object.codespace)) obj.codespace = String(object.codespace);
     return obj;
   },
-  toJSON(message: ResponseCheckTx): unknown {
+  toJSON(message: ResponseCheckTx): JsonSafe<ResponseCheckTx> {
     const obj: any = {};
     message.code !== undefined && (obj.code = Math.round(message.code));
     message.data !== undefined &&
@@ -4917,18 +5222,18 @@ export const ResponseCheckTx = {
   },
   toAmino(message: ResponseCheckTx): ResponseCheckTxAmino {
     const obj: any = {};
-    obj.code = message.code;
+    obj.code = message.code === 0 ? undefined : message.code;
     obj.data = message.data ? base64FromBytes(message.data) : undefined;
-    obj.log = message.log;
-    obj.info = message.info;
-    obj.gas_wanted = message.gasWanted ? message.gasWanted.toString() : undefined;
-    obj.gas_used = message.gasUsed ? message.gasUsed.toString() : undefined;
+    obj.log = message.log === "" ? undefined : message.log;
+    obj.info = message.info === "" ? undefined : message.info;
+    obj.gas_wanted = message.gasWanted !== BigInt(0) ? message.gasWanted?.toString() : undefined;
+    obj.gas_used = message.gasUsed !== BigInt(0) ? message.gasUsed?.toString() : undefined;
     if (message.events) {
       obj.events = message.events.map((e) => (e ? Event.toAmino(e) : undefined));
     } else {
-      obj.events = [];
+      obj.events = message.events;
     }
-    obj.codespace = message.codespace;
+    obj.codespace = message.codespace === "" ? undefined : message.codespace;
     return obj;
   },
   fromAminoMsg(object: ResponseCheckTxAminoMsg): ResponseCheckTx {
@@ -4982,7 +5287,7 @@ export const ResponseCommit = {
     if (isSet(object.retainHeight)) obj.retainHeight = BigInt(object.retainHeight.toString());
     return obj;
   },
-  toJSON(message: ResponseCommit): unknown {
+  toJSON(message: ResponseCommit): JsonSafe<ResponseCommit> {
     const obj: any = {};
     message.retainHeight !== undefined && (obj.retainHeight = (message.retainHeight || BigInt(0)).toString());
     return obj;
@@ -5003,7 +5308,7 @@ export const ResponseCommit = {
   },
   toAmino(message: ResponseCommit): ResponseCommitAmino {
     const obj: any = {};
-    obj.retain_height = message.retainHeight ? message.retainHeight.toString() : undefined;
+    obj.retain_height = message.retainHeight !== BigInt(0) ? message.retainHeight?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: ResponseCommitAminoMsg): ResponseCommit {
@@ -5058,7 +5363,7 @@ export const ResponseListSnapshots = {
       obj.snapshots = object.snapshots.map((e: any) => Snapshot.fromJSON(e));
     return obj;
   },
-  toJSON(message: ResponseListSnapshots): unknown {
+  toJSON(message: ResponseListSnapshots): JsonSafe<ResponseListSnapshots> {
     const obj: any = {};
     if (message.snapshots) {
       obj.snapshots = message.snapshots.map((e) => (e ? Snapshot.toJSON(e) : undefined));
@@ -5082,7 +5387,7 @@ export const ResponseListSnapshots = {
     if (message.snapshots) {
       obj.snapshots = message.snapshots.map((e) => (e ? Snapshot.toAmino(e) : undefined));
     } else {
-      obj.snapshots = [];
+      obj.snapshots = message.snapshots;
     }
     return obj;
   },
@@ -5137,7 +5442,7 @@ export const ResponseOfferSnapshot = {
     if (isSet(object.result)) obj.result = responseOfferSnapshot_ResultFromJSON(object.result);
     return obj;
   },
-  toJSON(message: ResponseOfferSnapshot): unknown {
+  toJSON(message: ResponseOfferSnapshot): JsonSafe<ResponseOfferSnapshot> {
     const obj: any = {};
     message.result !== undefined && (obj.result = responseOfferSnapshot_ResultToJSON(message.result));
     return obj;
@@ -5150,13 +5455,13 @@ export const ResponseOfferSnapshot = {
   fromAmino(object: ResponseOfferSnapshotAmino): ResponseOfferSnapshot {
     const message = createBaseResponseOfferSnapshot();
     if (object.result !== undefined && object.result !== null) {
-      message.result = responseOfferSnapshot_ResultFromJSON(object.result);
+      message.result = object.result;
     }
     return message;
   },
   toAmino(message: ResponseOfferSnapshot): ResponseOfferSnapshotAmino {
     const obj: any = {};
-    obj.result = message.result;
+    obj.result = message.result === 0 ? undefined : message.result;
     return obj;
   },
   fromAminoMsg(object: ResponseOfferSnapshotAminoMsg): ResponseOfferSnapshot {
@@ -5210,7 +5515,7 @@ export const ResponseLoadSnapshotChunk = {
     if (isSet(object.chunk)) obj.chunk = bytesFromBase64(object.chunk);
     return obj;
   },
-  toJSON(message: ResponseLoadSnapshotChunk): unknown {
+  toJSON(message: ResponseLoadSnapshotChunk): JsonSafe<ResponseLoadSnapshotChunk> {
     const obj: any = {};
     message.chunk !== undefined &&
       (obj.chunk = base64FromBytes(message.chunk !== undefined ? message.chunk : new Uint8Array()));
@@ -5311,7 +5616,7 @@ export const ResponseApplySnapshotChunk = {
       obj.rejectSenders = object.rejectSenders.map((e: any) => String(e));
     return obj;
   },
-  toJSON(message: ResponseApplySnapshotChunk): unknown {
+  toJSON(message: ResponseApplySnapshotChunk): JsonSafe<ResponseApplySnapshotChunk> {
     const obj: any = {};
     message.result !== undefined && (obj.result = responseApplySnapshotChunk_ResultToJSON(message.result));
     if (message.refetchChunks) {
@@ -5336,7 +5641,7 @@ export const ResponseApplySnapshotChunk = {
   fromAmino(object: ResponseApplySnapshotChunkAmino): ResponseApplySnapshotChunk {
     const message = createBaseResponseApplySnapshotChunk();
     if (object.result !== undefined && object.result !== null) {
-      message.result = responseApplySnapshotChunk_ResultFromJSON(object.result);
+      message.result = object.result;
     }
     message.refetchChunks = object.refetch_chunks?.map((e) => e) || [];
     message.rejectSenders = object.reject_senders?.map((e) => e) || [];
@@ -5344,16 +5649,16 @@ export const ResponseApplySnapshotChunk = {
   },
   toAmino(message: ResponseApplySnapshotChunk): ResponseApplySnapshotChunkAmino {
     const obj: any = {};
-    obj.result = message.result;
+    obj.result = message.result === 0 ? undefined : message.result;
     if (message.refetchChunks) {
       obj.refetch_chunks = message.refetchChunks.map((e) => e);
     } else {
-      obj.refetch_chunks = [];
+      obj.refetch_chunks = message.refetchChunks;
     }
     if (message.rejectSenders) {
       obj.reject_senders = message.rejectSenders.map((e) => e);
     } else {
-      obj.reject_senders = [];
+      obj.reject_senders = message.rejectSenders;
     }
     return obj;
   },
@@ -5408,7 +5713,7 @@ export const ResponsePrepareProposal = {
     if (Array.isArray(object?.txs)) obj.txs = object.txs.map((e: any) => bytesFromBase64(e));
     return obj;
   },
-  toJSON(message: ResponsePrepareProposal): unknown {
+  toJSON(message: ResponsePrepareProposal): JsonSafe<ResponsePrepareProposal> {
     const obj: any = {};
     if (message.txs) {
       obj.txs = message.txs.map((e) => base64FromBytes(e !== undefined ? e : new Uint8Array()));
@@ -5432,7 +5737,7 @@ export const ResponsePrepareProposal = {
     if (message.txs) {
       obj.txs = message.txs.map((e) => base64FromBytes(e));
     } else {
-      obj.txs = [];
+      obj.txs = message.txs;
     }
     return obj;
   },
@@ -5487,7 +5792,7 @@ export const ResponseProcessProposal = {
     if (isSet(object.status)) obj.status = responseProcessProposal_ProposalStatusFromJSON(object.status);
     return obj;
   },
-  toJSON(message: ResponseProcessProposal): unknown {
+  toJSON(message: ResponseProcessProposal): JsonSafe<ResponseProcessProposal> {
     const obj: any = {};
     message.status !== undefined &&
       (obj.status = responseProcessProposal_ProposalStatusToJSON(message.status));
@@ -5501,13 +5806,13 @@ export const ResponseProcessProposal = {
   fromAmino(object: ResponseProcessProposalAmino): ResponseProcessProposal {
     const message = createBaseResponseProcessProposal();
     if (object.status !== undefined && object.status !== null) {
-      message.status = responseProcessProposal_ProposalStatusFromJSON(object.status);
+      message.status = object.status;
     }
     return message;
   },
   toAmino(message: ResponseProcessProposal): ResponseProcessProposalAmino {
     const obj: any = {};
-    obj.status = message.status;
+    obj.status = message.status === 0 ? undefined : message.status;
     return obj;
   },
   fromAminoMsg(object: ResponseProcessProposalAminoMsg): ResponseProcessProposal {
@@ -5561,7 +5866,7 @@ export const ResponseExtendVote = {
     if (isSet(object.voteExtension)) obj.voteExtension = bytesFromBase64(object.voteExtension);
     return obj;
   },
-  toJSON(message: ResponseExtendVote): unknown {
+  toJSON(message: ResponseExtendVote): JsonSafe<ResponseExtendVote> {
     const obj: any = {};
     message.voteExtension !== undefined &&
       (obj.voteExtension = base64FromBytes(
@@ -5637,7 +5942,7 @@ export const ResponseVerifyVoteExtension = {
     if (isSet(object.status)) obj.status = responseVerifyVoteExtension_VerifyStatusFromJSON(object.status);
     return obj;
   },
-  toJSON(message: ResponseVerifyVoteExtension): unknown {
+  toJSON(message: ResponseVerifyVoteExtension): JsonSafe<ResponseVerifyVoteExtension> {
     const obj: any = {};
     message.status !== undefined &&
       (obj.status = responseVerifyVoteExtension_VerifyStatusToJSON(message.status));
@@ -5651,13 +5956,13 @@ export const ResponseVerifyVoteExtension = {
   fromAmino(object: ResponseVerifyVoteExtensionAmino): ResponseVerifyVoteExtension {
     const message = createBaseResponseVerifyVoteExtension();
     if (object.status !== undefined && object.status !== null) {
-      message.status = responseVerifyVoteExtension_VerifyStatusFromJSON(object.status);
+      message.status = object.status;
     }
     return message;
   },
   toAmino(message: ResponseVerifyVoteExtension): ResponseVerifyVoteExtensionAmino {
     const obj: any = {};
-    obj.status = message.status;
+    obj.status = message.status === 0 ? undefined : message.status;
     return obj;
   },
   fromAminoMsg(object: ResponseVerifyVoteExtensionAminoMsg): ResponseVerifyVoteExtension {
@@ -5746,7 +6051,7 @@ export const ResponseFinalizeBlock = {
     if (isSet(object.appHash)) obj.appHash = bytesFromBase64(object.appHash);
     return obj;
   },
-  toJSON(message: ResponseFinalizeBlock): unknown {
+  toJSON(message: ResponseFinalizeBlock): JsonSafe<ResponseFinalizeBlock> {
     const obj: any = {};
     if (message.events) {
       obj.events = message.events.map((e) => (e ? Event.toJSON(e) : undefined));
@@ -5800,19 +6105,19 @@ export const ResponseFinalizeBlock = {
     if (message.events) {
       obj.events = message.events.map((e) => (e ? Event.toAmino(e) : undefined));
     } else {
-      obj.events = [];
+      obj.events = message.events;
     }
     if (message.txResults) {
       obj.tx_results = message.txResults.map((e) => (e ? ExecTxResult.toAmino(e) : undefined));
     } else {
-      obj.tx_results = [];
+      obj.tx_results = message.txResults;
     }
     if (message.validatorUpdates) {
       obj.validator_updates = message.validatorUpdates.map((e) =>
         e ? ValidatorUpdate.toAmino(e) : undefined,
       );
     } else {
-      obj.validator_updates = [];
+      obj.validator_updates = message.validatorUpdates;
     }
     obj.consensus_param_updates = message.consensusParamUpdates
       ? ConsensusParams.toAmino(message.consensusParamUpdates)
@@ -5879,7 +6184,7 @@ export const CommitInfo = {
     if (Array.isArray(object?.votes)) obj.votes = object.votes.map((e: any) => VoteInfo.fromJSON(e));
     return obj;
   },
-  toJSON(message: CommitInfo): unknown {
+  toJSON(message: CommitInfo): JsonSafe<CommitInfo> {
     const obj: any = {};
     message.round !== undefined && (obj.round = Math.round(message.round));
     if (message.votes) {
@@ -5905,11 +6210,11 @@ export const CommitInfo = {
   },
   toAmino(message: CommitInfo): CommitInfoAmino {
     const obj: any = {};
-    obj.round = message.round;
+    obj.round = message.round === 0 ? undefined : message.round;
     if (message.votes) {
       obj.votes = message.votes.map((e) => (e ? VoteInfo.toAmino(e) : undefined));
     } else {
-      obj.votes = [];
+      obj.votes = message.votes;
     }
     return obj;
   },
@@ -5972,7 +6277,7 @@ export const ExtendedCommitInfo = {
     if (Array.isArray(object?.votes)) obj.votes = object.votes.map((e: any) => ExtendedVoteInfo.fromJSON(e));
     return obj;
   },
-  toJSON(message: ExtendedCommitInfo): unknown {
+  toJSON(message: ExtendedCommitInfo): JsonSafe<ExtendedCommitInfo> {
     const obj: any = {};
     message.round !== undefined && (obj.round = Math.round(message.round));
     if (message.votes) {
@@ -5998,11 +6303,11 @@ export const ExtendedCommitInfo = {
   },
   toAmino(message: ExtendedCommitInfo): ExtendedCommitInfoAmino {
     const obj: any = {};
-    obj.round = message.round;
+    obj.round = message.round === 0 ? undefined : message.round;
     if (message.votes) {
       obj.votes = message.votes.map((e) => (e ? ExtendedVoteInfo.toAmino(e) : undefined));
     } else {
-      obj.votes = [];
+      obj.votes = message.votes;
     }
     return obj;
   },
@@ -6066,7 +6371,7 @@ export const Event = {
       obj.attributes = object.attributes.map((e: any) => EventAttribute.fromJSON(e));
     return obj;
   },
-  toJSON(message: Event): unknown {
+  toJSON(message: Event): JsonSafe<Event> {
     const obj: any = {};
     message.type !== undefined && (obj.type = message.type);
     if (message.attributes) {
@@ -6092,11 +6397,11 @@ export const Event = {
   },
   toAmino(message: Event): EventAmino {
     const obj: any = {};
-    obj.type = message.type;
+    obj.type = message.type === "" ? undefined : message.type;
     if (message.attributes) {
       obj.attributes = message.attributes.map((e) => (e ? EventAttribute.toAmino(e) : undefined));
     } else {
-      obj.attributes = [];
+      obj.attributes = message.attributes;
     }
     return obj;
   },
@@ -6167,7 +6472,7 @@ export const EventAttribute = {
     if (isSet(object.index)) obj.index = Boolean(object.index);
     return obj;
   },
-  toJSON(message: EventAttribute): unknown {
+  toJSON(message: EventAttribute): JsonSafe<EventAttribute> {
     const obj: any = {};
     message.key !== undefined && (obj.key = message.key);
     message.value !== undefined && (obj.value = message.value);
@@ -6196,9 +6501,9 @@ export const EventAttribute = {
   },
   toAmino(message: EventAttribute): EventAttributeAmino {
     const obj: any = {};
-    obj.key = message.key;
-    obj.value = message.value;
-    obj.index = message.index;
+    obj.key = message.key === "" ? undefined : message.key;
+    obj.value = message.value === "" ? undefined : message.value;
+    obj.index = message.index === false ? undefined : message.index;
     return obj;
   },
   fromAminoMsg(object: EventAttributeAminoMsg): EventAttribute {
@@ -6308,7 +6613,7 @@ export const ExecTxResult = {
     if (isSet(object.codespace)) obj.codespace = String(object.codespace);
     return obj;
   },
-  toJSON(message: ExecTxResult): unknown {
+  toJSON(message: ExecTxResult): JsonSafe<ExecTxResult> {
     const obj: any = {};
     message.code !== undefined && (obj.code = Math.round(message.code));
     message.data !== undefined &&
@@ -6369,18 +6674,18 @@ export const ExecTxResult = {
   },
   toAmino(message: ExecTxResult): ExecTxResultAmino {
     const obj: any = {};
-    obj.code = message.code;
+    obj.code = message.code === 0 ? undefined : message.code;
     obj.data = message.data ? base64FromBytes(message.data) : undefined;
-    obj.log = message.log;
-    obj.info = message.info;
-    obj.gas_wanted = message.gasWanted ? message.gasWanted.toString() : undefined;
-    obj.gas_used = message.gasUsed ? message.gasUsed.toString() : undefined;
+    obj.log = message.log === "" ? undefined : message.log;
+    obj.info = message.info === "" ? undefined : message.info;
+    obj.gas_wanted = message.gasWanted !== BigInt(0) ? message.gasWanted?.toString() : undefined;
+    obj.gas_used = message.gasUsed !== BigInt(0) ? message.gasUsed?.toString() : undefined;
     if (message.events) {
       obj.events = message.events.map((e) => (e ? Event.toAmino(e) : undefined));
     } else {
-      obj.events = [];
+      obj.events = message.events;
     }
-    obj.codespace = message.codespace;
+    obj.codespace = message.codespace === "" ? undefined : message.codespace;
     return obj;
   },
   fromAminoMsg(object: ExecTxResultAminoMsg): ExecTxResult {
@@ -6458,7 +6763,7 @@ export const TxResult = {
     if (isSet(object.result)) obj.result = ExecTxResult.fromJSON(object.result);
     return obj;
   },
-  toJSON(message: TxResult): unknown {
+  toJSON(message: TxResult): JsonSafe<TxResult> {
     const obj: any = {};
     message.height !== undefined && (obj.height = (message.height || BigInt(0)).toString());
     message.index !== undefined && (obj.index = Math.round(message.index));
@@ -6498,8 +6803,8 @@ export const TxResult = {
   },
   toAmino(message: TxResult): TxResultAmino {
     const obj: any = {};
-    obj.height = message.height ? message.height.toString() : undefined;
-    obj.index = message.index;
+    obj.height = message.height !== BigInt(0) ? message.height?.toString() : undefined;
+    obj.index = message.index === 0 ? undefined : message.index;
     obj.tx = message.tx ? base64FromBytes(message.tx) : undefined;
     obj.result = message.result ? ExecTxResult.toAmino(message.result) : undefined;
     return obj;
@@ -6563,7 +6868,7 @@ export const Validator = {
     if (isSet(object.power)) obj.power = BigInt(object.power.toString());
     return obj;
   },
-  toJSON(message: Validator): unknown {
+  toJSON(message: Validator): JsonSafe<Validator> {
     const obj: any = {};
     message.address !== undefined &&
       (obj.address = base64FromBytes(message.address !== undefined ? message.address : new Uint8Array()));
@@ -6591,7 +6896,7 @@ export const Validator = {
   toAmino(message: Validator): ValidatorAmino {
     const obj: any = {};
     obj.address = message.address ? base64FromBytes(message.address) : undefined;
-    obj.power = message.power ? message.power.toString() : undefined;
+    obj.power = message.power !== BigInt(0) ? message.power?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: ValidatorAminoMsg): Validator {
@@ -6653,7 +6958,7 @@ export const ValidatorUpdate = {
     if (isSet(object.power)) obj.power = BigInt(object.power.toString());
     return obj;
   },
-  toJSON(message: ValidatorUpdate): unknown {
+  toJSON(message: ValidatorUpdate): JsonSafe<ValidatorUpdate> {
     const obj: any = {};
     message.pubKey !== undefined &&
       (obj.pubKey = message.pubKey ? PublicKey.toJSON(message.pubKey) : undefined);
@@ -6683,7 +6988,7 @@ export const ValidatorUpdate = {
   toAmino(message: ValidatorUpdate): ValidatorUpdateAmino {
     const obj: any = {};
     obj.pub_key = message.pubKey ? PublicKey.toAmino(message.pubKey) : undefined;
-    obj.power = message.power ? message.power.toString() : undefined;
+    obj.power = message.power !== BigInt(0) ? message.power?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: ValidatorUpdateAminoMsg): ValidatorUpdate {
@@ -6745,7 +7050,7 @@ export const VoteInfo = {
     if (isSet(object.blockIdFlag)) obj.blockIdFlag = blockIDFlagFromJSON(object.blockIdFlag);
     return obj;
   },
-  toJSON(message: VoteInfo): unknown {
+  toJSON(message: VoteInfo): JsonSafe<VoteInfo> {
     const obj: any = {};
     message.validator !== undefined &&
       (obj.validator = message.validator ? Validator.toJSON(message.validator) : undefined);
@@ -6766,14 +7071,14 @@ export const VoteInfo = {
       message.validator = Validator.fromAmino(object.validator);
     }
     if (object.block_id_flag !== undefined && object.block_id_flag !== null) {
-      message.blockIdFlag = blockIDFlagFromJSON(object.block_id_flag);
+      message.blockIdFlag = object.block_id_flag;
     }
     return message;
   },
   toAmino(message: VoteInfo): VoteInfoAmino {
     const obj: any = {};
     obj.validator = message.validator ? Validator.toAmino(message.validator) : undefined;
-    obj.block_id_flag = message.blockIdFlag;
+    obj.block_id_flag = message.blockIdFlag === 0 ? undefined : message.blockIdFlag;
     return obj;
   },
   fromAminoMsg(object: VoteInfoAminoMsg): VoteInfo {
@@ -6851,7 +7156,7 @@ export const ExtendedVoteInfo = {
     if (isSet(object.blockIdFlag)) obj.blockIdFlag = blockIDFlagFromJSON(object.blockIdFlag);
     return obj;
   },
-  toJSON(message: ExtendedVoteInfo): unknown {
+  toJSON(message: ExtendedVoteInfo): JsonSafe<ExtendedVoteInfo> {
     const obj: any = {};
     message.validator !== undefined &&
       (obj.validator = message.validator ? Validator.toJSON(message.validator) : undefined);
@@ -6888,7 +7193,7 @@ export const ExtendedVoteInfo = {
       message.extensionSignature = bytesFromBase64(object.extension_signature);
     }
     if (object.block_id_flag !== undefined && object.block_id_flag !== null) {
-      message.blockIdFlag = blockIDFlagFromJSON(object.block_id_flag);
+      message.blockIdFlag = object.block_id_flag;
     }
     return message;
   },
@@ -6899,7 +7204,7 @@ export const ExtendedVoteInfo = {
     obj.extension_signature = message.extensionSignature
       ? base64FromBytes(message.extensionSignature)
       : undefined;
-    obj.block_id_flag = message.blockIdFlag;
+    obj.block_id_flag = message.blockIdFlag === 0 ? undefined : message.blockIdFlag;
     return obj;
   },
   fromAminoMsg(object: ExtendedVoteInfoAminoMsg): ExtendedVoteInfo {
@@ -6985,7 +7290,7 @@ export const Misbehavior = {
     if (isSet(object.totalVotingPower)) obj.totalVotingPower = BigInt(object.totalVotingPower.toString());
     return obj;
   },
-  toJSON(message: Misbehavior): unknown {
+  toJSON(message: Misbehavior): JsonSafe<Misbehavior> {
     const obj: any = {};
     message.type !== undefined && (obj.type = misbehaviorTypeToJSON(message.type));
     message.validator !== undefined &&
@@ -7016,7 +7321,7 @@ export const Misbehavior = {
   fromAmino(object: MisbehaviorAmino): Misbehavior {
     const message = createBaseMisbehavior();
     if (object.type !== undefined && object.type !== null) {
-      message.type = misbehaviorTypeFromJSON(object.type);
+      message.type = object.type;
     }
     if (object.validator !== undefined && object.validator !== null) {
       message.validator = Validator.fromAmino(object.validator);
@@ -7034,11 +7339,12 @@ export const Misbehavior = {
   },
   toAmino(message: Misbehavior): MisbehaviorAmino {
     const obj: any = {};
-    obj.type = message.type;
+    obj.type = message.type === 0 ? undefined : message.type;
     obj.validator = message.validator ? Validator.toAmino(message.validator) : undefined;
-    obj.height = message.height ? message.height.toString() : undefined;
+    obj.height = message.height !== BigInt(0) ? message.height?.toString() : undefined;
     obj.time = message.time ? Timestamp.toAmino(message.time) : undefined;
-    obj.total_voting_power = message.totalVotingPower ? message.totalVotingPower.toString() : undefined;
+    obj.total_voting_power =
+      message.totalVotingPower !== BigInt(0) ? message.totalVotingPower?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: MisbehaviorAminoMsg): Misbehavior {
@@ -7124,7 +7430,7 @@ export const Snapshot = {
     if (isSet(object.metadata)) obj.metadata = bytesFromBase64(object.metadata);
     return obj;
   },
-  toJSON(message: Snapshot): unknown {
+  toJSON(message: Snapshot): JsonSafe<Snapshot> {
     const obj: any = {};
     message.height !== undefined && (obj.height = (message.height || BigInt(0)).toString());
     message.format !== undefined && (obj.format = Math.round(message.format));
@@ -7167,9 +7473,9 @@ export const Snapshot = {
   },
   toAmino(message: Snapshot): SnapshotAmino {
     const obj: any = {};
-    obj.height = message.height ? message.height.toString() : undefined;
-    obj.format = message.format;
-    obj.chunks = message.chunks;
+    obj.height = message.height !== BigInt(0) ? message.height?.toString() : undefined;
+    obj.format = message.format === 0 ? undefined : message.format;
+    obj.chunks = message.chunks === 0 ? undefined : message.chunks;
     obj.hash = message.hash ? base64FromBytes(message.hash) : undefined;
     obj.metadata = message.metadata ? base64FromBytes(message.metadata) : undefined;
     return obj;

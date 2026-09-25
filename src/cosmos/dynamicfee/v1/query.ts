@@ -3,6 +3,7 @@ import { Params, ParamsAmino } from "./params";
 import { State, StateAmino } from "./genesis";
 import { DecCoin, DecCoinAmino } from "../../base/v1beta1/coin";
 import { BinaryReader, BinaryWriter } from "../../../binary";
+import { JsonSafe } from "../../../json-safe";
 import { isSet } from "../../../helpers";
 import { TxRpc } from "../../../types";
 export const protobufPackage = "cosmos.dynamicfee.v1";
@@ -12,7 +13,12 @@ export interface ParamsRequestProtoMsg {
   typeUrl: "/cosmos.dynamicfee.v1.ParamsRequest";
   value: Uint8Array;
 }
-/** ParamsRequest is the request type for the Query/Params RPC method. */
+/**
+ * ParamsRequest is the request type for the Query/Params RPC method.
+ * @name ParamsRequestAmino
+ * @package cosmos.dynamicfee.v1
+ * @see proto type: cosmos.dynamicfee.v1.ParamsRequest
+ */
 export interface ParamsRequestAmino {}
 export interface ParamsRequestAminoMsg {
   type: "cosmos-sdk/ParamsRequest";
@@ -26,7 +32,12 @@ export interface ParamsResponseProtoMsg {
   typeUrl: "/cosmos.dynamicfee.v1.ParamsResponse";
   value: Uint8Array;
 }
-/** ParamsResponse is the response type for the Query/Params RPC method. */
+/**
+ * ParamsResponse is the response type for the Query/Params RPC method.
+ * @name ParamsResponseAmino
+ * @package cosmos.dynamicfee.v1
+ * @see proto type: cosmos.dynamicfee.v1.ParamsResponse
+ */
 export interface ParamsResponseAmino {
   params?: ParamsAmino | undefined;
 }
@@ -40,7 +51,12 @@ export interface StateRequestProtoMsg {
   typeUrl: "/cosmos.dynamicfee.v1.StateRequest";
   value: Uint8Array;
 }
-/** StateRequest is the request type for the Query/State RPC method. */
+/**
+ * StateRequest is the request type for the Query/State RPC method.
+ * @name StateRequestAmino
+ * @package cosmos.dynamicfee.v1
+ * @see proto type: cosmos.dynamicfee.v1.StateRequest
+ */
 export interface StateRequestAmino {}
 export interface StateRequestAminoMsg {
   type: "cosmos-sdk/StateRequest";
@@ -54,7 +70,12 @@ export interface StateResponseProtoMsg {
   typeUrl: "/cosmos.dynamicfee.v1.StateResponse";
   value: Uint8Array;
 }
-/** StateResponse is the response type for the Query/State RPC method. */
+/**
+ * StateResponse is the response type for the Query/State RPC method.
+ * @name StateResponseAmino
+ * @package cosmos.dynamicfee.v1
+ * @see proto type: cosmos.dynamicfee.v1.StateResponse
+ */
 export interface StateResponseAmino {
   state?: StateAmino | undefined;
 }
@@ -71,9 +92,16 @@ export interface GasPriceRequestProtoMsg {
   typeUrl: "/cosmos.dynamicfee.v1.GasPriceRequest";
   value: Uint8Array;
 }
-/** GasPriceRequest is the request type for the Query/GasPrice RPC method. */
+/**
+ * GasPriceRequest is the request type for the Query/GasPrice RPC method.
+ * @name GasPriceRequestAmino
+ * @package cosmos.dynamicfee.v1
+ * @see proto type: cosmos.dynamicfee.v1.GasPriceRequest
+ */
 export interface GasPriceRequestAmino {
-  /** denom we are querying gas price in */
+  /**
+   * denom we are querying gas price in
+   */
   denom?: string;
 }
 export interface GasPriceRequestAminoMsg {
@@ -94,6 +122,9 @@ export interface GasPriceResponseProtoMsg {
 /**
  * GasPriceResponse is the response type for the Query/GasPrice RPC method.
  * Returns a gas price in specified denom.
+ * @name GasPriceResponseAmino
+ * @package cosmos.dynamicfee.v1
+ * @see proto type: cosmos.dynamicfee.v1.GasPriceResponse
  */
 export interface GasPriceResponseAmino {
   price: DecCoinAmino | undefined;
@@ -108,7 +139,12 @@ export interface GasPricesRequestProtoMsg {
   typeUrl: "/cosmos.dynamicfee.v1.GasPricesRequest";
   value: Uint8Array;
 }
-/** GasPriceRequest is the request type for the Query/GasPrices RPC method. */
+/**
+ * GasPriceRequest is the request type for the Query/GasPrices RPC method.
+ * @name GasPricesRequestAmino
+ * @package cosmos.dynamicfee.v1
+ * @see proto type: cosmos.dynamicfee.v1.GasPricesRequest
+ */
 export interface GasPricesRequestAmino {}
 export interface GasPricesRequestAminoMsg {
   type: "cosmos-sdk/GasPricesRequest";
@@ -128,6 +164,9 @@ export interface GasPricesResponseProtoMsg {
 /**
  * GasPricesResponse is the response type for the Query/GasPrices RPC method.
  * Returns a gas price in all available denoms.
+ * @name GasPricesResponseAmino
+ * @package cosmos.dynamicfee.v1
+ * @see proto type: cosmos.dynamicfee.v1.GasPricesResponse
  */
 export interface GasPricesResponseAmino {
   prices: DecCoinAmino[];
@@ -162,7 +201,7 @@ export const ParamsRequest = {
     const obj = createBaseParamsRequest();
     return obj;
   },
-  toJSON(_: ParamsRequest): unknown {
+  toJSON(_: ParamsRequest): JsonSafe<ParamsRequest> {
     const obj: any = {};
     return obj;
   },
@@ -235,7 +274,7 @@ export const ParamsResponse = {
     if (isSet(object.params)) obj.params = Params.fromJSON(object.params);
     return obj;
   },
-  toJSON(message: ParamsResponse): unknown {
+  toJSON(message: ParamsResponse): JsonSafe<ParamsResponse> {
     const obj: any = {};
     message.params !== undefined && (obj.params = message.params ? Params.toJSON(message.params) : undefined);
     return obj;
@@ -307,7 +346,7 @@ export const StateRequest = {
     const obj = createBaseStateRequest();
     return obj;
   },
-  toJSON(_: StateRequest): unknown {
+  toJSON(_: StateRequest): JsonSafe<StateRequest> {
     const obj: any = {};
     return obj;
   },
@@ -380,7 +419,7 @@ export const StateResponse = {
     if (isSet(object.state)) obj.state = State.fromJSON(object.state);
     return obj;
   },
-  toJSON(message: StateResponse): unknown {
+  toJSON(message: StateResponse): JsonSafe<StateResponse> {
     const obj: any = {};
     message.state !== undefined && (obj.state = message.state ? State.toJSON(message.state) : undefined);
     return obj;
@@ -461,7 +500,7 @@ export const GasPriceRequest = {
     if (isSet(object.denom)) obj.denom = String(object.denom);
     return obj;
   },
-  toJSON(message: GasPriceRequest): unknown {
+  toJSON(message: GasPriceRequest): JsonSafe<GasPriceRequest> {
     const obj: any = {};
     message.denom !== undefined && (obj.denom = message.denom);
     return obj;
@@ -480,7 +519,7 @@ export const GasPriceRequest = {
   },
   toAmino(message: GasPriceRequest): GasPriceRequestAmino {
     const obj: any = {};
-    obj.denom = message.denom;
+    obj.denom = message.denom === "" ? undefined : message.denom;
     return obj;
   },
   fromAminoMsg(object: GasPriceRequestAminoMsg): GasPriceRequest {
@@ -540,7 +579,7 @@ export const GasPriceResponse = {
     if (isSet(object.price)) obj.price = DecCoin.fromJSON(object.price);
     return obj;
   },
-  toJSON(message: GasPriceResponse): unknown {
+  toJSON(message: GasPriceResponse): JsonSafe<GasPriceResponse> {
     const obj: any = {};
     message.price !== undefined && (obj.price = message.price ? DecCoin.toJSON(message.price) : undefined);
     return obj;
@@ -561,7 +600,7 @@ export const GasPriceResponse = {
   },
   toAmino(message: GasPriceResponse): GasPriceResponseAmino {
     const obj: any = {};
-    obj.price = message.price ? DecCoin.toAmino(message.price) : DecCoin.fromPartial({});
+    obj.price = message.price ? DecCoin.toAmino(message.price) : DecCoin.toAmino(DecCoin.fromPartial({}));
     return obj;
   },
   fromAminoMsg(object: GasPriceResponseAminoMsg): GasPriceResponse {
@@ -612,7 +651,7 @@ export const GasPricesRequest = {
     const obj = createBaseGasPricesRequest();
     return obj;
   },
-  toJSON(_: GasPricesRequest): unknown {
+  toJSON(_: GasPricesRequest): JsonSafe<GasPricesRequest> {
     const obj: any = {};
     return obj;
   },
@@ -685,7 +724,7 @@ export const GasPricesResponse = {
     if (Array.isArray(object?.prices)) obj.prices = object.prices.map((e: any) => DecCoin.fromJSON(e));
     return obj;
   },
-  toJSON(message: GasPricesResponse): unknown {
+  toJSON(message: GasPricesResponse): JsonSafe<GasPricesResponse> {
     const obj: any = {};
     if (message.prices) {
       obj.prices = message.prices.map((e) => (e ? DecCoin.toJSON(e) : undefined));
@@ -709,7 +748,7 @@ export const GasPricesResponse = {
     if (message.prices) {
       obj.prices = message.prices.map((e) => (e ? DecCoin.toAmino(e) : undefined));
     } else {
-      obj.prices = [];
+      obj.prices = message.prices;
     }
     return obj;
   },

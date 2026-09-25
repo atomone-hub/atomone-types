@@ -2,6 +2,7 @@
 import { Height, HeightAmino } from "../../../core/client/v1/client";
 import { BinaryReader, BinaryWriter } from "../../../../binary";
 import { isSet, bytesFromBase64, base64FromBytes } from "../../../../helpers";
+import { JsonSafe } from "../../../../json-safe";
 export const protobufPackage = "ibc.lightclients.wasm.v1";
 /** Wasm light client's Client state */
 export interface ClientState {
@@ -17,7 +18,12 @@ export interface ClientStateProtoMsg {
   typeUrl: "/ibc.lightclients.wasm.v1.ClientState";
   value: Uint8Array;
 }
-/** Wasm light client's Client state */
+/**
+ * Wasm light client's Client state
+ * @name ClientStateAmino
+ * @package ibc.lightclients.wasm.v1
+ * @see proto type: ibc.lightclients.wasm.v1.ClientState
+ */
 export interface ClientStateAmino {
   /**
    * bytes encoding the client state of the underlying light client
@@ -43,7 +49,12 @@ export interface ConsensusStateProtoMsg {
   typeUrl: "/ibc.lightclients.wasm.v1.ConsensusState";
   value: Uint8Array;
 }
-/** Wasm light client's ConsensusState */
+/**
+ * Wasm light client's ConsensusState
+ * @name ConsensusStateAmino
+ * @package ibc.lightclients.wasm.v1
+ * @see proto type: ibc.lightclients.wasm.v1.ConsensusState
+ */
 export interface ConsensusStateAmino {
   /**
    * bytes encoding the consensus state of the underlying light client
@@ -63,7 +74,12 @@ export interface ClientMessageProtoMsg {
   typeUrl: "/ibc.lightclients.wasm.v1.ClientMessage";
   value: Uint8Array;
 }
-/** Wasm light client message (either header(s) or misbehaviour) */
+/**
+ * Wasm light client message (either header(s) or misbehaviour)
+ * @name ClientMessageAmino
+ * @package ibc.lightclients.wasm.v1
+ * @see proto type: ibc.lightclients.wasm.v1.ClientMessage
+ */
 export interface ClientMessageAmino {
   data?: string;
 }
@@ -90,8 +106,11 @@ export interface ChecksumsProtoMsg {
  *
  * Deprecated: This message is deprecated in favor of storing the checksums
  * using a Collections.KeySet.
+ * @name ChecksumsAmino
+ * @package ibc.lightclients.wasm.v1
+ * @see proto type: ibc.lightclients.wasm.v1.Checksums
+ * @deprecated
  */
-/** @deprecated */
 export interface ChecksumsAmino {
   checksums?: string[];
 }
@@ -150,7 +169,7 @@ export const ClientState = {
     if (isSet(object.latestHeight)) obj.latestHeight = Height.fromJSON(object.latestHeight);
     return obj;
   },
-  toJSON(message: ClientState): unknown {
+  toJSON(message: ClientState): JsonSafe<ClientState> {
     const obj: any = {};
     message.data !== undefined &&
       (obj.data = base64FromBytes(message.data !== undefined ? message.data : new Uint8Array()));
@@ -246,7 +265,7 @@ export const ConsensusState = {
     if (isSet(object.data)) obj.data = bytesFromBase64(object.data);
     return obj;
   },
-  toJSON(message: ConsensusState): unknown {
+  toJSON(message: ConsensusState): JsonSafe<ConsensusState> {
     const obj: any = {};
     message.data !== undefined &&
       (obj.data = base64FromBytes(message.data !== undefined ? message.data : new Uint8Array()));
@@ -326,7 +345,7 @@ export const ClientMessage = {
     if (isSet(object.data)) obj.data = bytesFromBase64(object.data);
     return obj;
   },
-  toJSON(message: ClientMessage): unknown {
+  toJSON(message: ClientMessage): JsonSafe<ClientMessage> {
     const obj: any = {};
     message.data !== undefined &&
       (obj.data = base64FromBytes(message.data !== undefined ? message.data : new Uint8Array()));
@@ -407,7 +426,7 @@ export const Checksums = {
       obj.checksums = object.checksums.map((e: any) => bytesFromBase64(e));
     return obj;
   },
-  toJSON(message: Checksums): unknown {
+  toJSON(message: Checksums): JsonSafe<Checksums> {
     const obj: any = {};
     if (message.checksums) {
       obj.checksums = message.checksums.map((e) => base64FromBytes(e !== undefined ? e : new Uint8Array()));
@@ -431,7 +450,7 @@ export const Checksums = {
     if (message.checksums) {
       obj.checksums = message.checksums.map((e) => base64FromBytes(e));
     } else {
-      obj.checksums = [];
+      obj.checksums = message.checksums;
     }
     return obj;
   },

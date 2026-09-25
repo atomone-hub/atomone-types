@@ -3,6 +3,7 @@ import { Timestamp } from "../../../google/protobuf/timestamp";
 import { Duration, DurationAmino } from "../../../google/protobuf/duration";
 import { BinaryReader, BinaryWriter } from "../../../binary";
 import { isSet, fromJsonTimestamp, fromTimestamp } from "../../../helpers";
+import { JsonSafe } from "../../../json-safe";
 export const protobufPackage = "cosmos.epochs.v1beta1";
 /**
  * EpochInfo is a struct that describes the data going into
@@ -69,9 +70,14 @@ export interface EpochInfoProtoMsg {
 /**
  * EpochInfo is a struct that describes the data going into
  * a timer defined by the x/epochs module.
+ * @name EpochInfoAmino
+ * @package cosmos.epochs.v1beta1
+ * @see proto type: cosmos.epochs.v1beta1.EpochInfo
  */
 export interface EpochInfoAmino {
-  /** identifier is a unique reference to this particular timer. */
+  /**
+   * identifier is a unique reference to this particular timer.
+   */
   identifier?: string;
   /**
    * start_time is the time at which the timer first ever ticks.
@@ -136,7 +142,12 @@ export interface GenesisStateProtoMsg {
   typeUrl: "/cosmos.epochs.v1beta1.GenesisState";
   value: Uint8Array;
 }
-/** GenesisState defines the epochs module's genesis state. */
+/**
+ * GenesisState defines the epochs module's genesis state.
+ * @name GenesisStateAmino
+ * @package cosmos.epochs.v1beta1
+ * @see proto type: cosmos.epochs.v1beta1.GenesisState
+ */
 export interface GenesisStateAmino {
   epochs?: EpochInfoAmino[];
 }
@@ -229,7 +240,7 @@ export const EpochInfo = {
       obj.currentEpochStartHeight = BigInt(object.currentEpochStartHeight.toString());
     return obj;
   },
-  toJSON(message: EpochInfo): unknown {
+  toJSON(message: EpochInfo): JsonSafe<EpochInfo> {
     const obj: any = {};
     message.identifier !== undefined && (obj.identifier = message.identifier);
     message.startTime !== undefined && (obj.startTime = fromTimestamp(message.startTime).toISOString());
@@ -291,17 +302,17 @@ export const EpochInfo = {
   },
   toAmino(message: EpochInfo): EpochInfoAmino {
     const obj: any = {};
-    obj.identifier = message.identifier;
+    obj.identifier = message.identifier === "" ? undefined : message.identifier;
     obj.start_time = message.startTime ? Timestamp.toAmino(message.startTime) : undefined;
     obj.duration = message.duration ? Duration.toAmino(message.duration) : undefined;
-    obj.current_epoch = message.currentEpoch ? message.currentEpoch.toString() : undefined;
+    obj.current_epoch = message.currentEpoch !== BigInt(0) ? message.currentEpoch?.toString() : undefined;
     obj.current_epoch_start_time = message.currentEpochStartTime
       ? Timestamp.toAmino(message.currentEpochStartTime)
       : undefined;
-    obj.epoch_counting_started = message.epochCountingStarted;
-    obj.current_epoch_start_height = message.currentEpochStartHeight
-      ? message.currentEpochStartHeight.toString()
-      : undefined;
+    obj.epoch_counting_started =
+      message.epochCountingStarted === false ? undefined : message.epochCountingStarted;
+    obj.current_epoch_start_height =
+      message.currentEpochStartHeight !== BigInt(0) ? message.currentEpochStartHeight?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: EpochInfoAminoMsg): EpochInfo {
@@ -361,7 +372,7 @@ export const GenesisState = {
     if (Array.isArray(object?.epochs)) obj.epochs = object.epochs.map((e: any) => EpochInfo.fromJSON(e));
     return obj;
   },
-  toJSON(message: GenesisState): unknown {
+  toJSON(message: GenesisState): JsonSafe<GenesisState> {
     const obj: any = {};
     if (message.epochs) {
       obj.epochs = message.epochs.map((e) => (e ? EpochInfo.toJSON(e) : undefined));
@@ -385,7 +396,7 @@ export const GenesisState = {
     if (message.epochs) {
       obj.epochs = message.epochs.map((e) => (e ? EpochInfo.toAmino(e) : undefined));
     } else {
-      obj.epochs = [];
+      obj.epochs = message.epochs;
     }
     return obj;
   },

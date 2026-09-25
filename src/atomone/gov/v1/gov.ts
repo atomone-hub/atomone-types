@@ -5,6 +5,7 @@ import { Any, AnyAmino } from "../../../google/protobuf/any";
 import { Duration, DurationAmino } from "../../../google/protobuf/duration";
 import { BinaryReader, BinaryWriter } from "../../../binary";
 import { isSet, fromJsonTimestamp, fromTimestamp } from "../../../helpers";
+import { JsonSafe } from "../../../json-safe";
 export const protobufPackage = "atomone.gov.v1";
 /** VoteOption enumerates the valid vote options for a given governance proposal. */
 export enum VoteOption {
@@ -196,14 +197,21 @@ export interface WeightedVoteOptionProtoMsg {
   typeUrl: "/atomone.gov.v1.WeightedVoteOption";
   value: Uint8Array;
 }
-/** WeightedVoteOption defines a unit of vote for vote split. */
+/**
+ * WeightedVoteOption defines a unit of vote for vote split.
+ * @name WeightedVoteOptionAmino
+ * @package atomone.gov.v1
+ * @see proto type: atomone.gov.v1.WeightedVoteOption
+ */
 export interface WeightedVoteOptionAmino {
   /**
    * option defines the valid vote options, it must not contain duplicate vote
    * options.
    */
   option?: VoteOption;
-  /** weight is the vote weight associated with the vote option. */
+  /**
+   * weight is the vote weight associated with the vote option.
+   */
   weight?: string;
 }
 export interface WeightedVoteOptionAminoMsg {
@@ -229,13 +237,22 @@ export interface DepositProtoMsg {
 /**
  * Deposit defines an amount deposited by an account address to an active
  * proposal.
+ * @name DepositAmino
+ * @package atomone.gov.v1
+ * @see proto type: atomone.gov.v1.Deposit
  */
 export interface DepositAmino {
-  /** proposal_id defines the unique id of the proposal. */
+  /**
+   * proposal_id defines the unique id of the proposal.
+   */
   proposal_id?: string;
-  /** depositor defines the deposit addresses from the proposals. */
+  /**
+   * depositor defines the deposit addresses from the proposals.
+   */
   depositor?: string;
-  /** amount to be deposited by depositor. */
+  /**
+   * amount to be deposited by depositor.
+   */
   amount: CoinAmino[];
 }
 export interface DepositAminoMsg {
@@ -259,11 +276,18 @@ export interface LastMinDepositProtoMsg {
 /**
  * LastMinDeposit is a record of the last time the minimum deposit
  * was updated in the store, both its value and a timestamp
+ * @name LastMinDepositAmino
+ * @package atomone.gov.v1
+ * @see proto type: atomone.gov.v1.LastMinDeposit
  */
 export interface LastMinDepositAmino {
-  /** value is the value of the minimum deposit */
+  /**
+   * value is the value of the minimum deposit
+   */
   value: CoinAmino[];
-  /** time is the time the minimum deposit was last updated */
+  /**
+   * time is the time the minimum deposit was last updated
+   */
   time?: string | undefined;
 }
 export interface LastMinDepositAminoMsg {
@@ -334,13 +358,24 @@ export interface ProposalProtoMsg {
   typeUrl: "/atomone.gov.v1.Proposal";
   value: Uint8Array;
 }
-/** Proposal defines the core field members of a governance proposal. */
+/**
+ * Proposal defines the core field members of a governance proposal.
+ * @name ProposalAmino
+ * @package atomone.gov.v1
+ * @see proto type: atomone.gov.v1.Proposal
+ */
 export interface ProposalAmino {
-  /** id defines the unique id of the proposal. */
+  /**
+   * id defines the unique id of the proposal.
+   */
   id?: string;
-  /** messages are the arbitrary messages to be executed if the proposal passes. */
+  /**
+   * messages are the arbitrary messages to be executed if the proposal passes.
+   */
   messages?: AnyAmino[];
-  /** status defines the proposal status. */
+  /**
+   * status defines the proposal status.
+   */
   status?: ProposalStatus;
   /**
    * final_tally_result is the final tally result of the proposal. When
@@ -348,17 +383,29 @@ export interface ProposalAmino {
    * proposal's voting period has ended.
    */
   final_tally_result?: TallyResultAmino | undefined;
-  /** submit_time is the time of proposal submission. */
+  /**
+   * submit_time is the time of proposal submission.
+   */
   submit_time?: string | undefined;
-  /** deposit_end_time is the end time for deposition. */
+  /**
+   * deposit_end_time is the end time for deposition.
+   */
   deposit_end_time?: string | undefined;
-  /** total_deposit is the total deposit on the proposal. */
+  /**
+   * total_deposit is the total deposit on the proposal.
+   */
   total_deposit: CoinAmino[];
-  /** voting_start_time is the starting time to vote on a proposal. */
+  /**
+   * voting_start_time is the starting time to vote on a proposal.
+   */
   voting_start_time?: string | undefined;
-  /** voting_end_time is the end time of voting on a proposal. */
+  /**
+   * voting_end_time is the end time of voting on a proposal.
+   */
   voting_end_time?: string | undefined;
-  /** metadata is any arbitrary metadata attached to the proposal. */
+  /**
+   * metadata is any arbitrary metadata attached to the proposal.
+   */
   metadata?: string;
   /**
    * title is the title of the proposal
@@ -411,13 +458,24 @@ export interface TallyResultProtoMsg {
   typeUrl: "/atomone.gov.v1.TallyResult";
   value: Uint8Array;
 }
-/** TallyResult defines a standard tally for a governance proposal. */
+/**
+ * TallyResult defines a standard tally for a governance proposal.
+ * @name TallyResultAmino
+ * @package atomone.gov.v1
+ * @see proto type: atomone.gov.v1.TallyResult
+ */
 export interface TallyResultAmino {
-  /** yes_count is the number of yes votes on a proposal. */
+  /**
+   * yes_count is the number of yes votes on a proposal.
+   */
   yes_count?: string;
-  /** abstain_count is the number of abstain votes on a proposal. */
+  /**
+   * abstain_count is the number of abstain votes on a proposal.
+   */
   abstain_count?: string;
-  /** no_count is the number of no votes on a proposal. */
+  /**
+   * no_count is the number of no votes on a proposal.
+   */
   no_count?: string;
 }
 export interface TallyResultAminoMsg {
@@ -445,15 +503,26 @@ export interface VoteProtoMsg {
 /**
  * Vote defines a vote on a governance proposal.
  * A Vote consists of a proposal ID, the voter, and the vote option.
+ * @name VoteAmino
+ * @package atomone.gov.v1
+ * @see proto type: atomone.gov.v1.Vote
  */
 export interface VoteAmino {
-  /** proposal_id defines the unique id of the proposal. */
+  /**
+   * proposal_id defines the unique id of the proposal.
+   */
   proposal_id?: string;
-  /** voter is the voter address of the proposal. */
+  /**
+   * voter is the voter address of the proposal.
+   */
   voter?: string;
-  /** options is the weighted vote options. */
+  /**
+   * options is the weighted vote options.
+   */
   options?: WeightedVoteOptionAmino[];
-  /** metadata is any  arbitrary metadata to attached to the vote. */
+  /**
+   * metadata is any  arbitrary metadata to attached to the vote.
+   */
   metadata?: string;
 }
 export interface VoteAminoMsg {
@@ -480,7 +549,12 @@ export interface QuorumCheckQueueEntryProtoMsg {
   typeUrl: "/atomone.gov.v1.QuorumCheckQueueEntry";
   value: Uint8Array;
 }
-/** QuorumCheckQueueEntry defines a quorum check queue entry. */
+/**
+ * QuorumCheckQueueEntry defines a quorum check queue entry.
+ * @name QuorumCheckQueueEntryAmino
+ * @package atomone.gov.v1
+ * @see proto type: atomone.gov.v1.QuorumCheckQueueEntry
+ */
 export interface QuorumCheckQueueEntryAmino {
   /**
    * quorum_timeout_time is the time after which quorum checks start happening
@@ -493,7 +567,9 @@ export interface QuorumCheckQueueEntryAmino {
    * proposal is initially added to the queue.
    */
   quorum_check_count?: string;
-  /** quorum_checks_done is the number of quorum checks that have been done. */
+  /**
+   * quorum_checks_done is the number of quorum checks that have been done.
+   */
   quorum_checks_done?: string;
 }
 export interface QuorumCheckQueueEntryAminoMsg {
@@ -514,9 +590,16 @@ export interface DepositParamsProtoMsg {
   typeUrl: "/atomone.gov.v1.DepositParams";
   value: Uint8Array;
 }
-/** DepositParams defines the params for deposits on governance proposals. */
+/**
+ * DepositParams defines the params for deposits on governance proposals.
+ * @name DepositParamsAmino
+ * @package atomone.gov.v1
+ * @see proto type: atomone.gov.v1.DepositParams
+ */
 export interface DepositParamsAmino {
-  /** Minimum deposit for a proposal to enter voting period. */
+  /**
+   * Minimum deposit for a proposal to enter voting period.
+   */
   min_deposit?: CoinAmino[];
   /**
    * Maximum period for Atom holders to deposit on a proposal. Initial value: 2
@@ -537,9 +620,16 @@ export interface VotingParamsProtoMsg {
   typeUrl: "/atomone.gov.v1.VotingParams";
   value: Uint8Array;
 }
-/** VotingParams defines the params for voting on governance proposals. */
+/**
+ * VotingParams defines the params for voting on governance proposals.
+ * @name VotingParamsAmino
+ * @package atomone.gov.v1
+ * @see proto type: atomone.gov.v1.VotingParams
+ */
 export interface VotingParamsAmino {
-  /** Duration of the voting period. */
+  /**
+   * Duration of the voting period.
+   */
   voting_period?: DurationAmino | undefined;
 }
 export interface VotingParamsAminoMsg {
@@ -571,25 +661,40 @@ export interface TallyParamsProtoMsg {
   typeUrl: "/atomone.gov.v1.TallyParams";
   value: Uint8Array;
 }
-/** TallyParams defines the params for tallying votes on governance proposals. */
+/**
+ * TallyParams defines the params for tallying votes on governance proposals.
+ * @name TallyParamsAmino
+ * @package atomone.gov.v1
+ * @see proto type: atomone.gov.v1.TallyParams
+ */
 export interface TallyParamsAmino {
   /**
    * Minimum percentage of total stake needed to vote for a result to be
    * considered valid.
+   * @deprecated
    */
-  /** @deprecated */
   quorum?: string;
-  /** Minimum proportion of Yes votes for proposal to pass. Default value: 2/3. */
+  /**
+   * Minimum proportion of Yes votes for proposal to pass. Default value: 2/3.
+   */
   threshold?: string;
-  /** quorum for constitution amendment proposals */
-  /** @deprecated */
+  /**
+   * quorum for constitution amendment proposals
+   * @deprecated
+   */
   constitution_amendment_quorum?: string;
-  /** Minimum proportion of Yes votes for a Constitution Amendment proposal to pass. Default value: 0.9. */
+  /**
+   * Minimum proportion of Yes votes for a Constitution Amendment proposal to pass. Default value: 0.9.
+   */
   constitution_amendment_threshold?: string;
-  /** quorum for law proposals */
-  /** @deprecated */
+  /**
+   * quorum for law proposals
+   * @deprecated
+   */
   law_quorum?: string;
-  /** Minimum proportion of Yes votes for a Law proposal to pass. Default value: 0.9. */
+  /**
+   * Minimum proportion of Yes votes for a Law proposal to pass. Default value: 0.9.
+   */
   law_threshold?: string;
 }
 export interface TallyParamsAminoMsg {
@@ -628,15 +733,24 @@ export interface MinDepositThrottlerProtoMsg {
   typeUrl: "/atomone.gov.v1.MinDepositThrottler";
   value: Uint8Array;
 }
+/**
+ * @name MinDepositThrottlerAmino
+ * @package atomone.gov.v1
+ * @see proto type: atomone.gov.v1.MinDepositThrottler
+ */
 export interface MinDepositThrottlerAmino {
-  /** Floor value for the minimum deposit required for a proposal to enter the voting period. */
+  /**
+   * Floor value for the minimum deposit required for a proposal to enter the voting period.
+   */
   floor_value: CoinAmino[];
   /**
    * Duration that dictates after how long the dynamic minimum deposit should be recalculated
    * for time-based decreases.
    */
   update_period?: DurationAmino | undefined;
-  /** The number of active proposals the dynamic minimum deposit should target. */
+  /**
+   * The number of active proposals the dynamic minimum deposit should target.
+   */
   target_active_proposals?: string;
   /**
    * The ratio of increase for the minimum deposit when the number of active proposals
@@ -692,15 +806,24 @@ export interface MinInitialDepositThrottlerProtoMsg {
   typeUrl: "/atomone.gov.v1.MinInitialDepositThrottler";
   value: Uint8Array;
 }
+/**
+ * @name MinInitialDepositThrottlerAmino
+ * @package atomone.gov.v1
+ * @see proto type: atomone.gov.v1.MinInitialDepositThrottler
+ */
 export interface MinInitialDepositThrottlerAmino {
-  /** Floor value for the minimum initial deposit required for a proposal to enter the deposit period. */
+  /**
+   * Floor value for the minimum initial deposit required for a proposal to enter the deposit period.
+   */
   floor_value: CoinAmino[];
   /**
    * Duration that dictates after how long the dynamic minimum deposit should be recalculated
    * for time-based decreases.
    */
   update_period?: DurationAmino | undefined;
-  /** The number of proposals in deposit period the dynamic minimum initial deposit should target. */
+  /**
+   * The number of proposals in deposit period the dynamic minimum initial deposit should target.
+   */
   target_proposals?: string;
   /**
    * The ratio of increase for the minimum initial deposit when the number of proposals
@@ -824,6 +947,9 @@ export interface ParamsProtoMsg {
  * Params defines the parameters for the x/gov module.
  *
  * Since: cosmos-sdk 0.47
+ * @name ParamsAmino
+ * @package atomone.gov.v1
+ * @see proto type: atomone.gov.v1.Params
  */
 export interface ParamsAmino {
   /**
@@ -833,30 +959,40 @@ export interface ParamsAmino {
    * While setting this value returns an error, when queried it is set to the
    * value of the current minimum deposit value as determined by the dynamic
    * system for backward compatibility.
+   * @deprecated
    */
-  /** @deprecated */
   min_deposit: CoinAmino[];
   /**
    * Maximum period for Atom holders to deposit on a proposal. Initial value: 2
    * months.
    */
   max_deposit_period?: DurationAmino | undefined;
-  /** Duration of the voting period. */
+  /**
+   * Duration of the voting period.
+   */
   voting_period?: DurationAmino | undefined;
   /**
    * Minimum percentage of total stake needed to vote for a result to be
    *  considered valid. Default value: 0.25.
+   * @deprecated
    */
-  /** @deprecated */
   quorum?: string;
-  /** Minimum proportion of Yes votes for proposal to pass. Default value: 2/3. */
+  /**
+   * Minimum proportion of Yes votes for proposal to pass. Default value: 2/3.
+   */
   threshold?: string;
-  /** The ratio representing the proportion of the deposit value that must be paid at proposal submission. */
-  /** @deprecated */
+  /**
+   * The ratio representing the proportion of the deposit value that must be paid at proposal submission.
+   * @deprecated
+   */
   min_initial_deposit_ratio?: string;
-  /** burn deposits if a proposal does not meet quorum */
+  /**
+   * burn deposits if a proposal does not meet quorum
+   */
   burn_vote_quorum?: boolean;
-  /** burn deposits if the proposal does not enter voting period */
+  /**
+   * burn deposits if the proposal does not enter voting period
+   */
   burn_proposal_deposit_prevote?: boolean;
   /**
    * The ratio representing the proportion of the deposit value minimum that
@@ -868,15 +1004,23 @@ export interface ParamsAmino {
    * NOTE: backported from v50 (https://github.com/cosmos/cosmos-sdk/pull/18146)
    */
   min_deposit_ratio?: string;
-  /** quorum for constitution amendment proposals */
-  /** @deprecated */
+  /**
+   * quorum for constitution amendment proposals
+   * @deprecated
+   */
   constitution_amendment_quorum?: string;
-  /** Minimum proportion of Yes votes for a Constitution Amendment proposal to pass. Default value: 0.9. */
+  /**
+   * Minimum proportion of Yes votes for a Constitution Amendment proposal to pass. Default value: 0.9.
+   */
   constitution_amendment_threshold?: string;
-  /** quorum for law proposals */
-  /** @deprecated */
+  /**
+   * quorum for law proposals
+   * @deprecated
+   */
   law_quorum?: string;
-  /** Minimum proportion of Yes votes for a Law proposal to pass. Default value: 0.9. */
+  /**
+   * Minimum proportion of Yes votes for a Law proposal to pass. Default value: 0.9.
+   */
   law_threshold?: string;
   /**
    * Duration of time after a proposal enters the voting period, during which quorum
@@ -895,15 +1039,25 @@ export interface ParamsAmino {
   quorum_check_count?: string;
   min_deposit_throttler?: MinDepositThrottlerAmino | undefined;
   min_initial_deposit_throttler?: MinInitialDepositThrottlerAmino | undefined;
-  /** Minimum proportion of No Votes for a proposal deposit to be burnt. */
+  /**
+   * Minimum proportion of No Votes for a proposal deposit to be burnt.
+   */
   burn_deposit_no_threshold?: string;
-  /** Achievable quorum */
+  /**
+   * Achievable quorum
+   */
   quorum_range?: QuorumRangeAmino | undefined;
-  /** Achievable quorum for constitution amendment proposals */
+  /**
+   * Achievable quorum for constitution amendment proposals
+   */
   constitution_amendment_quorum_range?: QuorumRangeAmino | undefined;
-  /** Achievable quorum for law proposals */
+  /**
+   * Achievable quorum for law proposals
+   */
   law_quorum_range?: QuorumRangeAmino | undefined;
-  /** Defines the duration of time that need to elapse between governor status changes. */
+  /**
+   * Defines the duration of time that need to elapse between governor status changes.
+   */
   governor_status_change_period?: DurationAmino | undefined;
   /**
    * Defines the minimum amound of bonded tokens, aka the "self-delegation" (because active governors
@@ -926,10 +1080,19 @@ export interface QuorumRangeProtoMsg {
   typeUrl: "/atomone.gov.v1.QuorumRange";
   value: Uint8Array;
 }
+/**
+ * @name QuorumRangeAmino
+ * @package atomone.gov.v1
+ * @see proto type: atomone.gov.v1.QuorumRange
+ */
 export interface QuorumRangeAmino {
-  /** Maximum achievable quorum */
+  /**
+   * Maximum achievable quorum
+   */
   max?: string;
-  /** Minimum achievable quorum */
+  /**
+   * Minimum achievable quorum
+   */
   min?: string;
 }
 export interface QuorumRangeAminoMsg {
@@ -963,15 +1126,26 @@ export interface GovernorProtoMsg {
  * delegates a percentage of its x/gov power to a governor, the resulting
  * shares from each delegators delegations in x/staking are added to the
  * governor's total shares.
+ * @name GovernorAmino
+ * @package atomone.gov.v1
+ * @see proto type: atomone.gov.v1.Governor
  */
 export interface GovernorAmino {
-  /** governor_address defines the address of the governor; bech32-encoded. */
+  /**
+   * governor_address defines the address of the governor; bech32-encoded.
+   */
   governor_address?: string;
-  /** status is the status of the governor (active/inactive). */
+  /**
+   * status is the status of the governor (active/inactive).
+   */
   status?: GovernorStatus;
-  /** description defines the description terms for the governor. */
+  /**
+   * description defines the description terms for the governor.
+   */
   description: GovernorDescriptionAmino | undefined;
-  /** last_status_change_time is the time when the governor's status was last changed. */
+  /**
+   * last_status_change_time is the time when the governor's status was last changed.
+   */
   last_status_change_time?: string | undefined;
 }
 export interface GovernorAminoMsg {
@@ -995,17 +1169,32 @@ export interface GovernorDescriptionProtoMsg {
   typeUrl: "/atomone.gov.v1.GovernorDescription";
   value: Uint8Array;
 }
-/** Description defines a governor description. */
+/**
+ * Description defines a governor description.
+ * @name GovernorDescriptionAmino
+ * @package atomone.gov.v1
+ * @see proto type: atomone.gov.v1.GovernorDescription
+ */
 export interface GovernorDescriptionAmino {
-  /** moniker defines a human-readable name for the governor. */
+  /**
+   * moniker defines a human-readable name for the governor.
+   */
   moniker?: string;
-  /** identity defines an optional identity signature (ex. UPort or Keybase). */
+  /**
+   * identity defines an optional identity signature (ex. UPort or Keybase).
+   */
   identity?: string;
-  /** website defines an optional website link. */
+  /**
+   * website defines an optional website link.
+   */
   website?: string;
-  /** security_contact defines an optional email for security contact. */
+  /**
+   * security_contact defines an optional email for security contact.
+   */
   security_contact?: string;
-  /** details define other optional details. */
+  /**
+   * details define other optional details.
+   */
   details?: string;
 }
 export interface GovernorDescriptionAminoMsg {
@@ -1029,11 +1218,16 @@ export interface GovernorValSharesProtoMsg {
 /**
  * GovernorValShares holds the number of virtual shares from the
  * specific validator that a governor can use to vote on proposals.
+ * @name GovernorValSharesAmino
+ * @package atomone.gov.v1
+ * @see proto type: atomone.gov.v1.GovernorValShares
  */
 export interface GovernorValSharesAmino {
   governor_address?: string;
   validator_address?: string;
-  /** shares define the delegation shares available from this validator. */
+  /**
+   * shares define the delegation shares available from this validator.
+   */
   shares?: string;
 }
 export interface GovernorValSharesAminoMsg {
@@ -1055,6 +1249,9 @@ export interface GovernanceDelegationProtoMsg {
 /**
  * GovernanceDelegation defines a delegation of governance voting power from a
  * delegator to a governor.
+ * @name GovernanceDelegationAmino
+ * @package atomone.gov.v1
+ * @see proto type: atomone.gov.v1.GovernanceDelegation
  */
 export interface GovernanceDelegationAmino {
   delegator_address?: string;
@@ -1107,7 +1304,7 @@ export const WeightedVoteOption = {
     if (isSet(object.weight)) obj.weight = String(object.weight);
     return obj;
   },
-  toJSON(message: WeightedVoteOption): unknown {
+  toJSON(message: WeightedVoteOption): JsonSafe<WeightedVoteOption> {
     const obj: any = {};
     message.option !== undefined && (obj.option = voteOptionToJSON(message.option));
     message.weight !== undefined && (obj.weight = message.weight);
@@ -1122,7 +1319,7 @@ export const WeightedVoteOption = {
   fromAmino(object: WeightedVoteOptionAmino): WeightedVoteOption {
     const message = createBaseWeightedVoteOption();
     if (object.option !== undefined && object.option !== null) {
-      message.option = voteOptionFromJSON(object.option);
+      message.option = object.option;
     }
     if (object.weight !== undefined && object.weight !== null) {
       message.weight = object.weight;
@@ -1131,8 +1328,8 @@ export const WeightedVoteOption = {
   },
   toAmino(message: WeightedVoteOption): WeightedVoteOptionAmino {
     const obj: any = {};
-    obj.option = message.option;
-    obj.weight = message.weight;
+    obj.option = message.option === 0 ? undefined : message.option;
+    obj.weight = message.weight === "" ? undefined : message.weight;
     return obj;
   },
   fromAminoMsg(object: WeightedVoteOptionAminoMsg): WeightedVoteOption {
@@ -1202,7 +1399,7 @@ export const Deposit = {
     if (Array.isArray(object?.amount)) obj.amount = object.amount.map((e: any) => Coin.fromJSON(e));
     return obj;
   },
-  toJSON(message: Deposit): unknown {
+  toJSON(message: Deposit): JsonSafe<Deposit> {
     const obj: any = {};
     message.proposalId !== undefined && (obj.proposalId = (message.proposalId || BigInt(0)).toString());
     message.depositor !== undefined && (obj.depositor = message.depositor);
@@ -1235,12 +1432,12 @@ export const Deposit = {
   },
   toAmino(message: Deposit): DepositAmino {
     const obj: any = {};
-    obj.proposal_id = message.proposalId ? message.proposalId.toString() : undefined;
-    obj.depositor = message.depositor;
+    obj.proposal_id = message.proposalId !== BigInt(0) ? message.proposalId?.toString() : undefined;
+    obj.depositor = message.depositor === "" ? undefined : message.depositor;
     if (message.amount) {
       obj.amount = message.amount.map((e) => (e ? Coin.toAmino(e) : undefined));
     } else {
-      obj.amount = [];
+      obj.amount = message.amount;
     }
     return obj;
   },
@@ -1303,7 +1500,7 @@ export const LastMinDeposit = {
     if (isSet(object.time)) obj.time = fromJsonTimestamp(object.time);
     return obj;
   },
-  toJSON(message: LastMinDeposit): unknown {
+  toJSON(message: LastMinDeposit): JsonSafe<LastMinDeposit> {
     const obj: any = {};
     if (message.value) {
       obj.value = message.value.map((e) => (e ? Coin.toJSON(e) : undefined));
@@ -1334,7 +1531,7 @@ export const LastMinDeposit = {
     if (message.value) {
       obj.value = message.value.map((e) => (e ? Coin.toAmino(e) : undefined));
     } else {
-      obj.value = [];
+      obj.value = message.value;
     }
     obj.time = message.time ? Timestamp.toAmino(message.time) : undefined;
     return obj;
@@ -1512,7 +1709,7 @@ export const Proposal = {
       obj.timesVotingPeriodExtended = Number(object.timesVotingPeriodExtended);
     return obj;
   },
-  toJSON(message: Proposal): unknown {
+  toJSON(message: Proposal): JsonSafe<Proposal> {
     const obj: any = {};
     message.id !== undefined && (obj.id = (message.id || BigInt(0)).toString());
     if (message.messages) {
@@ -1586,7 +1783,7 @@ export const Proposal = {
     }
     message.messages = object.messages?.map((e) => Any.fromAmino(e)) || [];
     if (object.status !== undefined && object.status !== null) {
-      message.status = proposalStatusFromJSON(object.status);
+      message.status = object.status;
     }
     if (object.final_tally_result !== undefined && object.final_tally_result !== null) {
       message.finalTallyResult = TallyResult.fromAmino(object.final_tally_result);
@@ -1629,13 +1826,13 @@ export const Proposal = {
   },
   toAmino(message: Proposal): ProposalAmino {
     const obj: any = {};
-    obj.id = message.id ? message.id.toString() : undefined;
+    obj.id = message.id !== BigInt(0) ? message.id?.toString() : undefined;
     if (message.messages) {
       obj.messages = message.messages.map((e) => (e ? Any.toAmino(e) : undefined));
     } else {
-      obj.messages = [];
+      obj.messages = message.messages;
     }
-    obj.status = message.status;
+    obj.status = message.status === 0 ? undefined : message.status;
     obj.final_tally_result = message.finalTallyResult
       ? TallyResult.toAmino(message.finalTallyResult)
       : undefined;
@@ -1644,17 +1841,18 @@ export const Proposal = {
     if (message.totalDeposit) {
       obj.total_deposit = message.totalDeposit.map((e) => (e ? Coin.toAmino(e) : undefined));
     } else {
-      obj.total_deposit = [];
+      obj.total_deposit = message.totalDeposit;
     }
     obj.voting_start_time = message.votingStartTime ? Timestamp.toAmino(message.votingStartTime) : undefined;
     obj.voting_end_time = message.votingEndTime ? Timestamp.toAmino(message.votingEndTime) : undefined;
-    obj.metadata = message.metadata;
-    obj.title = message.title;
-    obj.summary = message.summary;
-    obj.proposer = message.proposer;
-    obj.endorsed = message.endorsed;
-    obj.annotation = message.annotation;
-    obj.times_voting_period_extended = message.timesVotingPeriodExtended;
+    obj.metadata = message.metadata === "" ? undefined : message.metadata;
+    obj.title = message.title === "" ? undefined : message.title;
+    obj.summary = message.summary === "" ? undefined : message.summary;
+    obj.proposer = message.proposer === "" ? undefined : message.proposer;
+    obj.endorsed = message.endorsed === false ? undefined : message.endorsed;
+    obj.annotation = message.annotation === "" ? undefined : message.annotation;
+    obj.times_voting_period_extended =
+      message.timesVotingPeriodExtended === 0 ? undefined : message.timesVotingPeriodExtended;
     return obj;
   },
   fromAminoMsg(object: ProposalAminoMsg): Proposal {
@@ -1724,7 +1922,7 @@ export const TallyResult = {
     if (isSet(object.noCount)) obj.noCount = String(object.noCount);
     return obj;
   },
-  toJSON(message: TallyResult): unknown {
+  toJSON(message: TallyResult): JsonSafe<TallyResult> {
     const obj: any = {};
     message.yesCount !== undefined && (obj.yesCount = message.yesCount);
     message.abstainCount !== undefined && (obj.abstainCount = message.abstainCount);
@@ -1753,9 +1951,9 @@ export const TallyResult = {
   },
   toAmino(message: TallyResult): TallyResultAmino {
     const obj: any = {};
-    obj.yes_count = message.yesCount;
-    obj.abstain_count = message.abstainCount;
-    obj.no_count = message.noCount;
+    obj.yes_count = message.yesCount === "" ? undefined : message.yesCount;
+    obj.abstain_count = message.abstainCount === "" ? undefined : message.abstainCount;
+    obj.no_count = message.noCount === "" ? undefined : message.noCount;
     return obj;
   },
   fromAminoMsg(object: TallyResultAminoMsg): TallyResult {
@@ -1834,7 +2032,7 @@ export const Vote = {
     if (isSet(object.metadata)) obj.metadata = String(object.metadata);
     return obj;
   },
-  toJSON(message: Vote): unknown {
+  toJSON(message: Vote): JsonSafe<Vote> {
     const obj: any = {};
     message.proposalId !== undefined && (obj.proposalId = (message.proposalId || BigInt(0)).toString());
     message.voter !== undefined && (obj.voter = message.voter);
@@ -1872,14 +2070,14 @@ export const Vote = {
   },
   toAmino(message: Vote): VoteAmino {
     const obj: any = {};
-    obj.proposal_id = message.proposalId ? message.proposalId.toString() : undefined;
-    obj.voter = message.voter;
+    obj.proposal_id = message.proposalId !== BigInt(0) ? message.proposalId?.toString() : undefined;
+    obj.voter = message.voter === "" ? undefined : message.voter;
     if (message.options) {
       obj.options = message.options.map((e) => (e ? WeightedVoteOption.toAmino(e) : undefined));
     } else {
-      obj.options = [];
+      obj.options = message.options;
     }
-    obj.metadata = message.metadata;
+    obj.metadata = message.metadata === "" ? undefined : message.metadata;
     return obj;
   },
   fromAminoMsg(object: VoteAminoMsg): Vote {
@@ -1949,7 +2147,7 @@ export const QuorumCheckQueueEntry = {
     if (isSet(object.quorumChecksDone)) obj.quorumChecksDone = BigInt(object.quorumChecksDone.toString());
     return obj;
   },
-  toJSON(message: QuorumCheckQueueEntry): unknown {
+  toJSON(message: QuorumCheckQueueEntry): JsonSafe<QuorumCheckQueueEntry> {
     const obj: any = {};
     message.quorumTimeoutTime !== undefined &&
       (obj.quorumTimeoutTime = fromTimestamp(message.quorumTimeoutTime).toISOString());
@@ -1990,8 +2188,10 @@ export const QuorumCheckQueueEntry = {
     obj.quorum_timeout_time = message.quorumTimeoutTime
       ? Timestamp.toAmino(message.quorumTimeoutTime)
       : undefined;
-    obj.quorum_check_count = message.quorumCheckCount ? message.quorumCheckCount.toString() : undefined;
-    obj.quorum_checks_done = message.quorumChecksDone ? message.quorumChecksDone.toString() : undefined;
+    obj.quorum_check_count =
+      message.quorumCheckCount !== BigInt(0) ? message.quorumCheckCount?.toString() : undefined;
+    obj.quorum_checks_done =
+      message.quorumChecksDone !== BigInt(0) ? message.quorumChecksDone?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: QuorumCheckQueueEntryAminoMsg): QuorumCheckQueueEntry {
@@ -2054,7 +2254,7 @@ export const DepositParams = {
     if (isSet(object.maxDepositPeriod)) obj.maxDepositPeriod = Duration.fromJSON(object.maxDepositPeriod);
     return obj;
   },
-  toJSON(message: DepositParams): unknown {
+  toJSON(message: DepositParams): JsonSafe<DepositParams> {
     const obj: any = {};
     if (message.minDeposit) {
       obj.minDeposit = message.minDeposit.map((e) => (e ? Coin.toJSON(e) : undefined));
@@ -2088,7 +2288,7 @@ export const DepositParams = {
     if (message.minDeposit) {
       obj.min_deposit = message.minDeposit.map((e) => (e ? Coin.toAmino(e) : undefined));
     } else {
-      obj.min_deposit = [];
+      obj.min_deposit = message.minDeposit;
     }
     obj.max_deposit_period = message.maxDepositPeriod
       ? Duration.toAmino(message.maxDepositPeriod)
@@ -2146,7 +2346,7 @@ export const VotingParams = {
     if (isSet(object.votingPeriod)) obj.votingPeriod = Duration.fromJSON(object.votingPeriod);
     return obj;
   },
-  toJSON(message: VotingParams): unknown {
+  toJSON(message: VotingParams): JsonSafe<VotingParams> {
     const obj: any = {};
     message.votingPeriod !== undefined &&
       (obj.votingPeriod = message.votingPeriod ? Duration.toJSON(message.votingPeriod) : undefined);
@@ -2264,7 +2464,7 @@ export const TallyParams = {
     if (isSet(object.lawThreshold)) obj.lawThreshold = String(object.lawThreshold);
     return obj;
   },
-  toJSON(message: TallyParams): unknown {
+  toJSON(message: TallyParams): JsonSafe<TallyParams> {
     const obj: any = {};
     message.quorum !== undefined && (obj.quorum = message.quorum);
     message.threshold !== undefined && (obj.threshold = message.threshold);
@@ -2313,12 +2513,14 @@ export const TallyParams = {
   },
   toAmino(message: TallyParams): TallyParamsAmino {
     const obj: any = {};
-    obj.quorum = message.quorum;
-    obj.threshold = message.threshold;
-    obj.constitution_amendment_quorum = message.constitutionAmendmentQuorum;
-    obj.constitution_amendment_threshold = message.constitutionAmendmentThreshold;
-    obj.law_quorum = message.lawQuorum;
-    obj.law_threshold = message.lawThreshold;
+    obj.quorum = message.quorum === "" ? undefined : message.quorum;
+    obj.threshold = message.threshold === "" ? undefined : message.threshold;
+    obj.constitution_amendment_quorum =
+      message.constitutionAmendmentQuorum === "" ? undefined : message.constitutionAmendmentQuorum;
+    obj.constitution_amendment_threshold =
+      message.constitutionAmendmentThreshold === "" ? undefined : message.constitutionAmendmentThreshold;
+    obj.law_quorum = message.lawQuorum === "" ? undefined : message.lawQuorum;
+    obj.law_threshold = message.lawThreshold === "" ? undefined : message.lawThreshold;
     return obj;
   },
   fromAminoMsg(object: TallyParamsAminoMsg): TallyParams {
@@ -2415,7 +2617,7 @@ export const MinDepositThrottler = {
       obj.decreaseSensitivityTargetDistance = BigInt(object.decreaseSensitivityTargetDistance.toString());
     return obj;
   },
-  toJSON(message: MinDepositThrottler): unknown {
+  toJSON(message: MinDepositThrottler): JsonSafe<MinDepositThrottler> {
     const obj: any = {};
     if (message.floorValue) {
       obj.floorValue = message.floorValue.map((e) => (e ? Coin.toJSON(e) : undefined));
@@ -2481,17 +2683,17 @@ export const MinDepositThrottler = {
     if (message.floorValue) {
       obj.floor_value = message.floorValue.map((e) => (e ? Coin.toAmino(e) : undefined));
     } else {
-      obj.floor_value = [];
+      obj.floor_value = message.floorValue;
     }
     obj.update_period = message.updatePeriod ? Duration.toAmino(message.updatePeriod) : undefined;
-    obj.target_active_proposals = message.targetActiveProposals
-      ? message.targetActiveProposals.toString()
-      : undefined;
-    obj.increase_ratio = message.increaseRatio;
-    obj.decrease_ratio = message.decreaseRatio;
-    obj.decrease_sensitivity_target_distance = message.decreaseSensitivityTargetDistance
-      ? message.decreaseSensitivityTargetDistance.toString()
-      : undefined;
+    obj.target_active_proposals =
+      message.targetActiveProposals !== BigInt(0) ? message.targetActiveProposals?.toString() : undefined;
+    obj.increase_ratio = message.increaseRatio === "" ? undefined : message.increaseRatio;
+    obj.decrease_ratio = message.decreaseRatio === "" ? undefined : message.decreaseRatio;
+    obj.decrease_sensitivity_target_distance =
+      message.decreaseSensitivityTargetDistance !== BigInt(0)
+        ? message.decreaseSensitivityTargetDistance?.toString()
+        : undefined;
     return obj;
   },
   fromAminoMsg(object: MinDepositThrottlerAminoMsg): MinDepositThrottler {
@@ -2587,7 +2789,7 @@ export const MinInitialDepositThrottler = {
       obj.decreaseSensitivityTargetDistance = BigInt(object.decreaseSensitivityTargetDistance.toString());
     return obj;
   },
-  toJSON(message: MinInitialDepositThrottler): unknown {
+  toJSON(message: MinInitialDepositThrottler): JsonSafe<MinInitialDepositThrottler> {
     const obj: any = {};
     if (message.floorValue) {
       obj.floorValue = message.floorValue.map((e) => (e ? Coin.toJSON(e) : undefined));
@@ -2653,15 +2855,17 @@ export const MinInitialDepositThrottler = {
     if (message.floorValue) {
       obj.floor_value = message.floorValue.map((e) => (e ? Coin.toAmino(e) : undefined));
     } else {
-      obj.floor_value = [];
+      obj.floor_value = message.floorValue;
     }
     obj.update_period = message.updatePeriod ? Duration.toAmino(message.updatePeriod) : undefined;
-    obj.target_proposals = message.targetProposals ? message.targetProposals.toString() : undefined;
-    obj.increase_ratio = message.increaseRatio;
-    obj.decrease_ratio = message.decreaseRatio;
-    obj.decrease_sensitivity_target_distance = message.decreaseSensitivityTargetDistance
-      ? message.decreaseSensitivityTargetDistance.toString()
-      : undefined;
+    obj.target_proposals =
+      message.targetProposals !== BigInt(0) ? message.targetProposals?.toString() : undefined;
+    obj.increase_ratio = message.increaseRatio === "" ? undefined : message.increaseRatio;
+    obj.decrease_ratio = message.decreaseRatio === "" ? undefined : message.decreaseRatio;
+    obj.decrease_sensitivity_target_distance =
+      message.decreaseSensitivityTargetDistance !== BigInt(0)
+        ? message.decreaseSensitivityTargetDistance?.toString()
+        : undefined;
     return obj;
   },
   fromAminoMsg(object: MinInitialDepositThrottlerAminoMsg): MinInitialDepositThrottler {
@@ -2914,7 +3118,7 @@ export const Params = {
       obj.minGovernorSelfDelegation = String(object.minGovernorSelfDelegation);
     return obj;
   },
-  toJSON(message: Params): unknown {
+  toJSON(message: Params): JsonSafe<Params> {
     const obj: any = {};
     if (message.minDeposit) {
       obj.minDeposit = message.minDeposit.map((e) => (e ? Coin.toJSON(e) : undefined));
@@ -3121,34 +3325,40 @@ export const Params = {
     if (message.minDeposit) {
       obj.min_deposit = message.minDeposit.map((e) => (e ? Coin.toAmino(e) : undefined));
     } else {
-      obj.min_deposit = [];
+      obj.min_deposit = message.minDeposit;
     }
     obj.max_deposit_period = message.maxDepositPeriod
       ? Duration.toAmino(message.maxDepositPeriod)
       : undefined;
     obj.voting_period = message.votingPeriod ? Duration.toAmino(message.votingPeriod) : undefined;
-    obj.quorum = message.quorum;
-    obj.threshold = message.threshold;
-    obj.min_initial_deposit_ratio = message.minInitialDepositRatio;
-    obj.burn_vote_quorum = message.burnVoteQuorum;
-    obj.burn_proposal_deposit_prevote = message.burnProposalDepositPrevote;
-    obj.min_deposit_ratio = message.minDepositRatio;
-    obj.constitution_amendment_quorum = message.constitutionAmendmentQuorum;
-    obj.constitution_amendment_threshold = message.constitutionAmendmentThreshold;
-    obj.law_quorum = message.lawQuorum;
-    obj.law_threshold = message.lawThreshold;
+    obj.quorum = message.quorum === "" ? undefined : message.quorum;
+    obj.threshold = message.threshold === "" ? undefined : message.threshold;
+    obj.min_initial_deposit_ratio =
+      message.minInitialDepositRatio === "" ? undefined : message.minInitialDepositRatio;
+    obj.burn_vote_quorum = message.burnVoteQuorum === false ? undefined : message.burnVoteQuorum;
+    obj.burn_proposal_deposit_prevote =
+      message.burnProposalDepositPrevote === false ? undefined : message.burnProposalDepositPrevote;
+    obj.min_deposit_ratio = message.minDepositRatio === "" ? undefined : message.minDepositRatio;
+    obj.constitution_amendment_quorum =
+      message.constitutionAmendmentQuorum === "" ? undefined : message.constitutionAmendmentQuorum;
+    obj.constitution_amendment_threshold =
+      message.constitutionAmendmentThreshold === "" ? undefined : message.constitutionAmendmentThreshold;
+    obj.law_quorum = message.lawQuorum === "" ? undefined : message.lawQuorum;
+    obj.law_threshold = message.lawThreshold === "" ? undefined : message.lawThreshold;
     obj.quorum_timeout = message.quorumTimeout ? Duration.toAmino(message.quorumTimeout) : undefined;
     obj.max_voting_period_extension = message.maxVotingPeriodExtension
       ? Duration.toAmino(message.maxVotingPeriodExtension)
       : undefined;
-    obj.quorum_check_count = message.quorumCheckCount ? message.quorumCheckCount.toString() : undefined;
+    obj.quorum_check_count =
+      message.quorumCheckCount !== BigInt(0) ? message.quorumCheckCount?.toString() : undefined;
     obj.min_deposit_throttler = message.minDepositThrottler
       ? MinDepositThrottler.toAmino(message.minDepositThrottler)
       : undefined;
     obj.min_initial_deposit_throttler = message.minInitialDepositThrottler
       ? MinInitialDepositThrottler.toAmino(message.minInitialDepositThrottler)
       : undefined;
-    obj.burn_deposit_no_threshold = message.burnDepositNoThreshold;
+    obj.burn_deposit_no_threshold =
+      message.burnDepositNoThreshold === "" ? undefined : message.burnDepositNoThreshold;
     obj.quorum_range = message.quorumRange ? QuorumRange.toAmino(message.quorumRange) : undefined;
     obj.constitution_amendment_quorum_range = message.constitutionAmendmentQuorumRange
       ? QuorumRange.toAmino(message.constitutionAmendmentQuorumRange)
@@ -3157,7 +3367,8 @@ export const Params = {
     obj.governor_status_change_period = message.governorStatusChangePeriod
       ? Duration.toAmino(message.governorStatusChangePeriod)
       : undefined;
-    obj.min_governor_self_delegation = message.minGovernorSelfDelegation;
+    obj.min_governor_self_delegation =
+      message.minGovernorSelfDelegation === "" ? undefined : message.minGovernorSelfDelegation;
     return obj;
   },
   fromAminoMsg(object: ParamsAminoMsg): Params {
@@ -3219,7 +3430,7 @@ export const QuorumRange = {
     if (isSet(object.min)) obj.min = String(object.min);
     return obj;
   },
-  toJSON(message: QuorumRange): unknown {
+  toJSON(message: QuorumRange): JsonSafe<QuorumRange> {
     const obj: any = {};
     message.max !== undefined && (obj.max = message.max);
     message.min !== undefined && (obj.min = message.min);
@@ -3243,8 +3454,8 @@ export const QuorumRange = {
   },
   toAmino(message: QuorumRange): QuorumRangeAmino {
     const obj: any = {};
-    obj.max = message.max;
-    obj.min = message.min;
+    obj.max = message.max === "" ? undefined : message.max;
+    obj.min = message.min === "" ? undefined : message.min;
     return obj;
   },
   fromAminoMsg(object: QuorumRangeAminoMsg): QuorumRange {
@@ -3323,7 +3534,7 @@ export const Governor = {
       obj.lastStatusChangeTime = fromJsonTimestamp(object.lastStatusChangeTime);
     return obj;
   },
-  toJSON(message: Governor): unknown {
+  toJSON(message: Governor): JsonSafe<Governor> {
     const obj: any = {};
     message.governorAddress !== undefined && (obj.governorAddress = message.governorAddress);
     message.status !== undefined && (obj.status = governorStatusToJSON(message.status));
@@ -3351,7 +3562,7 @@ export const Governor = {
       message.governorAddress = object.governor_address;
     }
     if (object.status !== undefined && object.status !== null) {
-      message.status = governorStatusFromJSON(object.status);
+      message.status = object.status;
     }
     if (object.description !== undefined && object.description !== null) {
       message.description = GovernorDescription.fromAmino(object.description);
@@ -3363,11 +3574,11 @@ export const Governor = {
   },
   toAmino(message: Governor): GovernorAmino {
     const obj: any = {};
-    obj.governor_address = message.governorAddress;
-    obj.status = message.status;
+    obj.governor_address = message.governorAddress === "" ? undefined : message.governorAddress;
+    obj.status = message.status === 0 ? undefined : message.status;
     obj.description = message.description
       ? GovernorDescription.toAmino(message.description)
-      : GovernorDescription.fromPartial({});
+      : GovernorDescription.toAmino(GovernorDescription.fromPartial({}));
     obj.last_status_change_time = message.lastStatusChangeTime
       ? Timestamp.toAmino(message.lastStatusChangeTime)
       : undefined;
@@ -3456,7 +3667,7 @@ export const GovernorDescription = {
     if (isSet(object.details)) obj.details = String(object.details);
     return obj;
   },
-  toJSON(message: GovernorDescription): unknown {
+  toJSON(message: GovernorDescription): JsonSafe<GovernorDescription> {
     const obj: any = {};
     message.moniker !== undefined && (obj.moniker = message.moniker);
     message.identity !== undefined && (obj.identity = message.identity);
@@ -3495,11 +3706,11 @@ export const GovernorDescription = {
   },
   toAmino(message: GovernorDescription): GovernorDescriptionAmino {
     const obj: any = {};
-    obj.moniker = message.moniker;
-    obj.identity = message.identity;
-    obj.website = message.website;
-    obj.security_contact = message.securityContact;
-    obj.details = message.details;
+    obj.moniker = message.moniker === "" ? undefined : message.moniker;
+    obj.identity = message.identity === "" ? undefined : message.identity;
+    obj.website = message.website === "" ? undefined : message.website;
+    obj.security_contact = message.securityContact === "" ? undefined : message.securityContact;
+    obj.details = message.details === "" ? undefined : message.details;
     return obj;
   },
   fromAminoMsg(object: GovernorDescriptionAminoMsg): GovernorDescription {
@@ -3569,7 +3780,7 @@ export const GovernorValShares = {
     if (isSet(object.shares)) obj.shares = String(object.shares);
     return obj;
   },
-  toJSON(message: GovernorValShares): unknown {
+  toJSON(message: GovernorValShares): JsonSafe<GovernorValShares> {
     const obj: any = {};
     message.governorAddress !== undefined && (obj.governorAddress = message.governorAddress);
     message.validatorAddress !== undefined && (obj.validatorAddress = message.validatorAddress);
@@ -3598,9 +3809,9 @@ export const GovernorValShares = {
   },
   toAmino(message: GovernorValShares): GovernorValSharesAmino {
     const obj: any = {};
-    obj.governor_address = message.governorAddress;
-    obj.validator_address = message.validatorAddress;
-    obj.shares = message.shares;
+    obj.governor_address = message.governorAddress === "" ? undefined : message.governorAddress;
+    obj.validator_address = message.validatorAddress === "" ? undefined : message.validatorAddress;
+    obj.shares = message.shares === "" ? undefined : message.shares;
     return obj;
   },
   fromAminoMsg(object: GovernorValSharesAminoMsg): GovernorValShares {
@@ -3662,7 +3873,7 @@ export const GovernanceDelegation = {
     if (isSet(object.governorAddress)) obj.governorAddress = String(object.governorAddress);
     return obj;
   },
-  toJSON(message: GovernanceDelegation): unknown {
+  toJSON(message: GovernanceDelegation): JsonSafe<GovernanceDelegation> {
     const obj: any = {};
     message.delegatorAddress !== undefined && (obj.delegatorAddress = message.delegatorAddress);
     message.governorAddress !== undefined && (obj.governorAddress = message.governorAddress);
@@ -3686,8 +3897,8 @@ export const GovernanceDelegation = {
   },
   toAmino(message: GovernanceDelegation): GovernanceDelegationAmino {
     const obj: any = {};
-    obj.delegator_address = message.delegatorAddress;
-    obj.governor_address = message.governorAddress;
+    obj.delegator_address = message.delegatorAddress === "" ? undefined : message.delegatorAddress;
+    obj.governor_address = message.governorAddress === "" ? undefined : message.governorAddress;
     return obj;
   },
   fromAminoMsg(object: GovernanceDelegationAminoMsg): GovernanceDelegation {

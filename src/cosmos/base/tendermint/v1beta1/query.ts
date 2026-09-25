@@ -14,6 +14,7 @@ import { BlockAmino as Block2Amino } from "./types";
 import { DefaultNodeInfo, DefaultNodeInfoAmino } from "../../../../tendermint/p2p/types";
 import { BinaryReader, BinaryWriter } from "../../../../binary";
 import { isSet, bytesFromBase64, base64FromBytes } from "../../../../helpers";
+import { JsonSafe } from "../../../../json-safe";
 import { TxRpc } from "../../../../types";
 export const protobufPackage = "cosmos.base.tendermint.v1beta1";
 /** GetValidatorSetByHeightRequest is the request type for the Query/GetValidatorSetByHeight RPC method. */
@@ -26,10 +27,17 @@ export interface GetValidatorSetByHeightRequestProtoMsg {
   typeUrl: "/cosmos.base.tendermint.v1beta1.GetValidatorSetByHeightRequest";
   value: Uint8Array;
 }
-/** GetValidatorSetByHeightRequest is the request type for the Query/GetValidatorSetByHeight RPC method. */
+/**
+ * GetValidatorSetByHeightRequest is the request type for the Query/GetValidatorSetByHeight RPC method.
+ * @name GetValidatorSetByHeightRequestAmino
+ * @package cosmos.base.tendermint.v1beta1
+ * @see proto type: cosmos.base.tendermint.v1beta1.GetValidatorSetByHeightRequest
+ */
 export interface GetValidatorSetByHeightRequestAmino {
   height?: string;
-  /** pagination defines an pagination for the request. */
+  /**
+   * pagination defines an pagination for the request.
+   */
   pagination?: PageRequestAmino | undefined;
 }
 export interface GetValidatorSetByHeightRequestAminoMsg {
@@ -47,11 +55,18 @@ export interface GetValidatorSetByHeightResponseProtoMsg {
   typeUrl: "/cosmos.base.tendermint.v1beta1.GetValidatorSetByHeightResponse";
   value: Uint8Array;
 }
-/** GetValidatorSetByHeightResponse is the response type for the Query/GetValidatorSetByHeight RPC method. */
+/**
+ * GetValidatorSetByHeightResponse is the response type for the Query/GetValidatorSetByHeight RPC method.
+ * @name GetValidatorSetByHeightResponseAmino
+ * @package cosmos.base.tendermint.v1beta1
+ * @see proto type: cosmos.base.tendermint.v1beta1.GetValidatorSetByHeightResponse
+ */
 export interface GetValidatorSetByHeightResponseAmino {
   block_height?: string;
   validators?: ValidatorAmino[];
-  /** pagination defines an pagination for the response. */
+  /**
+   * pagination defines an pagination for the response.
+   */
   pagination?: PageResponseAmino | undefined;
 }
 export interface GetValidatorSetByHeightResponseAminoMsg {
@@ -67,9 +82,16 @@ export interface GetLatestValidatorSetRequestProtoMsg {
   typeUrl: "/cosmos.base.tendermint.v1beta1.GetLatestValidatorSetRequest";
   value: Uint8Array;
 }
-/** GetLatestValidatorSetRequest is the request type for the Query/GetValidatorSetByHeight RPC method. */
+/**
+ * GetLatestValidatorSetRequest is the request type for the Query/GetValidatorSetByHeight RPC method.
+ * @name GetLatestValidatorSetRequestAmino
+ * @package cosmos.base.tendermint.v1beta1
+ * @see proto type: cosmos.base.tendermint.v1beta1.GetLatestValidatorSetRequest
+ */
 export interface GetLatestValidatorSetRequestAmino {
-  /** pagination defines an pagination for the request. */
+  /**
+   * pagination defines an pagination for the request.
+   */
   pagination?: PageRequestAmino | undefined;
 }
 export interface GetLatestValidatorSetRequestAminoMsg {
@@ -87,11 +109,18 @@ export interface GetLatestValidatorSetResponseProtoMsg {
   typeUrl: "/cosmos.base.tendermint.v1beta1.GetLatestValidatorSetResponse";
   value: Uint8Array;
 }
-/** GetLatestValidatorSetResponse is the response type for the Query/GetValidatorSetByHeight RPC method. */
+/**
+ * GetLatestValidatorSetResponse is the response type for the Query/GetValidatorSetByHeight RPC method.
+ * @name GetLatestValidatorSetResponseAmino
+ * @package cosmos.base.tendermint.v1beta1
+ * @see proto type: cosmos.base.tendermint.v1beta1.GetLatestValidatorSetResponse
+ */
 export interface GetLatestValidatorSetResponseAmino {
   block_height?: string;
   validators?: ValidatorAmino[];
-  /** pagination defines an pagination for the response. */
+  /**
+   * pagination defines an pagination for the response.
+   */
   pagination?: PageResponseAmino | undefined;
 }
 export interface GetLatestValidatorSetResponseAminoMsg {
@@ -109,7 +138,12 @@ export interface ValidatorProtoMsg {
   typeUrl: "/cosmos.base.tendermint.v1beta1.Validator";
   value: Uint8Array;
 }
-/** Validator is the type for the validator-set. */
+/**
+ * Validator is the type for the validator-set.
+ * @name ValidatorAmino
+ * @package cosmos.base.tendermint.v1beta1
+ * @see proto type: cosmos.base.tendermint.v1beta1.Validator
+ */
 export interface ValidatorAmino {
   address?: string;
   pub_key?: AnyAmino | undefined;
@@ -128,7 +162,12 @@ export interface GetBlockByHeightRequestProtoMsg {
   typeUrl: "/cosmos.base.tendermint.v1beta1.GetBlockByHeightRequest";
   value: Uint8Array;
 }
-/** GetBlockByHeightRequest is the request type for the Query/GetBlockByHeight RPC method. */
+/**
+ * GetBlockByHeightRequest is the request type for the Query/GetBlockByHeight RPC method.
+ * @name GetBlockByHeightRequestAmino
+ * @package cosmos.base.tendermint.v1beta1
+ * @see proto type: cosmos.base.tendermint.v1beta1.GetBlockByHeightRequest
+ */
 export interface GetBlockByHeightRequestAmino {
   height?: string;
 }
@@ -148,12 +187,21 @@ export interface GetBlockByHeightResponseProtoMsg {
   typeUrl: "/cosmos.base.tendermint.v1beta1.GetBlockByHeightResponse";
   value: Uint8Array;
 }
-/** GetBlockByHeightResponse is the response type for the Query/GetBlockByHeight RPC method. */
+/**
+ * GetBlockByHeightResponse is the response type for the Query/GetBlockByHeight RPC method.
+ * @name GetBlockByHeightResponseAmino
+ * @package cosmos.base.tendermint.v1beta1
+ * @see proto type: cosmos.base.tendermint.v1beta1.GetBlockByHeightResponse
+ */
 export interface GetBlockByHeightResponseAmino {
   block_id?: BlockIDAmino | undefined;
-  /** Deprecated: please use `sdk_block` instead */
+  /**
+   * Deprecated: please use `sdk_block` instead
+   */
   block?: Block1Amino | undefined;
-  /** Since: cosmos-sdk 0.47 */
+  /**
+   * Since: cosmos-sdk 0.47
+   */
   sdk_block?: Block2Amino | undefined;
 }
 export interface GetBlockByHeightResponseAminoMsg {
@@ -166,7 +214,12 @@ export interface GetLatestBlockRequestProtoMsg {
   typeUrl: "/cosmos.base.tendermint.v1beta1.GetLatestBlockRequest";
   value: Uint8Array;
 }
-/** GetLatestBlockRequest is the request type for the Query/GetLatestBlock RPC method. */
+/**
+ * GetLatestBlockRequest is the request type for the Query/GetLatestBlock RPC method.
+ * @name GetLatestBlockRequestAmino
+ * @package cosmos.base.tendermint.v1beta1
+ * @see proto type: cosmos.base.tendermint.v1beta1.GetLatestBlockRequest
+ */
 export interface GetLatestBlockRequestAmino {}
 export interface GetLatestBlockRequestAminoMsg {
   type: "cosmos-sdk/GetLatestBlockRequest";
@@ -184,12 +237,21 @@ export interface GetLatestBlockResponseProtoMsg {
   typeUrl: "/cosmos.base.tendermint.v1beta1.GetLatestBlockResponse";
   value: Uint8Array;
 }
-/** GetLatestBlockResponse is the response type for the Query/GetLatestBlock RPC method. */
+/**
+ * GetLatestBlockResponse is the response type for the Query/GetLatestBlock RPC method.
+ * @name GetLatestBlockResponseAmino
+ * @package cosmos.base.tendermint.v1beta1
+ * @see proto type: cosmos.base.tendermint.v1beta1.GetLatestBlockResponse
+ */
 export interface GetLatestBlockResponseAmino {
   block_id?: BlockIDAmino | undefined;
-  /** Deprecated: please use `sdk_block` instead */
+  /**
+   * Deprecated: please use `sdk_block` instead
+   */
   block?: Block1Amino | undefined;
-  /** Since: cosmos-sdk 0.47 */
+  /**
+   * Since: cosmos-sdk 0.47
+   */
   sdk_block?: Block2Amino | undefined;
 }
 export interface GetLatestBlockResponseAminoMsg {
@@ -202,7 +264,12 @@ export interface GetSyncingRequestProtoMsg {
   typeUrl: "/cosmos.base.tendermint.v1beta1.GetSyncingRequest";
   value: Uint8Array;
 }
-/** GetSyncingRequest is the request type for the Query/GetSyncing RPC method. */
+/**
+ * GetSyncingRequest is the request type for the Query/GetSyncing RPC method.
+ * @name GetSyncingRequestAmino
+ * @package cosmos.base.tendermint.v1beta1
+ * @see proto type: cosmos.base.tendermint.v1beta1.GetSyncingRequest
+ */
 export interface GetSyncingRequestAmino {}
 export interface GetSyncingRequestAminoMsg {
   type: "cosmos-sdk/GetSyncingRequest";
@@ -216,7 +283,12 @@ export interface GetSyncingResponseProtoMsg {
   typeUrl: "/cosmos.base.tendermint.v1beta1.GetSyncingResponse";
   value: Uint8Array;
 }
-/** GetSyncingResponse is the response type for the Query/GetSyncing RPC method. */
+/**
+ * GetSyncingResponse is the response type for the Query/GetSyncing RPC method.
+ * @name GetSyncingResponseAmino
+ * @package cosmos.base.tendermint.v1beta1
+ * @see proto type: cosmos.base.tendermint.v1beta1.GetSyncingResponse
+ */
 export interface GetSyncingResponseAmino {
   syncing?: boolean;
 }
@@ -230,7 +302,12 @@ export interface GetNodeInfoRequestProtoMsg {
   typeUrl: "/cosmos.base.tendermint.v1beta1.GetNodeInfoRequest";
   value: Uint8Array;
 }
-/** GetNodeInfoRequest is the request type for the Query/GetNodeInfo RPC method. */
+/**
+ * GetNodeInfoRequest is the request type for the Query/GetNodeInfo RPC method.
+ * @name GetNodeInfoRequestAmino
+ * @package cosmos.base.tendermint.v1beta1
+ * @see proto type: cosmos.base.tendermint.v1beta1.GetNodeInfoRequest
+ */
 export interface GetNodeInfoRequestAmino {}
 export interface GetNodeInfoRequestAminoMsg {
   type: "cosmos-sdk/GetNodeInfoRequest";
@@ -245,7 +322,12 @@ export interface GetNodeInfoResponseProtoMsg {
   typeUrl: "/cosmos.base.tendermint.v1beta1.GetNodeInfoResponse";
   value: Uint8Array;
 }
-/** GetNodeInfoResponse is the response type for the Query/GetNodeInfo RPC method. */
+/**
+ * GetNodeInfoResponse is the response type for the Query/GetNodeInfo RPC method.
+ * @name GetNodeInfoResponseAmino
+ * @package cosmos.base.tendermint.v1beta1
+ * @see proto type: cosmos.base.tendermint.v1beta1.GetNodeInfoResponse
+ */
 export interface GetNodeInfoResponseAmino {
   default_node_info?: DefaultNodeInfoAmino | undefined;
   application_version?: VersionInfoAmino | undefined;
@@ -270,7 +352,12 @@ export interface VersionInfoProtoMsg {
   typeUrl: "/cosmos.base.tendermint.v1beta1.VersionInfo";
   value: Uint8Array;
 }
-/** VersionInfo is the type for the GetNodeInfoResponse message. */
+/**
+ * VersionInfo is the type for the GetNodeInfoResponse message.
+ * @name VersionInfoAmino
+ * @package cosmos.base.tendermint.v1beta1
+ * @see proto type: cosmos.base.tendermint.v1beta1.VersionInfo
+ */
 export interface VersionInfoAmino {
   name?: string;
   app_name?: string;
@@ -279,7 +366,9 @@ export interface VersionInfoAmino {
   build_tags?: string;
   go_version?: string;
   build_deps?: ModuleAmino[];
-  /** Since: cosmos-sdk 0.43 */
+  /**
+   * Since: cosmos-sdk 0.43
+   */
   cosmos_sdk_version?: string;
 }
 export interface VersionInfoAminoMsg {
@@ -299,13 +388,24 @@ export interface ModuleProtoMsg {
   typeUrl: "/cosmos.base.tendermint.v1beta1.Module";
   value: Uint8Array;
 }
-/** Module is the type for VersionInfo */
+/**
+ * Module is the type for VersionInfo
+ * @name ModuleAmino
+ * @package cosmos.base.tendermint.v1beta1
+ * @see proto type: cosmos.base.tendermint.v1beta1.Module
+ */
 export interface ModuleAmino {
-  /** module path */
+  /**
+   * module path
+   */
   path?: string;
-  /** module version */
+  /**
+   * module version
+   */
   version?: string;
-  /** checksum */
+  /**
+   * checksum
+   */
   sum?: string;
 }
 export interface ModuleAminoMsg {
@@ -323,7 +423,12 @@ export interface ABCIQueryRequestProtoMsg {
   typeUrl: "/cosmos.base.tendermint.v1beta1.ABCIQueryRequest";
   value: Uint8Array;
 }
-/** ABCIQueryRequest defines the request structure for the ABCIQuery gRPC query. */
+/**
+ * ABCIQueryRequest defines the request structure for the ABCIQuery gRPC query.
+ * @name ABCIQueryRequestAmino
+ * @package cosmos.base.tendermint.v1beta1
+ * @see proto type: cosmos.base.tendermint.v1beta1.ABCIQueryRequest
+ */
 export interface ABCIQueryRequestAmino {
   data?: string;
   path?: string;
@@ -362,12 +467,19 @@ export interface ABCIQueryResponseProtoMsg {
  *
  * Note: This type is a duplicate of the ResponseQuery proto type defined in
  * Tendermint.
+ * @name ABCIQueryResponseAmino
+ * @package cosmos.base.tendermint.v1beta1
+ * @see proto type: cosmos.base.tendermint.v1beta1.ABCIQueryResponse
  */
 export interface ABCIQueryResponseAmino {
   code?: number;
-  /** nondeterministic */
+  /**
+   * nondeterministic
+   */
   log?: string;
-  /** nondeterministic */
+  /**
+   * nondeterministic
+   */
   info?: string;
   index?: string;
   key?: string;
@@ -402,6 +514,9 @@ export interface ProofOpProtoMsg {
  * hash.
  *
  * Note: This type is a duplicate of the ProofOp proto type defined in Tendermint.
+ * @name ProofOpAmino
+ * @package cosmos.base.tendermint.v1beta1
+ * @see proto type: cosmos.base.tendermint.v1beta1.ProofOp
  */
 export interface ProofOpAmino {
   type?: string;
@@ -428,6 +543,9 @@ export interface ProofOpsProtoMsg {
  * ProofOps is Merkle proof defined by the list of ProofOps.
  *
  * Note: This type is a duplicate of the ProofOps proto type defined in Tendermint.
+ * @name ProofOpsAmino
+ * @package cosmos.base.tendermint.v1beta1
+ * @see proto type: cosmos.base.tendermint.v1beta1.ProofOps
  */
 export interface ProofOpsAmino {
   ops: ProofOpAmino[];
@@ -482,7 +600,7 @@ export const GetValidatorSetByHeightRequest = {
     if (isSet(object.pagination)) obj.pagination = PageRequest.fromJSON(object.pagination);
     return obj;
   },
-  toJSON(message: GetValidatorSetByHeightRequest): unknown {
+  toJSON(message: GetValidatorSetByHeightRequest): JsonSafe<GetValidatorSetByHeightRequest> {
     const obj: any = {};
     message.height !== undefined && (obj.height = (message.height || BigInt(0)).toString());
     message.pagination !== undefined &&
@@ -511,7 +629,7 @@ export const GetValidatorSetByHeightRequest = {
   },
   toAmino(message: GetValidatorSetByHeightRequest): GetValidatorSetByHeightRequestAmino {
     const obj: any = {};
-    obj.height = message.height ? message.height.toString() : undefined;
+    obj.height = message.height !== BigInt(0) ? message.height?.toString() : undefined;
     obj.pagination = message.pagination ? PageRequest.toAmino(message.pagination) : undefined;
     return obj;
   },
@@ -592,7 +710,7 @@ export const GetValidatorSetByHeightResponse = {
     if (isSet(object.pagination)) obj.pagination = PageResponse.fromJSON(object.pagination);
     return obj;
   },
-  toJSON(message: GetValidatorSetByHeightResponse): unknown {
+  toJSON(message: GetValidatorSetByHeightResponse): JsonSafe<GetValidatorSetByHeightResponse> {
     const obj: any = {};
     message.blockHeight !== undefined && (obj.blockHeight = (message.blockHeight || BigInt(0)).toString());
     if (message.validators) {
@@ -628,11 +746,11 @@ export const GetValidatorSetByHeightResponse = {
   },
   toAmino(message: GetValidatorSetByHeightResponse): GetValidatorSetByHeightResponseAmino {
     const obj: any = {};
-    obj.block_height = message.blockHeight ? message.blockHeight.toString() : undefined;
+    obj.block_height = message.blockHeight !== BigInt(0) ? message.blockHeight?.toString() : undefined;
     if (message.validators) {
       obj.validators = message.validators.map((e) => (e ? Validator.toAmino(e) : undefined));
     } else {
-      obj.validators = [];
+      obj.validators = message.validators;
     }
     obj.pagination = message.pagination ? PageResponse.toAmino(message.pagination) : undefined;
     return obj;
@@ -694,7 +812,7 @@ export const GetLatestValidatorSetRequest = {
     if (isSet(object.pagination)) obj.pagination = PageRequest.fromJSON(object.pagination);
     return obj;
   },
-  toJSON(message: GetLatestValidatorSetRequest): unknown {
+  toJSON(message: GetLatestValidatorSetRequest): JsonSafe<GetLatestValidatorSetRequest> {
     const obj: any = {};
     message.pagination !== undefined &&
       (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
@@ -793,7 +911,7 @@ export const GetLatestValidatorSetResponse = {
     if (isSet(object.pagination)) obj.pagination = PageResponse.fromJSON(object.pagination);
     return obj;
   },
-  toJSON(message: GetLatestValidatorSetResponse): unknown {
+  toJSON(message: GetLatestValidatorSetResponse): JsonSafe<GetLatestValidatorSetResponse> {
     const obj: any = {};
     message.blockHeight !== undefined && (obj.blockHeight = (message.blockHeight || BigInt(0)).toString());
     if (message.validators) {
@@ -829,11 +947,11 @@ export const GetLatestValidatorSetResponse = {
   },
   toAmino(message: GetLatestValidatorSetResponse): GetLatestValidatorSetResponseAmino {
     const obj: any = {};
-    obj.block_height = message.blockHeight ? message.blockHeight.toString() : undefined;
+    obj.block_height = message.blockHeight !== BigInt(0) ? message.blockHeight?.toString() : undefined;
     if (message.validators) {
       obj.validators = message.validators.map((e) => (e ? Validator.toAmino(e) : undefined));
     } else {
-      obj.validators = [];
+      obj.validators = message.validators;
     }
     obj.pagination = message.pagination ? PageResponse.toAmino(message.pagination) : undefined;
     return obj;
@@ -919,7 +1037,7 @@ export const Validator = {
     if (isSet(object.proposerPriority)) obj.proposerPriority = BigInt(object.proposerPriority.toString());
     return obj;
   },
-  toJSON(message: Validator): unknown {
+  toJSON(message: Validator): JsonSafe<Validator> {
     const obj: any = {};
     message.address !== undefined && (obj.address = message.address);
     message.pubKey !== undefined && (obj.pubKey = message.pubKey ? Any.toJSON(message.pubKey) : undefined);
@@ -960,10 +1078,11 @@ export const Validator = {
   },
   toAmino(message: Validator): ValidatorAmino {
     const obj: any = {};
-    obj.address = message.address;
+    obj.address = message.address === "" ? undefined : message.address;
     obj.pub_key = message.pubKey ? Any.toAmino(message.pubKey) : undefined;
-    obj.voting_power = message.votingPower ? message.votingPower.toString() : undefined;
-    obj.proposer_priority = message.proposerPriority ? message.proposerPriority.toString() : undefined;
+    obj.voting_power = message.votingPower !== BigInt(0) ? message.votingPower?.toString() : undefined;
+    obj.proposer_priority =
+      message.proposerPriority !== BigInt(0) ? message.proposerPriority?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: ValidatorAminoMsg): Validator {
@@ -1023,7 +1142,7 @@ export const GetBlockByHeightRequest = {
     if (isSet(object.height)) obj.height = BigInt(object.height.toString());
     return obj;
   },
-  toJSON(message: GetBlockByHeightRequest): unknown {
+  toJSON(message: GetBlockByHeightRequest): JsonSafe<GetBlockByHeightRequest> {
     const obj: any = {};
     message.height !== undefined && (obj.height = (message.height || BigInt(0)).toString());
     return obj;
@@ -1044,7 +1163,7 @@ export const GetBlockByHeightRequest = {
   },
   toAmino(message: GetBlockByHeightRequest): GetBlockByHeightRequestAmino {
     const obj: any = {};
-    obj.height = message.height ? message.height.toString() : undefined;
+    obj.height = message.height !== BigInt(0) ? message.height?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: GetBlockByHeightRequestAminoMsg): GetBlockByHeightRequest {
@@ -1120,7 +1239,7 @@ export const GetBlockByHeightResponse = {
     if (isSet(object.sdkBlock)) obj.sdkBlock = Block2.fromJSON(object.sdkBlock);
     return obj;
   },
-  toJSON(message: GetBlockByHeightResponse): unknown {
+  toJSON(message: GetBlockByHeightResponse): JsonSafe<GetBlockByHeightResponse> {
     const obj: any = {};
     message.blockId !== undefined &&
       (obj.blockId = message.blockId ? BlockID.toJSON(message.blockId) : undefined);
@@ -1210,7 +1329,7 @@ export const GetLatestBlockRequest = {
     const obj = createBaseGetLatestBlockRequest();
     return obj;
   },
-  toJSON(_: GetLatestBlockRequest): unknown {
+  toJSON(_: GetLatestBlockRequest): JsonSafe<GetLatestBlockRequest> {
     const obj: any = {};
     return obj;
   },
@@ -1299,7 +1418,7 @@ export const GetLatestBlockResponse = {
     if (isSet(object.sdkBlock)) obj.sdkBlock = Block2.fromJSON(object.sdkBlock);
     return obj;
   },
-  toJSON(message: GetLatestBlockResponse): unknown {
+  toJSON(message: GetLatestBlockResponse): JsonSafe<GetLatestBlockResponse> {
     const obj: any = {};
     message.blockId !== undefined &&
       (obj.blockId = message.blockId ? BlockID.toJSON(message.blockId) : undefined);
@@ -1389,7 +1508,7 @@ export const GetSyncingRequest = {
     const obj = createBaseGetSyncingRequest();
     return obj;
   },
-  toJSON(_: GetSyncingRequest): unknown {
+  toJSON(_: GetSyncingRequest): JsonSafe<GetSyncingRequest> {
     const obj: any = {};
     return obj;
   },
@@ -1462,7 +1581,7 @@ export const GetSyncingResponse = {
     if (isSet(object.syncing)) obj.syncing = Boolean(object.syncing);
     return obj;
   },
-  toJSON(message: GetSyncingResponse): unknown {
+  toJSON(message: GetSyncingResponse): JsonSafe<GetSyncingResponse> {
     const obj: any = {};
     message.syncing !== undefined && (obj.syncing = message.syncing);
     return obj;
@@ -1481,7 +1600,7 @@ export const GetSyncingResponse = {
   },
   toAmino(message: GetSyncingResponse): GetSyncingResponseAmino {
     const obj: any = {};
-    obj.syncing = message.syncing;
+    obj.syncing = message.syncing === false ? undefined : message.syncing;
     return obj;
   },
   fromAminoMsg(object: GetSyncingResponseAminoMsg): GetSyncingResponse {
@@ -1532,7 +1651,7 @@ export const GetNodeInfoRequest = {
     const obj = createBaseGetNodeInfoRequest();
     return obj;
   },
-  toJSON(_: GetNodeInfoRequest): unknown {
+  toJSON(_: GetNodeInfoRequest): JsonSafe<GetNodeInfoRequest> {
     const obj: any = {};
     return obj;
   },
@@ -1614,7 +1733,7 @@ export const GetNodeInfoResponse = {
       obj.applicationVersion = VersionInfo.fromJSON(object.applicationVersion);
     return obj;
   },
-  toJSON(message: GetNodeInfoResponse): unknown {
+  toJSON(message: GetNodeInfoResponse): JsonSafe<GetNodeInfoResponse> {
     const obj: any = {};
     message.defaultNodeInfo !== undefined &&
       (obj.defaultNodeInfo = message.defaultNodeInfo
@@ -1770,7 +1889,7 @@ export const VersionInfo = {
     if (isSet(object.cosmosSdkVersion)) obj.cosmosSdkVersion = String(object.cosmosSdkVersion);
     return obj;
   },
-  toJSON(message: VersionInfo): unknown {
+  toJSON(message: VersionInfo): JsonSafe<VersionInfo> {
     const obj: any = {};
     message.name !== undefined && (obj.name = message.name);
     message.appName !== undefined && (obj.appName = message.appName);
@@ -1826,18 +1945,18 @@ export const VersionInfo = {
   },
   toAmino(message: VersionInfo): VersionInfoAmino {
     const obj: any = {};
-    obj.name = message.name;
-    obj.app_name = message.appName;
-    obj.version = message.version;
-    obj.git_commit = message.gitCommit;
-    obj.build_tags = message.buildTags;
-    obj.go_version = message.goVersion;
+    obj.name = message.name === "" ? undefined : message.name;
+    obj.app_name = message.appName === "" ? undefined : message.appName;
+    obj.version = message.version === "" ? undefined : message.version;
+    obj.git_commit = message.gitCommit === "" ? undefined : message.gitCommit;
+    obj.build_tags = message.buildTags === "" ? undefined : message.buildTags;
+    obj.go_version = message.goVersion === "" ? undefined : message.goVersion;
     if (message.buildDeps) {
       obj.build_deps = message.buildDeps.map((e) => (e ? Module.toAmino(e) : undefined));
     } else {
-      obj.build_deps = [];
+      obj.build_deps = message.buildDeps;
     }
-    obj.cosmos_sdk_version = message.cosmosSdkVersion;
+    obj.cosmos_sdk_version = message.cosmosSdkVersion === "" ? undefined : message.cosmosSdkVersion;
     return obj;
   },
   fromAminoMsg(object: VersionInfoAminoMsg): VersionInfo {
@@ -1913,7 +2032,7 @@ export const Module = {
     if (isSet(object.sum)) obj.sum = String(object.sum);
     return obj;
   },
-  toJSON(message: Module): unknown {
+  toJSON(message: Module): JsonSafe<Module> {
     const obj: any = {};
     message.path !== undefined && (obj.path = message.path);
     message.version !== undefined && (obj.version = message.version);
@@ -1942,9 +2061,9 @@ export const Module = {
   },
   toAmino(message: Module): ModuleAmino {
     const obj: any = {};
-    obj.path = message.path;
-    obj.version = message.version;
-    obj.sum = message.sum;
+    obj.path = message.path === "" ? undefined : message.path;
+    obj.version = message.version === "" ? undefined : message.version;
+    obj.sum = message.sum === "" ? undefined : message.sum;
     return obj;
   },
   fromAminoMsg(object: ModuleAminoMsg): Module {
@@ -2028,7 +2147,7 @@ export const ABCIQueryRequest = {
     if (isSet(object.prove)) obj.prove = Boolean(object.prove);
     return obj;
   },
-  toJSON(message: ABCIQueryRequest): unknown {
+  toJSON(message: ABCIQueryRequest): JsonSafe<ABCIQueryRequest> {
     const obj: any = {};
     message.data !== undefined &&
       (obj.data = base64FromBytes(message.data !== undefined ? message.data : new Uint8Array()));
@@ -2066,9 +2185,9 @@ export const ABCIQueryRequest = {
   toAmino(message: ABCIQueryRequest): ABCIQueryRequestAmino {
     const obj: any = {};
     obj.data = message.data ? base64FromBytes(message.data) : undefined;
-    obj.path = message.path;
-    obj.height = message.height ? message.height.toString() : undefined;
-    obj.prove = message.prove;
+    obj.path = message.path === "" ? undefined : message.path;
+    obj.height = message.height !== BigInt(0) ? message.height?.toString() : undefined;
+    obj.prove = message.prove === false ? undefined : message.prove;
     return obj;
   },
   fromAminoMsg(object: ABCIQueryRequestAminoMsg): ABCIQueryRequest {
@@ -2192,7 +2311,7 @@ export const ABCIQueryResponse = {
     if (isSet(object.codespace)) obj.codespace = String(object.codespace);
     return obj;
   },
-  toJSON(message: ABCIQueryResponse): unknown {
+  toJSON(message: ABCIQueryResponse): JsonSafe<ABCIQueryResponse> {
     const obj: any = {};
     message.code !== undefined && (obj.code = Math.round(message.code));
     message.log !== undefined && (obj.log = message.log);
@@ -2260,15 +2379,15 @@ export const ABCIQueryResponse = {
   },
   toAmino(message: ABCIQueryResponse): ABCIQueryResponseAmino {
     const obj: any = {};
-    obj.code = message.code;
-    obj.log = message.log;
-    obj.info = message.info;
-    obj.index = message.index ? message.index.toString() : undefined;
+    obj.code = message.code === 0 ? undefined : message.code;
+    obj.log = message.log === "" ? undefined : message.log;
+    obj.info = message.info === "" ? undefined : message.info;
+    obj.index = message.index !== BigInt(0) ? message.index?.toString() : undefined;
     obj.key = message.key ? base64FromBytes(message.key) : undefined;
     obj.value = message.value ? base64FromBytes(message.value) : undefined;
     obj.proof_ops = message.proofOps ? ProofOps.toAmino(message.proofOps) : undefined;
-    obj.height = message.height ? message.height.toString() : undefined;
-    obj.codespace = message.codespace;
+    obj.height = message.height !== BigInt(0) ? message.height?.toString() : undefined;
+    obj.codespace = message.codespace === "" ? undefined : message.codespace;
     return obj;
   },
   fromAminoMsg(object: ABCIQueryResponseAminoMsg): ABCIQueryResponse {
@@ -2344,7 +2463,7 @@ export const ProofOp = {
     if (isSet(object.data)) obj.data = bytesFromBase64(object.data);
     return obj;
   },
-  toJSON(message: ProofOp): unknown {
+  toJSON(message: ProofOp): JsonSafe<ProofOp> {
     const obj: any = {};
     message.type !== undefined && (obj.type = message.type);
     message.key !== undefined &&
@@ -2375,7 +2494,7 @@ export const ProofOp = {
   },
   toAmino(message: ProofOp): ProofOpAmino {
     const obj: any = {};
-    obj.type = message.type;
+    obj.type = message.type === "" ? undefined : message.type;
     obj.key = message.key ? base64FromBytes(message.key) : undefined;
     obj.data = message.data ? base64FromBytes(message.data) : undefined;
     return obj;
@@ -2437,7 +2556,7 @@ export const ProofOps = {
     if (Array.isArray(object?.ops)) obj.ops = object.ops.map((e: any) => ProofOp.fromJSON(e));
     return obj;
   },
-  toJSON(message: ProofOps): unknown {
+  toJSON(message: ProofOps): JsonSafe<ProofOps> {
     const obj: any = {};
     if (message.ops) {
       obj.ops = message.ops.map((e) => (e ? ProofOp.toJSON(e) : undefined));
@@ -2461,7 +2580,7 @@ export const ProofOps = {
     if (message.ops) {
       obj.ops = message.ops.map((e) => (e ? ProofOp.toAmino(e) : undefined));
     } else {
-      obj.ops = [];
+      obj.ops = message.ops;
     }
     return obj;
   },

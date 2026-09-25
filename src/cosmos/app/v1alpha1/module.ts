@@ -1,6 +1,7 @@
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "../../../binary";
 import { isSet } from "../../../helpers";
+import { JsonSafe } from "../../../json-safe";
 export const protobufPackage = "cosmos.app.v1alpha1";
 /** ModuleDescriptor describes an app module. */
 export interface ModuleDescriptor {
@@ -32,7 +33,12 @@ export interface ModuleDescriptorProtoMsg {
   typeUrl: "/cosmos.app.v1alpha1.ModuleDescriptor";
   value: Uint8Array;
 }
-/** ModuleDescriptor describes an app module. */
+/**
+ * ModuleDescriptor describes an app module.
+ * @name ModuleDescriptorAmino
+ * @package cosmos.app.v1alpha1
+ * @see proto type: cosmos.app.v1alpha1.ModuleDescriptor
+ */
 export interface ModuleDescriptorAmino {
   /**
    * go_import names the package that should be imported by an app to load the
@@ -109,9 +115,16 @@ export interface PackageReferenceProtoMsg {
   typeUrl: "/cosmos.app.v1alpha1.PackageReference";
   value: Uint8Array;
 }
-/** PackageReference is a reference to a protobuf package used by a module. */
+/**
+ * PackageReference is a reference to a protobuf package used by a module.
+ * @name PackageReferenceAmino
+ * @package cosmos.app.v1alpha1
+ * @see proto type: cosmos.app.v1alpha1.PackageReference
+ */
 export interface PackageReferenceAmino {
-  /** name is the fully-qualified name of the package. */
+  /**
+   * name is the fully-qualified name of the package.
+   */
   name?: string;
   /**
    * revision is the optional revision of the package that is being used.
@@ -174,6 +187,9 @@ export interface MigrateFromInfoProtoMsg {
 /**
  * MigrateFromInfo is information on a module version that a newer module
  * can migrate from.
+ * @name MigrateFromInfoAmino
+ * @package cosmos.app.v1alpha1
+ * @see proto type: cosmos.app.v1alpha1.MigrateFromInfo
  */
 export interface MigrateFromInfoAmino {
   /**
@@ -239,7 +255,7 @@ export const ModuleDescriptor = {
       obj.canMigrateFrom = object.canMigrateFrom.map((e: any) => MigrateFromInfo.fromJSON(e));
     return obj;
   },
-  toJSON(message: ModuleDescriptor): unknown {
+  toJSON(message: ModuleDescriptor): JsonSafe<ModuleDescriptor> {
     const obj: any = {};
     message.goImport !== undefined && (obj.goImport = message.goImport);
     if (message.usePackage) {
@@ -272,16 +288,16 @@ export const ModuleDescriptor = {
   },
   toAmino(message: ModuleDescriptor): ModuleDescriptorAmino {
     const obj: any = {};
-    obj.go_import = message.goImport;
+    obj.go_import = message.goImport === "" ? undefined : message.goImport;
     if (message.usePackage) {
       obj.use_package = message.usePackage.map((e) => (e ? PackageReference.toAmino(e) : undefined));
     } else {
-      obj.use_package = [];
+      obj.use_package = message.usePackage;
     }
     if (message.canMigrateFrom) {
       obj.can_migrate_from = message.canMigrateFrom.map((e) => (e ? MigrateFromInfo.toAmino(e) : undefined));
     } else {
-      obj.can_migrate_from = [];
+      obj.can_migrate_from = message.canMigrateFrom;
     }
     return obj;
   },
@@ -350,7 +366,7 @@ export const PackageReference = {
     if (isSet(object.revision)) obj.revision = Number(object.revision);
     return obj;
   },
-  toJSON(message: PackageReference): unknown {
+  toJSON(message: PackageReference): JsonSafe<PackageReference> {
     const obj: any = {};
     message.name !== undefined && (obj.name = message.name);
     message.revision !== undefined && (obj.revision = Math.round(message.revision));
@@ -374,8 +390,8 @@ export const PackageReference = {
   },
   toAmino(message: PackageReference): PackageReferenceAmino {
     const obj: any = {};
-    obj.name = message.name;
-    obj.revision = message.revision;
+    obj.name = message.name === "" ? undefined : message.name;
+    obj.revision = message.revision === 0 ? undefined : message.revision;
     return obj;
   },
   fromAminoMsg(object: PackageReferenceAminoMsg): PackageReference {
@@ -435,7 +451,7 @@ export const MigrateFromInfo = {
     if (isSet(object.module)) obj.module = String(object.module);
     return obj;
   },
-  toJSON(message: MigrateFromInfo): unknown {
+  toJSON(message: MigrateFromInfo): JsonSafe<MigrateFromInfo> {
     const obj: any = {};
     message.module !== undefined && (obj.module = message.module);
     return obj;
@@ -454,7 +470,7 @@ export const MigrateFromInfo = {
   },
   toAmino(message: MigrateFromInfo): MigrateFromInfoAmino {
     const obj: any = {};
-    obj.module = message.module;
+    obj.module = message.module === "" ? undefined : message.module;
     return obj;
   },
   fromAminoMsg(object: MigrateFromInfoAminoMsg): MigrateFromInfo {

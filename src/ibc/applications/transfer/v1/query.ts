@@ -9,6 +9,7 @@ import { Params, ParamsAmino } from "./transfer";
 import { Denom, DenomAmino } from "./token";
 import { Coin, CoinAmino } from "../../../../cosmos/base/v1beta1/coin";
 import { BinaryReader, BinaryWriter } from "../../../../binary";
+import { JsonSafe } from "../../../../json-safe";
 import { isSet } from "../../../../helpers";
 import { TxRpc } from "../../../../types";
 export const protobufPackage = "ibc.applications.transfer.v1";
@@ -18,7 +19,12 @@ export interface QueryParamsRequestProtoMsg {
   typeUrl: "/ibc.applications.transfer.v1.QueryParamsRequest";
   value: Uint8Array;
 }
-/** QueryParamsRequest is the request type for the Query/Params RPC method. */
+/**
+ * QueryParamsRequest is the request type for the Query/Params RPC method.
+ * @name QueryParamsRequestAmino
+ * @package ibc.applications.transfer.v1
+ * @see proto type: ibc.applications.transfer.v1.QueryParamsRequest
+ */
 export interface QueryParamsRequestAmino {}
 export interface QueryParamsRequestAminoMsg {
   type: "cosmos-sdk/QueryParamsRequest";
@@ -33,9 +39,16 @@ export interface QueryParamsResponseProtoMsg {
   typeUrl: "/ibc.applications.transfer.v1.QueryParamsResponse";
   value: Uint8Array;
 }
-/** QueryParamsResponse is the response type for the Query/Params RPC method. */
+/**
+ * QueryParamsResponse is the response type for the Query/Params RPC method.
+ * @name QueryParamsResponseAmino
+ * @package ibc.applications.transfer.v1
+ * @see proto type: ibc.applications.transfer.v1.QueryParamsResponse
+ */
 export interface QueryParamsResponseAmino {
-  /** params defines the parameters of the module. */
+  /**
+   * params defines the parameters of the module.
+   */
   params?: ParamsAmino | undefined;
 }
 export interface QueryParamsResponseAminoMsg {
@@ -57,9 +70,14 @@ export interface QueryDenomRequestProtoMsg {
 /**
  * QueryDenomRequest is the request type for the Query/Denom RPC
  * method
+ * @name QueryDenomRequestAmino
+ * @package ibc.applications.transfer.v1
+ * @see proto type: ibc.applications.transfer.v1.QueryDenomRequest
  */
 export interface QueryDenomRequestAmino {
-  /** hash (in hex format) or denom (full denom with ibc prefix) of the on chain denomination. */
+  /**
+   * hash (in hex format) or denom (full denom with ibc prefix) of the on chain denomination.
+   */
   hash?: string;
 }
 export interface QueryDenomRequestAminoMsg {
@@ -81,9 +99,14 @@ export interface QueryDenomResponseProtoMsg {
 /**
  * QueryDenomResponse is the response type for the Query/Denom RPC
  * method.
+ * @name QueryDenomResponseAmino
+ * @package ibc.applications.transfer.v1
+ * @see proto type: ibc.applications.transfer.v1.QueryDenomResponse
  */
 export interface QueryDenomResponseAmino {
-  /** denom returns the requested denomination. */
+  /**
+   * denom returns the requested denomination.
+   */
   denom?: DenomAmino | undefined;
 }
 export interface QueryDenomResponseAminoMsg {
@@ -105,9 +128,14 @@ export interface QueryDenomsRequestProtoMsg {
 /**
  * QueryDenomsRequest is the request type for the Query/Denoms RPC
  * method
+ * @name QueryDenomsRequestAmino
+ * @package ibc.applications.transfer.v1
+ * @see proto type: ibc.applications.transfer.v1.QueryDenomsRequest
  */
 export interface QueryDenomsRequestAmino {
-  /** pagination defines an optional pagination for the request. */
+  /**
+   * pagination defines an optional pagination for the request.
+   */
   pagination?: PageRequestAmino | undefined;
 }
 export interface QueryDenomsRequestAminoMsg {
@@ -131,11 +159,18 @@ export interface QueryDenomsResponseProtoMsg {
 /**
  * QueryDenomsResponse is the response type for the Query/Denoms RPC
  * method.
+ * @name QueryDenomsResponseAmino
+ * @package ibc.applications.transfer.v1
+ * @see proto type: ibc.applications.transfer.v1.QueryDenomsResponse
  */
 export interface QueryDenomsResponseAmino {
-  /** denoms returns all denominations. */
+  /**
+   * denoms returns all denominations.
+   */
   denoms?: DenomAmino[];
-  /** pagination defines the pagination in the response. */
+  /**
+   * pagination defines the pagination in the response.
+   */
   pagination?: PageResponseAmino | undefined;
 }
 export interface QueryDenomsResponseAminoMsg {
@@ -157,9 +192,14 @@ export interface QueryDenomHashRequestProtoMsg {
 /**
  * QueryDenomHashRequest is the request type for the Query/DenomHash RPC
  * method
+ * @name QueryDenomHashRequestAmino
+ * @package ibc.applications.transfer.v1
+ * @see proto type: ibc.applications.transfer.v1.QueryDenomHashRequest
  */
 export interface QueryDenomHashRequestAmino {
-  /** The denomination trace ([port_id]/[channel_id])+/[denom] */
+  /**
+   * The denomination trace ([port_id]/[channel_id])+/[denom]
+   */
   trace?: string;
 }
 export interface QueryDenomHashRequestAminoMsg {
@@ -181,9 +221,14 @@ export interface QueryDenomHashResponseProtoMsg {
 /**
  * QueryDenomHashResponse is the response type for the Query/DenomHash RPC
  * method.
+ * @name QueryDenomHashResponseAmino
+ * @package ibc.applications.transfer.v1
+ * @see proto type: ibc.applications.transfer.v1.QueryDenomHashResponse
  */
 export interface QueryDenomHashResponseAmino {
-  /** hash (in hex format) of the denomination trace information. */
+  /**
+   * hash (in hex format) of the denomination trace information.
+   */
   hash?: string;
 }
 export interface QueryDenomHashResponseAminoMsg {
@@ -201,11 +246,20 @@ export interface QueryEscrowAddressRequestProtoMsg {
   typeUrl: "/ibc.applications.transfer.v1.QueryEscrowAddressRequest";
   value: Uint8Array;
 }
-/** QueryEscrowAddressRequest is the request type for the EscrowAddress RPC method. */
+/**
+ * QueryEscrowAddressRequest is the request type for the EscrowAddress RPC method.
+ * @name QueryEscrowAddressRequestAmino
+ * @package ibc.applications.transfer.v1
+ * @see proto type: ibc.applications.transfer.v1.QueryEscrowAddressRequest
+ */
 export interface QueryEscrowAddressRequestAmino {
-  /** unique port identifier */
+  /**
+   * unique port identifier
+   */
   port_id?: string;
-  /** unique channel identifier */
+  /**
+   * unique channel identifier
+   */
   channel_id?: string;
 }
 export interface QueryEscrowAddressRequestAminoMsg {
@@ -221,9 +275,16 @@ export interface QueryEscrowAddressResponseProtoMsg {
   typeUrl: "/ibc.applications.transfer.v1.QueryEscrowAddressResponse";
   value: Uint8Array;
 }
-/** QueryEscrowAddressResponse is the response type of the EscrowAddress RPC method. */
+/**
+ * QueryEscrowAddressResponse is the response type of the EscrowAddress RPC method.
+ * @name QueryEscrowAddressResponseAmino
+ * @package ibc.applications.transfer.v1
+ * @see proto type: ibc.applications.transfer.v1.QueryEscrowAddressResponse
+ */
 export interface QueryEscrowAddressResponseAmino {
-  /** the escrow account address */
+  /**
+   * the escrow account address
+   */
   escrow_address?: string;
 }
 export interface QueryEscrowAddressResponseAminoMsg {
@@ -238,7 +299,12 @@ export interface QueryTotalEscrowForDenomRequestProtoMsg {
   typeUrl: "/ibc.applications.transfer.v1.QueryTotalEscrowForDenomRequest";
   value: Uint8Array;
 }
-/** QueryTotalEscrowForDenomRequest is the request type for TotalEscrowForDenom RPC method. */
+/**
+ * QueryTotalEscrowForDenomRequest is the request type for TotalEscrowForDenom RPC method.
+ * @name QueryTotalEscrowForDenomRequestAmino
+ * @package ibc.applications.transfer.v1
+ * @see proto type: ibc.applications.transfer.v1.QueryTotalEscrowForDenomRequest
+ */
 export interface QueryTotalEscrowForDenomRequestAmino {
   denom?: string;
 }
@@ -254,7 +320,12 @@ export interface QueryTotalEscrowForDenomResponseProtoMsg {
   typeUrl: "/ibc.applications.transfer.v1.QueryTotalEscrowForDenomResponse";
   value: Uint8Array;
 }
-/** QueryTotalEscrowForDenomResponse is the response type for TotalEscrowForDenom RPC method. */
+/**
+ * QueryTotalEscrowForDenomResponse is the response type for TotalEscrowForDenom RPC method.
+ * @name QueryTotalEscrowForDenomResponseAmino
+ * @package ibc.applications.transfer.v1
+ * @see proto type: ibc.applications.transfer.v1.QueryTotalEscrowForDenomResponse
+ */
 export interface QueryTotalEscrowForDenomResponseAmino {
   amount?: CoinAmino | undefined;
 }
@@ -288,7 +359,7 @@ export const QueryParamsRequest = {
     const obj = createBaseQueryParamsRequest();
     return obj;
   },
-  toJSON(_: QueryParamsRequest): unknown {
+  toJSON(_: QueryParamsRequest): JsonSafe<QueryParamsRequest> {
     const obj: any = {};
     return obj;
   },
@@ -361,7 +432,7 @@ export const QueryParamsResponse = {
     if (isSet(object.params)) obj.params = Params.fromJSON(object.params);
     return obj;
   },
-  toJSON(message: QueryParamsResponse): unknown {
+  toJSON(message: QueryParamsResponse): JsonSafe<QueryParamsResponse> {
     const obj: any = {};
     message.params !== undefined && (obj.params = message.params ? Params.toJSON(message.params) : undefined);
     return obj;
@@ -442,7 +513,7 @@ export const QueryDenomRequest = {
     if (isSet(object.hash)) obj.hash = String(object.hash);
     return obj;
   },
-  toJSON(message: QueryDenomRequest): unknown {
+  toJSON(message: QueryDenomRequest): JsonSafe<QueryDenomRequest> {
     const obj: any = {};
     message.hash !== undefined && (obj.hash = message.hash);
     return obj;
@@ -461,7 +532,7 @@ export const QueryDenomRequest = {
   },
   toAmino(message: QueryDenomRequest): QueryDenomRequestAmino {
     const obj: any = {};
-    obj.hash = message.hash;
+    obj.hash = message.hash === "" ? undefined : message.hash;
     return obj;
   },
   fromAminoMsg(object: QueryDenomRequestAminoMsg): QueryDenomRequest {
@@ -521,7 +592,7 @@ export const QueryDenomResponse = {
     if (isSet(object.denom)) obj.denom = Denom.fromJSON(object.denom);
     return obj;
   },
-  toJSON(message: QueryDenomResponse): unknown {
+  toJSON(message: QueryDenomResponse): JsonSafe<QueryDenomResponse> {
     const obj: any = {};
     message.denom !== undefined && (obj.denom = message.denom ? Denom.toJSON(message.denom) : undefined);
     return obj;
@@ -602,7 +673,7 @@ export const QueryDenomsRequest = {
     if (isSet(object.pagination)) obj.pagination = PageRequest.fromJSON(object.pagination);
     return obj;
   },
-  toJSON(message: QueryDenomsRequest): unknown {
+  toJSON(message: QueryDenomsRequest): JsonSafe<QueryDenomsRequest> {
     const obj: any = {};
     message.pagination !== undefined &&
       (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
@@ -692,7 +763,7 @@ export const QueryDenomsResponse = {
     if (isSet(object.pagination)) obj.pagination = PageResponse.fromJSON(object.pagination);
     return obj;
   },
-  toJSON(message: QueryDenomsResponse): unknown {
+  toJSON(message: QueryDenomsResponse): JsonSafe<QueryDenomsResponse> {
     const obj: any = {};
     if (message.denoms) {
       obj.denoms = message.denoms.map((e) => (e ? Denom.toJSON(e) : undefined));
@@ -724,7 +795,7 @@ export const QueryDenomsResponse = {
     if (message.denoms) {
       obj.denoms = message.denoms.map((e) => (e ? Denom.toAmino(e) : undefined));
     } else {
-      obj.denoms = [];
+      obj.denoms = message.denoms;
     }
     obj.pagination = message.pagination ? PageResponse.toAmino(message.pagination) : undefined;
     return obj;
@@ -786,7 +857,7 @@ export const QueryDenomHashRequest = {
     if (isSet(object.trace)) obj.trace = String(object.trace);
     return obj;
   },
-  toJSON(message: QueryDenomHashRequest): unknown {
+  toJSON(message: QueryDenomHashRequest): JsonSafe<QueryDenomHashRequest> {
     const obj: any = {};
     message.trace !== undefined && (obj.trace = message.trace);
     return obj;
@@ -805,7 +876,7 @@ export const QueryDenomHashRequest = {
   },
   toAmino(message: QueryDenomHashRequest): QueryDenomHashRequestAmino {
     const obj: any = {};
-    obj.trace = message.trace;
+    obj.trace = message.trace === "" ? undefined : message.trace;
     return obj;
   },
   fromAminoMsg(object: QueryDenomHashRequestAminoMsg): QueryDenomHashRequest {
@@ -865,7 +936,7 @@ export const QueryDenomHashResponse = {
     if (isSet(object.hash)) obj.hash = String(object.hash);
     return obj;
   },
-  toJSON(message: QueryDenomHashResponse): unknown {
+  toJSON(message: QueryDenomHashResponse): JsonSafe<QueryDenomHashResponse> {
     const obj: any = {};
     message.hash !== undefined && (obj.hash = message.hash);
     return obj;
@@ -884,7 +955,7 @@ export const QueryDenomHashResponse = {
   },
   toAmino(message: QueryDenomHashResponse): QueryDenomHashResponseAmino {
     const obj: any = {};
-    obj.hash = message.hash;
+    obj.hash = message.hash === "" ? undefined : message.hash;
     return obj;
   },
   fromAminoMsg(object: QueryDenomHashResponseAminoMsg): QueryDenomHashResponse {
@@ -952,7 +1023,7 @@ export const QueryEscrowAddressRequest = {
     if (isSet(object.channelId)) obj.channelId = String(object.channelId);
     return obj;
   },
-  toJSON(message: QueryEscrowAddressRequest): unknown {
+  toJSON(message: QueryEscrowAddressRequest): JsonSafe<QueryEscrowAddressRequest> {
     const obj: any = {};
     message.portId !== undefined && (obj.portId = message.portId);
     message.channelId !== undefined && (obj.channelId = message.channelId);
@@ -976,8 +1047,8 @@ export const QueryEscrowAddressRequest = {
   },
   toAmino(message: QueryEscrowAddressRequest): QueryEscrowAddressRequestAmino {
     const obj: any = {};
-    obj.port_id = message.portId;
-    obj.channel_id = message.channelId;
+    obj.port_id = message.portId === "" ? undefined : message.portId;
+    obj.channel_id = message.channelId === "" ? undefined : message.channelId;
     return obj;
   },
   fromAminoMsg(object: QueryEscrowAddressRequestAminoMsg): QueryEscrowAddressRequest {
@@ -1037,7 +1108,7 @@ export const QueryEscrowAddressResponse = {
     if (isSet(object.escrowAddress)) obj.escrowAddress = String(object.escrowAddress);
     return obj;
   },
-  toJSON(message: QueryEscrowAddressResponse): unknown {
+  toJSON(message: QueryEscrowAddressResponse): JsonSafe<QueryEscrowAddressResponse> {
     const obj: any = {};
     message.escrowAddress !== undefined && (obj.escrowAddress = message.escrowAddress);
     return obj;
@@ -1056,7 +1127,7 @@ export const QueryEscrowAddressResponse = {
   },
   toAmino(message: QueryEscrowAddressResponse): QueryEscrowAddressResponseAmino {
     const obj: any = {};
-    obj.escrow_address = message.escrowAddress;
+    obj.escrow_address = message.escrowAddress === "" ? undefined : message.escrowAddress;
     return obj;
   },
   fromAminoMsg(object: QueryEscrowAddressResponseAminoMsg): QueryEscrowAddressResponse {
@@ -1119,7 +1190,7 @@ export const QueryTotalEscrowForDenomRequest = {
     if (isSet(object.denom)) obj.denom = String(object.denom);
     return obj;
   },
-  toJSON(message: QueryTotalEscrowForDenomRequest): unknown {
+  toJSON(message: QueryTotalEscrowForDenomRequest): JsonSafe<QueryTotalEscrowForDenomRequest> {
     const obj: any = {};
     message.denom !== undefined && (obj.denom = message.denom);
     return obj;
@@ -1138,7 +1209,7 @@ export const QueryTotalEscrowForDenomRequest = {
   },
   toAmino(message: QueryTotalEscrowForDenomRequest): QueryTotalEscrowForDenomRequestAmino {
     const obj: any = {};
-    obj.denom = message.denom;
+    obj.denom = message.denom === "" ? undefined : message.denom;
     return obj;
   },
   fromAminoMsg(object: QueryTotalEscrowForDenomRequestAminoMsg): QueryTotalEscrowForDenomRequest {
@@ -1201,7 +1272,7 @@ export const QueryTotalEscrowForDenomResponse = {
     if (isSet(object.amount)) obj.amount = Coin.fromJSON(object.amount);
     return obj;
   },
-  toJSON(message: QueryTotalEscrowForDenomResponse): unknown {
+  toJSON(message: QueryTotalEscrowForDenomResponse): JsonSafe<QueryTotalEscrowForDenomResponse> {
     const obj: any = {};
     message.amount !== undefined && (obj.amount = message.amount ? Coin.toJSON(message.amount) : undefined);
     return obj;
