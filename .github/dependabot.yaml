@@ -19,13 +19,18 @@ updates:
       # ignore all patch upgrades
       - dependency-name: '*'
         update-types: ['version-update:semver-patch']
+      # telescope 2.x generates code for the InterchainJS ecosystem rather than
+      # cosmjs, which is what this package exists to serve, so a major bump is
+      # not an upgrade for us. Revisit only as a deliberate migration.
+      - dependency-name: '@cosmology/telescope'
+        update-types: ['version-update:semver-major']
     open-pull-requests-limit: 10
     versioning-strategy: increase
     pull-request-branch-name:
       separator: '-'
     groups:
       # Telescope generates everything under src/, so its updates arrive on
-      # their own: they need `npm run codegen` and a review of the diff.
+      # their own: they need `pnpm build` and a review of the regenerated diff.
       telescope:
         patterns:
           - '@cosmology/*'
