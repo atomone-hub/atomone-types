@@ -16,6 +16,9 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v7
+        with:
+          # The build regenerates src/ from the protos in these submodules.
+          submodules: recursive
 
       - name: Install pnpm
         uses: pnpm/action-setup@v6
@@ -29,31 +32,37 @@ jobs:
       - name: Install modules
         run: pnpm install --frozen-lockfile
 
-      - name: Formatting
-        run: pnpm run format:check
-
+      # Regenerates src/ from protos/, formats it, then compiles into dist/.
       # tsc runs with noEmitOnError, so this is the type check as well.
       - name: Build
         run: pnpm run build
 
-      # The package is assembled by copying build output to the repo root and
-      # listing it in "files", so a new generated module silently goes missing
-      # from the tarball. Compare the two rather than trusting the list.
-      - name: Check the published package carries every built module
+      # The build just rewrote src/ from the protos, so any diff means the
+      # committed sources describe older protos, or were never formatted.
+      - name: Check the committed sources match the protos
+        run: |
+          if ! git diff --exit-code -- src; then
+            echo "::error::src/ is out of date; run 'pnpm build' and commit the result"
+            exit 1
+          fi
+
+      # dist/ reaches consumers through an exports map, so resolve it the way
+      # they do instead of trusting the packaged file list.
+      - name: Pack and resolve as a consumer
         run: |
           pnpm pack --pack-destination "$RUNNER_TEMP" >/dev/null
-          tar xzf "$RUNNER_TEMP"/atomone-atomone-types-*.tgz -C "$RUNNER_TEMP"
-
-          failed=0
-          for built in build/*.js build/*.d.ts; do
-            name="$(basename "$built")"
-            if [ ! -f "$RUNNER_TEMP/package/$name" ]; then
-              echo "::error file=package.json::$name is built but missing from the published package; add it to scripts/prepare-publishing.sh and the files list"
-              failed=1
-            fi
-          done
-          exit "$failed"
-
-      - name: Load the packaged entry points
-        working-directory: ${{ runner.temp }}/package
-        run: node -e "require('./index.js'); require('./atomone/gov/v1/gov.js'); console.log('entry points load')"
+          mkdir -p "$RUNNER_TEMP/consumer"
+          cd "$RUNNER_TEMP/consumer"
+          echo '{ "name": "consumer", "private": true, "version": "1.0.0" }' > package.json
+          pnpm add "$RUNNER_TEMP"/atomone-atomone-types-*.tgz
+          node -e "
+            require('@atomone/atomone-types');
+            const gov = require('@atomone/atomone-types/atomone/gov/v1/gov');
+            const tx = require('@atomone/atomone-types/atomone/gov/v1/tx.js');
+            const { GlobalDecoderRegistry } = require('@atomone/atomone-types/registry');
+            if (typeof gov.Proposal !== 'object') throw new Error('deep import is broken');
+            if (typeof tx.MsgSubmitProposal !== 'object') throw new Error('deep .js import is broken');
+            const registered = Object.keys(GlobalDecoderRegistry.registry).length;
+            if (registered === 0) throw new Error('the decoder registry is empty');
+            console.log('resolved bare, deep and registry imports; ' + registered + ' decoders registered');
+          "

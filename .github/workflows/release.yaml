@@ -20,6 +20,9 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v7
+        with:
+          # The build regenerates src/ from the protos in these submodules.
+          submodules: recursive
 
       - name: Install pnpm
         uses: pnpm/action-setup@v6

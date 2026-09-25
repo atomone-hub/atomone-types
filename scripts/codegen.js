@@ -1,19 +1,33 @@
 #!/usr/bin/env node
 
 const { join } = require("path");
-const { writeFileSync } = require("fs");
+const { existsSync, rmSync, writeFileSync } = require("fs");
 const telescope = require("@cosmology/telescope").default;
 
 const outPath = join(__dirname, "/../src");
 
+const protoDirs = [
+  "protos/cosmos-sdk/proto",
+  "protos/third_party",
+  "protos/atomone/proto",
+  "protos/ics23/proto",
+  "protos/ibc-go/proto",
+];
+
+// The protos come from git submodules. Check them before clearing src/, so that
+// a fresh clone without `git submodule update --init --recursive` fails with a
+// useful message instead of leaving the repo with no sources.
+const missing = protoDirs.filter((dir) => !existsSync(join(__dirname, "/../", dir)));
+if (missing.length > 0) {
+  console.error(`Missing proto directories: ${missing.join(", ")}`);
+  console.error("Run: git submodule update --init --recursive");
+  process.exit(1);
+}
+
+rmSync(outPath, { recursive: true, force: true });
+
 telescope({
-  protoDirs: [
-    "protos/cosmos-sdk/proto",
-    "protos/third_party",
-    "protos/atomone/proto",
-    "protos/ics23/proto",
-    "protos/ibc-go/proto",
-  ],
+  protoDirs,
   outPath: outPath,
   options: {
     logLevel: 0,

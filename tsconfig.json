@@ -13,7 +13,7 @@
     "noImplicitReturns": true,
     "noUnusedLocals": false,
     "noUnusedParameters": false,
-    "outDir": "build",
+    "outDir": "dist",
     "pretty": true,
     // We want comments in the .d.ts files. TS does not allow us to remove comments
     // from .js output only (https://github.com/microsoft/TypeScript/issues/45187, https://github.com/microsoft/TypeScript/issues/13318).
