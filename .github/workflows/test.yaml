@@ -1,0 +1,56 @@
+name: Tests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+# The jobs only read the repository.
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 'lts/*'
+          cache: 'npm'
+
+      - name: Install modules
+        run: npm ci
+
+      - name: Formatting
+        run: npm run format:check
+
+      # tsc runs with noEmitOnError, so this is the type check as well.
+      - name: Build
+        run: npm run build
+
+      # The package is assembled by copying build output to the repo root and
+      # listing it in "files", so a new generated module silently goes missing
+      # from the tarball. Compare the two rather than trusting the list.
+      - name: Check the published package carries every built module
+        run: |
+          npm pack --pack-destination "$RUNNER_TEMP" >/dev/null
+          tar xzf "$RUNNER_TEMP"/atomone-atomone-types-*.tgz -C "$RUNNER_TEMP"
+
+          failed=0
+          for built in build/*.js build/*.d.ts; do
+            name="$(basename "$built")"
+            if [ ! -f "$RUNNER_TEMP/package/$name" ]; then
+              echo "::error file=package.json::$name is built but missing from the published package; add it to scripts/prepare-publishing.sh and the files list"
+              failed=1
+            fi
+          done
+          exit "$failed"
+
+      - name: Load the packaged entry points
+        working-directory: ${{ runner.temp }}/package
+        run: node -e "require('./index.js'); require('./atomone/gov/v1/gov.js'); console.log('entry points load')"
