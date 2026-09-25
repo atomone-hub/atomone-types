@@ -2,6 +2,7 @@
 import { Params, ParamsAmino } from "./photon";
 import { BinaryReader, BinaryWriter } from "../../../binary";
 import { JsonSafe } from "../../../json-safe";
+import { GlobalDecoderRegistry } from "../../../registry";
 import { isSet } from "../../../helpers";
 import { TxRpc } from "../../../types";
 export const protobufPackage = "atomone.photon.v1";
@@ -94,6 +95,12 @@ function createBaseQueryParamsRequest(): QueryParamsRequest {
 }
 export const QueryParamsRequest = {
   typeUrl: "/atomone.photon.v1.QueryParamsRequest",
+  is(o: any): o is QueryParamsRequest {
+    return o && o.$typeUrl === QueryParamsRequest.typeUrl;
+  },
+  isAmino(o: any): o is QueryParamsRequestAmino {
+    return o && o.$typeUrl === QueryParamsRequest.typeUrl;
+  },
   encode(_: QueryParamsRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
@@ -147,6 +154,7 @@ export const QueryParamsRequest = {
     };
   },
 };
+GlobalDecoderRegistry.register(QueryParamsRequest.typeUrl, QueryParamsRequest);
 function createBaseQueryParamsResponse(): QueryParamsResponse {
   return {
     params: Params.fromPartial({}),
@@ -154,6 +162,12 @@ function createBaseQueryParamsResponse(): QueryParamsResponse {
 }
 export const QueryParamsResponse = {
   typeUrl: "/atomone.photon.v1.QueryParamsResponse",
+  is(o: any): o is QueryParamsResponse {
+    return o && (o.$typeUrl === QueryParamsResponse.typeUrl || Params.is(o.params));
+  },
+  isAmino(o: any): o is QueryParamsResponseAmino {
+    return o && (o.$typeUrl === QueryParamsResponse.typeUrl || Params.isAmino(o.params));
+  },
   encode(message: QueryParamsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.params !== undefined) {
       Params.encode(message.params, writer.uint32(10).fork()).ldelim();
@@ -222,11 +236,18 @@ export const QueryParamsResponse = {
     };
   },
 };
+GlobalDecoderRegistry.register(QueryParamsResponse.typeUrl, QueryParamsResponse);
 function createBaseQueryConversionRateRequest(): QueryConversionRateRequest {
   return {};
 }
 export const QueryConversionRateRequest = {
   typeUrl: "/atomone.photon.v1.QueryConversionRateRequest",
+  is(o: any): o is QueryConversionRateRequest {
+    return o && o.$typeUrl === QueryConversionRateRequest.typeUrl;
+  },
+  isAmino(o: any): o is QueryConversionRateRequestAmino {
+    return o && o.$typeUrl === QueryConversionRateRequest.typeUrl;
+  },
   encode(_: QueryConversionRateRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
@@ -280,6 +301,7 @@ export const QueryConversionRateRequest = {
     };
   },
 };
+GlobalDecoderRegistry.register(QueryConversionRateRequest.typeUrl, QueryConversionRateRequest);
 function createBaseQueryConversionRateResponse(): QueryConversionRateResponse {
   return {
     conversionRate: "",
@@ -287,6 +309,12 @@ function createBaseQueryConversionRateResponse(): QueryConversionRateResponse {
 }
 export const QueryConversionRateResponse = {
   typeUrl: "/atomone.photon.v1.QueryConversionRateResponse",
+  is(o: any): o is QueryConversionRateResponse {
+    return o && (o.$typeUrl === QueryConversionRateResponse.typeUrl || typeof o.conversionRate === "string");
+  },
+  isAmino(o: any): o is QueryConversionRateResponseAmino {
+    return o && (o.$typeUrl === QueryConversionRateResponse.typeUrl || typeof o.conversion_rate === "string");
+  },
   encode(message: QueryConversionRateResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.conversionRate !== "") {
       writer.uint32(10).string(message.conversionRate);
@@ -353,6 +381,7 @@ export const QueryConversionRateResponse = {
     };
   },
 };
+GlobalDecoderRegistry.register(QueryConversionRateResponse.typeUrl, QueryConversionRateResponse);
 /** Query defines the gRPC querier service. */
 export interface Query {
   /** Parameters queries the parameters of the module. */

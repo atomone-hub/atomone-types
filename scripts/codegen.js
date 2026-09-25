@@ -28,7 +28,7 @@ telescope({
       enabled: false,
     },
     interfaces: {
-      enabled: false,
+      enabled: true,
       useGlobalDecoderRegistry: true,
     },
     prototypes: {

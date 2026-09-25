@@ -2,6 +2,7 @@
 import { BinaryReader, BinaryWriter } from "../../../binary";
 import { isSet } from "../../../helpers";
 import { JsonSafe } from "../../../json-safe";
+import { GlobalDecoderRegistry } from "../../../registry";
 export const protobufPackage = "cosmos.mint.v1beta1";
 /** Minter represents the minting state. */
 export interface Minter {
@@ -97,6 +98,21 @@ function createBaseMinter(): Minter {
 }
 export const Minter = {
   typeUrl: "/cosmos.mint.v1beta1.Minter",
+  aminoType: "cosmos-sdk/Minter",
+  is(o: any): o is Minter {
+    return (
+      o &&
+      (o.$typeUrl === Minter.typeUrl ||
+        (typeof o.inflation === "string" && typeof o.annualProvisions === "string"))
+    );
+  },
+  isAmino(o: any): o is MinterAmino {
+    return (
+      o &&
+      (o.$typeUrl === Minter.typeUrl ||
+        (typeof o.inflation === "string" && typeof o.annual_provisions === "string"))
+    );
+  },
   encode(message: Minter, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.inflation !== "") {
       writer.uint32(10).string(message.inflation);
@@ -182,6 +198,8 @@ export const Minter = {
     };
   },
 };
+GlobalDecoderRegistry.register(Minter.typeUrl, Minter);
+GlobalDecoderRegistry.registerAminoProtoMapping(Minter.aminoType, Minter.typeUrl);
 function createBaseParams(): Params {
   return {
     mintDenom: "",
@@ -194,6 +212,31 @@ function createBaseParams(): Params {
 }
 export const Params = {
   typeUrl: "/cosmos.mint.v1beta1.Params",
+  aminoType: "cosmos-sdk/x/mint/Params",
+  is(o: any): o is Params {
+    return (
+      o &&
+      (o.$typeUrl === Params.typeUrl ||
+        (typeof o.mintDenom === "string" &&
+          typeof o.inflationRateChange === "string" &&
+          typeof o.inflationMax === "string" &&
+          typeof o.inflationMin === "string" &&
+          typeof o.goalBonded === "string" &&
+          typeof o.blocksPerYear === "bigint"))
+    );
+  },
+  isAmino(o: any): o is ParamsAmino {
+    return (
+      o &&
+      (o.$typeUrl === Params.typeUrl ||
+        (typeof o.mint_denom === "string" &&
+          typeof o.inflation_rate_change === "string" &&
+          typeof o.inflation_max === "string" &&
+          typeof o.inflation_min === "string" &&
+          typeof o.goal_bonded === "string" &&
+          typeof o.blocks_per_year === "bigint"))
+    );
+  },
   encode(message: Params, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.mintDenom !== "") {
       writer.uint32(10).string(message.mintDenom);
@@ -334,3 +377,5 @@ export const Params = {
     };
   },
 };
+GlobalDecoderRegistry.register(Params.typeUrl, Params);
+GlobalDecoderRegistry.registerAminoProtoMapping(Params.aminoType, Params.typeUrl);

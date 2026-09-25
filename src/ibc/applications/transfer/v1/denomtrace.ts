@@ -2,6 +2,7 @@
 import { BinaryReader, BinaryWriter } from "../../../../binary";
 import { isSet } from "../../../../helpers";
 import { JsonSafe } from "../../../../json-safe";
+import { GlobalDecoderRegistry } from "../../../../registry";
 export const protobufPackage = "ibc.applications.transfer.v1";
 /**
  * DenomTrace contains the base denomination for ICS20 fungible tokens and the
@@ -52,6 +53,19 @@ function createBaseDenomTrace(): DenomTrace {
 }
 export const DenomTrace = {
   typeUrl: "/ibc.applications.transfer.v1.DenomTrace",
+  aminoType: "cosmos-sdk/DenomTrace",
+  is(o: any): o is DenomTrace {
+    return (
+      o &&
+      (o.$typeUrl === DenomTrace.typeUrl || (typeof o.path === "string" && typeof o.baseDenom === "string"))
+    );
+  },
+  isAmino(o: any): o is DenomTraceAmino {
+    return (
+      o &&
+      (o.$typeUrl === DenomTrace.typeUrl || (typeof o.path === "string" && typeof o.base_denom === "string"))
+    );
+  },
   encode(message: DenomTrace, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.path !== "") {
       writer.uint32(10).string(message.path);
@@ -137,3 +151,5 @@ export const DenomTrace = {
     };
   },
 };
+GlobalDecoderRegistry.register(DenomTrace.typeUrl, DenomTrace);
+GlobalDecoderRegistry.registerAminoProtoMapping(DenomTrace.aminoType, DenomTrace.typeUrl);

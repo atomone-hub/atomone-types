@@ -2,6 +2,7 @@
 import { BinaryReader, BinaryWriter } from "../../../../binary";
 import { bytesFromBase64, base64FromBytes } from "../../../../helpers";
 import { JsonSafe } from "../../../../json-safe";
+import { GlobalDecoderRegistry } from "../../../../registry";
 export const protobufPackage = "ibc.core.commitment.v2";
 /**
  * MerklePath is the path used to verify commitment proofs, which can be an
@@ -93,6 +94,23 @@ function createBaseMerklePath(): MerklePath {
 }
 export const MerklePath = {
   typeUrl: "/ibc.core.commitment.v2.MerklePath",
+  aminoType: "cosmos-sdk/MerklePath",
+  is(o: any): o is MerklePath {
+    return (
+      o &&
+      (o.$typeUrl === MerklePath.typeUrl ||
+        (Array.isArray(o.keyPath) &&
+          (!o.keyPath.length || o.keyPath[0] instanceof Uint8Array || typeof o.keyPath[0] === "string")))
+    );
+  },
+  isAmino(o: any): o is MerklePathAmino {
+    return (
+      o &&
+      (o.$typeUrl === MerklePath.typeUrl ||
+        (Array.isArray(o.key_path) &&
+          (!o.key_path.length || o.key_path[0] instanceof Uint8Array || typeof o.key_path[0] === "string")))
+    );
+  },
   encode(message: MerklePath, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.keyPath) {
       writer.uint32(10).bytes(v!);
@@ -171,3 +189,5 @@ export const MerklePath = {
     };
   },
 };
+GlobalDecoderRegistry.register(MerklePath.typeUrl, MerklePath);
+GlobalDecoderRegistry.registerAminoProtoMapping(MerklePath.aminoType, MerklePath.typeUrl);

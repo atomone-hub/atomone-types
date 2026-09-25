@@ -1,6 +1,7 @@
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "../../../../binary";
 import { JsonSafe } from "../../../../json-safe";
+import { GlobalDecoderRegistry } from "../../../../registry";
 import { isSet, bytesFromBase64, base64FromBytes } from "../../../../helpers";
 export const protobufPackage = "ibc.core.channel.v2";
 /** GenesisState defines the ibc channel/v2 submodule's genesis state. */
@@ -119,6 +120,39 @@ function createBaseGenesisState(): GenesisState {
 }
 export const GenesisState = {
   typeUrl: "/ibc.core.channel.v2.GenesisState",
+  aminoType: "cosmos-sdk/GenesisState",
+  is(o: any): o is GenesisState {
+    return (
+      o &&
+      (o.$typeUrl === GenesisState.typeUrl ||
+        (Array.isArray(o.acknowledgements) &&
+          (!o.acknowledgements.length || PacketState.is(o.acknowledgements[0])) &&
+          Array.isArray(o.commitments) &&
+          (!o.commitments.length || PacketState.is(o.commitments[0])) &&
+          Array.isArray(o.receipts) &&
+          (!o.receipts.length || PacketState.is(o.receipts[0])) &&
+          Array.isArray(o.asyncPackets) &&
+          (!o.asyncPackets.length || PacketState.is(o.asyncPackets[0])) &&
+          Array.isArray(o.sendSequences) &&
+          (!o.sendSequences.length || PacketSequence.is(o.sendSequences[0]))))
+    );
+  },
+  isAmino(o: any): o is GenesisStateAmino {
+    return (
+      o &&
+      (o.$typeUrl === GenesisState.typeUrl ||
+        (Array.isArray(o.acknowledgements) &&
+          (!o.acknowledgements.length || PacketState.isAmino(o.acknowledgements[0])) &&
+          Array.isArray(o.commitments) &&
+          (!o.commitments.length || PacketState.isAmino(o.commitments[0])) &&
+          Array.isArray(o.receipts) &&
+          (!o.receipts.length || PacketState.isAmino(o.receipts[0])) &&
+          Array.isArray(o.async_packets) &&
+          (!o.async_packets.length || PacketState.isAmino(o.async_packets[0])) &&
+          Array.isArray(o.send_sequences) &&
+          (!o.send_sequences.length || PacketSequence.isAmino(o.send_sequences[0]))))
+    );
+  },
   encode(message: GenesisState, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.acknowledgements) {
       PacketState.encode(v!, writer.uint32(18).fork()).ldelim();
@@ -278,6 +312,8 @@ export const GenesisState = {
     };
   },
 };
+GlobalDecoderRegistry.register(GenesisState.typeUrl, GenesisState);
+GlobalDecoderRegistry.registerAminoProtoMapping(GenesisState.aminoType, GenesisState.typeUrl);
 function createBasePacketState(): PacketState {
   return {
     clientId: "",
@@ -287,6 +323,25 @@ function createBasePacketState(): PacketState {
 }
 export const PacketState = {
   typeUrl: "/ibc.core.channel.v2.PacketState",
+  aminoType: "cosmos-sdk/PacketState",
+  is(o: any): o is PacketState {
+    return (
+      o &&
+      (o.$typeUrl === PacketState.typeUrl ||
+        (typeof o.clientId === "string" &&
+          typeof o.sequence === "bigint" &&
+          (o.data instanceof Uint8Array || typeof o.data === "string")))
+    );
+  },
+  isAmino(o: any): o is PacketStateAmino {
+    return (
+      o &&
+      (o.$typeUrl === PacketState.typeUrl ||
+        (typeof o.client_id === "string" &&
+          typeof o.sequence === "bigint" &&
+          (o.data instanceof Uint8Array || typeof o.data === "string")))
+    );
+  },
   encode(message: PacketState, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.clientId !== "") {
       writer.uint32(10).string(message.clientId);
@@ -388,6 +443,8 @@ export const PacketState = {
     };
   },
 };
+GlobalDecoderRegistry.register(PacketState.typeUrl, PacketState);
+GlobalDecoderRegistry.registerAminoProtoMapping(PacketState.aminoType, PacketState.typeUrl);
 function createBasePacketSequence(): PacketSequence {
   return {
     clientId: "",
@@ -396,6 +453,21 @@ function createBasePacketSequence(): PacketSequence {
 }
 export const PacketSequence = {
   typeUrl: "/ibc.core.channel.v2.PacketSequence",
+  aminoType: "cosmos-sdk/PacketSequence",
+  is(o: any): o is PacketSequence {
+    return (
+      o &&
+      (o.$typeUrl === PacketSequence.typeUrl ||
+        (typeof o.clientId === "string" && typeof o.sequence === "bigint"))
+    );
+  },
+  isAmino(o: any): o is PacketSequenceAmino {
+    return (
+      o &&
+      (o.$typeUrl === PacketSequence.typeUrl ||
+        (typeof o.client_id === "string" && typeof o.sequence === "bigint"))
+    );
+  },
   encode(message: PacketSequence, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.clientId !== "") {
       writer.uint32(10).string(message.clientId);
@@ -483,3 +555,5 @@ export const PacketSequence = {
     };
   },
 };
+GlobalDecoderRegistry.register(PacketSequence.typeUrl, PacketSequence);
+GlobalDecoderRegistry.registerAminoProtoMapping(PacketSequence.aminoType, PacketSequence.typeUrl);

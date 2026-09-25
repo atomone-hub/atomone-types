@@ -2,6 +2,7 @@
 import { BinaryReader, BinaryWriter } from "../../../../binary";
 import { isSet } from "../../../../helpers";
 import { JsonSafe } from "../../../../json-safe";
+import { GlobalDecoderRegistry } from "../../../../registry";
 export const protobufPackage = "ibc.applications.transfer.v1";
 /**
  * Params defines the set of IBC transfer parameters.
@@ -58,6 +59,21 @@ function createBaseParams(): Params {
 }
 export const Params = {
   typeUrl: "/ibc.applications.transfer.v1.Params",
+  aminoType: "cosmos-sdk/Params",
+  is(o: any): o is Params {
+    return (
+      o &&
+      (o.$typeUrl === Params.typeUrl ||
+        (typeof o.sendEnabled === "boolean" && typeof o.receiveEnabled === "boolean"))
+    );
+  },
+  isAmino(o: any): o is ParamsAmino {
+    return (
+      o &&
+      (o.$typeUrl === Params.typeUrl ||
+        (typeof o.send_enabled === "boolean" && typeof o.receive_enabled === "boolean"))
+    );
+  },
   encode(message: Params, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.sendEnabled === true) {
       writer.uint32(8).bool(message.sendEnabled);
@@ -143,3 +159,5 @@ export const Params = {
     };
   },
 };
+GlobalDecoderRegistry.register(Params.typeUrl, Params);
+GlobalDecoderRegistry.registerAminoProtoMapping(Params.aminoType, Params.typeUrl);

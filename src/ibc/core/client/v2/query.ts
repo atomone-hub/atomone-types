@@ -4,6 +4,7 @@ import { Config, ConfigAmino } from "./config";
 import { BinaryReader, BinaryWriter } from "../../../../binary";
 import { isSet } from "../../../../helpers";
 import { JsonSafe } from "../../../../json-safe";
+import { GlobalDecoderRegistry } from "../../../../registry";
 import { TxRpc } from "../../../../types";
 export const protobufPackage = "ibc.core.client.v2";
 /**
@@ -113,6 +114,13 @@ function createBaseQueryCounterpartyInfoRequest(): QueryCounterpartyInfoRequest 
 }
 export const QueryCounterpartyInfoRequest = {
   typeUrl: "/ibc.core.client.v2.QueryCounterpartyInfoRequest",
+  aminoType: "cosmos-sdk/QueryCounterpartyInfoRequest",
+  is(o: any): o is QueryCounterpartyInfoRequest {
+    return o && (o.$typeUrl === QueryCounterpartyInfoRequest.typeUrl || typeof o.clientId === "string");
+  },
+  isAmino(o: any): o is QueryCounterpartyInfoRequestAmino {
+    return o && (o.$typeUrl === QueryCounterpartyInfoRequest.typeUrl || typeof o.client_id === "string");
+  },
   encode(message: QueryCounterpartyInfoRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.clientId !== "") {
       writer.uint32(10).string(message.clientId);
@@ -185,6 +193,11 @@ export const QueryCounterpartyInfoRequest = {
     };
   },
 };
+GlobalDecoderRegistry.register(QueryCounterpartyInfoRequest.typeUrl, QueryCounterpartyInfoRequest);
+GlobalDecoderRegistry.registerAminoProtoMapping(
+  QueryCounterpartyInfoRequest.aminoType,
+  QueryCounterpartyInfoRequest.typeUrl,
+);
 function createBaseQueryCounterpartyInfoResponse(): QueryCounterpartyInfoResponse {
   return {
     counterpartyInfo: undefined,
@@ -192,6 +205,13 @@ function createBaseQueryCounterpartyInfoResponse(): QueryCounterpartyInfoRespons
 }
 export const QueryCounterpartyInfoResponse = {
   typeUrl: "/ibc.core.client.v2.QueryCounterpartyInfoResponse",
+  aminoType: "cosmos-sdk/QueryCounterpartyInfoResponse",
+  is(o: any): o is QueryCounterpartyInfoResponse {
+    return o && o.$typeUrl === QueryCounterpartyInfoResponse.typeUrl;
+  },
+  isAmino(o: any): o is QueryCounterpartyInfoResponseAmino {
+    return o && o.$typeUrl === QueryCounterpartyInfoResponse.typeUrl;
+  },
   encode(message: QueryCounterpartyInfoResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.counterpartyInfo !== undefined) {
       CounterpartyInfo.encode(message.counterpartyInfo, writer.uint32(10).fork()).ldelim();
@@ -272,6 +292,11 @@ export const QueryCounterpartyInfoResponse = {
     };
   },
 };
+GlobalDecoderRegistry.register(QueryCounterpartyInfoResponse.typeUrl, QueryCounterpartyInfoResponse);
+GlobalDecoderRegistry.registerAminoProtoMapping(
+  QueryCounterpartyInfoResponse.aminoType,
+  QueryCounterpartyInfoResponse.typeUrl,
+);
 function createBaseQueryConfigRequest(): QueryConfigRequest {
   return {
     clientId: "",
@@ -279,6 +304,13 @@ function createBaseQueryConfigRequest(): QueryConfigRequest {
 }
 export const QueryConfigRequest = {
   typeUrl: "/ibc.core.client.v2.QueryConfigRequest",
+  aminoType: "cosmos-sdk/QueryConfigRequest",
+  is(o: any): o is QueryConfigRequest {
+    return o && (o.$typeUrl === QueryConfigRequest.typeUrl || typeof o.clientId === "string");
+  },
+  isAmino(o: any): o is QueryConfigRequestAmino {
+    return o && (o.$typeUrl === QueryConfigRequest.typeUrl || typeof o.client_id === "string");
+  },
   encode(message: QueryConfigRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.clientId !== "") {
       writer.uint32(10).string(message.clientId);
@@ -351,6 +383,8 @@ export const QueryConfigRequest = {
     };
   },
 };
+GlobalDecoderRegistry.register(QueryConfigRequest.typeUrl, QueryConfigRequest);
+GlobalDecoderRegistry.registerAminoProtoMapping(QueryConfigRequest.aminoType, QueryConfigRequest.typeUrl);
 function createBaseQueryConfigResponse(): QueryConfigResponse {
   return {
     config: undefined,
@@ -358,6 +392,13 @@ function createBaseQueryConfigResponse(): QueryConfigResponse {
 }
 export const QueryConfigResponse = {
   typeUrl: "/ibc.core.client.v2.QueryConfigResponse",
+  aminoType: "cosmos-sdk/QueryConfigResponse",
+  is(o: any): o is QueryConfigResponse {
+    return o && o.$typeUrl === QueryConfigResponse.typeUrl;
+  },
+  isAmino(o: any): o is QueryConfigResponseAmino {
+    return o && o.$typeUrl === QueryConfigResponse.typeUrl;
+  },
   encode(message: QueryConfigResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.config !== undefined) {
       Config.encode(message.config, writer.uint32(10).fork()).ldelim();
@@ -432,6 +473,8 @@ export const QueryConfigResponse = {
     };
   },
 };
+GlobalDecoderRegistry.register(QueryConfigResponse.typeUrl, QueryConfigResponse);
+GlobalDecoderRegistry.registerAminoProtoMapping(QueryConfigResponse.aminoType, QueryConfigResponse.typeUrl);
 /** Query provides defines the gRPC querier service */
 export interface Query {
   /** CounterpartyInfo queries an IBC light counter party info. */

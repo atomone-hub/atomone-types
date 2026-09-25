@@ -3,6 +3,7 @@ import { Any, AnyAmino } from "../../../google/protobuf/any";
 import { BinaryReader, BinaryWriter } from "../../../binary";
 import { isSet, bytesFromBase64, base64FromBytes } from "../../../helpers";
 import { JsonSafe } from "../../../json-safe";
+import { GlobalDecoderRegistry } from "../../../registry";
 export const protobufPackage = "google.api";
 /**
  * Message that represents an arbitrary HTTP body. It should only be used for
@@ -132,6 +133,26 @@ function createBaseHttpBody(): HttpBody {
 }
 export const HttpBody = {
   typeUrl: "/google.api.HttpBody",
+  is(o: any): o is HttpBody {
+    return (
+      o &&
+      (o.$typeUrl === HttpBody.typeUrl ||
+        (typeof o.contentType === "string" &&
+          (o.data instanceof Uint8Array || typeof o.data === "string") &&
+          Array.isArray(o.extensions) &&
+          (!o.extensions.length || Any.is(o.extensions[0]))))
+    );
+  },
+  isAmino(o: any): o is HttpBodyAmino {
+    return (
+      o &&
+      (o.$typeUrl === HttpBody.typeUrl ||
+        (typeof o.content_type === "string" &&
+          (o.data instanceof Uint8Array || typeof o.data === "string") &&
+          Array.isArray(o.extensions) &&
+          (!o.extensions.length || Any.isAmino(o.extensions[0]))))
+    );
+  },
   encode(message: HttpBody, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.contentType !== "") {
       writer.uint32(10).string(message.contentType);
@@ -232,3 +253,4 @@ export const HttpBody = {
     };
   },
 };
+GlobalDecoderRegistry.register(HttpBody.typeUrl, HttpBody);

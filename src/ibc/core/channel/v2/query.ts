@@ -10,6 +10,7 @@ import { PacketState, PacketStateAmino } from "./genesis";
 import { BinaryReader, BinaryWriter } from "../../../../binary";
 import { isSet, bytesFromBase64, base64FromBytes } from "../../../../helpers";
 import { JsonSafe } from "../../../../json-safe";
+import { GlobalDecoderRegistry } from "../../../../registry";
 import { TxRpc } from "../../../../types";
 export const protobufPackage = "ibc.core.channel.v2";
 /** QueryNextSequenceSendRequest is the request type for the Query/QueryNextSequenceSend RPC method */
@@ -563,6 +564,13 @@ function createBaseQueryNextSequenceSendRequest(): QueryNextSequenceSendRequest 
 }
 export const QueryNextSequenceSendRequest = {
   typeUrl: "/ibc.core.channel.v2.QueryNextSequenceSendRequest",
+  aminoType: "cosmos-sdk/QueryNextSequenceSendRequest",
+  is(o: any): o is QueryNextSequenceSendRequest {
+    return o && (o.$typeUrl === QueryNextSequenceSendRequest.typeUrl || typeof o.clientId === "string");
+  },
+  isAmino(o: any): o is QueryNextSequenceSendRequestAmino {
+    return o && (o.$typeUrl === QueryNextSequenceSendRequest.typeUrl || typeof o.client_id === "string");
+  },
   encode(message: QueryNextSequenceSendRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.clientId !== "") {
       writer.uint32(10).string(message.clientId);
@@ -635,6 +643,11 @@ export const QueryNextSequenceSendRequest = {
     };
   },
 };
+GlobalDecoderRegistry.register(QueryNextSequenceSendRequest.typeUrl, QueryNextSequenceSendRequest);
+GlobalDecoderRegistry.registerAminoProtoMapping(
+  QueryNextSequenceSendRequest.aminoType,
+  QueryNextSequenceSendRequest.typeUrl,
+);
 function createBaseQueryNextSequenceSendResponse(): QueryNextSequenceSendResponse {
   return {
     nextSequenceSend: BigInt(0),
@@ -644,6 +657,25 @@ function createBaseQueryNextSequenceSendResponse(): QueryNextSequenceSendRespons
 }
 export const QueryNextSequenceSendResponse = {
   typeUrl: "/ibc.core.channel.v2.QueryNextSequenceSendResponse",
+  aminoType: "cosmos-sdk/QueryNextSequenceSendResponse",
+  is(o: any): o is QueryNextSequenceSendResponse {
+    return (
+      o &&
+      (o.$typeUrl === QueryNextSequenceSendResponse.typeUrl ||
+        (typeof o.nextSequenceSend === "bigint" &&
+          (o.proof instanceof Uint8Array || typeof o.proof === "string") &&
+          Height.is(o.proofHeight)))
+    );
+  },
+  isAmino(o: any): o is QueryNextSequenceSendResponseAmino {
+    return (
+      o &&
+      (o.$typeUrl === QueryNextSequenceSendResponse.typeUrl ||
+        (typeof o.next_sequence_send === "bigint" &&
+          (o.proof instanceof Uint8Array || typeof o.proof === "string") &&
+          Height.isAmino(o.proof_height)))
+    );
+  },
   encode(message: QueryNextSequenceSendResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.nextSequenceSend !== BigInt(0)) {
       writer.uint32(8).uint64(message.nextSequenceSend);
@@ -750,6 +782,11 @@ export const QueryNextSequenceSendResponse = {
     };
   },
 };
+GlobalDecoderRegistry.register(QueryNextSequenceSendResponse.typeUrl, QueryNextSequenceSendResponse);
+GlobalDecoderRegistry.registerAminoProtoMapping(
+  QueryNextSequenceSendResponse.aminoType,
+  QueryNextSequenceSendResponse.typeUrl,
+);
 function createBaseQueryPacketCommitmentRequest(): QueryPacketCommitmentRequest {
   return {
     clientId: "",
@@ -758,6 +795,21 @@ function createBaseQueryPacketCommitmentRequest(): QueryPacketCommitmentRequest 
 }
 export const QueryPacketCommitmentRequest = {
   typeUrl: "/ibc.core.channel.v2.QueryPacketCommitmentRequest",
+  aminoType: "cosmos-sdk/QueryPacketCommitmentRequest",
+  is(o: any): o is QueryPacketCommitmentRequest {
+    return (
+      o &&
+      (o.$typeUrl === QueryPacketCommitmentRequest.typeUrl ||
+        (typeof o.clientId === "string" && typeof o.sequence === "bigint"))
+    );
+  },
+  isAmino(o: any): o is QueryPacketCommitmentRequestAmino {
+    return (
+      o &&
+      (o.$typeUrl === QueryPacketCommitmentRequest.typeUrl ||
+        (typeof o.client_id === "string" && typeof o.sequence === "bigint"))
+    );
+  },
   encode(message: QueryPacketCommitmentRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.clientId !== "") {
       writer.uint32(10).string(message.clientId);
@@ -845,6 +897,11 @@ export const QueryPacketCommitmentRequest = {
     };
   },
 };
+GlobalDecoderRegistry.register(QueryPacketCommitmentRequest.typeUrl, QueryPacketCommitmentRequest);
+GlobalDecoderRegistry.registerAminoProtoMapping(
+  QueryPacketCommitmentRequest.aminoType,
+  QueryPacketCommitmentRequest.typeUrl,
+);
 function createBaseQueryPacketCommitmentResponse(): QueryPacketCommitmentResponse {
   return {
     commitment: new Uint8Array(),
@@ -854,6 +911,25 @@ function createBaseQueryPacketCommitmentResponse(): QueryPacketCommitmentRespons
 }
 export const QueryPacketCommitmentResponse = {
   typeUrl: "/ibc.core.channel.v2.QueryPacketCommitmentResponse",
+  aminoType: "cosmos-sdk/QueryPacketCommitmentResponse",
+  is(o: any): o is QueryPacketCommitmentResponse {
+    return (
+      o &&
+      (o.$typeUrl === QueryPacketCommitmentResponse.typeUrl ||
+        ((o.commitment instanceof Uint8Array || typeof o.commitment === "string") &&
+          (o.proof instanceof Uint8Array || typeof o.proof === "string") &&
+          Height.is(o.proofHeight)))
+    );
+  },
+  isAmino(o: any): o is QueryPacketCommitmentResponseAmino {
+    return (
+      o &&
+      (o.$typeUrl === QueryPacketCommitmentResponse.typeUrl ||
+        ((o.commitment instanceof Uint8Array || typeof o.commitment === "string") &&
+          (o.proof instanceof Uint8Array || typeof o.proof === "string") &&
+          Height.isAmino(o.proof_height)))
+    );
+  },
   encode(message: QueryPacketCommitmentResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.commitment.length !== 0) {
       writer.uint32(10).bytes(message.commitment);
@@ -959,6 +1035,11 @@ export const QueryPacketCommitmentResponse = {
     };
   },
 };
+GlobalDecoderRegistry.register(QueryPacketCommitmentResponse.typeUrl, QueryPacketCommitmentResponse);
+GlobalDecoderRegistry.registerAminoProtoMapping(
+  QueryPacketCommitmentResponse.aminoType,
+  QueryPacketCommitmentResponse.typeUrl,
+);
 function createBaseQueryPacketCommitmentsRequest(): QueryPacketCommitmentsRequest {
   return {
     clientId: "",
@@ -967,6 +1048,13 @@ function createBaseQueryPacketCommitmentsRequest(): QueryPacketCommitmentsReques
 }
 export const QueryPacketCommitmentsRequest = {
   typeUrl: "/ibc.core.channel.v2.QueryPacketCommitmentsRequest",
+  aminoType: "cosmos-sdk/QueryPacketCommitmentsRequest",
+  is(o: any): o is QueryPacketCommitmentsRequest {
+    return o && (o.$typeUrl === QueryPacketCommitmentsRequest.typeUrl || typeof o.clientId === "string");
+  },
+  isAmino(o: any): o is QueryPacketCommitmentsRequestAmino {
+    return o && (o.$typeUrl === QueryPacketCommitmentsRequest.typeUrl || typeof o.client_id === "string");
+  },
   encode(message: QueryPacketCommitmentsRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.clientId !== "") {
       writer.uint32(10).string(message.clientId);
@@ -1055,6 +1143,11 @@ export const QueryPacketCommitmentsRequest = {
     };
   },
 };
+GlobalDecoderRegistry.register(QueryPacketCommitmentsRequest.typeUrl, QueryPacketCommitmentsRequest);
+GlobalDecoderRegistry.registerAminoProtoMapping(
+  QueryPacketCommitmentsRequest.aminoType,
+  QueryPacketCommitmentsRequest.typeUrl,
+);
 function createBaseQueryPacketCommitmentsResponse(): QueryPacketCommitmentsResponse {
   return {
     commitments: [],
@@ -1064,6 +1157,25 @@ function createBaseQueryPacketCommitmentsResponse(): QueryPacketCommitmentsRespo
 }
 export const QueryPacketCommitmentsResponse = {
   typeUrl: "/ibc.core.channel.v2.QueryPacketCommitmentsResponse",
+  aminoType: "cosmos-sdk/QueryPacketCommitmentsResponse",
+  is(o: any): o is QueryPacketCommitmentsResponse {
+    return (
+      o &&
+      (o.$typeUrl === QueryPacketCommitmentsResponse.typeUrl ||
+        (Array.isArray(o.commitments) &&
+          (!o.commitments.length || PacketState.is(o.commitments[0])) &&
+          Height.is(o.height)))
+    );
+  },
+  isAmino(o: any): o is QueryPacketCommitmentsResponseAmino {
+    return (
+      o &&
+      (o.$typeUrl === QueryPacketCommitmentsResponse.typeUrl ||
+        (Array.isArray(o.commitments) &&
+          (!o.commitments.length || PacketState.isAmino(o.commitments[0])) &&
+          Height.isAmino(o.height)))
+    );
+  },
   encode(
     message: QueryPacketCommitmentsResponse,
     writer: BinaryWriter = BinaryWriter.create(),
@@ -1177,6 +1289,11 @@ export const QueryPacketCommitmentsResponse = {
     };
   },
 };
+GlobalDecoderRegistry.register(QueryPacketCommitmentsResponse.typeUrl, QueryPacketCommitmentsResponse);
+GlobalDecoderRegistry.registerAminoProtoMapping(
+  QueryPacketCommitmentsResponse.aminoType,
+  QueryPacketCommitmentsResponse.typeUrl,
+);
 function createBaseQueryPacketAcknowledgementRequest(): QueryPacketAcknowledgementRequest {
   return {
     clientId: "",
@@ -1185,6 +1302,21 @@ function createBaseQueryPacketAcknowledgementRequest(): QueryPacketAcknowledgeme
 }
 export const QueryPacketAcknowledgementRequest = {
   typeUrl: "/ibc.core.channel.v2.QueryPacketAcknowledgementRequest",
+  aminoType: "cosmos-sdk/QueryPacketAcknowledgementRequest",
+  is(o: any): o is QueryPacketAcknowledgementRequest {
+    return (
+      o &&
+      (o.$typeUrl === QueryPacketAcknowledgementRequest.typeUrl ||
+        (typeof o.clientId === "string" && typeof o.sequence === "bigint"))
+    );
+  },
+  isAmino(o: any): o is QueryPacketAcknowledgementRequestAmino {
+    return (
+      o &&
+      (o.$typeUrl === QueryPacketAcknowledgementRequest.typeUrl ||
+        (typeof o.client_id === "string" && typeof o.sequence === "bigint"))
+    );
+  },
   encode(
     message: QueryPacketAcknowledgementRequest,
     writer: BinaryWriter = BinaryWriter.create(),
@@ -1275,6 +1407,11 @@ export const QueryPacketAcknowledgementRequest = {
     };
   },
 };
+GlobalDecoderRegistry.register(QueryPacketAcknowledgementRequest.typeUrl, QueryPacketAcknowledgementRequest);
+GlobalDecoderRegistry.registerAminoProtoMapping(
+  QueryPacketAcknowledgementRequest.aminoType,
+  QueryPacketAcknowledgementRequest.typeUrl,
+);
 function createBaseQueryPacketAcknowledgementResponse(): QueryPacketAcknowledgementResponse {
   return {
     acknowledgement: new Uint8Array(),
@@ -1284,6 +1421,25 @@ function createBaseQueryPacketAcknowledgementResponse(): QueryPacketAcknowledgem
 }
 export const QueryPacketAcknowledgementResponse = {
   typeUrl: "/ibc.core.channel.v2.QueryPacketAcknowledgementResponse",
+  aminoType: "cosmos-sdk/QueryPacketAcknowledgementResponse",
+  is(o: any): o is QueryPacketAcknowledgementResponse {
+    return (
+      o &&
+      (o.$typeUrl === QueryPacketAcknowledgementResponse.typeUrl ||
+        ((o.acknowledgement instanceof Uint8Array || typeof o.acknowledgement === "string") &&
+          (o.proof instanceof Uint8Array || typeof o.proof === "string") &&
+          Height.is(o.proofHeight)))
+    );
+  },
+  isAmino(o: any): o is QueryPacketAcknowledgementResponseAmino {
+    return (
+      o &&
+      (o.$typeUrl === QueryPacketAcknowledgementResponse.typeUrl ||
+        ((o.acknowledgement instanceof Uint8Array || typeof o.acknowledgement === "string") &&
+          (o.proof instanceof Uint8Array || typeof o.proof === "string") &&
+          Height.isAmino(o.proof_height)))
+    );
+  },
   encode(
     message: QueryPacketAcknowledgementResponse,
     writer: BinaryWriter = BinaryWriter.create(),
@@ -1392,6 +1548,14 @@ export const QueryPacketAcknowledgementResponse = {
     };
   },
 };
+GlobalDecoderRegistry.register(
+  QueryPacketAcknowledgementResponse.typeUrl,
+  QueryPacketAcknowledgementResponse,
+);
+GlobalDecoderRegistry.registerAminoProtoMapping(
+  QueryPacketAcknowledgementResponse.aminoType,
+  QueryPacketAcknowledgementResponse.typeUrl,
+);
 function createBaseQueryPacketAcknowledgementsRequest(): QueryPacketAcknowledgementsRequest {
   return {
     clientId: "",
@@ -1401,6 +1565,25 @@ function createBaseQueryPacketAcknowledgementsRequest(): QueryPacketAcknowledgem
 }
 export const QueryPacketAcknowledgementsRequest = {
   typeUrl: "/ibc.core.channel.v2.QueryPacketAcknowledgementsRequest",
+  aminoType: "cosmos-sdk/QueryPacketAcknowledgementsRequest",
+  is(o: any): o is QueryPacketAcknowledgementsRequest {
+    return (
+      o &&
+      (o.$typeUrl === QueryPacketAcknowledgementsRequest.typeUrl ||
+        (typeof o.clientId === "string" &&
+          Array.isArray(o.packetCommitmentSequences) &&
+          (!o.packetCommitmentSequences.length || typeof o.packetCommitmentSequences[0] === "bigint")))
+    );
+  },
+  isAmino(o: any): o is QueryPacketAcknowledgementsRequestAmino {
+    return (
+      o &&
+      (o.$typeUrl === QueryPacketAcknowledgementsRequest.typeUrl ||
+        (typeof o.client_id === "string" &&
+          Array.isArray(o.packet_commitment_sequences) &&
+          (!o.packet_commitment_sequences.length || typeof o.packet_commitment_sequences[0] === "bigint")))
+    );
+  },
   encode(
     message: QueryPacketAcknowledgementsRequest,
     writer: BinaryWriter = BinaryWriter.create(),
@@ -1524,6 +1707,14 @@ export const QueryPacketAcknowledgementsRequest = {
     };
   },
 };
+GlobalDecoderRegistry.register(
+  QueryPacketAcknowledgementsRequest.typeUrl,
+  QueryPacketAcknowledgementsRequest,
+);
+GlobalDecoderRegistry.registerAminoProtoMapping(
+  QueryPacketAcknowledgementsRequest.aminoType,
+  QueryPacketAcknowledgementsRequest.typeUrl,
+);
 function createBaseQueryPacketAcknowledgementsResponse(): QueryPacketAcknowledgementsResponse {
   return {
     acknowledgements: [],
@@ -1533,6 +1724,25 @@ function createBaseQueryPacketAcknowledgementsResponse(): QueryPacketAcknowledge
 }
 export const QueryPacketAcknowledgementsResponse = {
   typeUrl: "/ibc.core.channel.v2.QueryPacketAcknowledgementsResponse",
+  aminoType: "cosmos-sdk/QueryPacketAcknowledgementsResponse",
+  is(o: any): o is QueryPacketAcknowledgementsResponse {
+    return (
+      o &&
+      (o.$typeUrl === QueryPacketAcknowledgementsResponse.typeUrl ||
+        (Array.isArray(o.acknowledgements) &&
+          (!o.acknowledgements.length || PacketState.is(o.acknowledgements[0])) &&
+          Height.is(o.height)))
+    );
+  },
+  isAmino(o: any): o is QueryPacketAcknowledgementsResponseAmino {
+    return (
+      o &&
+      (o.$typeUrl === QueryPacketAcknowledgementsResponse.typeUrl ||
+        (Array.isArray(o.acknowledgements) &&
+          (!o.acknowledgements.length || PacketState.isAmino(o.acknowledgements[0])) &&
+          Height.isAmino(o.height)))
+    );
+  },
   encode(
     message: QueryPacketAcknowledgementsResponse,
     writer: BinaryWriter = BinaryWriter.create(),
@@ -1646,6 +1856,14 @@ export const QueryPacketAcknowledgementsResponse = {
     };
   },
 };
+GlobalDecoderRegistry.register(
+  QueryPacketAcknowledgementsResponse.typeUrl,
+  QueryPacketAcknowledgementsResponse,
+);
+GlobalDecoderRegistry.registerAminoProtoMapping(
+  QueryPacketAcknowledgementsResponse.aminoType,
+  QueryPacketAcknowledgementsResponse.typeUrl,
+);
 function createBaseQueryPacketReceiptRequest(): QueryPacketReceiptRequest {
   return {
     clientId: "",
@@ -1654,6 +1872,21 @@ function createBaseQueryPacketReceiptRequest(): QueryPacketReceiptRequest {
 }
 export const QueryPacketReceiptRequest = {
   typeUrl: "/ibc.core.channel.v2.QueryPacketReceiptRequest",
+  aminoType: "cosmos-sdk/QueryPacketReceiptRequest",
+  is(o: any): o is QueryPacketReceiptRequest {
+    return (
+      o &&
+      (o.$typeUrl === QueryPacketReceiptRequest.typeUrl ||
+        (typeof o.clientId === "string" && typeof o.sequence === "bigint"))
+    );
+  },
+  isAmino(o: any): o is QueryPacketReceiptRequestAmino {
+    return (
+      o &&
+      (o.$typeUrl === QueryPacketReceiptRequest.typeUrl ||
+        (typeof o.client_id === "string" && typeof o.sequence === "bigint"))
+    );
+  },
   encode(message: QueryPacketReceiptRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.clientId !== "") {
       writer.uint32(10).string(message.clientId);
@@ -1741,6 +1974,11 @@ export const QueryPacketReceiptRequest = {
     };
   },
 };
+GlobalDecoderRegistry.register(QueryPacketReceiptRequest.typeUrl, QueryPacketReceiptRequest);
+GlobalDecoderRegistry.registerAminoProtoMapping(
+  QueryPacketReceiptRequest.aminoType,
+  QueryPacketReceiptRequest.typeUrl,
+);
 function createBaseQueryPacketReceiptResponse(): QueryPacketReceiptResponse {
   return {
     received: false,
@@ -1750,6 +1988,25 @@ function createBaseQueryPacketReceiptResponse(): QueryPacketReceiptResponse {
 }
 export const QueryPacketReceiptResponse = {
   typeUrl: "/ibc.core.channel.v2.QueryPacketReceiptResponse",
+  aminoType: "cosmos-sdk/QueryPacketReceiptResponse",
+  is(o: any): o is QueryPacketReceiptResponse {
+    return (
+      o &&
+      (o.$typeUrl === QueryPacketReceiptResponse.typeUrl ||
+        (typeof o.received === "boolean" &&
+          (o.proof instanceof Uint8Array || typeof o.proof === "string") &&
+          Height.is(o.proofHeight)))
+    );
+  },
+  isAmino(o: any): o is QueryPacketReceiptResponseAmino {
+    return (
+      o &&
+      (o.$typeUrl === QueryPacketReceiptResponse.typeUrl ||
+        (typeof o.received === "boolean" &&
+          (o.proof instanceof Uint8Array || typeof o.proof === "string") &&
+          Height.isAmino(o.proof_height)))
+    );
+  },
   encode(message: QueryPacketReceiptResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.received === true) {
       writer.uint32(16).bool(message.received);
@@ -1852,6 +2109,11 @@ export const QueryPacketReceiptResponse = {
     };
   },
 };
+GlobalDecoderRegistry.register(QueryPacketReceiptResponse.typeUrl, QueryPacketReceiptResponse);
+GlobalDecoderRegistry.registerAminoProtoMapping(
+  QueryPacketReceiptResponse.aminoType,
+  QueryPacketReceiptResponse.typeUrl,
+);
 function createBaseQueryUnreceivedPacketsRequest(): QueryUnreceivedPacketsRequest {
   return {
     clientId: "",
@@ -1860,6 +2122,25 @@ function createBaseQueryUnreceivedPacketsRequest(): QueryUnreceivedPacketsReques
 }
 export const QueryUnreceivedPacketsRequest = {
   typeUrl: "/ibc.core.channel.v2.QueryUnreceivedPacketsRequest",
+  aminoType: "cosmos-sdk/QueryUnreceivedPacketsRequest",
+  is(o: any): o is QueryUnreceivedPacketsRequest {
+    return (
+      o &&
+      (o.$typeUrl === QueryUnreceivedPacketsRequest.typeUrl ||
+        (typeof o.clientId === "string" &&
+          Array.isArray(o.sequences) &&
+          (!o.sequences.length || typeof o.sequences[0] === "bigint")))
+    );
+  },
+  isAmino(o: any): o is QueryUnreceivedPacketsRequestAmino {
+    return (
+      o &&
+      (o.$typeUrl === QueryUnreceivedPacketsRequest.typeUrl ||
+        (typeof o.client_id === "string" &&
+          Array.isArray(o.sequences) &&
+          (!o.sequences.length || typeof o.sequences[0] === "bigint")))
+    );
+  },
   encode(message: QueryUnreceivedPacketsRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.clientId !== "") {
       writer.uint32(10).string(message.clientId);
@@ -1961,6 +2242,11 @@ export const QueryUnreceivedPacketsRequest = {
     };
   },
 };
+GlobalDecoderRegistry.register(QueryUnreceivedPacketsRequest.typeUrl, QueryUnreceivedPacketsRequest);
+GlobalDecoderRegistry.registerAminoProtoMapping(
+  QueryUnreceivedPacketsRequest.aminoType,
+  QueryUnreceivedPacketsRequest.typeUrl,
+);
 function createBaseQueryUnreceivedPacketsResponse(): QueryUnreceivedPacketsResponse {
   return {
     sequences: [],
@@ -1969,6 +2255,25 @@ function createBaseQueryUnreceivedPacketsResponse(): QueryUnreceivedPacketsRespo
 }
 export const QueryUnreceivedPacketsResponse = {
   typeUrl: "/ibc.core.channel.v2.QueryUnreceivedPacketsResponse",
+  aminoType: "cosmos-sdk/QueryUnreceivedPacketsResponse",
+  is(o: any): o is QueryUnreceivedPacketsResponse {
+    return (
+      o &&
+      (o.$typeUrl === QueryUnreceivedPacketsResponse.typeUrl ||
+        (Array.isArray(o.sequences) &&
+          (!o.sequences.length || typeof o.sequences[0] === "bigint") &&
+          Height.is(o.height)))
+    );
+  },
+  isAmino(o: any): o is QueryUnreceivedPacketsResponseAmino {
+    return (
+      o &&
+      (o.$typeUrl === QueryUnreceivedPacketsResponse.typeUrl ||
+        (Array.isArray(o.sequences) &&
+          (!o.sequences.length || typeof o.sequences[0] === "bigint") &&
+          Height.isAmino(o.height)))
+    );
+  },
   encode(
     message: QueryUnreceivedPacketsResponse,
     writer: BinaryWriter = BinaryWriter.create(),
@@ -2075,6 +2380,11 @@ export const QueryUnreceivedPacketsResponse = {
     };
   },
 };
+GlobalDecoderRegistry.register(QueryUnreceivedPacketsResponse.typeUrl, QueryUnreceivedPacketsResponse);
+GlobalDecoderRegistry.registerAminoProtoMapping(
+  QueryUnreceivedPacketsResponse.aminoType,
+  QueryUnreceivedPacketsResponse.typeUrl,
+);
 function createBaseQueryUnreceivedAcksRequest(): QueryUnreceivedAcksRequest {
   return {
     clientId: "",
@@ -2083,6 +2393,25 @@ function createBaseQueryUnreceivedAcksRequest(): QueryUnreceivedAcksRequest {
 }
 export const QueryUnreceivedAcksRequest = {
   typeUrl: "/ibc.core.channel.v2.QueryUnreceivedAcksRequest",
+  aminoType: "cosmos-sdk/QueryUnreceivedAcksRequest",
+  is(o: any): o is QueryUnreceivedAcksRequest {
+    return (
+      o &&
+      (o.$typeUrl === QueryUnreceivedAcksRequest.typeUrl ||
+        (typeof o.clientId === "string" &&
+          Array.isArray(o.packetAckSequences) &&
+          (!o.packetAckSequences.length || typeof o.packetAckSequences[0] === "bigint")))
+    );
+  },
+  isAmino(o: any): o is QueryUnreceivedAcksRequestAmino {
+    return (
+      o &&
+      (o.$typeUrl === QueryUnreceivedAcksRequest.typeUrl ||
+        (typeof o.client_id === "string" &&
+          Array.isArray(o.packet_ack_sequences) &&
+          (!o.packet_ack_sequences.length || typeof o.packet_ack_sequences[0] === "bigint")))
+    );
+  },
   encode(message: QueryUnreceivedAcksRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.clientId !== "") {
       writer.uint32(10).string(message.clientId);
@@ -2184,6 +2513,11 @@ export const QueryUnreceivedAcksRequest = {
     };
   },
 };
+GlobalDecoderRegistry.register(QueryUnreceivedAcksRequest.typeUrl, QueryUnreceivedAcksRequest);
+GlobalDecoderRegistry.registerAminoProtoMapping(
+  QueryUnreceivedAcksRequest.aminoType,
+  QueryUnreceivedAcksRequest.typeUrl,
+);
 function createBaseQueryUnreceivedAcksResponse(): QueryUnreceivedAcksResponse {
   return {
     sequences: [],
@@ -2192,6 +2526,25 @@ function createBaseQueryUnreceivedAcksResponse(): QueryUnreceivedAcksResponse {
 }
 export const QueryUnreceivedAcksResponse = {
   typeUrl: "/ibc.core.channel.v2.QueryUnreceivedAcksResponse",
+  aminoType: "cosmos-sdk/QueryUnreceivedAcksResponse",
+  is(o: any): o is QueryUnreceivedAcksResponse {
+    return (
+      o &&
+      (o.$typeUrl === QueryUnreceivedAcksResponse.typeUrl ||
+        (Array.isArray(o.sequences) &&
+          (!o.sequences.length || typeof o.sequences[0] === "bigint") &&
+          Height.is(o.height)))
+    );
+  },
+  isAmino(o: any): o is QueryUnreceivedAcksResponseAmino {
+    return (
+      o &&
+      (o.$typeUrl === QueryUnreceivedAcksResponse.typeUrl ||
+        (Array.isArray(o.sequences) &&
+          (!o.sequences.length || typeof o.sequences[0] === "bigint") &&
+          Height.isAmino(o.height)))
+    );
+  },
   encode(message: QueryUnreceivedAcksResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     writer.uint32(10).fork();
     for (const v of message.sequences) {
@@ -2295,6 +2648,11 @@ export const QueryUnreceivedAcksResponse = {
     };
   },
 };
+GlobalDecoderRegistry.register(QueryUnreceivedAcksResponse.typeUrl, QueryUnreceivedAcksResponse);
+GlobalDecoderRegistry.registerAminoProtoMapping(
+  QueryUnreceivedAcksResponse.aminoType,
+  QueryUnreceivedAcksResponse.typeUrl,
+);
 /** Query provides defines the gRPC querier service */
 export interface Query {
   /** NextSequenceSend returns the next send sequence for a given channel. */

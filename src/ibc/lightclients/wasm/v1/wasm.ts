@@ -1,6 +1,7 @@
 /* eslint-disable */
 import { Height, HeightAmino } from "../../../core/client/v1/client";
 import { BinaryReader, BinaryWriter } from "../../../../binary";
+import { GlobalDecoderRegistry } from "../../../../registry";
 import { isSet, bytesFromBase64, base64FromBytes } from "../../../../helpers";
 import { JsonSafe } from "../../../../json-safe";
 export const protobufPackage = "ibc.lightclients.wasm.v1";
@@ -127,6 +128,25 @@ function createBaseClientState(): ClientState {
 }
 export const ClientState = {
   typeUrl: "/ibc.lightclients.wasm.v1.ClientState",
+  aminoType: "cosmos-sdk/ClientState",
+  is(o: any): o is ClientState {
+    return (
+      o &&
+      (o.$typeUrl === ClientState.typeUrl ||
+        ((o.data instanceof Uint8Array || typeof o.data === "string") &&
+          (o.checksum instanceof Uint8Array || typeof o.checksum === "string") &&
+          Height.is(o.latestHeight)))
+    );
+  },
+  isAmino(o: any): o is ClientStateAmino {
+    return (
+      o &&
+      (o.$typeUrl === ClientState.typeUrl ||
+        ((o.data instanceof Uint8Array || typeof o.data === "string") &&
+          (o.checksum instanceof Uint8Array || typeof o.checksum === "string") &&
+          Height.isAmino(o.latest_height)))
+    );
+  },
   encode(message: ClientState, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.data.length !== 0) {
       writer.uint32(10).bytes(message.data);
@@ -230,6 +250,8 @@ export const ClientState = {
     };
   },
 };
+GlobalDecoderRegistry.register(ClientState.typeUrl, ClientState);
+GlobalDecoderRegistry.registerAminoProtoMapping(ClientState.aminoType, ClientState.typeUrl);
 function createBaseConsensusState(): ConsensusState {
   return {
     data: new Uint8Array(),
@@ -237,6 +259,19 @@ function createBaseConsensusState(): ConsensusState {
 }
 export const ConsensusState = {
   typeUrl: "/ibc.lightclients.wasm.v1.ConsensusState",
+  aminoType: "cosmos-sdk/ConsensusState",
+  is(o: any): o is ConsensusState {
+    return (
+      o &&
+      (o.$typeUrl === ConsensusState.typeUrl || o.data instanceof Uint8Array || typeof o.data === "string")
+    );
+  },
+  isAmino(o: any): o is ConsensusStateAmino {
+    return (
+      o &&
+      (o.$typeUrl === ConsensusState.typeUrl || o.data instanceof Uint8Array || typeof o.data === "string")
+    );
+  },
   encode(message: ConsensusState, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.data.length !== 0) {
       writer.uint32(10).bytes(message.data);
@@ -310,6 +345,8 @@ export const ConsensusState = {
     };
   },
 };
+GlobalDecoderRegistry.register(ConsensusState.typeUrl, ConsensusState);
+GlobalDecoderRegistry.registerAminoProtoMapping(ConsensusState.aminoType, ConsensusState.typeUrl);
 function createBaseClientMessage(): ClientMessage {
   return {
     data: new Uint8Array(),
@@ -317,6 +354,19 @@ function createBaseClientMessage(): ClientMessage {
 }
 export const ClientMessage = {
   typeUrl: "/ibc.lightclients.wasm.v1.ClientMessage",
+  aminoType: "cosmos-sdk/ClientMessage",
+  is(o: any): o is ClientMessage {
+    return (
+      o &&
+      (o.$typeUrl === ClientMessage.typeUrl || o.data instanceof Uint8Array || typeof o.data === "string")
+    );
+  },
+  isAmino(o: any): o is ClientMessageAmino {
+    return (
+      o &&
+      (o.$typeUrl === ClientMessage.typeUrl || o.data instanceof Uint8Array || typeof o.data === "string")
+    );
+  },
   encode(message: ClientMessage, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.data.length !== 0) {
       writer.uint32(10).bytes(message.data);
@@ -390,6 +440,8 @@ export const ClientMessage = {
     };
   },
 };
+GlobalDecoderRegistry.register(ClientMessage.typeUrl, ClientMessage);
+GlobalDecoderRegistry.registerAminoProtoMapping(ClientMessage.aminoType, ClientMessage.typeUrl);
 function createBaseChecksums(): Checksums {
   return {
     checksums: [],
@@ -397,6 +449,27 @@ function createBaseChecksums(): Checksums {
 }
 export const Checksums = {
   typeUrl: "/ibc.lightclients.wasm.v1.Checksums",
+  aminoType: "cosmos-sdk/Checksums",
+  is(o: any): o is Checksums {
+    return (
+      o &&
+      (o.$typeUrl === Checksums.typeUrl ||
+        (Array.isArray(o.checksums) &&
+          (!o.checksums.length ||
+            o.checksums[0] instanceof Uint8Array ||
+            typeof o.checksums[0] === "string")))
+    );
+  },
+  isAmino(o: any): o is ChecksumsAmino {
+    return (
+      o &&
+      (o.$typeUrl === Checksums.typeUrl ||
+        (Array.isArray(o.checksums) &&
+          (!o.checksums.length ||
+            o.checksums[0] instanceof Uint8Array ||
+            typeof o.checksums[0] === "string")))
+    );
+  },
   encode(message: Checksums, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.checksums) {
       writer.uint32(10).bytes(v!);
@@ -476,3 +549,5 @@ export const Checksums = {
     };
   },
 };
+GlobalDecoderRegistry.register(Checksums.typeUrl, Checksums);
+GlobalDecoderRegistry.registerAminoProtoMapping(Checksums.aminoType, Checksums.typeUrl);

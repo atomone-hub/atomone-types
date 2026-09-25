@@ -1,6 +1,7 @@
 /* eslint-disable */
 import { CounterpartyInfo, CounterpartyInfoAmino } from "./counterparty";
 import { BinaryReader, BinaryWriter } from "../../../../binary";
+import { GlobalDecoderRegistry } from "../../../../registry";
 import { isSet } from "../../../../helpers";
 import { JsonSafe } from "../../../../json-safe";
 export const protobufPackage = "ibc.core.client.v2";
@@ -68,6 +69,21 @@ function createBaseGenesisCounterpartyInfo(): GenesisCounterpartyInfo {
 }
 export const GenesisCounterpartyInfo = {
   typeUrl: "/ibc.core.client.v2.GenesisCounterpartyInfo",
+  aminoType: "cosmos-sdk/GenesisCounterpartyInfo",
+  is(o: any): o is GenesisCounterpartyInfo {
+    return (
+      o &&
+      (o.$typeUrl === GenesisCounterpartyInfo.typeUrl ||
+        (typeof o.clientId === "string" && CounterpartyInfo.is(o.counterpartyInfo)))
+    );
+  },
+  isAmino(o: any): o is GenesisCounterpartyInfoAmino {
+    return (
+      o &&
+      (o.$typeUrl === GenesisCounterpartyInfo.typeUrl ||
+        (typeof o.client_id === "string" && CounterpartyInfo.isAmino(o.counterparty_info)))
+    );
+  },
   encode(message: GenesisCounterpartyInfo, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.clientId !== "") {
       writer.uint32(10).string(message.clientId);
@@ -161,6 +177,11 @@ export const GenesisCounterpartyInfo = {
     };
   },
 };
+GlobalDecoderRegistry.register(GenesisCounterpartyInfo.typeUrl, GenesisCounterpartyInfo);
+GlobalDecoderRegistry.registerAminoProtoMapping(
+  GenesisCounterpartyInfo.aminoType,
+  GenesisCounterpartyInfo.typeUrl,
+);
 function createBaseGenesisState(): GenesisState {
   return {
     counterpartyInfos: [],
@@ -168,6 +189,23 @@ function createBaseGenesisState(): GenesisState {
 }
 export const GenesisState = {
   typeUrl: "/ibc.core.client.v2.GenesisState",
+  aminoType: "cosmos-sdk/GenesisState",
+  is(o: any): o is GenesisState {
+    return (
+      o &&
+      (o.$typeUrl === GenesisState.typeUrl ||
+        (Array.isArray(o.counterpartyInfos) &&
+          (!o.counterpartyInfos.length || GenesisCounterpartyInfo.is(o.counterpartyInfos[0]))))
+    );
+  },
+  isAmino(o: any): o is GenesisStateAmino {
+    return (
+      o &&
+      (o.$typeUrl === GenesisState.typeUrl ||
+        (Array.isArray(o.counterparty_infos) &&
+          (!o.counterparty_infos.length || GenesisCounterpartyInfo.isAmino(o.counterparty_infos[0]))))
+    );
+  },
   encode(message: GenesisState, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.counterpartyInfos) {
       GenesisCounterpartyInfo.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -253,3 +291,5 @@ export const GenesisState = {
     };
   },
 };
+GlobalDecoderRegistry.register(GenesisState.typeUrl, GenesisState);
+GlobalDecoderRegistry.registerAminoProtoMapping(GenesisState.aminoType, GenesisState.typeUrl);

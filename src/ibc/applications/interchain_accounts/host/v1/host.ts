@@ -2,6 +2,7 @@
 import { BinaryReader, BinaryWriter } from "../../../../../binary";
 import { isSet, bytesFromBase64, base64FromBytes } from "../../../../../helpers";
 import { JsonSafe } from "../../../../../json-safe";
+import { GlobalDecoderRegistry } from "../../../../../registry";
 export const protobufPackage = "ibc.applications.interchain_accounts.host.v1";
 /**
  * Params defines the set of on-chain interchain accounts parameters.
@@ -89,6 +90,25 @@ function createBaseParams(): Params {
 }
 export const Params = {
   typeUrl: "/ibc.applications.interchain_accounts.host.v1.Params",
+  aminoType: "cosmos-sdk/Params",
+  is(o: any): o is Params {
+    return (
+      o &&
+      (o.$typeUrl === Params.typeUrl ||
+        (typeof o.hostEnabled === "boolean" &&
+          Array.isArray(o.allowMessages) &&
+          (!o.allowMessages.length || typeof o.allowMessages[0] === "string")))
+    );
+  },
+  isAmino(o: any): o is ParamsAmino {
+    return (
+      o &&
+      (o.$typeUrl === Params.typeUrl ||
+        (typeof o.host_enabled === "boolean" &&
+          Array.isArray(o.allow_messages) &&
+          (!o.allow_messages.length || typeof o.allow_messages[0] === "string")))
+    );
+  },
   encode(message: Params, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.hostEnabled === true) {
       writer.uint32(8).bool(message.hostEnabled);
@@ -181,6 +201,8 @@ export const Params = {
     };
   },
 };
+GlobalDecoderRegistry.register(Params.typeUrl, Params);
+GlobalDecoderRegistry.registerAminoProtoMapping(Params.aminoType, Params.typeUrl);
 function createBaseQueryRequest(): QueryRequest {
   return {
     path: "",
@@ -189,6 +211,21 @@ function createBaseQueryRequest(): QueryRequest {
 }
 export const QueryRequest = {
   typeUrl: "/ibc.applications.interchain_accounts.host.v1.QueryRequest",
+  aminoType: "cosmos-sdk/QueryRequest",
+  is(o: any): o is QueryRequest {
+    return (
+      o &&
+      (o.$typeUrl === QueryRequest.typeUrl ||
+        (typeof o.path === "string" && (o.data instanceof Uint8Array || typeof o.data === "string")))
+    );
+  },
+  isAmino(o: any): o is QueryRequestAmino {
+    return (
+      o &&
+      (o.$typeUrl === QueryRequest.typeUrl ||
+        (typeof o.path === "string" && (o.data instanceof Uint8Array || typeof o.data === "string")))
+    );
+  },
   encode(message: QueryRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.path !== "") {
       writer.uint32(10).string(message.path);
@@ -275,3 +312,5 @@ export const QueryRequest = {
     };
   },
 };
+GlobalDecoderRegistry.register(QueryRequest.typeUrl, QueryRequest);
+GlobalDecoderRegistry.registerAminoProtoMapping(QueryRequest.aminoType, QueryRequest.typeUrl);

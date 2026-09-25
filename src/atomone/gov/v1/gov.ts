@@ -3,9 +3,10 @@ import { Coin, CoinAmino } from "../../../cosmos/base/v1beta1/coin";
 import { Timestamp } from "../../../google/protobuf/timestamp";
 import { Any, AnyAmino } from "../../../google/protobuf/any";
 import { Duration, DurationAmino } from "../../../google/protobuf/duration";
-import { BinaryReader, BinaryWriter } from "../../../binary";
 import { isSet, fromJsonTimestamp, fromTimestamp } from "../../../helpers";
+import { BinaryReader, BinaryWriter } from "../../../binary";
 import { JsonSafe } from "../../../json-safe";
+import { GlobalDecoderRegistry } from "../../../registry";
 export const protobufPackage = "atomone.gov.v1";
 /** VoteOption enumerates the valid vote options for a given governance proposal. */
 export enum VoteOption {
@@ -1269,6 +1270,16 @@ function createBaseWeightedVoteOption(): WeightedVoteOption {
 }
 export const WeightedVoteOption = {
   typeUrl: "/atomone.gov.v1.WeightedVoteOption",
+  is(o: any): o is WeightedVoteOption {
+    return (
+      o && (o.$typeUrl === WeightedVoteOption.typeUrl || (isSet(o.option) && typeof o.weight === "string"))
+    );
+  },
+  isAmino(o: any): o is WeightedVoteOptionAmino {
+    return (
+      o && (o.$typeUrl === WeightedVoteOption.typeUrl || (isSet(o.option) && typeof o.weight === "string"))
+    );
+  },
   encode(message: WeightedVoteOption, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.option !== 0) {
       writer.uint32(8).int32(message.option);
@@ -1348,6 +1359,7 @@ export const WeightedVoteOption = {
     };
   },
 };
+GlobalDecoderRegistry.register(WeightedVoteOption.typeUrl, WeightedVoteOption);
 function createBaseDeposit(): Deposit {
   return {
     proposalId: BigInt(0),
@@ -1357,6 +1369,26 @@ function createBaseDeposit(): Deposit {
 }
 export const Deposit = {
   typeUrl: "/atomone.gov.v1.Deposit",
+  is(o: any): o is Deposit {
+    return (
+      o &&
+      (o.$typeUrl === Deposit.typeUrl ||
+        (typeof o.proposalId === "bigint" &&
+          typeof o.depositor === "string" &&
+          Array.isArray(o.amount) &&
+          (!o.amount.length || Coin.is(o.amount[0]))))
+    );
+  },
+  isAmino(o: any): o is DepositAmino {
+    return (
+      o &&
+      (o.$typeUrl === Deposit.typeUrl ||
+        (typeof o.proposal_id === "bigint" &&
+          typeof o.depositor === "string" &&
+          Array.isArray(o.amount) &&
+          (!o.amount.length || Coin.isAmino(o.amount[0]))))
+    );
+  },
   encode(message: Deposit, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.proposalId !== BigInt(0)) {
       writer.uint32(8).uint64(message.proposalId);
@@ -1457,6 +1489,7 @@ export const Deposit = {
     };
   },
 };
+GlobalDecoderRegistry.register(Deposit.typeUrl, Deposit);
 function createBaseLastMinDeposit(): LastMinDeposit {
   return {
     value: [],
@@ -1465,6 +1498,20 @@ function createBaseLastMinDeposit(): LastMinDeposit {
 }
 export const LastMinDeposit = {
   typeUrl: "/atomone.gov.v1.LastMinDeposit",
+  is(o: any): o is LastMinDeposit {
+    return (
+      o &&
+      (o.$typeUrl === LastMinDeposit.typeUrl ||
+        (Array.isArray(o.value) && (!o.value.length || Coin.is(o.value[0]))))
+    );
+  },
+  isAmino(o: any): o is LastMinDepositAmino {
+    return (
+      o &&
+      (o.$typeUrl === LastMinDeposit.typeUrl ||
+        (Array.isArray(o.value) && (!o.value.length || Coin.isAmino(o.value[0]))))
+    );
+  },
   encode(message: LastMinDeposit, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.value) {
       Coin.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -1552,6 +1599,7 @@ export const LastMinDeposit = {
     };
   },
 };
+GlobalDecoderRegistry.register(LastMinDeposit.typeUrl, LastMinDeposit);
 function createBaseProposal(): Proposal {
   return {
     id: BigInt(0),
@@ -1574,6 +1622,44 @@ function createBaseProposal(): Proposal {
 }
 export const Proposal = {
   typeUrl: "/atomone.gov.v1.Proposal",
+  is(o: any): o is Proposal {
+    return (
+      o &&
+      (o.$typeUrl === Proposal.typeUrl ||
+        (typeof o.id === "bigint" &&
+          Array.isArray(o.messages) &&
+          (!o.messages.length || Any.is(o.messages[0])) &&
+          isSet(o.status) &&
+          Array.isArray(o.totalDeposit) &&
+          (!o.totalDeposit.length || Coin.is(o.totalDeposit[0])) &&
+          typeof o.metadata === "string" &&
+          typeof o.title === "string" &&
+          typeof o.summary === "string" &&
+          typeof o.proposer === "string" &&
+          typeof o.endorsed === "boolean" &&
+          typeof o.annotation === "string" &&
+          typeof o.timesVotingPeriodExtended === "number"))
+    );
+  },
+  isAmino(o: any): o is ProposalAmino {
+    return (
+      o &&
+      (o.$typeUrl === Proposal.typeUrl ||
+        (typeof o.id === "bigint" &&
+          Array.isArray(o.messages) &&
+          (!o.messages.length || Any.isAmino(o.messages[0])) &&
+          isSet(o.status) &&
+          Array.isArray(o.total_deposit) &&
+          (!o.total_deposit.length || Coin.isAmino(o.total_deposit[0])) &&
+          typeof o.metadata === "string" &&
+          typeof o.title === "string" &&
+          typeof o.summary === "string" &&
+          typeof o.proposer === "string" &&
+          typeof o.endorsed === "boolean" &&
+          typeof o.annotation === "string" &&
+          typeof o.times_voting_period_extended === "number"))
+    );
+  },
   encode(message: Proposal, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.id !== BigInt(0)) {
       writer.uint32(8).uint64(message.id);
@@ -1871,6 +1957,7 @@ export const Proposal = {
     };
   },
 };
+GlobalDecoderRegistry.register(Proposal.typeUrl, Proposal);
 function createBaseTallyResult(): TallyResult {
   return {
     yesCount: "",
@@ -1880,6 +1967,24 @@ function createBaseTallyResult(): TallyResult {
 }
 export const TallyResult = {
   typeUrl: "/atomone.gov.v1.TallyResult",
+  is(o: any): o is TallyResult {
+    return (
+      o &&
+      (o.$typeUrl === TallyResult.typeUrl ||
+        (typeof o.yesCount === "string" &&
+          typeof o.abstainCount === "string" &&
+          typeof o.noCount === "string"))
+    );
+  },
+  isAmino(o: any): o is TallyResultAmino {
+    return (
+      o &&
+      (o.$typeUrl === TallyResult.typeUrl ||
+        (typeof o.yes_count === "string" &&
+          typeof o.abstain_count === "string" &&
+          typeof o.no_count === "string"))
+    );
+  },
   encode(message: TallyResult, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.yesCount !== "") {
       writer.uint32(10).string(message.yesCount);
@@ -1972,6 +2077,7 @@ export const TallyResult = {
     };
   },
 };
+GlobalDecoderRegistry.register(TallyResult.typeUrl, TallyResult);
 function createBaseVote(): Vote {
   return {
     proposalId: BigInt(0),
@@ -1982,6 +2088,28 @@ function createBaseVote(): Vote {
 }
 export const Vote = {
   typeUrl: "/atomone.gov.v1.Vote",
+  is(o: any): o is Vote {
+    return (
+      o &&
+      (o.$typeUrl === Vote.typeUrl ||
+        (typeof o.proposalId === "bigint" &&
+          typeof o.voter === "string" &&
+          Array.isArray(o.options) &&
+          (!o.options.length || WeightedVoteOption.is(o.options[0])) &&
+          typeof o.metadata === "string"))
+    );
+  },
+  isAmino(o: any): o is VoteAmino {
+    return (
+      o &&
+      (o.$typeUrl === Vote.typeUrl ||
+        (typeof o.proposal_id === "bigint" &&
+          typeof o.voter === "string" &&
+          Array.isArray(o.options) &&
+          (!o.options.length || WeightedVoteOption.isAmino(o.options[0])) &&
+          typeof o.metadata === "string"))
+    );
+  },
   encode(message: Vote, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.proposalId !== BigInt(0)) {
       writer.uint32(8).uint64(message.proposalId);
@@ -2096,6 +2224,7 @@ export const Vote = {
     };
   },
 };
+GlobalDecoderRegistry.register(Vote.typeUrl, Vote);
 function createBaseQuorumCheckQueueEntry(): QuorumCheckQueueEntry {
   return {
     quorumTimeoutTime: undefined,
@@ -2105,6 +2234,20 @@ function createBaseQuorumCheckQueueEntry(): QuorumCheckQueueEntry {
 }
 export const QuorumCheckQueueEntry = {
   typeUrl: "/atomone.gov.v1.QuorumCheckQueueEntry",
+  is(o: any): o is QuorumCheckQueueEntry {
+    return (
+      o &&
+      (o.$typeUrl === QuorumCheckQueueEntry.typeUrl ||
+        (typeof o.quorumCheckCount === "bigint" && typeof o.quorumChecksDone === "bigint"))
+    );
+  },
+  isAmino(o: any): o is QuorumCheckQueueEntryAmino {
+    return (
+      o &&
+      (o.$typeUrl === QuorumCheckQueueEntry.typeUrl ||
+        (typeof o.quorum_check_count === "bigint" && typeof o.quorum_checks_done === "bigint"))
+    );
+  },
   encode(message: QuorumCheckQueueEntry, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.quorumTimeoutTime !== undefined) {
       Timestamp.encode(message.quorumTimeoutTime, writer.uint32(10).fork()).ldelim();
@@ -2210,6 +2353,7 @@ export const QuorumCheckQueueEntry = {
     };
   },
 };
+GlobalDecoderRegistry.register(QuorumCheckQueueEntry.typeUrl, QuorumCheckQueueEntry);
 function createBaseDepositParams(): DepositParams {
   return {
     minDeposit: [],
@@ -2218,6 +2362,20 @@ function createBaseDepositParams(): DepositParams {
 }
 export const DepositParams = {
   typeUrl: "/atomone.gov.v1.DepositParams",
+  is(o: any): o is DepositParams {
+    return (
+      o &&
+      (o.$typeUrl === DepositParams.typeUrl ||
+        (Array.isArray(o.minDeposit) && (!o.minDeposit.length || Coin.is(o.minDeposit[0]))))
+    );
+  },
+  isAmino(o: any): o is DepositParamsAmino {
+    return (
+      o &&
+      (o.$typeUrl === DepositParams.typeUrl ||
+        (Array.isArray(o.min_deposit) && (!o.min_deposit.length || Coin.isAmino(o.min_deposit[0]))))
+    );
+  },
   encode(message: DepositParams, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.minDeposit) {
       Coin.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -2311,6 +2469,7 @@ export const DepositParams = {
     };
   },
 };
+GlobalDecoderRegistry.register(DepositParams.typeUrl, DepositParams);
 function createBaseVotingParams(): VotingParams {
   return {
     votingPeriod: undefined,
@@ -2318,6 +2477,12 @@ function createBaseVotingParams(): VotingParams {
 }
 export const VotingParams = {
   typeUrl: "/atomone.gov.v1.VotingParams",
+  is(o: any): o is VotingParams {
+    return o && o.$typeUrl === VotingParams.typeUrl;
+  },
+  isAmino(o: any): o is VotingParamsAmino {
+    return o && o.$typeUrl === VotingParams.typeUrl;
+  },
   encode(message: VotingParams, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.votingPeriod !== undefined) {
       Duration.encode(message.votingPeriod, writer.uint32(10).fork()).ldelim();
@@ -2387,6 +2552,7 @@ export const VotingParams = {
     };
   },
 };
+GlobalDecoderRegistry.register(VotingParams.typeUrl, VotingParams);
 function createBaseTallyParams(): TallyParams {
   return {
     quorum: "",
@@ -2399,6 +2565,30 @@ function createBaseTallyParams(): TallyParams {
 }
 export const TallyParams = {
   typeUrl: "/atomone.gov.v1.TallyParams",
+  is(o: any): o is TallyParams {
+    return (
+      o &&
+      (o.$typeUrl === TallyParams.typeUrl ||
+        (typeof o.quorum === "string" &&
+          typeof o.threshold === "string" &&
+          typeof o.constitutionAmendmentQuorum === "string" &&
+          typeof o.constitutionAmendmentThreshold === "string" &&
+          typeof o.lawQuorum === "string" &&
+          typeof o.lawThreshold === "string"))
+    );
+  },
+  isAmino(o: any): o is TallyParamsAmino {
+    return (
+      o &&
+      (o.$typeUrl === TallyParams.typeUrl ||
+        (typeof o.quorum === "string" &&
+          typeof o.threshold === "string" &&
+          typeof o.constitution_amendment_quorum === "string" &&
+          typeof o.constitution_amendment_threshold === "string" &&
+          typeof o.law_quorum === "string" &&
+          typeof o.law_threshold === "string"))
+    );
+  },
   encode(message: TallyParams, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.quorum !== "") {
       writer.uint32(10).string(message.quorum);
@@ -2539,6 +2729,7 @@ export const TallyParams = {
     };
   },
 };
+GlobalDecoderRegistry.register(TallyParams.typeUrl, TallyParams);
 function createBaseMinDepositThrottler(): MinDepositThrottler {
   return {
     floorValue: [],
@@ -2551,6 +2742,30 @@ function createBaseMinDepositThrottler(): MinDepositThrottler {
 }
 export const MinDepositThrottler = {
   typeUrl: "/atomone.gov.v1.MinDepositThrottler",
+  is(o: any): o is MinDepositThrottler {
+    return (
+      o &&
+      (o.$typeUrl === MinDepositThrottler.typeUrl ||
+        (Array.isArray(o.floorValue) &&
+          (!o.floorValue.length || Coin.is(o.floorValue[0])) &&
+          typeof o.targetActiveProposals === "bigint" &&
+          typeof o.increaseRatio === "string" &&
+          typeof o.decreaseRatio === "string" &&
+          typeof o.decreaseSensitivityTargetDistance === "bigint"))
+    );
+  },
+  isAmino(o: any): o is MinDepositThrottlerAmino {
+    return (
+      o &&
+      (o.$typeUrl === MinDepositThrottler.typeUrl ||
+        (Array.isArray(o.floor_value) &&
+          (!o.floor_value.length || Coin.isAmino(o.floor_value[0])) &&
+          typeof o.target_active_proposals === "bigint" &&
+          typeof o.increase_ratio === "string" &&
+          typeof o.decrease_ratio === "string" &&
+          typeof o.decrease_sensitivity_target_distance === "bigint"))
+    );
+  },
   encode(message: MinDepositThrottler, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.floorValue) {
       Coin.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -2712,6 +2927,7 @@ export const MinDepositThrottler = {
     };
   },
 };
+GlobalDecoderRegistry.register(MinDepositThrottler.typeUrl, MinDepositThrottler);
 function createBaseMinInitialDepositThrottler(): MinInitialDepositThrottler {
   return {
     floorValue: [],
@@ -2724,6 +2940,30 @@ function createBaseMinInitialDepositThrottler(): MinInitialDepositThrottler {
 }
 export const MinInitialDepositThrottler = {
   typeUrl: "/atomone.gov.v1.MinInitialDepositThrottler",
+  is(o: any): o is MinInitialDepositThrottler {
+    return (
+      o &&
+      (o.$typeUrl === MinInitialDepositThrottler.typeUrl ||
+        (Array.isArray(o.floorValue) &&
+          (!o.floorValue.length || Coin.is(o.floorValue[0])) &&
+          typeof o.targetProposals === "bigint" &&
+          typeof o.increaseRatio === "string" &&
+          typeof o.decreaseRatio === "string" &&
+          typeof o.decreaseSensitivityTargetDistance === "bigint"))
+    );
+  },
+  isAmino(o: any): o is MinInitialDepositThrottlerAmino {
+    return (
+      o &&
+      (o.$typeUrl === MinInitialDepositThrottler.typeUrl ||
+        (Array.isArray(o.floor_value) &&
+          (!o.floor_value.length || Coin.isAmino(o.floor_value[0])) &&
+          typeof o.target_proposals === "bigint" &&
+          typeof o.increase_ratio === "string" &&
+          typeof o.decrease_ratio === "string" &&
+          typeof o.decrease_sensitivity_target_distance === "bigint"))
+    );
+  },
   encode(message: MinInitialDepositThrottler, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.floorValue) {
       Coin.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -2884,6 +3124,7 @@ export const MinInitialDepositThrottler = {
     };
   },
 };
+GlobalDecoderRegistry.register(MinInitialDepositThrottler.typeUrl, MinInitialDepositThrottler);
 function createBaseParams(): Params {
   return {
     minDeposit: [],
@@ -2914,6 +3155,48 @@ function createBaseParams(): Params {
 }
 export const Params = {
   typeUrl: "/atomone.gov.v1.Params",
+  is(o: any): o is Params {
+    return (
+      o &&
+      (o.$typeUrl === Params.typeUrl ||
+        (Array.isArray(o.minDeposit) &&
+          (!o.minDeposit.length || Coin.is(o.minDeposit[0])) &&
+          typeof o.quorum === "string" &&
+          typeof o.threshold === "string" &&
+          typeof o.minInitialDepositRatio === "string" &&
+          typeof o.burnVoteQuorum === "boolean" &&
+          typeof o.burnProposalDepositPrevote === "boolean" &&
+          typeof o.minDepositRatio === "string" &&
+          typeof o.constitutionAmendmentQuorum === "string" &&
+          typeof o.constitutionAmendmentThreshold === "string" &&
+          typeof o.lawQuorum === "string" &&
+          typeof o.lawThreshold === "string" &&
+          typeof o.quorumCheckCount === "bigint" &&
+          typeof o.burnDepositNoThreshold === "string" &&
+          typeof o.minGovernorSelfDelegation === "string"))
+    );
+  },
+  isAmino(o: any): o is ParamsAmino {
+    return (
+      o &&
+      (o.$typeUrl === Params.typeUrl ||
+        (Array.isArray(o.min_deposit) &&
+          (!o.min_deposit.length || Coin.isAmino(o.min_deposit[0])) &&
+          typeof o.quorum === "string" &&
+          typeof o.threshold === "string" &&
+          typeof o.min_initial_deposit_ratio === "string" &&
+          typeof o.burn_vote_quorum === "boolean" &&
+          typeof o.burn_proposal_deposit_prevote === "boolean" &&
+          typeof o.min_deposit_ratio === "string" &&
+          typeof o.constitution_amendment_quorum === "string" &&
+          typeof o.constitution_amendment_threshold === "string" &&
+          typeof o.law_quorum === "string" &&
+          typeof o.law_threshold === "string" &&
+          typeof o.quorum_check_count === "bigint" &&
+          typeof o.burn_deposit_no_threshold === "string" &&
+          typeof o.min_governor_self_delegation === "string"))
+    );
+  },
   encode(message: Params, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.minDeposit) {
       Coin.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -3387,6 +3670,7 @@ export const Params = {
     };
   },
 };
+GlobalDecoderRegistry.register(Params.typeUrl, Params);
 function createBaseQuorumRange(): QuorumRange {
   return {
     max: "",
@@ -3395,6 +3679,16 @@ function createBaseQuorumRange(): QuorumRange {
 }
 export const QuorumRange = {
   typeUrl: "/atomone.gov.v1.QuorumRange",
+  is(o: any): o is QuorumRange {
+    return (
+      o && (o.$typeUrl === QuorumRange.typeUrl || (typeof o.max === "string" && typeof o.min === "string"))
+    );
+  },
+  isAmino(o: any): o is QuorumRangeAmino {
+    return (
+      o && (o.$typeUrl === QuorumRange.typeUrl || (typeof o.max === "string" && typeof o.min === "string"))
+    );
+  },
   encode(message: QuorumRange, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.max !== "") {
       writer.uint32(10).string(message.max);
@@ -3474,6 +3768,7 @@ export const QuorumRange = {
     };
   },
 };
+GlobalDecoderRegistry.register(QuorumRange.typeUrl, QuorumRange);
 function createBaseGovernor(): Governor {
   return {
     governorAddress: "",
@@ -3484,6 +3779,22 @@ function createBaseGovernor(): Governor {
 }
 export const Governor = {
   typeUrl: "/atomone.gov.v1.Governor",
+  is(o: any): o is Governor {
+    return (
+      o &&
+      (o.$typeUrl === Governor.typeUrl ||
+        (typeof o.governorAddress === "string" && isSet(o.status) && GovernorDescription.is(o.description)))
+    );
+  },
+  isAmino(o: any): o is GovernorAmino {
+    return (
+      o &&
+      (o.$typeUrl === Governor.typeUrl ||
+        (typeof o.governor_address === "string" &&
+          isSet(o.status) &&
+          GovernorDescription.isAmino(o.description)))
+    );
+  },
   encode(message: Governor, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.governorAddress !== "") {
       writer.uint32(10).string(message.governorAddress);
@@ -3600,6 +3911,7 @@ export const Governor = {
     };
   },
 };
+GlobalDecoderRegistry.register(Governor.typeUrl, Governor);
 function createBaseGovernorDescription(): GovernorDescription {
   return {
     moniker: "",
@@ -3611,6 +3923,28 @@ function createBaseGovernorDescription(): GovernorDescription {
 }
 export const GovernorDescription = {
   typeUrl: "/atomone.gov.v1.GovernorDescription",
+  is(o: any): o is GovernorDescription {
+    return (
+      o &&
+      (o.$typeUrl === GovernorDescription.typeUrl ||
+        (typeof o.moniker === "string" &&
+          typeof o.identity === "string" &&
+          typeof o.website === "string" &&
+          typeof o.securityContact === "string" &&
+          typeof o.details === "string"))
+    );
+  },
+  isAmino(o: any): o is GovernorDescriptionAmino {
+    return (
+      o &&
+      (o.$typeUrl === GovernorDescription.typeUrl ||
+        (typeof o.moniker === "string" &&
+          typeof o.identity === "string" &&
+          typeof o.website === "string" &&
+          typeof o.security_contact === "string" &&
+          typeof o.details === "string"))
+    );
+  },
   encode(message: GovernorDescription, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.moniker !== "") {
       writer.uint32(10).string(message.moniker);
@@ -3729,6 +4063,7 @@ export const GovernorDescription = {
     };
   },
 };
+GlobalDecoderRegistry.register(GovernorDescription.typeUrl, GovernorDescription);
 function createBaseGovernorValShares(): GovernorValShares {
   return {
     governorAddress: "",
@@ -3738,6 +4073,24 @@ function createBaseGovernorValShares(): GovernorValShares {
 }
 export const GovernorValShares = {
   typeUrl: "/atomone.gov.v1.GovernorValShares",
+  is(o: any): o is GovernorValShares {
+    return (
+      o &&
+      (o.$typeUrl === GovernorValShares.typeUrl ||
+        (typeof o.governorAddress === "string" &&
+          typeof o.validatorAddress === "string" &&
+          typeof o.shares === "string"))
+    );
+  },
+  isAmino(o: any): o is GovernorValSharesAmino {
+    return (
+      o &&
+      (o.$typeUrl === GovernorValShares.typeUrl ||
+        (typeof o.governor_address === "string" &&
+          typeof o.validator_address === "string" &&
+          typeof o.shares === "string"))
+    );
+  },
   encode(message: GovernorValShares, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.governorAddress !== "") {
       writer.uint32(10).string(message.governorAddress);
@@ -3830,6 +4183,7 @@ export const GovernorValShares = {
     };
   },
 };
+GlobalDecoderRegistry.register(GovernorValShares.typeUrl, GovernorValShares);
 function createBaseGovernanceDelegation(): GovernanceDelegation {
   return {
     delegatorAddress: "",
@@ -3838,6 +4192,20 @@ function createBaseGovernanceDelegation(): GovernanceDelegation {
 }
 export const GovernanceDelegation = {
   typeUrl: "/atomone.gov.v1.GovernanceDelegation",
+  is(o: any): o is GovernanceDelegation {
+    return (
+      o &&
+      (o.$typeUrl === GovernanceDelegation.typeUrl ||
+        (typeof o.delegatorAddress === "string" && typeof o.governorAddress === "string"))
+    );
+  },
+  isAmino(o: any): o is GovernanceDelegationAmino {
+    return (
+      o &&
+      (o.$typeUrl === GovernanceDelegation.typeUrl ||
+        (typeof o.delegator_address === "string" && typeof o.governor_address === "string"))
+    );
+  },
   encode(message: GovernanceDelegation, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.delegatorAddress !== "") {
       writer.uint32(10).string(message.delegatorAddress);
@@ -3917,3 +4285,4 @@ export const GovernanceDelegation = {
     };
   },
 };
+GlobalDecoderRegistry.register(GovernanceDelegation.typeUrl, GovernanceDelegation);

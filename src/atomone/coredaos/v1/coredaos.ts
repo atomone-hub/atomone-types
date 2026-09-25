@@ -1,6 +1,7 @@
 /* eslint-disable */
 import { Duration, DurationAmino } from "../../../google/protobuf/duration";
 import { BinaryReader, BinaryWriter } from "../../../binary";
+import { GlobalDecoderRegistry } from "../../../registry";
 import { isSet } from "../../../helpers";
 import { JsonSafe } from "../../../json-safe";
 export const protobufPackage = "atomone.coredaos.v1";
@@ -73,6 +74,24 @@ function createBaseParams(): Params {
 }
 export const Params = {
   typeUrl: "/atomone.coredaos.v1.Params",
+  is(o: any): o is Params {
+    return (
+      o &&
+      (o.$typeUrl === Params.typeUrl ||
+        (typeof o.steeringDaoAddress === "string" &&
+          typeof o.oversightDaoAddress === "string" &&
+          typeof o.votingPeriodExtensionsLimit === "number"))
+    );
+  },
+  isAmino(o: any): o is ParamsAmino {
+    return (
+      o &&
+      (o.$typeUrl === Params.typeUrl ||
+        (typeof o.steering_dao_address === "string" &&
+          typeof o.oversight_dao_address === "string" &&
+          typeof o.voting_period_extensions_limit === "number"))
+    );
+  },
   encode(message: Params, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.steeringDaoAddress !== "") {
       writer.uint32(10).string(message.steeringDaoAddress);
@@ -195,3 +214,4 @@ export const Params = {
     };
   },
 };
+GlobalDecoderRegistry.register(Params.typeUrl, Params);

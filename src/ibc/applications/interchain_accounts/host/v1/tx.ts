@@ -1,6 +1,7 @@
 /* eslint-disable */
 import { Params, ParamsAmino, QueryRequest, QueryRequestAmino } from "./host";
 import { BinaryReader, BinaryWriter } from "../../../../../binary";
+import { GlobalDecoderRegistry } from "../../../../../registry";
 import { isSet, bytesFromBase64, base64FromBytes } from "../../../../../helpers";
 import { JsonSafe } from "../../../../../json-safe";
 import { TxRpc } from "../../../../../types";
@@ -129,6 +130,18 @@ function createBaseMsgUpdateParams(): MsgUpdateParams {
 }
 export const MsgUpdateParams = {
   typeUrl: "/ibc.applications.interchain_accounts.host.v1.MsgUpdateParams",
+  aminoType: "cosmos-sdk/MsgUpdateParams",
+  is(o: any): o is MsgUpdateParams {
+    return (
+      o && (o.$typeUrl === MsgUpdateParams.typeUrl || (typeof o.signer === "string" && Params.is(o.params)))
+    );
+  },
+  isAmino(o: any): o is MsgUpdateParamsAmino {
+    return (
+      o &&
+      (o.$typeUrl === MsgUpdateParams.typeUrl || (typeof o.signer === "string" && Params.isAmino(o.params)))
+    );
+  },
   encode(message: MsgUpdateParams, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.signer !== "") {
       writer.uint32(10).string(message.signer);
@@ -216,11 +229,20 @@ export const MsgUpdateParams = {
     };
   },
 };
+GlobalDecoderRegistry.register(MsgUpdateParams.typeUrl, MsgUpdateParams);
+GlobalDecoderRegistry.registerAminoProtoMapping(MsgUpdateParams.aminoType, MsgUpdateParams.typeUrl);
 function createBaseMsgUpdateParamsResponse(): MsgUpdateParamsResponse {
   return {};
 }
 export const MsgUpdateParamsResponse = {
   typeUrl: "/ibc.applications.interchain_accounts.host.v1.MsgUpdateParamsResponse",
+  aminoType: "cosmos-sdk/MsgUpdateParamsResponse",
+  is(o: any): o is MsgUpdateParamsResponse {
+    return o && o.$typeUrl === MsgUpdateParamsResponse.typeUrl;
+  },
+  isAmino(o: any): o is MsgUpdateParamsResponseAmino {
+    return o && o.$typeUrl === MsgUpdateParamsResponse.typeUrl;
+  },
   encode(_: MsgUpdateParamsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
@@ -280,6 +302,11 @@ export const MsgUpdateParamsResponse = {
     };
   },
 };
+GlobalDecoderRegistry.register(MsgUpdateParamsResponse.typeUrl, MsgUpdateParamsResponse);
+GlobalDecoderRegistry.registerAminoProtoMapping(
+  MsgUpdateParamsResponse.aminoType,
+  MsgUpdateParamsResponse.typeUrl,
+);
 function createBaseMsgModuleQuerySafe(): MsgModuleQuerySafe {
   return {
     signer: "",
@@ -288,6 +315,25 @@ function createBaseMsgModuleQuerySafe(): MsgModuleQuerySafe {
 }
 export const MsgModuleQuerySafe = {
   typeUrl: "/ibc.applications.interchain_accounts.host.v1.MsgModuleQuerySafe",
+  aminoType: "cosmos-sdk/MsgModuleQuerySafe",
+  is(o: any): o is MsgModuleQuerySafe {
+    return (
+      o &&
+      (o.$typeUrl === MsgModuleQuerySafe.typeUrl ||
+        (typeof o.signer === "string" &&
+          Array.isArray(o.requests) &&
+          (!o.requests.length || QueryRequest.is(o.requests[0]))))
+    );
+  },
+  isAmino(o: any): o is MsgModuleQuerySafeAmino {
+    return (
+      o &&
+      (o.$typeUrl === MsgModuleQuerySafe.typeUrl ||
+        (typeof o.signer === "string" &&
+          Array.isArray(o.requests) &&
+          (!o.requests.length || QueryRequest.isAmino(o.requests[0]))))
+    );
+  },
   encode(message: MsgModuleQuerySafe, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.signer !== "") {
       writer.uint32(10).string(message.signer);
@@ -380,6 +426,8 @@ export const MsgModuleQuerySafe = {
     };
   },
 };
+GlobalDecoderRegistry.register(MsgModuleQuerySafe.typeUrl, MsgModuleQuerySafe);
+GlobalDecoderRegistry.registerAminoProtoMapping(MsgModuleQuerySafe.aminoType, MsgModuleQuerySafe.typeUrl);
 function createBaseMsgModuleQuerySafeResponse(): MsgModuleQuerySafeResponse {
   return {
     height: BigInt(0),
@@ -388,6 +436,29 @@ function createBaseMsgModuleQuerySafeResponse(): MsgModuleQuerySafeResponse {
 }
 export const MsgModuleQuerySafeResponse = {
   typeUrl: "/ibc.applications.interchain_accounts.host.v1.MsgModuleQuerySafeResponse",
+  aminoType: "cosmos-sdk/MsgModuleQuerySafeResponse",
+  is(o: any): o is MsgModuleQuerySafeResponse {
+    return (
+      o &&
+      (o.$typeUrl === MsgModuleQuerySafeResponse.typeUrl ||
+        (typeof o.height === "bigint" &&
+          Array.isArray(o.responses) &&
+          (!o.responses.length ||
+            o.responses[0] instanceof Uint8Array ||
+            typeof o.responses[0] === "string")))
+    );
+  },
+  isAmino(o: any): o is MsgModuleQuerySafeResponseAmino {
+    return (
+      o &&
+      (o.$typeUrl === MsgModuleQuerySafeResponse.typeUrl ||
+        (typeof o.height === "bigint" &&
+          Array.isArray(o.responses) &&
+          (!o.responses.length ||
+            o.responses[0] instanceof Uint8Array ||
+            typeof o.responses[0] === "string")))
+    );
+  },
   encode(message: MsgModuleQuerySafeResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.height !== BigInt(0)) {
       writer.uint32(8).uint64(message.height);
@@ -482,6 +553,11 @@ export const MsgModuleQuerySafeResponse = {
     };
   },
 };
+GlobalDecoderRegistry.register(MsgModuleQuerySafeResponse.typeUrl, MsgModuleQuerySafeResponse);
+GlobalDecoderRegistry.registerAminoProtoMapping(
+  MsgModuleQuerySafeResponse.aminoType,
+  MsgModuleQuerySafeResponse.typeUrl,
+);
 /** Msg defines the 27-interchain-accounts/host Msg service. */
 export interface Msg {
   /** UpdateParams defines a rpc handler for MsgUpdateParams. */

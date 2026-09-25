@@ -11,6 +11,7 @@ import { EvidenceList, EvidenceListAmino } from "../../../../tendermint/types/ev
 import { Consensus, ConsensusAmino } from "../../../../tendermint/version/types";
 import { Timestamp } from "../../../../google/protobuf/timestamp";
 import { BinaryReader, BinaryWriter } from "../../../../binary";
+import { GlobalDecoderRegistry } from "../../../../registry";
 import {
   isSet,
   fromJsonTimestamp,
@@ -158,6 +159,21 @@ function createBaseBlock(): Block {
 }
 export const Block = {
   typeUrl: "/cosmos.base.tendermint.v1beta1.Block",
+  aminoType: "cosmos-sdk/Block",
+  is(o: any): o is Block {
+    return (
+      o &&
+      (o.$typeUrl === Block.typeUrl ||
+        (Header.is(o.header) && Data.is(o.data) && EvidenceList.is(o.evidence)))
+    );
+  },
+  isAmino(o: any): o is BlockAmino {
+    return (
+      o &&
+      (o.$typeUrl === Block.typeUrl ||
+        (Header.isAmino(o.header) && Data.isAmino(o.data) && EvidenceList.isAmino(o.evidence)))
+    );
+  },
   encode(message: Block, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.header !== undefined) {
       Header.encode(message.header, writer.uint32(10).fork()).ldelim();
@@ -281,6 +297,8 @@ export const Block = {
     };
   },
 };
+GlobalDecoderRegistry.register(Block.typeUrl, Block);
+GlobalDecoderRegistry.registerAminoProtoMapping(Block.aminoType, Block.typeUrl);
 function createBaseHeader(): Header {
   return {
     version: Consensus.fromPartial({}),
@@ -301,6 +319,47 @@ function createBaseHeader(): Header {
 }
 export const Header = {
   typeUrl: "/cosmos.base.tendermint.v1beta1.Header",
+  aminoType: "cosmos-sdk/Header",
+  is(o: any): o is Header {
+    return (
+      o &&
+      (o.$typeUrl === Header.typeUrl ||
+        (Consensus.is(o.version) &&
+          typeof o.chainId === "string" &&
+          typeof o.height === "bigint" &&
+          Timestamp.is(o.time) &&
+          BlockID.is(o.lastBlockId) &&
+          (o.lastCommitHash instanceof Uint8Array || typeof o.lastCommitHash === "string") &&
+          (o.dataHash instanceof Uint8Array || typeof o.dataHash === "string") &&
+          (o.validatorsHash instanceof Uint8Array || typeof o.validatorsHash === "string") &&
+          (o.nextValidatorsHash instanceof Uint8Array || typeof o.nextValidatorsHash === "string") &&
+          (o.consensusHash instanceof Uint8Array || typeof o.consensusHash === "string") &&
+          (o.appHash instanceof Uint8Array || typeof o.appHash === "string") &&
+          (o.lastResultsHash instanceof Uint8Array || typeof o.lastResultsHash === "string") &&
+          (o.evidenceHash instanceof Uint8Array || typeof o.evidenceHash === "string") &&
+          typeof o.proposerAddress === "string"))
+    );
+  },
+  isAmino(o: any): o is HeaderAmino {
+    return (
+      o &&
+      (o.$typeUrl === Header.typeUrl ||
+        (Consensus.isAmino(o.version) &&
+          typeof o.chain_id === "string" &&
+          typeof o.height === "bigint" &&
+          Timestamp.isAmino(o.time) &&
+          BlockID.isAmino(o.last_block_id) &&
+          (o.last_commit_hash instanceof Uint8Array || typeof o.last_commit_hash === "string") &&
+          (o.data_hash instanceof Uint8Array || typeof o.data_hash === "string") &&
+          (o.validators_hash instanceof Uint8Array || typeof o.validators_hash === "string") &&
+          (o.next_validators_hash instanceof Uint8Array || typeof o.next_validators_hash === "string") &&
+          (o.consensus_hash instanceof Uint8Array || typeof o.consensus_hash === "string") &&
+          (o.app_hash instanceof Uint8Array || typeof o.app_hash === "string") &&
+          (o.last_results_hash instanceof Uint8Array || typeof o.last_results_hash === "string") &&
+          (o.evidence_hash instanceof Uint8Array || typeof o.evidence_hash === "string") &&
+          typeof o.proposer_address === "string"))
+    );
+  },
   encode(message: Header, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.version !== undefined) {
       Consensus.encode(message.version, writer.uint32(10).fork()).ldelim();
@@ -578,3 +637,5 @@ export const Header = {
     };
   },
 };
+GlobalDecoderRegistry.register(Header.typeUrl, Header);
+GlobalDecoderRegistry.registerAminoProtoMapping(Header.aminoType, Header.typeUrl);

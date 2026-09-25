@@ -1,6 +1,7 @@
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "../../../../binary";
 import { JsonSafe } from "../../../../json-safe";
+import { GlobalDecoderRegistry } from "../../../../registry";
 import { isSet, bytesFromBase64, base64FromBytes } from "../../../../helpers";
 export const protobufPackage = "ibc.lightclients.wasm.v1";
 /** GenesisState defines 08-wasm's keeper genesis state */
@@ -60,6 +61,21 @@ function createBaseGenesisState(): GenesisState {
 }
 export const GenesisState = {
   typeUrl: "/ibc.lightclients.wasm.v1.GenesisState",
+  aminoType: "cosmos-sdk/GenesisState",
+  is(o: any): o is GenesisState {
+    return (
+      o &&
+      (o.$typeUrl === GenesisState.typeUrl ||
+        (Array.isArray(o.contracts) && (!o.contracts.length || Contract.is(o.contracts[0]))))
+    );
+  },
+  isAmino(o: any): o is GenesisStateAmino {
+    return (
+      o &&
+      (o.$typeUrl === GenesisState.typeUrl ||
+        (Array.isArray(o.contracts) && (!o.contracts.length || Contract.isAmino(o.contracts[0]))))
+    );
+  },
   encode(message: GenesisState, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.contracts) {
       Contract.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -139,6 +155,8 @@ export const GenesisState = {
     };
   },
 };
+GlobalDecoderRegistry.register(GenesisState.typeUrl, GenesisState);
+GlobalDecoderRegistry.registerAminoProtoMapping(GenesisState.aminoType, GenesisState.typeUrl);
 function createBaseContract(): Contract {
   return {
     codeBytes: new Uint8Array(),
@@ -146,6 +164,23 @@ function createBaseContract(): Contract {
 }
 export const Contract = {
   typeUrl: "/ibc.lightclients.wasm.v1.Contract",
+  aminoType: "cosmos-sdk/Contract",
+  is(o: any): o is Contract {
+    return (
+      o &&
+      (o.$typeUrl === Contract.typeUrl ||
+        o.codeBytes instanceof Uint8Array ||
+        typeof o.codeBytes === "string")
+    );
+  },
+  isAmino(o: any): o is ContractAmino {
+    return (
+      o &&
+      (o.$typeUrl === Contract.typeUrl ||
+        o.code_bytes instanceof Uint8Array ||
+        typeof o.code_bytes === "string")
+    );
+  },
   encode(message: Contract, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.codeBytes.length !== 0) {
       writer.uint32(10).bytes(message.codeBytes);
@@ -221,3 +256,5 @@ export const Contract = {
     };
   },
 };
+GlobalDecoderRegistry.register(Contract.typeUrl, Contract);
+GlobalDecoderRegistry.registerAminoProtoMapping(Contract.aminoType, Contract.typeUrl);

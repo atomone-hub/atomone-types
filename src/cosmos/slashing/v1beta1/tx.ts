@@ -3,6 +3,7 @@ import { Params, ParamsAmino } from "./slashing";
 import { BinaryReader, BinaryWriter } from "../../../binary";
 import { isSet } from "../../../helpers";
 import { JsonSafe } from "../../../json-safe";
+import { GlobalDecoderRegistry } from "../../../registry";
 import { TxRpc } from "../../../types";
 export const protobufPackage = "cosmos.slashing.v1beta1";
 /** MsgUnjail defines the Msg/Unjail request type */
@@ -118,6 +119,13 @@ function createBaseMsgUnjail(): MsgUnjail {
 }
 export const MsgUnjail = {
   typeUrl: "/cosmos.slashing.v1beta1.MsgUnjail",
+  aminoType: "cosmos-sdk/MsgUnjail",
+  is(o: any): o is MsgUnjail {
+    return o && (o.$typeUrl === MsgUnjail.typeUrl || typeof o.validatorAddr === "string");
+  },
+  isAmino(o: any): o is MsgUnjailAmino {
+    return o && (o.$typeUrl === MsgUnjail.typeUrl || typeof o.validator_addr === "string");
+  },
   encode(message: MsgUnjail, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.validatorAddr !== "") {
       writer.uint32(10).string(message.validatorAddr);
@@ -190,11 +198,20 @@ export const MsgUnjail = {
     };
   },
 };
+GlobalDecoderRegistry.register(MsgUnjail.typeUrl, MsgUnjail);
+GlobalDecoderRegistry.registerAminoProtoMapping(MsgUnjail.aminoType, MsgUnjail.typeUrl);
 function createBaseMsgUnjailResponse(): MsgUnjailResponse {
   return {};
 }
 export const MsgUnjailResponse = {
   typeUrl: "/cosmos.slashing.v1beta1.MsgUnjailResponse",
+  aminoType: "cosmos-sdk/MsgUnjailResponse",
+  is(o: any): o is MsgUnjailResponse {
+    return o && o.$typeUrl === MsgUnjailResponse.typeUrl;
+  },
+  isAmino(o: any): o is MsgUnjailResponseAmino {
+    return o && o.$typeUrl === MsgUnjailResponse.typeUrl;
+  },
   encode(_: MsgUnjailResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
@@ -254,6 +271,8 @@ export const MsgUnjailResponse = {
     };
   },
 };
+GlobalDecoderRegistry.register(MsgUnjailResponse.typeUrl, MsgUnjailResponse);
+GlobalDecoderRegistry.registerAminoProtoMapping(MsgUnjailResponse.aminoType, MsgUnjailResponse.typeUrl);
 function createBaseMsgUpdateParams(): MsgUpdateParams {
   return {
     authority: "",
@@ -262,6 +281,20 @@ function createBaseMsgUpdateParams(): MsgUpdateParams {
 }
 export const MsgUpdateParams = {
   typeUrl: "/cosmos.slashing.v1beta1.MsgUpdateParams",
+  aminoType: "cosmos-sdk/x/slashing/MsgUpdateParams",
+  is(o: any): o is MsgUpdateParams {
+    return (
+      o &&
+      (o.$typeUrl === MsgUpdateParams.typeUrl || (typeof o.authority === "string" && Params.is(o.params)))
+    );
+  },
+  isAmino(o: any): o is MsgUpdateParamsAmino {
+    return (
+      o &&
+      (o.$typeUrl === MsgUpdateParams.typeUrl ||
+        (typeof o.authority === "string" && Params.isAmino(o.params)))
+    );
+  },
   encode(message: MsgUpdateParams, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.authority !== "") {
       writer.uint32(10).string(message.authority);
@@ -349,11 +382,20 @@ export const MsgUpdateParams = {
     };
   },
 };
+GlobalDecoderRegistry.register(MsgUpdateParams.typeUrl, MsgUpdateParams);
+GlobalDecoderRegistry.registerAminoProtoMapping(MsgUpdateParams.aminoType, MsgUpdateParams.typeUrl);
 function createBaseMsgUpdateParamsResponse(): MsgUpdateParamsResponse {
   return {};
 }
 export const MsgUpdateParamsResponse = {
   typeUrl: "/cosmos.slashing.v1beta1.MsgUpdateParamsResponse",
+  aminoType: "cosmos-sdk/MsgUpdateParamsResponse",
+  is(o: any): o is MsgUpdateParamsResponse {
+    return o && o.$typeUrl === MsgUpdateParamsResponse.typeUrl;
+  },
+  isAmino(o: any): o is MsgUpdateParamsResponseAmino {
+    return o && o.$typeUrl === MsgUpdateParamsResponse.typeUrl;
+  },
   encode(_: MsgUpdateParamsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
@@ -413,6 +455,11 @@ export const MsgUpdateParamsResponse = {
     };
   },
 };
+GlobalDecoderRegistry.register(MsgUpdateParamsResponse.typeUrl, MsgUpdateParamsResponse);
+GlobalDecoderRegistry.registerAminoProtoMapping(
+  MsgUpdateParamsResponse.aminoType,
+  MsgUpdateParamsResponse.typeUrl,
+);
 /** Msg defines the slashing Msg service. */
 export interface Msg {
   /**

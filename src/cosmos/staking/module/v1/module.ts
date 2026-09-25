@@ -2,6 +2,7 @@
 import { BinaryReader, BinaryWriter } from "../../../../binary";
 import { isSet } from "../../../../helpers";
 import { JsonSafe } from "../../../../json-safe";
+import { GlobalDecoderRegistry } from "../../../../registry";
 export const protobufPackage = "cosmos.staking.module.v1";
 /** Module is the config object of the staking module. */
 export interface Module {
@@ -62,6 +63,29 @@ function createBaseModule(): Module {
 }
 export const Module = {
   typeUrl: "/cosmos.staking.module.v1.Module",
+  aminoType: "cosmos-sdk/Module",
+  is(o: any): o is Module {
+    return (
+      o &&
+      (o.$typeUrl === Module.typeUrl ||
+        (Array.isArray(o.hooksOrder) &&
+          (!o.hooksOrder.length || typeof o.hooksOrder[0] === "string") &&
+          typeof o.authority === "string" &&
+          typeof o.bech32PrefixValidator === "string" &&
+          typeof o.bech32PrefixConsensus === "string"))
+    );
+  },
+  isAmino(o: any): o is ModuleAmino {
+    return (
+      o &&
+      (o.$typeUrl === Module.typeUrl ||
+        (Array.isArray(o.hooks_order) &&
+          (!o.hooks_order.length || typeof o.hooks_order[0] === "string") &&
+          typeof o.authority === "string" &&
+          typeof o.bech32_prefix_validator === "string" &&
+          typeof o.bech32_prefix_consensus === "string"))
+    );
+  },
   encode(message: Module, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.hooksOrder) {
       writer.uint32(10).string(v!);
@@ -183,3 +207,5 @@ export const Module = {
     };
   },
 };
+GlobalDecoderRegistry.register(Module.typeUrl, Module);
+GlobalDecoderRegistry.registerAminoProtoMapping(Module.aminoType, Module.typeUrl);

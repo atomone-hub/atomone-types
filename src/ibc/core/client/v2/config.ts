@@ -1,6 +1,7 @@
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "../../../../binary";
 import { JsonSafe } from "../../../../json-safe";
+import { GlobalDecoderRegistry } from "../../../../registry";
 export const protobufPackage = "ibc.core.client.v2";
 /**
  * Config is a **per-client** configuration struct that sets which relayers are allowed to relay v2 IBC messages
@@ -42,6 +43,23 @@ function createBaseConfig(): Config {
 }
 export const Config = {
   typeUrl: "/ibc.core.client.v2.Config",
+  aminoType: "cosmos-sdk/Config",
+  is(o: any): o is Config {
+    return (
+      o &&
+      (o.$typeUrl === Config.typeUrl ||
+        (Array.isArray(o.allowedRelayers) &&
+          (!o.allowedRelayers.length || typeof o.allowedRelayers[0] === "string")))
+    );
+  },
+  isAmino(o: any): o is ConfigAmino {
+    return (
+      o &&
+      (o.$typeUrl === Config.typeUrl ||
+        (Array.isArray(o.allowed_relayers) &&
+          (!o.allowed_relayers.length || typeof o.allowed_relayers[0] === "string")))
+    );
+  },
   encode(message: Config, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.allowedRelayers) {
       writer.uint32(10).string(v!);
@@ -121,3 +139,5 @@ export const Config = {
     };
   },
 };
+GlobalDecoderRegistry.register(Config.typeUrl, Config);
+GlobalDecoderRegistry.registerAminoProtoMapping(Config.aminoType, Config.typeUrl);

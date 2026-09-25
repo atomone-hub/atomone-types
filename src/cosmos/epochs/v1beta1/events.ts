@@ -2,6 +2,7 @@
 import { BinaryReader, BinaryWriter } from "../../../binary";
 import { isSet } from "../../../helpers";
 import { JsonSafe } from "../../../json-safe";
+import { GlobalDecoderRegistry } from "../../../registry";
 export const protobufPackage = "cosmos.epochs.v1beta1";
 /** EventEpochEnd is an event emitted when an epoch end. */
 export interface EventEpochEnd {
@@ -54,6 +55,13 @@ function createBaseEventEpochEnd(): EventEpochEnd {
 }
 export const EventEpochEnd = {
   typeUrl: "/cosmos.epochs.v1beta1.EventEpochEnd",
+  aminoType: "cosmos-sdk/EventEpochEnd",
+  is(o: any): o is EventEpochEnd {
+    return o && (o.$typeUrl === EventEpochEnd.typeUrl || typeof o.epochNumber === "bigint");
+  },
+  isAmino(o: any): o is EventEpochEndAmino {
+    return o && (o.$typeUrl === EventEpochEnd.typeUrl || typeof o.epoch_number === "bigint");
+  },
   encode(message: EventEpochEnd, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.epochNumber !== BigInt(0)) {
       writer.uint32(8).int64(message.epochNumber);
@@ -128,6 +136,8 @@ export const EventEpochEnd = {
     };
   },
 };
+GlobalDecoderRegistry.register(EventEpochEnd.typeUrl, EventEpochEnd);
+GlobalDecoderRegistry.registerAminoProtoMapping(EventEpochEnd.aminoType, EventEpochEnd.typeUrl);
 function createBaseEventEpochStart(): EventEpochStart {
   return {
     epochNumber: BigInt(0),
@@ -136,6 +146,21 @@ function createBaseEventEpochStart(): EventEpochStart {
 }
 export const EventEpochStart = {
   typeUrl: "/cosmos.epochs.v1beta1.EventEpochStart",
+  aminoType: "cosmos-sdk/EventEpochStart",
+  is(o: any): o is EventEpochStart {
+    return (
+      o &&
+      (o.$typeUrl === EventEpochStart.typeUrl ||
+        (typeof o.epochNumber === "bigint" && typeof o.epochStartTime === "bigint"))
+    );
+  },
+  isAmino(o: any): o is EventEpochStartAmino {
+    return (
+      o &&
+      (o.$typeUrl === EventEpochStart.typeUrl ||
+        (typeof o.epoch_number === "bigint" && typeof o.epoch_start_time === "bigint"))
+    );
+  },
   encode(message: EventEpochStart, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.epochNumber !== BigInt(0)) {
       writer.uint32(8).int64(message.epochNumber);
@@ -227,3 +252,5 @@ export const EventEpochStart = {
     };
   },
 };
+GlobalDecoderRegistry.register(EventEpochStart.typeUrl, EventEpochStart);
+GlobalDecoderRegistry.registerAminoProtoMapping(EventEpochStart.aminoType, EventEpochStart.typeUrl);

@@ -25,3 +25,5 @@ node_modules/
 # macOS
 .DS_Store
 /json-safe.*
+/registry.*
+/types.*

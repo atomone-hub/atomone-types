@@ -2,9 +2,10 @@
 import { Order, orderFromJSON, orderToJSON } from "../../../../core/channel/v1/channel";
 import { InterchainAccountPacketData, InterchainAccountPacketDataAmino } from "../../v1/packet";
 import { Params, ParamsAmino } from "./controller";
-import { BinaryReader, BinaryWriter } from "../../../../../binary";
 import { isSet } from "../../../../../helpers";
+import { BinaryReader, BinaryWriter } from "../../../../../binary";
 import { JsonSafe } from "../../../../../json-safe";
+import { GlobalDecoderRegistry } from "../../../../../registry";
 import { TxRpc } from "../../../../../types";
 export const protobufPackage = "ibc.applications.interchain_accounts.controller.v1";
 /** MsgRegisterInterchainAccount defines the payload for Msg/RegisterAccount */
@@ -177,6 +178,27 @@ function createBaseMsgRegisterInterchainAccount(): MsgRegisterInterchainAccount 
 }
 export const MsgRegisterInterchainAccount = {
   typeUrl: "/ibc.applications.interchain_accounts.controller.v1.MsgRegisterInterchainAccount",
+  aminoType: "cosmos-sdk/MsgRegisterInterchainAccount",
+  is(o: any): o is MsgRegisterInterchainAccount {
+    return (
+      o &&
+      (o.$typeUrl === MsgRegisterInterchainAccount.typeUrl ||
+        (typeof o.owner === "string" &&
+          typeof o.connectionId === "string" &&
+          typeof o.version === "string" &&
+          isSet(o.ordering)))
+    );
+  },
+  isAmino(o: any): o is MsgRegisterInterchainAccountAmino {
+    return (
+      o &&
+      (o.$typeUrl === MsgRegisterInterchainAccount.typeUrl ||
+        (typeof o.owner === "string" &&
+          typeof o.connection_id === "string" &&
+          typeof o.version === "string" &&
+          isSet(o.ordering)))
+    );
+  },
   encode(message: MsgRegisterInterchainAccount, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.owner !== "") {
       writer.uint32(10).string(message.owner);
@@ -288,6 +310,11 @@ export const MsgRegisterInterchainAccount = {
     };
   },
 };
+GlobalDecoderRegistry.register(MsgRegisterInterchainAccount.typeUrl, MsgRegisterInterchainAccount);
+GlobalDecoderRegistry.registerAminoProtoMapping(
+  MsgRegisterInterchainAccount.aminoType,
+  MsgRegisterInterchainAccount.typeUrl,
+);
 function createBaseMsgRegisterInterchainAccountResponse(): MsgRegisterInterchainAccountResponse {
   return {
     channelId: "",
@@ -296,6 +323,21 @@ function createBaseMsgRegisterInterchainAccountResponse(): MsgRegisterInterchain
 }
 export const MsgRegisterInterchainAccountResponse = {
   typeUrl: "/ibc.applications.interchain_accounts.controller.v1.MsgRegisterInterchainAccountResponse",
+  aminoType: "cosmos-sdk/MsgRegisterInterchainAccountResponse",
+  is(o: any): o is MsgRegisterInterchainAccountResponse {
+    return (
+      o &&
+      (o.$typeUrl === MsgRegisterInterchainAccountResponse.typeUrl ||
+        (typeof o.channelId === "string" && typeof o.portId === "string"))
+    );
+  },
+  isAmino(o: any): o is MsgRegisterInterchainAccountResponseAmino {
+    return (
+      o &&
+      (o.$typeUrl === MsgRegisterInterchainAccountResponse.typeUrl ||
+        (typeof o.channel_id === "string" && typeof o.port_id === "string"))
+    );
+  },
   encode(
     message: MsgRegisterInterchainAccountResponse,
     writer: BinaryWriter = BinaryWriter.create(),
@@ -384,6 +426,14 @@ export const MsgRegisterInterchainAccountResponse = {
     };
   },
 };
+GlobalDecoderRegistry.register(
+  MsgRegisterInterchainAccountResponse.typeUrl,
+  MsgRegisterInterchainAccountResponse,
+);
+GlobalDecoderRegistry.registerAminoProtoMapping(
+  MsgRegisterInterchainAccountResponse.aminoType,
+  MsgRegisterInterchainAccountResponse.typeUrl,
+);
 function createBaseMsgSendTx(): MsgSendTx {
   return {
     owner: "",
@@ -394,6 +444,27 @@ function createBaseMsgSendTx(): MsgSendTx {
 }
 export const MsgSendTx = {
   typeUrl: "/ibc.applications.interchain_accounts.controller.v1.MsgSendTx",
+  aminoType: "cosmos-sdk/MsgSendTx",
+  is(o: any): o is MsgSendTx {
+    return (
+      o &&
+      (o.$typeUrl === MsgSendTx.typeUrl ||
+        (typeof o.owner === "string" &&
+          typeof o.connectionId === "string" &&
+          InterchainAccountPacketData.is(o.packetData) &&
+          typeof o.relativeTimeout === "bigint"))
+    );
+  },
+  isAmino(o: any): o is MsgSendTxAmino {
+    return (
+      o &&
+      (o.$typeUrl === MsgSendTx.typeUrl ||
+        (typeof o.owner === "string" &&
+          typeof o.connection_id === "string" &&
+          InterchainAccountPacketData.isAmino(o.packet_data) &&
+          typeof o.relative_timeout === "bigint"))
+    );
+  },
   encode(message: MsgSendTx, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.owner !== "") {
       writer.uint32(10).string(message.owner);
@@ -516,6 +587,8 @@ export const MsgSendTx = {
     };
   },
 };
+GlobalDecoderRegistry.register(MsgSendTx.typeUrl, MsgSendTx);
+GlobalDecoderRegistry.registerAminoProtoMapping(MsgSendTx.aminoType, MsgSendTx.typeUrl);
 function createBaseMsgSendTxResponse(): MsgSendTxResponse {
   return {
     sequence: BigInt(0),
@@ -523,6 +596,13 @@ function createBaseMsgSendTxResponse(): MsgSendTxResponse {
 }
 export const MsgSendTxResponse = {
   typeUrl: "/ibc.applications.interchain_accounts.controller.v1.MsgSendTxResponse",
+  aminoType: "cosmos-sdk/MsgSendTxResponse",
+  is(o: any): o is MsgSendTxResponse {
+    return o && (o.$typeUrl === MsgSendTxResponse.typeUrl || typeof o.sequence === "bigint");
+  },
+  isAmino(o: any): o is MsgSendTxResponseAmino {
+    return o && (o.$typeUrl === MsgSendTxResponse.typeUrl || typeof o.sequence === "bigint");
+  },
   encode(message: MsgSendTxResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.sequence !== BigInt(0)) {
       writer.uint32(8).uint64(message.sequence);
@@ -597,6 +677,8 @@ export const MsgSendTxResponse = {
     };
   },
 };
+GlobalDecoderRegistry.register(MsgSendTxResponse.typeUrl, MsgSendTxResponse);
+GlobalDecoderRegistry.registerAminoProtoMapping(MsgSendTxResponse.aminoType, MsgSendTxResponse.typeUrl);
 function createBaseMsgUpdateParams(): MsgUpdateParams {
   return {
     signer: "",
@@ -605,6 +687,18 @@ function createBaseMsgUpdateParams(): MsgUpdateParams {
 }
 export const MsgUpdateParams = {
   typeUrl: "/ibc.applications.interchain_accounts.controller.v1.MsgUpdateParams",
+  aminoType: "cosmos-sdk/MsgUpdateParams",
+  is(o: any): o is MsgUpdateParams {
+    return (
+      o && (o.$typeUrl === MsgUpdateParams.typeUrl || (typeof o.signer === "string" && Params.is(o.params)))
+    );
+  },
+  isAmino(o: any): o is MsgUpdateParamsAmino {
+    return (
+      o &&
+      (o.$typeUrl === MsgUpdateParams.typeUrl || (typeof o.signer === "string" && Params.isAmino(o.params)))
+    );
+  },
   encode(message: MsgUpdateParams, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.signer !== "") {
       writer.uint32(10).string(message.signer);
@@ -692,11 +786,20 @@ export const MsgUpdateParams = {
     };
   },
 };
+GlobalDecoderRegistry.register(MsgUpdateParams.typeUrl, MsgUpdateParams);
+GlobalDecoderRegistry.registerAminoProtoMapping(MsgUpdateParams.aminoType, MsgUpdateParams.typeUrl);
 function createBaseMsgUpdateParamsResponse(): MsgUpdateParamsResponse {
   return {};
 }
 export const MsgUpdateParamsResponse = {
   typeUrl: "/ibc.applications.interchain_accounts.controller.v1.MsgUpdateParamsResponse",
+  aminoType: "cosmos-sdk/MsgUpdateParamsResponse",
+  is(o: any): o is MsgUpdateParamsResponse {
+    return o && o.$typeUrl === MsgUpdateParamsResponse.typeUrl;
+  },
+  isAmino(o: any): o is MsgUpdateParamsResponseAmino {
+    return o && o.$typeUrl === MsgUpdateParamsResponse.typeUrl;
+  },
   encode(_: MsgUpdateParamsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
@@ -756,6 +859,11 @@ export const MsgUpdateParamsResponse = {
     };
   },
 };
+GlobalDecoderRegistry.register(MsgUpdateParamsResponse.typeUrl, MsgUpdateParamsResponse);
+GlobalDecoderRegistry.registerAminoProtoMapping(
+  MsgUpdateParamsResponse.aminoType,
+  MsgUpdateParamsResponse.typeUrl,
+);
 /** Msg defines the 27-interchain-accounts/controller Msg service. */
 export interface Msg {
   /** RegisterInterchainAccount defines a rpc handler for MsgRegisterInterchainAccount. */

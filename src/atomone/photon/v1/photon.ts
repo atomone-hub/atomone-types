@@ -2,6 +2,7 @@
 import { BinaryReader, BinaryWriter } from "../../../binary";
 import { isSet } from "../../../helpers";
 import { JsonSafe } from "../../../json-safe";
+import { GlobalDecoderRegistry } from "../../../registry";
 export const protobufPackage = "atomone.photon.v1";
 /** Params defines the parameters for the x/photon module. */
 export interface Params {
@@ -48,6 +49,24 @@ function createBaseParams(): Params {
 }
 export const Params = {
   typeUrl: "/atomone.photon.v1.Params",
+  is(o: any): o is Params {
+    return (
+      o &&
+      (o.$typeUrl === Params.typeUrl ||
+        (typeof o.mintDisabled === "boolean" &&
+          Array.isArray(o.txFeeExceptions) &&
+          (!o.txFeeExceptions.length || typeof o.txFeeExceptions[0] === "string")))
+    );
+  },
+  isAmino(o: any): o is ParamsAmino {
+    return (
+      o &&
+      (o.$typeUrl === Params.typeUrl ||
+        (typeof o.mint_disabled === "boolean" &&
+          Array.isArray(o.tx_fee_exceptions) &&
+          (!o.tx_fee_exceptions.length || typeof o.tx_fee_exceptions[0] === "string")))
+    );
+  },
   encode(message: Params, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.mintDisabled === true) {
       writer.uint32(8).bool(message.mintDisabled);
@@ -134,3 +153,4 @@ export const Params = {
     };
   },
 };
+GlobalDecoderRegistry.register(Params.typeUrl, Params);

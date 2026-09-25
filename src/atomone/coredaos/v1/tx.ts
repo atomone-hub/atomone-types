@@ -3,6 +3,7 @@ import { Params, ParamsAmino } from "./coredaos";
 import { BinaryReader, BinaryWriter } from "../../../binary";
 import { isSet } from "../../../helpers";
 import { JsonSafe } from "../../../json-safe";
+import { GlobalDecoderRegistry } from "../../../registry";
 import { TxRpc } from "../../../types";
 export const protobufPackage = "atomone.coredaos.v1";
 /** MsgAnnotateProposal defines a message for annotating a proposal. */
@@ -297,6 +298,27 @@ function createBaseMsgAnnotateProposal(): MsgAnnotateProposal {
 }
 export const MsgAnnotateProposal = {
   typeUrl: "/atomone.coredaos.v1.MsgAnnotateProposal",
+  aminoType: "atomone/coredaos/v1/MsgAnnotateProposal",
+  is(o: any): o is MsgAnnotateProposal {
+    return (
+      o &&
+      (o.$typeUrl === MsgAnnotateProposal.typeUrl ||
+        (typeof o.annotator === "string" &&
+          typeof o.proposalId === "bigint" &&
+          typeof o.annotation === "string" &&
+          typeof o.overwrite === "boolean"))
+    );
+  },
+  isAmino(o: any): o is MsgAnnotateProposalAmino {
+    return (
+      o &&
+      (o.$typeUrl === MsgAnnotateProposal.typeUrl ||
+        (typeof o.annotator === "string" &&
+          typeof o.proposal_id === "bigint" &&
+          typeof o.annotation === "string" &&
+          typeof o.overwrite === "boolean"))
+    );
+  },
   encode(message: MsgAnnotateProposal, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.annotator !== "") {
       writer.uint32(10).string(message.annotator);
@@ -410,11 +432,19 @@ export const MsgAnnotateProposal = {
     };
   },
 };
+GlobalDecoderRegistry.register(MsgAnnotateProposal.typeUrl, MsgAnnotateProposal);
+GlobalDecoderRegistry.registerAminoProtoMapping(MsgAnnotateProposal.aminoType, MsgAnnotateProposal.typeUrl);
 function createBaseMsgAnnotateProposalResponse(): MsgAnnotateProposalResponse {
   return {};
 }
 export const MsgAnnotateProposalResponse = {
   typeUrl: "/atomone.coredaos.v1.MsgAnnotateProposalResponse",
+  is(o: any): o is MsgAnnotateProposalResponse {
+    return o && o.$typeUrl === MsgAnnotateProposalResponse.typeUrl;
+  },
+  isAmino(o: any): o is MsgAnnotateProposalResponseAmino {
+    return o && o.$typeUrl === MsgAnnotateProposalResponse.typeUrl;
+  },
   encode(_: MsgAnnotateProposalResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
@@ -468,6 +498,7 @@ export const MsgAnnotateProposalResponse = {
     };
   },
 };
+GlobalDecoderRegistry.register(MsgAnnotateProposalResponse.typeUrl, MsgAnnotateProposalResponse);
 function createBaseMsgEndorseProposal(): MsgEndorseProposal {
   return {
     endorser: "",
@@ -476,6 +507,21 @@ function createBaseMsgEndorseProposal(): MsgEndorseProposal {
 }
 export const MsgEndorseProposal = {
   typeUrl: "/atomone.coredaos.v1.MsgEndorseProposal",
+  aminoType: "atomone/coredaos/v1/MsgEndorseProposal",
+  is(o: any): o is MsgEndorseProposal {
+    return (
+      o &&
+      (o.$typeUrl === MsgEndorseProposal.typeUrl ||
+        (typeof o.endorser === "string" && typeof o.proposalId === "bigint"))
+    );
+  },
+  isAmino(o: any): o is MsgEndorseProposalAmino {
+    return (
+      o &&
+      (o.$typeUrl === MsgEndorseProposal.typeUrl ||
+        (typeof o.endorser === "string" && typeof o.proposal_id === "bigint"))
+    );
+  },
   encode(message: MsgEndorseProposal, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.endorser !== "") {
       writer.uint32(10).string(message.endorser);
@@ -563,11 +609,19 @@ export const MsgEndorseProposal = {
     };
   },
 };
+GlobalDecoderRegistry.register(MsgEndorseProposal.typeUrl, MsgEndorseProposal);
+GlobalDecoderRegistry.registerAminoProtoMapping(MsgEndorseProposal.aminoType, MsgEndorseProposal.typeUrl);
 function createBaseMsgEndorseProposalResponse(): MsgEndorseProposalResponse {
   return {};
 }
 export const MsgEndorseProposalResponse = {
   typeUrl: "/atomone.coredaos.v1.MsgEndorseProposalResponse",
+  is(o: any): o is MsgEndorseProposalResponse {
+    return o && o.$typeUrl === MsgEndorseProposalResponse.typeUrl;
+  },
+  isAmino(o: any): o is MsgEndorseProposalResponseAmino {
+    return o && o.$typeUrl === MsgEndorseProposalResponse.typeUrl;
+  },
   encode(_: MsgEndorseProposalResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
@@ -621,6 +675,7 @@ export const MsgEndorseProposalResponse = {
     };
   },
 };
+GlobalDecoderRegistry.register(MsgEndorseProposalResponse.typeUrl, MsgEndorseProposalResponse);
 function createBaseMsgExtendVotingPeriod(): MsgExtendVotingPeriod {
   return {
     extender: "",
@@ -629,6 +684,21 @@ function createBaseMsgExtendVotingPeriod(): MsgExtendVotingPeriod {
 }
 export const MsgExtendVotingPeriod = {
   typeUrl: "/atomone.coredaos.v1.MsgExtendVotingPeriod",
+  aminoType: "atomone/coredaos/v1/MsgExtendVotingPeriod",
+  is(o: any): o is MsgExtendVotingPeriod {
+    return (
+      o &&
+      (o.$typeUrl === MsgExtendVotingPeriod.typeUrl ||
+        (typeof o.extender === "string" && typeof o.proposalId === "bigint"))
+    );
+  },
+  isAmino(o: any): o is MsgExtendVotingPeriodAmino {
+    return (
+      o &&
+      (o.$typeUrl === MsgExtendVotingPeriod.typeUrl ||
+        (typeof o.extender === "string" && typeof o.proposal_id === "bigint"))
+    );
+  },
   encode(message: MsgExtendVotingPeriod, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.extender !== "") {
       writer.uint32(10).string(message.extender);
@@ -716,11 +786,22 @@ export const MsgExtendVotingPeriod = {
     };
   },
 };
+GlobalDecoderRegistry.register(MsgExtendVotingPeriod.typeUrl, MsgExtendVotingPeriod);
+GlobalDecoderRegistry.registerAminoProtoMapping(
+  MsgExtendVotingPeriod.aminoType,
+  MsgExtendVotingPeriod.typeUrl,
+);
 function createBaseMsgExtendVotingPeriodResponse(): MsgExtendVotingPeriodResponse {
   return {};
 }
 export const MsgExtendVotingPeriodResponse = {
   typeUrl: "/atomone.coredaos.v1.MsgExtendVotingPeriodResponse",
+  is(o: any): o is MsgExtendVotingPeriodResponse {
+    return o && o.$typeUrl === MsgExtendVotingPeriodResponse.typeUrl;
+  },
+  isAmino(o: any): o is MsgExtendVotingPeriodResponseAmino {
+    return o && o.$typeUrl === MsgExtendVotingPeriodResponse.typeUrl;
+  },
   encode(_: MsgExtendVotingPeriodResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
@@ -774,6 +855,7 @@ export const MsgExtendVotingPeriodResponse = {
     };
   },
 };
+GlobalDecoderRegistry.register(MsgExtendVotingPeriodResponse.typeUrl, MsgExtendVotingPeriodResponse);
 function createBaseMsgVetoProposal(): MsgVetoProposal {
   return {
     vetoer: "",
@@ -783,6 +865,25 @@ function createBaseMsgVetoProposal(): MsgVetoProposal {
 }
 export const MsgVetoProposal = {
   typeUrl: "/atomone.coredaos.v1.MsgVetoProposal",
+  aminoType: "atomone/coredaos/v1/MsgVetoProposal",
+  is(o: any): o is MsgVetoProposal {
+    return (
+      o &&
+      (o.$typeUrl === MsgVetoProposal.typeUrl ||
+        (typeof o.vetoer === "string" &&
+          typeof o.proposalId === "bigint" &&
+          typeof o.burnDeposit === "boolean"))
+    );
+  },
+  isAmino(o: any): o is MsgVetoProposalAmino {
+    return (
+      o &&
+      (o.$typeUrl === MsgVetoProposal.typeUrl ||
+        (typeof o.vetoer === "string" &&
+          typeof o.proposal_id === "bigint" &&
+          typeof o.burn_deposit === "boolean"))
+    );
+  },
   encode(message: MsgVetoProposal, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.vetoer !== "") {
       writer.uint32(10).string(message.vetoer);
@@ -883,11 +984,19 @@ export const MsgVetoProposal = {
     };
   },
 };
+GlobalDecoderRegistry.register(MsgVetoProposal.typeUrl, MsgVetoProposal);
+GlobalDecoderRegistry.registerAminoProtoMapping(MsgVetoProposal.aminoType, MsgVetoProposal.typeUrl);
 function createBaseMsgVetoProposalResponse(): MsgVetoProposalResponse {
   return {};
 }
 export const MsgVetoProposalResponse = {
   typeUrl: "/atomone.coredaos.v1.MsgVetoProposalResponse",
+  is(o: any): o is MsgVetoProposalResponse {
+    return o && o.$typeUrl === MsgVetoProposalResponse.typeUrl;
+  },
+  isAmino(o: any): o is MsgVetoProposalResponseAmino {
+    return o && o.$typeUrl === MsgVetoProposalResponse.typeUrl;
+  },
   encode(_: MsgVetoProposalResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
@@ -941,6 +1050,7 @@ export const MsgVetoProposalResponse = {
     };
   },
 };
+GlobalDecoderRegistry.register(MsgVetoProposalResponse.typeUrl, MsgVetoProposalResponse);
 function createBaseMsgUpdateParams(): MsgUpdateParams {
   return {
     authority: "",
@@ -949,6 +1059,19 @@ function createBaseMsgUpdateParams(): MsgUpdateParams {
 }
 export const MsgUpdateParams = {
   typeUrl: "/atomone.coredaos.v1.MsgUpdateParams",
+  is(o: any): o is MsgUpdateParams {
+    return (
+      o &&
+      (o.$typeUrl === MsgUpdateParams.typeUrl || (typeof o.authority === "string" && Params.is(o.params)))
+    );
+  },
+  isAmino(o: any): o is MsgUpdateParamsAmino {
+    return (
+      o &&
+      (o.$typeUrl === MsgUpdateParams.typeUrl ||
+        (typeof o.authority === "string" && Params.isAmino(o.params)))
+    );
+  },
   encode(message: MsgUpdateParams, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.authority !== "") {
       writer.uint32(10).string(message.authority);
@@ -1030,11 +1153,18 @@ export const MsgUpdateParams = {
     };
   },
 };
+GlobalDecoderRegistry.register(MsgUpdateParams.typeUrl, MsgUpdateParams);
 function createBaseMsgUpdateParamsResponse(): MsgUpdateParamsResponse {
   return {};
 }
 export const MsgUpdateParamsResponse = {
   typeUrl: "/atomone.coredaos.v1.MsgUpdateParamsResponse",
+  is(o: any): o is MsgUpdateParamsResponse {
+    return o && o.$typeUrl === MsgUpdateParamsResponse.typeUrl;
+  },
+  isAmino(o: any): o is MsgUpdateParamsResponseAmino {
+    return o && o.$typeUrl === MsgUpdateParamsResponse.typeUrl;
+  },
   encode(_: MsgUpdateParamsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
@@ -1088,6 +1218,7 @@ export const MsgUpdateParamsResponse = {
     };
   },
 };
+GlobalDecoderRegistry.register(MsgUpdateParamsResponse.typeUrl, MsgUpdateParamsResponse);
 /** Msg defines the Msg service. */
 export interface Msg {
   /**

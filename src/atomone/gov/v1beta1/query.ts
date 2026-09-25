@@ -27,6 +27,7 @@ import {
 import { BinaryReader, BinaryWriter } from "../../../binary";
 import { isSet } from "../../../helpers";
 import { JsonSafe } from "../../../json-safe";
+import { GlobalDecoderRegistry } from "../../../registry";
 import { TxRpc } from "../../../types";
 export const protobufPackage = "atomone.gov.v1beta1";
 /** QueryProposalRequest is the request type for the Query/Proposal RPC method. */
@@ -512,6 +513,12 @@ function createBaseQueryProposalRequest(): QueryProposalRequest {
 }
 export const QueryProposalRequest = {
   typeUrl: "/atomone.gov.v1beta1.QueryProposalRequest",
+  is(o: any): o is QueryProposalRequest {
+    return o && (o.$typeUrl === QueryProposalRequest.typeUrl || typeof o.proposalId === "bigint");
+  },
+  isAmino(o: any): o is QueryProposalRequestAmino {
+    return o && (o.$typeUrl === QueryProposalRequest.typeUrl || typeof o.proposal_id === "bigint");
+  },
   encode(message: QueryProposalRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.proposalId !== BigInt(0)) {
       writer.uint32(8).uint64(message.proposalId);
@@ -580,6 +587,7 @@ export const QueryProposalRequest = {
     };
   },
 };
+GlobalDecoderRegistry.register(QueryProposalRequest.typeUrl, QueryProposalRequest);
 function createBaseQueryProposalResponse(): QueryProposalResponse {
   return {
     proposal: Proposal.fromPartial({}),
@@ -587,6 +595,12 @@ function createBaseQueryProposalResponse(): QueryProposalResponse {
 }
 export const QueryProposalResponse = {
   typeUrl: "/atomone.gov.v1beta1.QueryProposalResponse",
+  is(o: any): o is QueryProposalResponse {
+    return o && (o.$typeUrl === QueryProposalResponse.typeUrl || Proposal.is(o.proposal));
+  },
+  isAmino(o: any): o is QueryProposalResponseAmino {
+    return o && (o.$typeUrl === QueryProposalResponse.typeUrl || Proposal.isAmino(o.proposal));
+  },
   encode(message: QueryProposalResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.proposal !== undefined) {
       Proposal.encode(message.proposal, writer.uint32(10).fork()).ldelim();
@@ -658,6 +672,7 @@ export const QueryProposalResponse = {
     };
   },
 };
+GlobalDecoderRegistry.register(QueryProposalResponse.typeUrl, QueryProposalResponse);
 function createBaseQueryProposalsRequest(): QueryProposalsRequest {
   return {
     proposalStatus: 0,
@@ -668,6 +683,20 @@ function createBaseQueryProposalsRequest(): QueryProposalsRequest {
 }
 export const QueryProposalsRequest = {
   typeUrl: "/atomone.gov.v1beta1.QueryProposalsRequest",
+  is(o: any): o is QueryProposalsRequest {
+    return (
+      o &&
+      (o.$typeUrl === QueryProposalsRequest.typeUrl ||
+        (isSet(o.proposalStatus) && typeof o.voter === "string" && typeof o.depositor === "string"))
+    );
+  },
+  isAmino(o: any): o is QueryProposalsRequestAmino {
+    return (
+      o &&
+      (o.$typeUrl === QueryProposalsRequest.typeUrl ||
+        (isSet(o.proposal_status) && typeof o.voter === "string" && typeof o.depositor === "string"))
+    );
+  },
   encode(message: QueryProposalsRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.proposalStatus !== 0) {
       writer.uint32(8).int32(message.proposalStatus);
@@ -777,6 +806,7 @@ export const QueryProposalsRequest = {
     };
   },
 };
+GlobalDecoderRegistry.register(QueryProposalsRequest.typeUrl, QueryProposalsRequest);
 function createBaseQueryProposalsResponse(): QueryProposalsResponse {
   return {
     proposals: [],
@@ -785,6 +815,20 @@ function createBaseQueryProposalsResponse(): QueryProposalsResponse {
 }
 export const QueryProposalsResponse = {
   typeUrl: "/atomone.gov.v1beta1.QueryProposalsResponse",
+  is(o: any): o is QueryProposalsResponse {
+    return (
+      o &&
+      (o.$typeUrl === QueryProposalsResponse.typeUrl ||
+        (Array.isArray(o.proposals) && (!o.proposals.length || Proposal.is(o.proposals[0]))))
+    );
+  },
+  isAmino(o: any): o is QueryProposalsResponseAmino {
+    return (
+      o &&
+      (o.$typeUrl === QueryProposalsResponse.typeUrl ||
+        (Array.isArray(o.proposals) && (!o.proposals.length || Proposal.isAmino(o.proposals[0]))))
+    );
+  },
   encode(message: QueryProposalsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.proposals) {
       Proposal.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -874,6 +918,7 @@ export const QueryProposalsResponse = {
     };
   },
 };
+GlobalDecoderRegistry.register(QueryProposalsResponse.typeUrl, QueryProposalsResponse);
 function createBaseQueryVoteRequest(): QueryVoteRequest {
   return {
     proposalId: BigInt(0),
@@ -882,6 +927,20 @@ function createBaseQueryVoteRequest(): QueryVoteRequest {
 }
 export const QueryVoteRequest = {
   typeUrl: "/atomone.gov.v1beta1.QueryVoteRequest",
+  is(o: any): o is QueryVoteRequest {
+    return (
+      o &&
+      (o.$typeUrl === QueryVoteRequest.typeUrl ||
+        (typeof o.proposalId === "bigint" && typeof o.voter === "string"))
+    );
+  },
+  isAmino(o: any): o is QueryVoteRequestAmino {
+    return (
+      o &&
+      (o.$typeUrl === QueryVoteRequest.typeUrl ||
+        (typeof o.proposal_id === "bigint" && typeof o.voter === "string"))
+    );
+  },
   encode(message: QueryVoteRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.proposalId !== BigInt(0)) {
       writer.uint32(8).uint64(message.proposalId);
@@ -963,6 +1022,7 @@ export const QueryVoteRequest = {
     };
   },
 };
+GlobalDecoderRegistry.register(QueryVoteRequest.typeUrl, QueryVoteRequest);
 function createBaseQueryVoteResponse(): QueryVoteResponse {
   return {
     vote: Vote.fromPartial({}),
@@ -970,6 +1030,12 @@ function createBaseQueryVoteResponse(): QueryVoteResponse {
 }
 export const QueryVoteResponse = {
   typeUrl: "/atomone.gov.v1beta1.QueryVoteResponse",
+  is(o: any): o is QueryVoteResponse {
+    return o && (o.$typeUrl === QueryVoteResponse.typeUrl || Vote.is(o.vote));
+  },
+  isAmino(o: any): o is QueryVoteResponseAmino {
+    return o && (o.$typeUrl === QueryVoteResponse.typeUrl || Vote.isAmino(o.vote));
+  },
   encode(message: QueryVoteResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.vote !== undefined) {
       Vote.encode(message.vote, writer.uint32(10).fork()).ldelim();
@@ -1038,6 +1104,7 @@ export const QueryVoteResponse = {
     };
   },
 };
+GlobalDecoderRegistry.register(QueryVoteResponse.typeUrl, QueryVoteResponse);
 function createBaseQueryVotesRequest(): QueryVotesRequest {
   return {
     proposalId: BigInt(0),
@@ -1046,6 +1113,12 @@ function createBaseQueryVotesRequest(): QueryVotesRequest {
 }
 export const QueryVotesRequest = {
   typeUrl: "/atomone.gov.v1beta1.QueryVotesRequest",
+  is(o: any): o is QueryVotesRequest {
+    return o && (o.$typeUrl === QueryVotesRequest.typeUrl || typeof o.proposalId === "bigint");
+  },
+  isAmino(o: any): o is QueryVotesRequestAmino {
+    return o && (o.$typeUrl === QueryVotesRequest.typeUrl || typeof o.proposal_id === "bigint");
+  },
   encode(message: QueryVotesRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.proposalId !== BigInt(0)) {
       writer.uint32(8).uint64(message.proposalId);
@@ -1130,6 +1203,7 @@ export const QueryVotesRequest = {
     };
   },
 };
+GlobalDecoderRegistry.register(QueryVotesRequest.typeUrl, QueryVotesRequest);
 function createBaseQueryVotesResponse(): QueryVotesResponse {
   return {
     votes: [],
@@ -1138,6 +1212,20 @@ function createBaseQueryVotesResponse(): QueryVotesResponse {
 }
 export const QueryVotesResponse = {
   typeUrl: "/atomone.gov.v1beta1.QueryVotesResponse",
+  is(o: any): o is QueryVotesResponse {
+    return (
+      o &&
+      (o.$typeUrl === QueryVotesResponse.typeUrl ||
+        (Array.isArray(o.votes) && (!o.votes.length || Vote.is(o.votes[0]))))
+    );
+  },
+  isAmino(o: any): o is QueryVotesResponseAmino {
+    return (
+      o &&
+      (o.$typeUrl === QueryVotesResponse.typeUrl ||
+        (Array.isArray(o.votes) && (!o.votes.length || Vote.isAmino(o.votes[0]))))
+    );
+  },
   encode(message: QueryVotesResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.votes) {
       Vote.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -1226,6 +1314,7 @@ export const QueryVotesResponse = {
     };
   },
 };
+GlobalDecoderRegistry.register(QueryVotesResponse.typeUrl, QueryVotesResponse);
 function createBaseQueryParamsRequest(): QueryParamsRequest {
   return {
     paramsType: "",
@@ -1233,6 +1322,12 @@ function createBaseQueryParamsRequest(): QueryParamsRequest {
 }
 export const QueryParamsRequest = {
   typeUrl: "/atomone.gov.v1beta1.QueryParamsRequest",
+  is(o: any): o is QueryParamsRequest {
+    return o && (o.$typeUrl === QueryParamsRequest.typeUrl || typeof o.paramsType === "string");
+  },
+  isAmino(o: any): o is QueryParamsRequestAmino {
+    return o && (o.$typeUrl === QueryParamsRequest.typeUrl || typeof o.params_type === "string");
+  },
   encode(message: QueryParamsRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.paramsType !== "") {
       writer.uint32(10).string(message.paramsType);
@@ -1299,6 +1394,7 @@ export const QueryParamsRequest = {
     };
   },
 };
+GlobalDecoderRegistry.register(QueryParamsRequest.typeUrl, QueryParamsRequest);
 function createBaseQueryParamsResponse(): QueryParamsResponse {
   return {
     votingParams: VotingParams.fromPartial({}),
@@ -1308,6 +1404,24 @@ function createBaseQueryParamsResponse(): QueryParamsResponse {
 }
 export const QueryParamsResponse = {
   typeUrl: "/atomone.gov.v1beta1.QueryParamsResponse",
+  is(o: any): o is QueryParamsResponse {
+    return (
+      o &&
+      (o.$typeUrl === QueryParamsResponse.typeUrl ||
+        (VotingParams.is(o.votingParams) &&
+          DepositParams.is(o.depositParams) &&
+          TallyParams.is(o.tallyParams)))
+    );
+  },
+  isAmino(o: any): o is QueryParamsResponseAmino {
+    return (
+      o &&
+      (o.$typeUrl === QueryParamsResponse.typeUrl ||
+        (VotingParams.isAmino(o.voting_params) &&
+          DepositParams.isAmino(o.deposit_params) &&
+          TallyParams.isAmino(o.tally_params)))
+    );
+  },
   encode(message: QueryParamsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.votingParams !== undefined) {
       VotingParams.encode(message.votingParams, writer.uint32(10).fork()).ldelim();
@@ -1415,6 +1529,7 @@ export const QueryParamsResponse = {
     };
   },
 };
+GlobalDecoderRegistry.register(QueryParamsResponse.typeUrl, QueryParamsResponse);
 function createBaseQueryDepositRequest(): QueryDepositRequest {
   return {
     proposalId: BigInt(0),
@@ -1423,6 +1538,20 @@ function createBaseQueryDepositRequest(): QueryDepositRequest {
 }
 export const QueryDepositRequest = {
   typeUrl: "/atomone.gov.v1beta1.QueryDepositRequest",
+  is(o: any): o is QueryDepositRequest {
+    return (
+      o &&
+      (o.$typeUrl === QueryDepositRequest.typeUrl ||
+        (typeof o.proposalId === "bigint" && typeof o.depositor === "string"))
+    );
+  },
+  isAmino(o: any): o is QueryDepositRequestAmino {
+    return (
+      o &&
+      (o.$typeUrl === QueryDepositRequest.typeUrl ||
+        (typeof o.proposal_id === "bigint" && typeof o.depositor === "string"))
+    );
+  },
   encode(message: QueryDepositRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.proposalId !== BigInt(0)) {
       writer.uint32(8).uint64(message.proposalId);
@@ -1504,6 +1633,7 @@ export const QueryDepositRequest = {
     };
   },
 };
+GlobalDecoderRegistry.register(QueryDepositRequest.typeUrl, QueryDepositRequest);
 function createBaseQueryDepositResponse(): QueryDepositResponse {
   return {
     deposit: Deposit.fromPartial({}),
@@ -1511,6 +1641,12 @@ function createBaseQueryDepositResponse(): QueryDepositResponse {
 }
 export const QueryDepositResponse = {
   typeUrl: "/atomone.gov.v1beta1.QueryDepositResponse",
+  is(o: any): o is QueryDepositResponse {
+    return o && (o.$typeUrl === QueryDepositResponse.typeUrl || Deposit.is(o.deposit));
+  },
+  isAmino(o: any): o is QueryDepositResponseAmino {
+    return o && (o.$typeUrl === QueryDepositResponse.typeUrl || Deposit.isAmino(o.deposit));
+  },
   encode(message: QueryDepositResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.deposit !== undefined) {
       Deposit.encode(message.deposit, writer.uint32(10).fork()).ldelim();
@@ -1582,6 +1718,7 @@ export const QueryDepositResponse = {
     };
   },
 };
+GlobalDecoderRegistry.register(QueryDepositResponse.typeUrl, QueryDepositResponse);
 function createBaseQueryDepositsRequest(): QueryDepositsRequest {
   return {
     proposalId: BigInt(0),
@@ -1590,6 +1727,12 @@ function createBaseQueryDepositsRequest(): QueryDepositsRequest {
 }
 export const QueryDepositsRequest = {
   typeUrl: "/atomone.gov.v1beta1.QueryDepositsRequest",
+  is(o: any): o is QueryDepositsRequest {
+    return o && (o.$typeUrl === QueryDepositsRequest.typeUrl || typeof o.proposalId === "bigint");
+  },
+  isAmino(o: any): o is QueryDepositsRequestAmino {
+    return o && (o.$typeUrl === QueryDepositsRequest.typeUrl || typeof o.proposal_id === "bigint");
+  },
   encode(message: QueryDepositsRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.proposalId !== BigInt(0)) {
       writer.uint32(8).uint64(message.proposalId);
@@ -1674,6 +1817,7 @@ export const QueryDepositsRequest = {
     };
   },
 };
+GlobalDecoderRegistry.register(QueryDepositsRequest.typeUrl, QueryDepositsRequest);
 function createBaseQueryDepositsResponse(): QueryDepositsResponse {
   return {
     deposits: [],
@@ -1682,6 +1826,20 @@ function createBaseQueryDepositsResponse(): QueryDepositsResponse {
 }
 export const QueryDepositsResponse = {
   typeUrl: "/atomone.gov.v1beta1.QueryDepositsResponse",
+  is(o: any): o is QueryDepositsResponse {
+    return (
+      o &&
+      (o.$typeUrl === QueryDepositsResponse.typeUrl ||
+        (Array.isArray(o.deposits) && (!o.deposits.length || Deposit.is(o.deposits[0]))))
+    );
+  },
+  isAmino(o: any): o is QueryDepositsResponseAmino {
+    return (
+      o &&
+      (o.$typeUrl === QueryDepositsResponse.typeUrl ||
+        (Array.isArray(o.deposits) && (!o.deposits.length || Deposit.isAmino(o.deposits[0]))))
+    );
+  },
   encode(message: QueryDepositsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.deposits) {
       Deposit.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -1770,6 +1928,7 @@ export const QueryDepositsResponse = {
     };
   },
 };
+GlobalDecoderRegistry.register(QueryDepositsResponse.typeUrl, QueryDepositsResponse);
 function createBaseQueryTallyResultRequest(): QueryTallyResultRequest {
   return {
     proposalId: BigInt(0),
@@ -1777,6 +1936,12 @@ function createBaseQueryTallyResultRequest(): QueryTallyResultRequest {
 }
 export const QueryTallyResultRequest = {
   typeUrl: "/atomone.gov.v1beta1.QueryTallyResultRequest",
+  is(o: any): o is QueryTallyResultRequest {
+    return o && (o.$typeUrl === QueryTallyResultRequest.typeUrl || typeof o.proposalId === "bigint");
+  },
+  isAmino(o: any): o is QueryTallyResultRequestAmino {
+    return o && (o.$typeUrl === QueryTallyResultRequest.typeUrl || typeof o.proposal_id === "bigint");
+  },
   encode(message: QueryTallyResultRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.proposalId !== BigInt(0)) {
       writer.uint32(8).uint64(message.proposalId);
@@ -1845,6 +2010,7 @@ export const QueryTallyResultRequest = {
     };
   },
 };
+GlobalDecoderRegistry.register(QueryTallyResultRequest.typeUrl, QueryTallyResultRequest);
 function createBaseQueryTallyResultResponse(): QueryTallyResultResponse {
   return {
     tally: TallyResult.fromPartial({}),
@@ -1852,6 +2018,12 @@ function createBaseQueryTallyResultResponse(): QueryTallyResultResponse {
 }
 export const QueryTallyResultResponse = {
   typeUrl: "/atomone.gov.v1beta1.QueryTallyResultResponse",
+  is(o: any): o is QueryTallyResultResponse {
+    return o && (o.$typeUrl === QueryTallyResultResponse.typeUrl || TallyResult.is(o.tally));
+  },
+  isAmino(o: any): o is QueryTallyResultResponseAmino {
+    return o && (o.$typeUrl === QueryTallyResultResponse.typeUrl || TallyResult.isAmino(o.tally));
+  },
   encode(message: QueryTallyResultResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.tally !== undefined) {
       TallyResult.encode(message.tally, writer.uint32(10).fork()).ldelim();
@@ -1923,6 +2095,7 @@ export const QueryTallyResultResponse = {
     };
   },
 };
+GlobalDecoderRegistry.register(QueryTallyResultResponse.typeUrl, QueryTallyResultResponse);
 /** Query defines the gRPC querier service for gov module */
 export interface Query {
   /** Proposal queries proposal details based on ProposalID. */

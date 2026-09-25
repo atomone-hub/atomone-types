@@ -14,6 +14,7 @@ import {
   TallyParamsAmino,
 } from "./gov";
 import { BinaryReader, BinaryWriter } from "../../../binary";
+import { GlobalDecoderRegistry } from "../../../registry";
 import { isSet } from "../../../helpers";
 import { JsonSafe } from "../../../json-safe";
 export const protobufPackage = "atomone.gov.v1beta1";
@@ -91,6 +92,38 @@ function createBaseGenesisState(): GenesisState {
 }
 export const GenesisState = {
   typeUrl: "/atomone.gov.v1beta1.GenesisState",
+  is(o: any): o is GenesisState {
+    return (
+      o &&
+      (o.$typeUrl === GenesisState.typeUrl ||
+        (typeof o.startingProposalId === "bigint" &&
+          Array.isArray(o.deposits) &&
+          (!o.deposits.length || Deposit.is(o.deposits[0])) &&
+          Array.isArray(o.votes) &&
+          (!o.votes.length || Vote.is(o.votes[0])) &&
+          Array.isArray(o.proposals) &&
+          (!o.proposals.length || Proposal.is(o.proposals[0])) &&
+          DepositParams.is(o.depositParams) &&
+          VotingParams.is(o.votingParams) &&
+          TallyParams.is(o.tallyParams)))
+    );
+  },
+  isAmino(o: any): o is GenesisStateAmino {
+    return (
+      o &&
+      (o.$typeUrl === GenesisState.typeUrl ||
+        (typeof o.starting_proposal_id === "bigint" &&
+          Array.isArray(o.deposits) &&
+          (!o.deposits.length || Deposit.isAmino(o.deposits[0])) &&
+          Array.isArray(o.votes) &&
+          (!o.votes.length || Vote.isAmino(o.votes[0])) &&
+          Array.isArray(o.proposals) &&
+          (!o.proposals.length || Proposal.isAmino(o.proposals[0])) &&
+          DepositParams.isAmino(o.deposit_params) &&
+          VotingParams.isAmino(o.voting_params) &&
+          TallyParams.isAmino(o.tally_params)))
+    );
+  },
   encode(message: GenesisState, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.startingProposalId !== BigInt(0)) {
       writer.uint32(8).uint64(message.startingProposalId);
@@ -274,3 +307,4 @@ export const GenesisState = {
     };
   },
 };
+GlobalDecoderRegistry.register(GenesisState.typeUrl, GenesisState);

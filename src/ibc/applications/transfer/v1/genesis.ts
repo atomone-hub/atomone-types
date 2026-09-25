@@ -3,6 +3,7 @@ import { Denom, DenomAmino } from "./token";
 import { Params, ParamsAmino } from "./transfer";
 import { Coin, CoinAmino } from "../../../../cosmos/base/v1beta1/coin";
 import { BinaryReader, BinaryWriter } from "../../../../binary";
+import { GlobalDecoderRegistry } from "../../../../registry";
 import { isSet } from "../../../../helpers";
 import { JsonSafe } from "../../../../json-safe";
 export const protobufPackage = "ibc.applications.transfer.v1";
@@ -51,6 +52,31 @@ function createBaseGenesisState(): GenesisState {
 }
 export const GenesisState = {
   typeUrl: "/ibc.applications.transfer.v1.GenesisState",
+  aminoType: "cosmos-sdk/GenesisState",
+  is(o: any): o is GenesisState {
+    return (
+      o &&
+      (o.$typeUrl === GenesisState.typeUrl ||
+        (typeof o.portId === "string" &&
+          Array.isArray(o.denoms) &&
+          (!o.denoms.length || Denom.is(o.denoms[0])) &&
+          Params.is(o.params) &&
+          Array.isArray(o.totalEscrowed) &&
+          (!o.totalEscrowed.length || Coin.is(o.totalEscrowed[0]))))
+    );
+  },
+  isAmino(o: any): o is GenesisStateAmino {
+    return (
+      o &&
+      (o.$typeUrl === GenesisState.typeUrl ||
+        (typeof o.port_id === "string" &&
+          Array.isArray(o.denoms) &&
+          (!o.denoms.length || Denom.isAmino(o.denoms[0])) &&
+          Params.isAmino(o.params) &&
+          Array.isArray(o.total_escrowed) &&
+          (!o.total_escrowed.length || Coin.isAmino(o.total_escrowed[0]))))
+    );
+  },
   encode(message: GenesisState, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.portId !== "") {
       writer.uint32(10).string(message.portId);
@@ -177,3 +203,5 @@ export const GenesisState = {
     };
   },
 };
+GlobalDecoderRegistry.register(GenesisState.typeUrl, GenesisState);
+GlobalDecoderRegistry.registerAminoProtoMapping(GenesisState.aminoType, GenesisState.typeUrl);

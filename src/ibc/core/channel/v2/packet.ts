@@ -2,6 +2,7 @@
 import { BinaryReader, BinaryWriter } from "../../../../binary";
 import { isSet, bytesFromBase64, base64FromBytes } from "../../../../helpers";
 import { JsonSafe } from "../../../../json-safe";
+import { GlobalDecoderRegistry } from "../../../../registry";
 export const protobufPackage = "ibc.core.channel.v2";
 /** PacketStatus specifies the status of a RecvPacketResult. */
 export enum PacketStatus {
@@ -230,6 +231,31 @@ function createBasePacket(): Packet {
 }
 export const Packet = {
   typeUrl: "/ibc.core.channel.v2.Packet",
+  aminoType: "cosmos-sdk/Packet",
+  is(o: any): o is Packet {
+    return (
+      o &&
+      (o.$typeUrl === Packet.typeUrl ||
+        (typeof o.sequence === "bigint" &&
+          typeof o.sourceClient === "string" &&
+          typeof o.destinationClient === "string" &&
+          typeof o.timeoutTimestamp === "bigint" &&
+          Array.isArray(o.payloads) &&
+          (!o.payloads.length || Payload.is(o.payloads[0]))))
+    );
+  },
+  isAmino(o: any): o is PacketAmino {
+    return (
+      o &&
+      (o.$typeUrl === Packet.typeUrl ||
+        (typeof o.sequence === "bigint" &&
+          typeof o.source_client === "string" &&
+          typeof o.destination_client === "string" &&
+          typeof o.timeout_timestamp === "bigint" &&
+          Array.isArray(o.payloads) &&
+          (!o.payloads.length || Payload.isAmino(o.payloads[0]))))
+    );
+  },
   encode(message: Packet, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.sequence !== BigInt(0)) {
       writer.uint32(8).uint64(message.sequence);
@@ -366,6 +392,8 @@ export const Packet = {
     };
   },
 };
+GlobalDecoderRegistry.register(Packet.typeUrl, Packet);
+GlobalDecoderRegistry.registerAminoProtoMapping(Packet.aminoType, Packet.typeUrl);
 function createBasePayload(): Payload {
   return {
     sourcePort: "",
@@ -377,6 +405,29 @@ function createBasePayload(): Payload {
 }
 export const Payload = {
   typeUrl: "/ibc.core.channel.v2.Payload",
+  aminoType: "cosmos-sdk/Payload",
+  is(o: any): o is Payload {
+    return (
+      o &&
+      (o.$typeUrl === Payload.typeUrl ||
+        (typeof o.sourcePort === "string" &&
+          typeof o.destinationPort === "string" &&
+          typeof o.version === "string" &&
+          typeof o.encoding === "string" &&
+          (o.value instanceof Uint8Array || typeof o.value === "string")))
+    );
+  },
+  isAmino(o: any): o is PayloadAmino {
+    return (
+      o &&
+      (o.$typeUrl === Payload.typeUrl ||
+        (typeof o.source_port === "string" &&
+          typeof o.destination_port === "string" &&
+          typeof o.version === "string" &&
+          typeof o.encoding === "string" &&
+          (o.value instanceof Uint8Array || typeof o.value === "string")))
+    );
+  },
   encode(message: Payload, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.sourcePort !== "") {
       writer.uint32(10).string(message.sourcePort);
@@ -502,6 +553,8 @@ export const Payload = {
     };
   },
 };
+GlobalDecoderRegistry.register(Payload.typeUrl, Payload);
+GlobalDecoderRegistry.registerAminoProtoMapping(Payload.aminoType, Payload.typeUrl);
 function createBaseAcknowledgement(): Acknowledgement {
   return {
     appAcknowledgements: [],
@@ -509,6 +562,27 @@ function createBaseAcknowledgement(): Acknowledgement {
 }
 export const Acknowledgement = {
   typeUrl: "/ibc.core.channel.v2.Acknowledgement",
+  aminoType: "cosmos-sdk/Acknowledgement",
+  is(o: any): o is Acknowledgement {
+    return (
+      o &&
+      (o.$typeUrl === Acknowledgement.typeUrl ||
+        (Array.isArray(o.appAcknowledgements) &&
+          (!o.appAcknowledgements.length ||
+            o.appAcknowledgements[0] instanceof Uint8Array ||
+            typeof o.appAcknowledgements[0] === "string")))
+    );
+  },
+  isAmino(o: any): o is AcknowledgementAmino {
+    return (
+      o &&
+      (o.$typeUrl === Acknowledgement.typeUrl ||
+        (Array.isArray(o.app_acknowledgements) &&
+          (!o.app_acknowledgements.length ||
+            o.app_acknowledgements[0] instanceof Uint8Array ||
+            typeof o.app_acknowledgements[0] === "string")))
+    );
+  },
   encode(message: Acknowledgement, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.appAcknowledgements) {
       writer.uint32(10).bytes(v!);
@@ -590,6 +664,8 @@ export const Acknowledgement = {
     };
   },
 };
+GlobalDecoderRegistry.register(Acknowledgement.typeUrl, Acknowledgement);
+GlobalDecoderRegistry.registerAminoProtoMapping(Acknowledgement.aminoType, Acknowledgement.typeUrl);
 function createBaseRecvPacketResult(): RecvPacketResult {
   return {
     status: 0,
@@ -598,6 +674,23 @@ function createBaseRecvPacketResult(): RecvPacketResult {
 }
 export const RecvPacketResult = {
   typeUrl: "/ibc.core.channel.v2.RecvPacketResult",
+  aminoType: "cosmos-sdk/RecvPacketResult",
+  is(o: any): o is RecvPacketResult {
+    return (
+      o &&
+      (o.$typeUrl === RecvPacketResult.typeUrl ||
+        (isSet(o.status) &&
+          (o.acknowledgement instanceof Uint8Array || typeof o.acknowledgement === "string")))
+    );
+  },
+  isAmino(o: any): o is RecvPacketResultAmino {
+    return (
+      o &&
+      (o.$typeUrl === RecvPacketResult.typeUrl ||
+        (isSet(o.status) &&
+          (o.acknowledgement instanceof Uint8Array || typeof o.acknowledgement === "string")))
+    );
+  },
   encode(message: RecvPacketResult, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.status !== 0) {
       writer.uint32(8).int32(message.status);
@@ -686,3 +779,5 @@ export const RecvPacketResult = {
     };
   },
 };
+GlobalDecoderRegistry.register(RecvPacketResult.typeUrl, RecvPacketResult);
+GlobalDecoderRegistry.registerAminoProtoMapping(RecvPacketResult.aminoType, RecvPacketResult.typeUrl);

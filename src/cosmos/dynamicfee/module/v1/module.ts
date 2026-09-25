@@ -2,6 +2,7 @@
 import { BinaryReader, BinaryWriter } from "../../../../binary";
 import { isSet } from "../../../../helpers";
 import { JsonSafe } from "../../../../json-safe";
+import { GlobalDecoderRegistry } from "../../../../registry";
 export const protobufPackage = "cosmos.dynamicfee.module.v1";
 /** Module is the config object of the builder module. */
 export interface Module {
@@ -39,6 +40,13 @@ function createBaseModule(): Module {
 }
 export const Module = {
   typeUrl: "/cosmos.dynamicfee.module.v1.Module",
+  aminoType: "cosmos-sdk/Module",
+  is(o: any): o is Module {
+    return o && (o.$typeUrl === Module.typeUrl || typeof o.authority === "string");
+  },
+  isAmino(o: any): o is ModuleAmino {
+    return o && (o.$typeUrl === Module.typeUrl || typeof o.authority === "string");
+  },
   encode(message: Module, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.authority !== "") {
       writer.uint32(10).string(message.authority);
@@ -111,3 +119,5 @@ export const Module = {
     };
   },
 };
+GlobalDecoderRegistry.register(Module.typeUrl, Module);
+GlobalDecoderRegistry.registerAminoProtoMapping(Module.aminoType, Module.typeUrl);

@@ -1,6 +1,7 @@
 /* eslint-disable */
 import { Params, ParamsAmino, ValidatorSigningInfo, ValidatorSigningInfoAmino } from "./slashing";
 import { BinaryReader, BinaryWriter } from "../../../binary";
+import { GlobalDecoderRegistry } from "../../../registry";
 import { isSet } from "../../../helpers";
 import { JsonSafe } from "../../../json-safe";
 export const protobufPackage = "cosmos.slashing.v1beta1";
@@ -155,6 +156,29 @@ function createBaseGenesisState(): GenesisState {
 }
 export const GenesisState = {
   typeUrl: "/cosmos.slashing.v1beta1.GenesisState",
+  aminoType: "cosmos-sdk/GenesisState",
+  is(o: any): o is GenesisState {
+    return (
+      o &&
+      (o.$typeUrl === GenesisState.typeUrl ||
+        (Params.is(o.params) &&
+          Array.isArray(o.signingInfos) &&
+          (!o.signingInfos.length || SigningInfo.is(o.signingInfos[0])) &&
+          Array.isArray(o.missedBlocks) &&
+          (!o.missedBlocks.length || ValidatorMissedBlocks.is(o.missedBlocks[0]))))
+    );
+  },
+  isAmino(o: any): o is GenesisStateAmino {
+    return (
+      o &&
+      (o.$typeUrl === GenesisState.typeUrl ||
+        (Params.isAmino(o.params) &&
+          Array.isArray(o.signing_infos) &&
+          (!o.signing_infos.length || SigningInfo.isAmino(o.signing_infos[0])) &&
+          Array.isArray(o.missed_blocks) &&
+          (!o.missed_blocks.length || ValidatorMissedBlocks.isAmino(o.missed_blocks[0]))))
+    );
+  },
   encode(message: GenesisState, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.params !== undefined) {
       Params.encode(message.params, writer.uint32(10).fork()).ldelim();
@@ -269,6 +293,8 @@ export const GenesisState = {
     };
   },
 };
+GlobalDecoderRegistry.register(GenesisState.typeUrl, GenesisState);
+GlobalDecoderRegistry.registerAminoProtoMapping(GenesisState.aminoType, GenesisState.typeUrl);
 function createBaseSigningInfo(): SigningInfo {
   return {
     address: "",
@@ -277,6 +303,21 @@ function createBaseSigningInfo(): SigningInfo {
 }
 export const SigningInfo = {
   typeUrl: "/cosmos.slashing.v1beta1.SigningInfo",
+  aminoType: "cosmos-sdk/SigningInfo",
+  is(o: any): o is SigningInfo {
+    return (
+      o &&
+      (o.$typeUrl === SigningInfo.typeUrl ||
+        (typeof o.address === "string" && ValidatorSigningInfo.is(o.validatorSigningInfo)))
+    );
+  },
+  isAmino(o: any): o is SigningInfoAmino {
+    return (
+      o &&
+      (o.$typeUrl === SigningInfo.typeUrl ||
+        (typeof o.address === "string" && ValidatorSigningInfo.isAmino(o.validator_signing_info)))
+    );
+  },
   encode(message: SigningInfo, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.address !== "") {
       writer.uint32(10).string(message.address);
@@ -370,6 +411,8 @@ export const SigningInfo = {
     };
   },
 };
+GlobalDecoderRegistry.register(SigningInfo.typeUrl, SigningInfo);
+GlobalDecoderRegistry.registerAminoProtoMapping(SigningInfo.aminoType, SigningInfo.typeUrl);
 function createBaseValidatorMissedBlocks(): ValidatorMissedBlocks {
   return {
     address: "",
@@ -378,6 +421,25 @@ function createBaseValidatorMissedBlocks(): ValidatorMissedBlocks {
 }
 export const ValidatorMissedBlocks = {
   typeUrl: "/cosmos.slashing.v1beta1.ValidatorMissedBlocks",
+  aminoType: "cosmos-sdk/ValidatorMissedBlocks",
+  is(o: any): o is ValidatorMissedBlocks {
+    return (
+      o &&
+      (o.$typeUrl === ValidatorMissedBlocks.typeUrl ||
+        (typeof o.address === "string" &&
+          Array.isArray(o.missedBlocks) &&
+          (!o.missedBlocks.length || MissedBlock.is(o.missedBlocks[0]))))
+    );
+  },
+  isAmino(o: any): o is ValidatorMissedBlocksAmino {
+    return (
+      o &&
+      (o.$typeUrl === ValidatorMissedBlocks.typeUrl ||
+        (typeof o.address === "string" &&
+          Array.isArray(o.missed_blocks) &&
+          (!o.missed_blocks.length || MissedBlock.isAmino(o.missed_blocks[0]))))
+    );
+  },
   encode(message: ValidatorMissedBlocks, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.address !== "") {
       writer.uint32(10).string(message.address);
@@ -470,6 +532,11 @@ export const ValidatorMissedBlocks = {
     };
   },
 };
+GlobalDecoderRegistry.register(ValidatorMissedBlocks.typeUrl, ValidatorMissedBlocks);
+GlobalDecoderRegistry.registerAminoProtoMapping(
+  ValidatorMissedBlocks.aminoType,
+  ValidatorMissedBlocks.typeUrl,
+);
 function createBaseMissedBlock(): MissedBlock {
   return {
     index: BigInt(0),
@@ -478,6 +545,19 @@ function createBaseMissedBlock(): MissedBlock {
 }
 export const MissedBlock = {
   typeUrl: "/cosmos.slashing.v1beta1.MissedBlock",
+  aminoType: "cosmos-sdk/MissedBlock",
+  is(o: any): o is MissedBlock {
+    return (
+      o &&
+      (o.$typeUrl === MissedBlock.typeUrl || (typeof o.index === "bigint" && typeof o.missed === "boolean"))
+    );
+  },
+  isAmino(o: any): o is MissedBlockAmino {
+    return (
+      o &&
+      (o.$typeUrl === MissedBlock.typeUrl || (typeof o.index === "bigint" && typeof o.missed === "boolean"))
+    );
+  },
   encode(message: MissedBlock, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.index !== BigInt(0)) {
       writer.uint32(8).int64(message.index);
@@ -565,3 +645,5 @@ export const MissedBlock = {
     };
   },
 };
+GlobalDecoderRegistry.register(MissedBlock.typeUrl, MissedBlock);
+GlobalDecoderRegistry.registerAminoProtoMapping(MissedBlock.aminoType, MissedBlock.typeUrl);

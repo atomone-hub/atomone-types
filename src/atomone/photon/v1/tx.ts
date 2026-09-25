@@ -2,6 +2,7 @@
 import { Coin, CoinAmino } from "../../../cosmos/base/v1beta1/coin";
 import { Params, ParamsAmino } from "./photon";
 import { BinaryReader, BinaryWriter } from "../../../binary";
+import { GlobalDecoderRegistry } from "../../../registry";
 import { isSet } from "../../../helpers";
 import { JsonSafe } from "../../../json-safe";
 import { TxRpc } from "../../../types";
@@ -130,6 +131,18 @@ function createBaseMsgMintPhoton(): MsgMintPhoton {
 }
 export const MsgMintPhoton = {
   typeUrl: "/atomone.photon.v1.MsgMintPhoton",
+  aminoType: "atomone/photon/v1/MsgMintPhoton",
+  is(o: any): o is MsgMintPhoton {
+    return (
+      o && (o.$typeUrl === MsgMintPhoton.typeUrl || (typeof o.toAddress === "string" && Coin.is(o.amount)))
+    );
+  },
+  isAmino(o: any): o is MsgMintPhotonAmino {
+    return (
+      o &&
+      (o.$typeUrl === MsgMintPhoton.typeUrl || (typeof o.to_address === "string" && Coin.isAmino(o.amount)))
+    );
+  },
   encode(message: MsgMintPhoton, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.toAddress !== "") {
       writer.uint32(10).string(message.toAddress);
@@ -217,6 +230,8 @@ export const MsgMintPhoton = {
     };
   },
 };
+GlobalDecoderRegistry.register(MsgMintPhoton.typeUrl, MsgMintPhoton);
+GlobalDecoderRegistry.registerAminoProtoMapping(MsgMintPhoton.aminoType, MsgMintPhoton.typeUrl);
 function createBaseMsgMintPhotonResponse(): MsgMintPhotonResponse {
   return {
     minted: undefined,
@@ -225,6 +240,20 @@ function createBaseMsgMintPhotonResponse(): MsgMintPhotonResponse {
 }
 export const MsgMintPhotonResponse = {
   typeUrl: "/atomone.photon.v1.MsgMintPhotonResponse",
+  is(o: any): o is MsgMintPhotonResponse {
+    return (
+      o &&
+      (o.$typeUrl === MsgMintPhotonResponse.typeUrl ||
+        (Coin.is(o.minted) && typeof o.conversionRate === "string"))
+    );
+  },
+  isAmino(o: any): o is MsgMintPhotonResponseAmino {
+    return (
+      o &&
+      (o.$typeUrl === MsgMintPhotonResponse.typeUrl ||
+        (Coin.isAmino(o.minted) && typeof o.conversion_rate === "string"))
+    );
+  },
   encode(message: MsgMintPhotonResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.minted !== undefined) {
       Coin.encode(message.minted, writer.uint32(10).fork()).ldelim();
@@ -306,6 +335,7 @@ export const MsgMintPhotonResponse = {
     };
   },
 };
+GlobalDecoderRegistry.register(MsgMintPhotonResponse.typeUrl, MsgMintPhotonResponse);
 function createBaseMsgUpdateParams(): MsgUpdateParams {
   return {
     authority: "",
@@ -314,6 +344,20 @@ function createBaseMsgUpdateParams(): MsgUpdateParams {
 }
 export const MsgUpdateParams = {
   typeUrl: "/atomone.photon.v1.MsgUpdateParams",
+  aminoType: "atomone/x/photon/v1/MsgUpdateParams",
+  is(o: any): o is MsgUpdateParams {
+    return (
+      o &&
+      (o.$typeUrl === MsgUpdateParams.typeUrl || (typeof o.authority === "string" && Params.is(o.params)))
+    );
+  },
+  isAmino(o: any): o is MsgUpdateParamsAmino {
+    return (
+      o &&
+      (o.$typeUrl === MsgUpdateParams.typeUrl ||
+        (typeof o.authority === "string" && Params.isAmino(o.params)))
+    );
+  },
   encode(message: MsgUpdateParams, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.authority !== "") {
       writer.uint32(10).string(message.authority);
@@ -401,11 +445,19 @@ export const MsgUpdateParams = {
     };
   },
 };
+GlobalDecoderRegistry.register(MsgUpdateParams.typeUrl, MsgUpdateParams);
+GlobalDecoderRegistry.registerAminoProtoMapping(MsgUpdateParams.aminoType, MsgUpdateParams.typeUrl);
 function createBaseMsgUpdateParamsResponse(): MsgUpdateParamsResponse {
   return {};
 }
 export const MsgUpdateParamsResponse = {
   typeUrl: "/atomone.photon.v1.MsgUpdateParamsResponse",
+  is(o: any): o is MsgUpdateParamsResponse {
+    return o && o.$typeUrl === MsgUpdateParamsResponse.typeUrl;
+  },
+  isAmino(o: any): o is MsgUpdateParamsResponseAmino {
+    return o && o.$typeUrl === MsgUpdateParamsResponse.typeUrl;
+  },
   encode(_: MsgUpdateParamsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
@@ -459,6 +511,7 @@ export const MsgUpdateParamsResponse = {
     };
   },
 };
+GlobalDecoderRegistry.register(MsgUpdateParamsResponse.typeUrl, MsgUpdateParamsResponse);
 /** Msg defines the Msg service. */
 export interface Msg {
   /** MintPhoton defines a method to burn atone and mint photons. */

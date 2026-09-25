@@ -2,6 +2,7 @@
 import { Coin, CoinAmino } from "../../../../cosmos/base/v1beta1/coin";
 import { Height, HeightAmino, Params, ParamsAmino } from "../../../core/client/v1/client";
 import { BinaryReader, BinaryWriter } from "../../../../binary";
+import { GlobalDecoderRegistry } from "../../../../registry";
 import { isSet } from "../../../../helpers";
 import { JsonSafe } from "../../../../json-safe";
 import { TxRpc } from "../../../../types";
@@ -195,6 +196,37 @@ function createBaseMsgTransfer(): MsgTransfer {
 }
 export const MsgTransfer = {
   typeUrl: "/ibc.applications.transfer.v1.MsgTransfer",
+  aminoType: "cosmos-sdk/MsgTransfer",
+  is(o: any): o is MsgTransfer {
+    return (
+      o &&
+      (o.$typeUrl === MsgTransfer.typeUrl ||
+        (typeof o.sourcePort === "string" &&
+          typeof o.sourceChannel === "string" &&
+          Coin.is(o.token) &&
+          typeof o.sender === "string" &&
+          typeof o.receiver === "string" &&
+          Height.is(o.timeoutHeight) &&
+          typeof o.timeoutTimestamp === "bigint" &&
+          typeof o.memo === "string" &&
+          typeof o.encoding === "string"))
+    );
+  },
+  isAmino(o: any): o is MsgTransferAmino {
+    return (
+      o &&
+      (o.$typeUrl === MsgTransfer.typeUrl ||
+        (typeof o.source_port === "string" &&
+          typeof o.source_channel === "string" &&
+          Coin.isAmino(o.token) &&
+          typeof o.sender === "string" &&
+          typeof o.receiver === "string" &&
+          Height.isAmino(o.timeout_height) &&
+          typeof o.timeout_timestamp === "bigint" &&
+          typeof o.memo === "string" &&
+          typeof o.encoding === "string"))
+    );
+  },
   encode(message: MsgTransfer, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.sourcePort !== "") {
       writer.uint32(10).string(message.sourcePort);
@@ -380,6 +412,8 @@ export const MsgTransfer = {
     };
   },
 };
+GlobalDecoderRegistry.register(MsgTransfer.typeUrl, MsgTransfer);
+GlobalDecoderRegistry.registerAminoProtoMapping(MsgTransfer.aminoType, MsgTransfer.typeUrl);
 function createBaseMsgTransferResponse(): MsgTransferResponse {
   return {
     sequence: BigInt(0),
@@ -387,6 +421,13 @@ function createBaseMsgTransferResponse(): MsgTransferResponse {
 }
 export const MsgTransferResponse = {
   typeUrl: "/ibc.applications.transfer.v1.MsgTransferResponse",
+  aminoType: "cosmos-sdk/MsgTransferResponse",
+  is(o: any): o is MsgTransferResponse {
+    return o && (o.$typeUrl === MsgTransferResponse.typeUrl || typeof o.sequence === "bigint");
+  },
+  isAmino(o: any): o is MsgTransferResponseAmino {
+    return o && (o.$typeUrl === MsgTransferResponse.typeUrl || typeof o.sequence === "bigint");
+  },
   encode(message: MsgTransferResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.sequence !== BigInt(0)) {
       writer.uint32(8).uint64(message.sequence);
@@ -461,6 +502,8 @@ export const MsgTransferResponse = {
     };
   },
 };
+GlobalDecoderRegistry.register(MsgTransferResponse.typeUrl, MsgTransferResponse);
+GlobalDecoderRegistry.registerAminoProtoMapping(MsgTransferResponse.aminoType, MsgTransferResponse.typeUrl);
 function createBaseMsgUpdateParams(): MsgUpdateParams {
   return {
     signer: "",
@@ -469,6 +512,18 @@ function createBaseMsgUpdateParams(): MsgUpdateParams {
 }
 export const MsgUpdateParams = {
   typeUrl: "/ibc.applications.transfer.v1.MsgUpdateParams",
+  aminoType: "cosmos-sdk/MsgUpdateParams",
+  is(o: any): o is MsgUpdateParams {
+    return (
+      o && (o.$typeUrl === MsgUpdateParams.typeUrl || (typeof o.signer === "string" && Params.is(o.params)))
+    );
+  },
+  isAmino(o: any): o is MsgUpdateParamsAmino {
+    return (
+      o &&
+      (o.$typeUrl === MsgUpdateParams.typeUrl || (typeof o.signer === "string" && Params.isAmino(o.params)))
+    );
+  },
   encode(message: MsgUpdateParams, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.signer !== "") {
       writer.uint32(10).string(message.signer);
@@ -556,11 +611,20 @@ export const MsgUpdateParams = {
     };
   },
 };
+GlobalDecoderRegistry.register(MsgUpdateParams.typeUrl, MsgUpdateParams);
+GlobalDecoderRegistry.registerAminoProtoMapping(MsgUpdateParams.aminoType, MsgUpdateParams.typeUrl);
 function createBaseMsgUpdateParamsResponse(): MsgUpdateParamsResponse {
   return {};
 }
 export const MsgUpdateParamsResponse = {
   typeUrl: "/ibc.applications.transfer.v1.MsgUpdateParamsResponse",
+  aminoType: "cosmos-sdk/MsgUpdateParamsResponse",
+  is(o: any): o is MsgUpdateParamsResponse {
+    return o && o.$typeUrl === MsgUpdateParamsResponse.typeUrl;
+  },
+  isAmino(o: any): o is MsgUpdateParamsResponseAmino {
+    return o && o.$typeUrl === MsgUpdateParamsResponse.typeUrl;
+  },
   encode(_: MsgUpdateParamsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
@@ -620,6 +684,11 @@ export const MsgUpdateParamsResponse = {
     };
   },
 };
+GlobalDecoderRegistry.register(MsgUpdateParamsResponse.typeUrl, MsgUpdateParamsResponse);
+GlobalDecoderRegistry.registerAminoProtoMapping(
+  MsgUpdateParamsResponse.aminoType,
+  MsgUpdateParamsResponse.typeUrl,
+);
 /** Msg defines the ibc/transfer Msg service. */
 export interface Msg {
   /** Transfer defines a rpc handler method for MsgTransfer. */

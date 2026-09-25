@@ -1,6 +1,7 @@
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "../../../../binary";
 import { JsonSafe } from "../../../../json-safe";
+import { GlobalDecoderRegistry } from "../../../../registry";
 export const protobufPackage = "cosmos.authz.module.v1";
 /** Module is the config object of the authz module. */
 export interface Module {}
@@ -24,6 +25,13 @@ function createBaseModule(): Module {
 }
 export const Module = {
   typeUrl: "/cosmos.authz.module.v1.Module",
+  aminoType: "cosmos-sdk/Module",
+  is(o: any): o is Module {
+    return o && o.$typeUrl === Module.typeUrl;
+  },
+  isAmino(o: any): o is ModuleAmino {
+    return o && o.$typeUrl === Module.typeUrl;
+  },
   encode(_: Module, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
@@ -83,3 +91,5 @@ export const Module = {
     };
   },
 };
+GlobalDecoderRegistry.register(Module.typeUrl, Module);
+GlobalDecoderRegistry.registerAminoProtoMapping(Module.aminoType, Module.typeUrl);

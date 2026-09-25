@@ -2,6 +2,7 @@
 import { BinaryReader, BinaryWriter } from "../../../../binary";
 import { isSet } from "../../../../helpers";
 import { JsonSafe } from "../../../../json-safe";
+import { GlobalDecoderRegistry } from "../../../../registry";
 export const protobufPackage = "cosmos.bank.module.v1";
 /** Module is the config object of the bank module. */
 export interface Module {
@@ -63,6 +64,31 @@ function createBaseModule(): Module {
 }
 export const Module = {
   typeUrl: "/cosmos.bank.module.v1.Module",
+  aminoType: "cosmos-sdk/Module",
+  is(o: any): o is Module {
+    return (
+      o &&
+      (o.$typeUrl === Module.typeUrl ||
+        (Array.isArray(o.blockedModuleAccountsOverride) &&
+          (!o.blockedModuleAccountsOverride.length ||
+            typeof o.blockedModuleAccountsOverride[0] === "string") &&
+          typeof o.authority === "string" &&
+          Array.isArray(o.restrictionsOrder) &&
+          (!o.restrictionsOrder.length || typeof o.restrictionsOrder[0] === "string")))
+    );
+  },
+  isAmino(o: any): o is ModuleAmino {
+    return (
+      o &&
+      (o.$typeUrl === Module.typeUrl ||
+        (Array.isArray(o.blocked_module_accounts_override) &&
+          (!o.blocked_module_accounts_override.length ||
+            typeof o.blocked_module_accounts_override[0] === "string") &&
+          typeof o.authority === "string" &&
+          Array.isArray(o.restrictions_order) &&
+          (!o.restrictions_order.length || typeof o.restrictions_order[0] === "string")))
+    );
+  },
   encode(message: Module, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.blockedModuleAccountsOverride) {
       writer.uint32(10).string(v!);
@@ -175,3 +201,5 @@ export const Module = {
     };
   },
 };
+GlobalDecoderRegistry.register(Module.typeUrl, Module);
+GlobalDecoderRegistry.registerAminoProtoMapping(Module.aminoType, Module.typeUrl);

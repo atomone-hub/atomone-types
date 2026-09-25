@@ -1,6 +1,7 @@
 /* eslint-disable */
 import { Params, ParamsAmino } from "./params";
 import { BinaryReader, BinaryWriter } from "../../../binary";
+import { GlobalDecoderRegistry } from "../../../registry";
 import { isSet } from "../../../helpers";
 import { JsonSafe } from "../../../json-safe";
 export const protobufPackage = "cosmos.dynamicfee.v1";
@@ -108,6 +109,13 @@ function createBaseGenesisState(): GenesisState {
 }
 export const GenesisState = {
   typeUrl: "/cosmos.dynamicfee.v1.GenesisState",
+  aminoType: "cosmos-sdk/GenesisState",
+  is(o: any): o is GenesisState {
+    return o && (o.$typeUrl === GenesisState.typeUrl || (Params.is(o.params) && State.is(o.state)));
+  },
+  isAmino(o: any): o is GenesisStateAmino {
+    return o && (o.$typeUrl === GenesisState.typeUrl || (Params.isAmino(o.params) && State.isAmino(o.state)));
+  },
   encode(message: GenesisState, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.params !== undefined) {
       Params.encode(message.params, writer.uint32(10).fork()).ldelim();
@@ -197,6 +205,8 @@ export const GenesisState = {
     };
   },
 };
+GlobalDecoderRegistry.register(GenesisState.typeUrl, GenesisState);
+GlobalDecoderRegistry.registerAminoProtoMapping(GenesisState.aminoType, GenesisState.typeUrl);
 function createBaseState(): State {
   return {
     baseGasPrice: "",
@@ -207,6 +217,29 @@ function createBaseState(): State {
 }
 export const State = {
   typeUrl: "/cosmos.dynamicfee.v1.State",
+  aminoType: "cosmos-sdk/State",
+  is(o: any): o is State {
+    return (
+      o &&
+      (o.$typeUrl === State.typeUrl ||
+        (typeof o.baseGasPrice === "string" &&
+          typeof o.learningRate === "string" &&
+          Array.isArray(o.window) &&
+          (!o.window.length || typeof o.window[0] === "bigint") &&
+          typeof o.index === "bigint"))
+    );
+  },
+  isAmino(o: any): o is StateAmino {
+    return (
+      o &&
+      (o.$typeUrl === State.typeUrl ||
+        (typeof o.base_gas_price === "string" &&
+          typeof o.learning_rate === "string" &&
+          Array.isArray(o.window) &&
+          (!o.window.length || typeof o.window[0] === "bigint") &&
+          typeof o.index === "bigint"))
+    );
+  },
   encode(message: State, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.baseGasPrice !== "") {
       writer.uint32(10).string(message.baseGasPrice);
@@ -335,3 +368,5 @@ export const State = {
     };
   },
 };
+GlobalDecoderRegistry.register(State.typeUrl, State);
+GlobalDecoderRegistry.registerAminoProtoMapping(State.aminoType, State.typeUrl);

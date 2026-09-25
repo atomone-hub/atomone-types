@@ -1,5 +1,6 @@
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "../../../../binary";
+import { GlobalDecoderRegistry } from "../../../../registry";
 import { isSet } from "../../../../helpers";
 import { JsonSafe } from "../../../../json-safe";
 export const protobufPackage = "ibc.applications.transfer.v1";
@@ -96,6 +97,13 @@ function createBaseToken(): Token {
 }
 export const Token = {
   typeUrl: "/ibc.applications.transfer.v1.Token",
+  aminoType: "cosmos-sdk/Token",
+  is(o: any): o is Token {
+    return o && (o.$typeUrl === Token.typeUrl || (Denom.is(o.denom) && typeof o.amount === "string"));
+  },
+  isAmino(o: any): o is TokenAmino {
+    return o && (o.$typeUrl === Token.typeUrl || (Denom.isAmino(o.denom) && typeof o.amount === "string"));
+  },
   encode(message: Token, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.denom !== undefined) {
       Denom.encode(message.denom, writer.uint32(10).fork()).ldelim();
@@ -183,6 +191,8 @@ export const Token = {
     };
   },
 };
+GlobalDecoderRegistry.register(Token.typeUrl, Token);
+GlobalDecoderRegistry.registerAminoProtoMapping(Token.aminoType, Token.typeUrl);
 function createBaseDenom(): Denom {
   return {
     base: "",
@@ -191,6 +201,23 @@ function createBaseDenom(): Denom {
 }
 export const Denom = {
   typeUrl: "/ibc.applications.transfer.v1.Denom",
+  aminoType: "cosmos-sdk/Denom",
+  is(o: any): o is Denom {
+    return (
+      o &&
+      (o.$typeUrl === Denom.typeUrl ||
+        (typeof o.base === "string" && Array.isArray(o.trace) && (!o.trace.length || Hop.is(o.trace[0]))))
+    );
+  },
+  isAmino(o: any): o is DenomAmino {
+    return (
+      o &&
+      (o.$typeUrl === Denom.typeUrl ||
+        (typeof o.base === "string" &&
+          Array.isArray(o.trace) &&
+          (!o.trace.length || Hop.isAmino(o.trace[0]))))
+    );
+  },
   encode(message: Denom, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.base !== "") {
       writer.uint32(10).string(message.base);
@@ -282,6 +309,8 @@ export const Denom = {
     };
   },
 };
+GlobalDecoderRegistry.register(Denom.typeUrl, Denom);
+GlobalDecoderRegistry.registerAminoProtoMapping(Denom.aminoType, Denom.typeUrl);
 function createBaseHop(): Hop {
   return {
     portId: "",
@@ -290,6 +319,17 @@ function createBaseHop(): Hop {
 }
 export const Hop = {
   typeUrl: "/ibc.applications.transfer.v1.Hop",
+  aminoType: "cosmos-sdk/Hop",
+  is(o: any): o is Hop {
+    return (
+      o && (o.$typeUrl === Hop.typeUrl || (typeof o.portId === "string" && typeof o.channelId === "string"))
+    );
+  },
+  isAmino(o: any): o is HopAmino {
+    return (
+      o && (o.$typeUrl === Hop.typeUrl || (typeof o.port_id === "string" && typeof o.channel_id === "string"))
+    );
+  },
   encode(message: Hop, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.portId !== "") {
       writer.uint32(10).string(message.portId);
@@ -375,3 +415,5 @@ export const Hop = {
     };
   },
 };
+GlobalDecoderRegistry.register(Hop.typeUrl, Hop);
+GlobalDecoderRegistry.registerAminoProtoMapping(Hop.aminoType, Hop.typeUrl);

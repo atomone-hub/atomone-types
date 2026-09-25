@@ -2,6 +2,7 @@
 import { BinaryReader, BinaryWriter } from "../../../../binary";
 import { isSet } from "../../../../helpers";
 import { JsonSafe } from "../../../../json-safe";
+import { GlobalDecoderRegistry } from "../../../../registry";
 export const protobufPackage = "ibc.applications.interchain_accounts.v1";
 /**
  * Metadata defines a set of protocol specific data encoded into the ICS27 channel version bytestring
@@ -78,6 +79,31 @@ function createBaseMetadata(): Metadata {
 }
 export const Metadata = {
   typeUrl: "/ibc.applications.interchain_accounts.v1.Metadata",
+  aminoType: "cosmos-sdk/Metadata",
+  is(o: any): o is Metadata {
+    return (
+      o &&
+      (o.$typeUrl === Metadata.typeUrl ||
+        (typeof o.version === "string" &&
+          typeof o.controllerConnectionId === "string" &&
+          typeof o.hostConnectionId === "string" &&
+          typeof o.address === "string" &&
+          typeof o.encoding === "string" &&
+          typeof o.txType === "string"))
+    );
+  },
+  isAmino(o: any): o is MetadataAmino {
+    return (
+      o &&
+      (o.$typeUrl === Metadata.typeUrl ||
+        (typeof o.version === "string" &&
+          typeof o.controller_connection_id === "string" &&
+          typeof o.host_connection_id === "string" &&
+          typeof o.address === "string" &&
+          typeof o.encoding === "string" &&
+          typeof o.tx_type === "string"))
+    );
+  },
   encode(message: Metadata, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.version !== "") {
       writer.uint32(10).string(message.version);
@@ -218,3 +244,5 @@ export const Metadata = {
     };
   },
 };
+GlobalDecoderRegistry.register(Metadata.typeUrl, Metadata);
+GlobalDecoderRegistry.registerAminoProtoMapping(Metadata.aminoType, Metadata.typeUrl);

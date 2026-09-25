@@ -3,6 +3,7 @@ import { Config, ConfigAmino } from "./config";
 import { BinaryReader, BinaryWriter } from "../../../../binary";
 import { isSet, bytesFromBase64, base64FromBytes } from "../../../../helpers";
 import { JsonSafe } from "../../../../json-safe";
+import { GlobalDecoderRegistry } from "../../../../registry";
 import { TxRpc } from "../../../../types";
 export const protobufPackage = "ibc.core.client.v2";
 /** MsgRegisterCounterparty defines a message to register a counterparty on a client */
@@ -135,6 +136,33 @@ function createBaseMsgRegisterCounterparty(): MsgRegisterCounterparty {
 }
 export const MsgRegisterCounterparty = {
   typeUrl: "/ibc.core.client.v2.MsgRegisterCounterparty",
+  aminoType: "cosmos-sdk/MsgRegisterCounterparty",
+  is(o: any): o is MsgRegisterCounterparty {
+    return (
+      o &&
+      (o.$typeUrl === MsgRegisterCounterparty.typeUrl ||
+        (typeof o.clientId === "string" &&
+          Array.isArray(o.counterpartyMerklePrefix) &&
+          (!o.counterpartyMerklePrefix.length ||
+            o.counterpartyMerklePrefix[0] instanceof Uint8Array ||
+            typeof o.counterpartyMerklePrefix[0] === "string") &&
+          typeof o.counterpartyClientId === "string" &&
+          typeof o.signer === "string"))
+    );
+  },
+  isAmino(o: any): o is MsgRegisterCounterpartyAmino {
+    return (
+      o &&
+      (o.$typeUrl === MsgRegisterCounterparty.typeUrl ||
+        (typeof o.client_id === "string" &&
+          Array.isArray(o.counterparty_merkle_prefix) &&
+          (!o.counterparty_merkle_prefix.length ||
+            o.counterparty_merkle_prefix[0] instanceof Uint8Array ||
+            typeof o.counterparty_merkle_prefix[0] === "string") &&
+          typeof o.counterparty_client_id === "string" &&
+          typeof o.signer === "string"))
+    );
+  },
   encode(message: MsgRegisterCounterparty, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.clientId !== "") {
       writer.uint32(10).string(message.clientId);
@@ -257,11 +285,23 @@ export const MsgRegisterCounterparty = {
     };
   },
 };
+GlobalDecoderRegistry.register(MsgRegisterCounterparty.typeUrl, MsgRegisterCounterparty);
+GlobalDecoderRegistry.registerAminoProtoMapping(
+  MsgRegisterCounterparty.aminoType,
+  MsgRegisterCounterparty.typeUrl,
+);
 function createBaseMsgRegisterCounterpartyResponse(): MsgRegisterCounterpartyResponse {
   return {};
 }
 export const MsgRegisterCounterpartyResponse = {
   typeUrl: "/ibc.core.client.v2.MsgRegisterCounterpartyResponse",
+  aminoType: "cosmos-sdk/MsgRegisterCounterpartyResponse",
+  is(o: any): o is MsgRegisterCounterpartyResponse {
+    return o && o.$typeUrl === MsgRegisterCounterpartyResponse.typeUrl;
+  },
+  isAmino(o: any): o is MsgRegisterCounterpartyResponseAmino {
+    return o && o.$typeUrl === MsgRegisterCounterpartyResponse.typeUrl;
+  },
   encode(_: MsgRegisterCounterpartyResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
@@ -321,6 +361,11 @@ export const MsgRegisterCounterpartyResponse = {
     };
   },
 };
+GlobalDecoderRegistry.register(MsgRegisterCounterpartyResponse.typeUrl, MsgRegisterCounterpartyResponse);
+GlobalDecoderRegistry.registerAminoProtoMapping(
+  MsgRegisterCounterpartyResponse.aminoType,
+  MsgRegisterCounterpartyResponse.typeUrl,
+);
 function createBaseMsgUpdateClientConfig(): MsgUpdateClientConfig {
   return {
     clientId: "",
@@ -330,6 +375,21 @@ function createBaseMsgUpdateClientConfig(): MsgUpdateClientConfig {
 }
 export const MsgUpdateClientConfig = {
   typeUrl: "/ibc.core.client.v2.MsgUpdateClientConfig",
+  aminoType: "cosmos-sdk/MsgUpdateClientConfig",
+  is(o: any): o is MsgUpdateClientConfig {
+    return (
+      o &&
+      (o.$typeUrl === MsgUpdateClientConfig.typeUrl ||
+        (typeof o.clientId === "string" && Config.is(o.config) && typeof o.signer === "string"))
+    );
+  },
+  isAmino(o: any): o is MsgUpdateClientConfigAmino {
+    return (
+      o &&
+      (o.$typeUrl === MsgUpdateClientConfig.typeUrl ||
+        (typeof o.client_id === "string" && Config.isAmino(o.config) && typeof o.signer === "string"))
+    );
+  },
   encode(message: MsgUpdateClientConfig, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.clientId !== "") {
       writer.uint32(10).string(message.clientId);
@@ -430,11 +490,23 @@ export const MsgUpdateClientConfig = {
     };
   },
 };
+GlobalDecoderRegistry.register(MsgUpdateClientConfig.typeUrl, MsgUpdateClientConfig);
+GlobalDecoderRegistry.registerAminoProtoMapping(
+  MsgUpdateClientConfig.aminoType,
+  MsgUpdateClientConfig.typeUrl,
+);
 function createBaseMsgUpdateClientConfigResponse(): MsgUpdateClientConfigResponse {
   return {};
 }
 export const MsgUpdateClientConfigResponse = {
   typeUrl: "/ibc.core.client.v2.MsgUpdateClientConfigResponse",
+  aminoType: "cosmos-sdk/MsgUpdateClientConfigResponse",
+  is(o: any): o is MsgUpdateClientConfigResponse {
+    return o && o.$typeUrl === MsgUpdateClientConfigResponse.typeUrl;
+  },
+  isAmino(o: any): o is MsgUpdateClientConfigResponseAmino {
+    return o && o.$typeUrl === MsgUpdateClientConfigResponse.typeUrl;
+  },
   encode(_: MsgUpdateClientConfigResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
@@ -494,6 +566,11 @@ export const MsgUpdateClientConfigResponse = {
     };
   },
 };
+GlobalDecoderRegistry.register(MsgUpdateClientConfigResponse.typeUrl, MsgUpdateClientConfigResponse);
+GlobalDecoderRegistry.registerAminoProtoMapping(
+  MsgUpdateClientConfigResponse.aminoType,
+  MsgUpdateClientConfigResponse.typeUrl,
+);
 /** Msg defines the ibc/client/v2 Msg service. */
 export interface Msg {
   /** RegisterCounterparty defines a rpc handler method for MsgRegisterCounterparty. */

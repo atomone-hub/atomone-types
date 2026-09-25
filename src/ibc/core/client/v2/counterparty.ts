@@ -2,6 +2,7 @@
 import { BinaryReader, BinaryWriter } from "../../../../binary";
 import { bytesFromBase64, isSet, base64FromBytes } from "../../../../helpers";
 import { JsonSafe } from "../../../../json-safe";
+import { GlobalDecoderRegistry } from "../../../../registry";
 export const protobufPackage = "ibc.core.client.v2";
 /** CounterpartyInfo defines the key that the counterparty will use to message our client */
 export interface CounterpartyInfo {
@@ -42,6 +43,29 @@ function createBaseCounterpartyInfo(): CounterpartyInfo {
 }
 export const CounterpartyInfo = {
   typeUrl: "/ibc.core.client.v2.CounterpartyInfo",
+  aminoType: "cosmos-sdk/CounterpartyInfo",
+  is(o: any): o is CounterpartyInfo {
+    return (
+      o &&
+      (o.$typeUrl === CounterpartyInfo.typeUrl ||
+        (Array.isArray(o.merklePrefix) &&
+          (!o.merklePrefix.length ||
+            o.merklePrefix[0] instanceof Uint8Array ||
+            typeof o.merklePrefix[0] === "string") &&
+          typeof o.clientId === "string"))
+    );
+  },
+  isAmino(o: any): o is CounterpartyInfoAmino {
+    return (
+      o &&
+      (o.$typeUrl === CounterpartyInfo.typeUrl ||
+        (Array.isArray(o.merkle_prefix) &&
+          (!o.merkle_prefix.length ||
+            o.merkle_prefix[0] instanceof Uint8Array ||
+            typeof o.merkle_prefix[0] === "string") &&
+          typeof o.client_id === "string"))
+    );
+  },
   encode(message: CounterpartyInfo, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.merklePrefix) {
       writer.uint32(10).bytes(v!);
@@ -136,3 +160,5 @@ export const CounterpartyInfo = {
     };
   },
 };
+GlobalDecoderRegistry.register(CounterpartyInfo.typeUrl, CounterpartyInfo);
+GlobalDecoderRegistry.registerAminoProtoMapping(CounterpartyInfo.aminoType, CounterpartyInfo.typeUrl);

@@ -2,6 +2,7 @@
 import { Timestamp } from "../../../google/protobuf/timestamp";
 import { Duration, DurationAmino } from "../../../google/protobuf/duration";
 import { BinaryReader, BinaryWriter } from "../../../binary";
+import { GlobalDecoderRegistry } from "../../../registry";
 import { isSet, fromJsonTimestamp, fromTimestamp } from "../../../helpers";
 import { JsonSafe } from "../../../json-safe";
 export const protobufPackage = "cosmos.epochs.v1beta1";
@@ -168,6 +169,33 @@ function createBaseEpochInfo(): EpochInfo {
 }
 export const EpochInfo = {
   typeUrl: "/cosmos.epochs.v1beta1.EpochInfo",
+  aminoType: "cosmos-sdk/EpochInfo",
+  is(o: any): o is EpochInfo {
+    return (
+      o &&
+      (o.$typeUrl === EpochInfo.typeUrl ||
+        (typeof o.identifier === "string" &&
+          Timestamp.is(o.startTime) &&
+          Duration.is(o.duration) &&
+          typeof o.currentEpoch === "bigint" &&
+          Timestamp.is(o.currentEpochStartTime) &&
+          typeof o.epochCountingStarted === "boolean" &&
+          typeof o.currentEpochStartHeight === "bigint"))
+    );
+  },
+  isAmino(o: any): o is EpochInfoAmino {
+    return (
+      o &&
+      (o.$typeUrl === EpochInfo.typeUrl ||
+        (typeof o.identifier === "string" &&
+          Timestamp.isAmino(o.start_time) &&
+          Duration.isAmino(o.duration) &&
+          typeof o.current_epoch === "bigint" &&
+          Timestamp.isAmino(o.current_epoch_start_time) &&
+          typeof o.epoch_counting_started === "boolean" &&
+          typeof o.current_epoch_start_height === "bigint"))
+    );
+  },
   encode(message: EpochInfo, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.identifier !== "") {
       writer.uint32(10).string(message.identifier);
@@ -337,6 +365,8 @@ export const EpochInfo = {
     };
   },
 };
+GlobalDecoderRegistry.register(EpochInfo.typeUrl, EpochInfo);
+GlobalDecoderRegistry.registerAminoProtoMapping(EpochInfo.aminoType, EpochInfo.typeUrl);
 function createBaseGenesisState(): GenesisState {
   return {
     epochs: [],
@@ -344,6 +374,21 @@ function createBaseGenesisState(): GenesisState {
 }
 export const GenesisState = {
   typeUrl: "/cosmos.epochs.v1beta1.GenesisState",
+  aminoType: "cosmos-sdk/GenesisState",
+  is(o: any): o is GenesisState {
+    return (
+      o &&
+      (o.$typeUrl === GenesisState.typeUrl ||
+        (Array.isArray(o.epochs) && (!o.epochs.length || EpochInfo.is(o.epochs[0]))))
+    );
+  },
+  isAmino(o: any): o is GenesisStateAmino {
+    return (
+      o &&
+      (o.$typeUrl === GenesisState.typeUrl ||
+        (Array.isArray(o.epochs) && (!o.epochs.length || EpochInfo.isAmino(o.epochs[0]))))
+    );
+  },
   encode(message: GenesisState, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.epochs) {
       EpochInfo.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -422,3 +467,5 @@ export const GenesisState = {
     };
   },
 };
+GlobalDecoderRegistry.register(GenesisState.typeUrl, GenesisState);
+GlobalDecoderRegistry.registerAminoProtoMapping(GenesisState.aminoType, GenesisState.typeUrl);

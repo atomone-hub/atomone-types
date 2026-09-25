@@ -2,6 +2,7 @@
 import { BinaryReader, BinaryWriter } from "../../../binary";
 import { isSet } from "../../../helpers";
 import { JsonSafe } from "../../../json-safe";
+import { GlobalDecoderRegistry } from "../../../registry";
 export const protobufPackage = "cosmos.dynamicfee.v1";
 /**
  * Params contains the required set of parameters for the EIP1559 dynamic fee
@@ -161,6 +162,41 @@ function createBaseParams(): Params {
 }
 export const Params = {
   typeUrl: "/cosmos.dynamicfee.v1.Params",
+  aminoType: "cosmos-sdk/Params",
+  is(o: any): o is Params {
+    return (
+      o &&
+      (o.$typeUrl === Params.typeUrl ||
+        (typeof o.alpha === "string" &&
+          typeof o.beta === "string" &&
+          typeof o.gamma === "string" &&
+          typeof o.minBaseGasPrice === "string" &&
+          typeof o.targetBlockUtilization === "string" &&
+          typeof o.defaultMaxBlockGas === "bigint" &&
+          typeof o.minLearningRate === "string" &&
+          typeof o.maxLearningRate === "string" &&
+          typeof o.window === "bigint" &&
+          typeof o.feeDenom === "string" &&
+          typeof o.enabled === "boolean"))
+    );
+  },
+  isAmino(o: any): o is ParamsAmino {
+    return (
+      o &&
+      (o.$typeUrl === Params.typeUrl ||
+        (typeof o.alpha === "string" &&
+          typeof o.beta === "string" &&
+          typeof o.gamma === "string" &&
+          typeof o.min_base_gas_price === "string" &&
+          typeof o.target_block_utilization === "string" &&
+          typeof o.default_max_block_gas === "bigint" &&
+          typeof o.min_learning_rate === "string" &&
+          typeof o.max_learning_rate === "string" &&
+          typeof o.window === "bigint" &&
+          typeof o.fee_denom === "string" &&
+          typeof o.enabled === "boolean"))
+    );
+  },
   encode(message: Params, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.alpha !== "") {
       writer.uint32(10).string(message.alpha);
@@ -373,3 +409,5 @@ export const Params = {
     };
   },
 };
+GlobalDecoderRegistry.register(Params.typeUrl, Params);
+GlobalDecoderRegistry.registerAminoProtoMapping(Params.aminoType, Params.typeUrl);

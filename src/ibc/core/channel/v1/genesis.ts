@@ -3,6 +3,7 @@ import { IdentifiedChannel, IdentifiedChannelAmino, PacketState, PacketStateAmin
 import { BinaryReader, BinaryWriter } from "../../../../binary";
 import { isSet } from "../../../../helpers";
 import { JsonSafe } from "../../../../json-safe";
+import { GlobalDecoderRegistry } from "../../../../registry";
 export const protobufPackage = "ibc.core.channel.v1";
 /** GenesisState defines the ibc channel submodule's genesis state. */
 export interface GenesisState {
@@ -86,6 +87,49 @@ function createBaseGenesisState(): GenesisState {
 }
 export const GenesisState = {
   typeUrl: "/ibc.core.channel.v1.GenesisState",
+  aminoType: "cosmos-sdk/GenesisState",
+  is(o: any): o is GenesisState {
+    return (
+      o &&
+      (o.$typeUrl === GenesisState.typeUrl ||
+        (Array.isArray(o.channels) &&
+          (!o.channels.length || IdentifiedChannel.is(o.channels[0])) &&
+          Array.isArray(o.acknowledgements) &&
+          (!o.acknowledgements.length || PacketState.is(o.acknowledgements[0])) &&
+          Array.isArray(o.commitments) &&
+          (!o.commitments.length || PacketState.is(o.commitments[0])) &&
+          Array.isArray(o.receipts) &&
+          (!o.receipts.length || PacketState.is(o.receipts[0])) &&
+          Array.isArray(o.sendSequences) &&
+          (!o.sendSequences.length || PacketSequence.is(o.sendSequences[0])) &&
+          Array.isArray(o.recvSequences) &&
+          (!o.recvSequences.length || PacketSequence.is(o.recvSequences[0])) &&
+          Array.isArray(o.ackSequences) &&
+          (!o.ackSequences.length || PacketSequence.is(o.ackSequences[0])) &&
+          typeof o.nextChannelSequence === "bigint"))
+    );
+  },
+  isAmino(o: any): o is GenesisStateAmino {
+    return (
+      o &&
+      (o.$typeUrl === GenesisState.typeUrl ||
+        (Array.isArray(o.channels) &&
+          (!o.channels.length || IdentifiedChannel.isAmino(o.channels[0])) &&
+          Array.isArray(o.acknowledgements) &&
+          (!o.acknowledgements.length || PacketState.isAmino(o.acknowledgements[0])) &&
+          Array.isArray(o.commitments) &&
+          (!o.commitments.length || PacketState.isAmino(o.commitments[0])) &&
+          Array.isArray(o.receipts) &&
+          (!o.receipts.length || PacketState.isAmino(o.receipts[0])) &&
+          Array.isArray(o.send_sequences) &&
+          (!o.send_sequences.length || PacketSequence.isAmino(o.send_sequences[0])) &&
+          Array.isArray(o.recv_sequences) &&
+          (!o.recv_sequences.length || PacketSequence.isAmino(o.recv_sequences[0])) &&
+          Array.isArray(o.ack_sequences) &&
+          (!o.ack_sequences.length || PacketSequence.isAmino(o.ack_sequences[0])) &&
+          typeof o.next_channel_sequence === "bigint"))
+    );
+  },
   encode(message: GenesisState, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.channels) {
       IdentifiedChannel.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -303,6 +347,8 @@ export const GenesisState = {
     };
   },
 };
+GlobalDecoderRegistry.register(GenesisState.typeUrl, GenesisState);
+GlobalDecoderRegistry.registerAminoProtoMapping(GenesisState.aminoType, GenesisState.typeUrl);
 function createBasePacketSequence(): PacketSequence {
   return {
     portId: "",
@@ -312,6 +358,21 @@ function createBasePacketSequence(): PacketSequence {
 }
 export const PacketSequence = {
   typeUrl: "/ibc.core.channel.v1.PacketSequence",
+  aminoType: "cosmos-sdk/PacketSequence",
+  is(o: any): o is PacketSequence {
+    return (
+      o &&
+      (o.$typeUrl === PacketSequence.typeUrl ||
+        (typeof o.portId === "string" && typeof o.channelId === "string" && typeof o.sequence === "bigint"))
+    );
+  },
+  isAmino(o: any): o is PacketSequenceAmino {
+    return (
+      o &&
+      (o.$typeUrl === PacketSequence.typeUrl ||
+        (typeof o.port_id === "string" && typeof o.channel_id === "string" && typeof o.sequence === "bigint"))
+    );
+  },
   encode(message: PacketSequence, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.portId !== "") {
       writer.uint32(10).string(message.portId);
@@ -412,3 +473,5 @@ export const PacketSequence = {
     };
   },
 };
+GlobalDecoderRegistry.register(PacketSequence.typeUrl, PacketSequence);
+GlobalDecoderRegistry.registerAminoProtoMapping(PacketSequence.aminoType, PacketSequence.typeUrl);

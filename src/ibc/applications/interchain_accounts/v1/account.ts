@@ -1,6 +1,7 @@
 /* eslint-disable */
 import { BaseAccount, BaseAccountAmino } from "../../../../cosmos/auth/v1beta1/auth";
 import { BinaryReader, BinaryWriter } from "../../../../binary";
+import { GlobalDecoderRegistry } from "../../../../registry";
 import { isSet } from "../../../../helpers";
 import { JsonSafe } from "../../../../json-safe";
 export const protobufPackage = "ibc.applications.interchain_accounts.v1";
@@ -35,6 +36,13 @@ function createBaseInterchainAccount(): InterchainAccount {
 }
 export const InterchainAccount = {
   typeUrl: "/ibc.applications.interchain_accounts.v1.InterchainAccount",
+  aminoType: "cosmos-sdk/InterchainAccount",
+  is(o: any): o is InterchainAccount {
+    return o && (o.$typeUrl === InterchainAccount.typeUrl || typeof o.accountOwner === "string");
+  },
+  isAmino(o: any): o is InterchainAccountAmino {
+    return o && (o.$typeUrl === InterchainAccount.typeUrl || typeof o.account_owner === "string");
+  },
   encode(message: InterchainAccount, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.baseAccount !== undefined) {
       BaseAccount.encode(message.baseAccount, writer.uint32(10).fork()).ldelim();
@@ -123,3 +131,5 @@ export const InterchainAccount = {
     };
   },
 };
+GlobalDecoderRegistry.register(InterchainAccount.typeUrl, InterchainAccount);
+GlobalDecoderRegistry.registerAminoProtoMapping(InterchainAccount.aminoType, InterchainAccount.typeUrl);

@@ -2,6 +2,7 @@
 import { Header, HeaderAmino, Data, DataAmino, Commit, CommitAmino } from "./types";
 import { EvidenceList, EvidenceListAmino } from "./evidence";
 import { BinaryReader, BinaryWriter } from "../../binary";
+import { GlobalDecoderRegistry } from "../../registry";
 import { isSet } from "../../helpers";
 import { JsonSafe } from "../../json-safe";
 export const protobufPackage = "tendermint.types";
@@ -40,6 +41,20 @@ function createBaseBlock(): Block {
 }
 export const Block = {
   typeUrl: "/tendermint.types.Block",
+  is(o: any): o is Block {
+    return (
+      o &&
+      (o.$typeUrl === Block.typeUrl ||
+        (Header.is(o.header) && Data.is(o.data) && EvidenceList.is(o.evidence)))
+    );
+  },
+  isAmino(o: any): o is BlockAmino {
+    return (
+      o &&
+      (o.$typeUrl === Block.typeUrl ||
+        (Header.isAmino(o.header) && Data.isAmino(o.data) && EvidenceList.isAmino(o.evidence)))
+    );
+  },
   encode(message: Block, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.header !== undefined) {
       Header.encode(message.header, writer.uint32(10).fork()).ldelim();
@@ -155,3 +170,4 @@ export const Block = {
     };
   },
 };
+GlobalDecoderRegistry.register(Block.typeUrl, Block);

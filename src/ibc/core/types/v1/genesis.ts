@@ -10,6 +10,7 @@ import { GenesisStateAmino as GenesisState4Amino } from "../../client/v2/genesis
 import { GenesisState as GenesisState5 } from "../../channel/v2/genesis";
 import { GenesisStateAmino as GenesisState5Amino } from "../../channel/v2/genesis";
 import { BinaryReader, BinaryWriter } from "../../../../binary";
+import { GlobalDecoderRegistry } from "../../../../registry";
 import { isSet } from "../../../../helpers";
 import { JsonSafe } from "../../../../json-safe";
 export const protobufPackage = "ibc.core.types.v1";
@@ -73,6 +74,29 @@ function createBaseGenesisState(): GenesisState {
 }
 export const GenesisState = {
   typeUrl: "/ibc.core.types.v1.GenesisState",
+  aminoType: "cosmos-sdk/GenesisState",
+  is(o: any): o is GenesisState {
+    return (
+      o &&
+      (o.$typeUrl === GenesisState.typeUrl ||
+        (GenesisState1.is(o.clientGenesis) &&
+          GenesisState2.is(o.connectionGenesis) &&
+          GenesisState3.is(o.channelGenesis) &&
+          GenesisState4.is(o.clientV2Genesis) &&
+          GenesisState5.is(o.channelV2Genesis)))
+    );
+  },
+  isAmino(o: any): o is GenesisStateAmino {
+    return (
+      o &&
+      (o.$typeUrl === GenesisState.typeUrl ||
+        (GenesisState1.isAmino(o.client_genesis) &&
+          GenesisState2.isAmino(o.connection_genesis) &&
+          GenesisState3.isAmino(o.channel_genesis) &&
+          GenesisState4.isAmino(o.client_v2_genesis) &&
+          GenesisState5.isAmino(o.channel_v2_genesis)))
+    );
+  },
   encode(message: GenesisState, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.clientGenesis !== undefined) {
       GenesisState1.encode(message.clientGenesis, writer.uint32(10).fork()).ldelim();
@@ -228,3 +252,5 @@ export const GenesisState = {
     };
   },
 };
+GlobalDecoderRegistry.register(GenesisState.typeUrl, GenesisState);
+GlobalDecoderRegistry.registerAminoProtoMapping(GenesisState.aminoType, GenesisState.typeUrl);

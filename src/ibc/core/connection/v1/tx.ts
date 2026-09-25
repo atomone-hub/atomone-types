@@ -3,6 +3,7 @@ import { Counterparty, CounterpartyAmino, Version, VersionAmino } from "./connec
 import { Any, AnyAmino } from "../../../../google/protobuf/any";
 import { Height, HeightAmino, Params, ParamsAmino } from "../../client/v1/client";
 import { BinaryReader, BinaryWriter } from "../../../../binary";
+import { GlobalDecoderRegistry } from "../../../../registry";
 import { isSet, bytesFromBase64, base64FromBytes } from "../../../../helpers";
 import { JsonSafe } from "../../../../json-safe";
 import { TxRpc } from "../../../../types";
@@ -392,6 +393,27 @@ function createBaseMsgConnectionOpenInit(): MsgConnectionOpenInit {
 }
 export const MsgConnectionOpenInit = {
   typeUrl: "/ibc.core.connection.v1.MsgConnectionOpenInit",
+  aminoType: "cosmos-sdk/MsgConnectionOpenInit",
+  is(o: any): o is MsgConnectionOpenInit {
+    return (
+      o &&
+      (o.$typeUrl === MsgConnectionOpenInit.typeUrl ||
+        (typeof o.clientId === "string" &&
+          Counterparty.is(o.counterparty) &&
+          typeof o.delayPeriod === "bigint" &&
+          typeof o.signer === "string"))
+    );
+  },
+  isAmino(o: any): o is MsgConnectionOpenInitAmino {
+    return (
+      o &&
+      (o.$typeUrl === MsgConnectionOpenInit.typeUrl ||
+        (typeof o.client_id === "string" &&
+          Counterparty.isAmino(o.counterparty) &&
+          typeof o.delay_period === "bigint" &&
+          typeof o.signer === "string"))
+    );
+  },
   encode(message: MsgConnectionOpenInit, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.clientId !== "") {
       writer.uint32(10).string(message.clientId);
@@ -524,11 +546,23 @@ export const MsgConnectionOpenInit = {
     };
   },
 };
+GlobalDecoderRegistry.register(MsgConnectionOpenInit.typeUrl, MsgConnectionOpenInit);
+GlobalDecoderRegistry.registerAminoProtoMapping(
+  MsgConnectionOpenInit.aminoType,
+  MsgConnectionOpenInit.typeUrl,
+);
 function createBaseMsgConnectionOpenInitResponse(): MsgConnectionOpenInitResponse {
   return {};
 }
 export const MsgConnectionOpenInitResponse = {
   typeUrl: "/ibc.core.connection.v1.MsgConnectionOpenInitResponse",
+  aminoType: "cosmos-sdk/MsgConnectionOpenInitResponse",
+  is(o: any): o is MsgConnectionOpenInitResponse {
+    return o && o.$typeUrl === MsgConnectionOpenInitResponse.typeUrl;
+  },
+  isAmino(o: any): o is MsgConnectionOpenInitResponseAmino {
+    return o && o.$typeUrl === MsgConnectionOpenInitResponse.typeUrl;
+  },
   encode(_: MsgConnectionOpenInitResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
@@ -588,6 +622,11 @@ export const MsgConnectionOpenInitResponse = {
     };
   },
 };
+GlobalDecoderRegistry.register(MsgConnectionOpenInitResponse.typeUrl, MsgConnectionOpenInitResponse);
+GlobalDecoderRegistry.registerAminoProtoMapping(
+  MsgConnectionOpenInitResponse.aminoType,
+  MsgConnectionOpenInitResponse.typeUrl,
+);
 function createBaseMsgConnectionOpenTry(): MsgConnectionOpenTry {
   return {
     clientId: "",
@@ -607,6 +646,46 @@ function createBaseMsgConnectionOpenTry(): MsgConnectionOpenTry {
 }
 export const MsgConnectionOpenTry = {
   typeUrl: "/ibc.core.connection.v1.MsgConnectionOpenTry",
+  aminoType: "cosmos-sdk/MsgConnectionOpenTry",
+  is(o: any): o is MsgConnectionOpenTry {
+    return (
+      o &&
+      (o.$typeUrl === MsgConnectionOpenTry.typeUrl ||
+        (typeof o.clientId === "string" &&
+          typeof o.previousConnectionId === "string" &&
+          Counterparty.is(o.counterparty) &&
+          typeof o.delayPeriod === "bigint" &&
+          Array.isArray(o.counterpartyVersions) &&
+          (!o.counterpartyVersions.length || Version.is(o.counterpartyVersions[0])) &&
+          Height.is(o.proofHeight) &&
+          (o.proofInit instanceof Uint8Array || typeof o.proofInit === "string") &&
+          (o.proofClient instanceof Uint8Array || typeof o.proofClient === "string") &&
+          (o.proofConsensus instanceof Uint8Array || typeof o.proofConsensus === "string") &&
+          Height.is(o.consensusHeight) &&
+          typeof o.signer === "string" &&
+          (o.hostConsensusStateProof instanceof Uint8Array || typeof o.hostConsensusStateProof === "string")))
+    );
+  },
+  isAmino(o: any): o is MsgConnectionOpenTryAmino {
+    return (
+      o &&
+      (o.$typeUrl === MsgConnectionOpenTry.typeUrl ||
+        (typeof o.client_id === "string" &&
+          typeof o.previous_connection_id === "string" &&
+          Counterparty.isAmino(o.counterparty) &&
+          typeof o.delay_period === "bigint" &&
+          Array.isArray(o.counterparty_versions) &&
+          (!o.counterparty_versions.length || Version.isAmino(o.counterparty_versions[0])) &&
+          Height.isAmino(o.proof_height) &&
+          (o.proof_init instanceof Uint8Array || typeof o.proof_init === "string") &&
+          (o.proof_client instanceof Uint8Array || typeof o.proof_client === "string") &&
+          (o.proof_consensus instanceof Uint8Array || typeof o.proof_consensus === "string") &&
+          Height.isAmino(o.consensus_height) &&
+          typeof o.signer === "string" &&
+          (o.host_consensus_state_proof instanceof Uint8Array ||
+            typeof o.host_consensus_state_proof === "string")))
+    );
+  },
   encode(message: MsgConnectionOpenTry, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.clientId !== "") {
       writer.uint32(10).string(message.clientId);
@@ -874,11 +953,20 @@ export const MsgConnectionOpenTry = {
     };
   },
 };
+GlobalDecoderRegistry.register(MsgConnectionOpenTry.typeUrl, MsgConnectionOpenTry);
+GlobalDecoderRegistry.registerAminoProtoMapping(MsgConnectionOpenTry.aminoType, MsgConnectionOpenTry.typeUrl);
 function createBaseMsgConnectionOpenTryResponse(): MsgConnectionOpenTryResponse {
   return {};
 }
 export const MsgConnectionOpenTryResponse = {
   typeUrl: "/ibc.core.connection.v1.MsgConnectionOpenTryResponse",
+  aminoType: "cosmos-sdk/MsgConnectionOpenTryResponse",
+  is(o: any): o is MsgConnectionOpenTryResponse {
+    return o && o.$typeUrl === MsgConnectionOpenTryResponse.typeUrl;
+  },
+  isAmino(o: any): o is MsgConnectionOpenTryResponseAmino {
+    return o && o.$typeUrl === MsgConnectionOpenTryResponse.typeUrl;
+  },
   encode(_: MsgConnectionOpenTryResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
@@ -938,6 +1026,11 @@ export const MsgConnectionOpenTryResponse = {
     };
   },
 };
+GlobalDecoderRegistry.register(MsgConnectionOpenTryResponse.typeUrl, MsgConnectionOpenTryResponse);
+GlobalDecoderRegistry.registerAminoProtoMapping(
+  MsgConnectionOpenTryResponse.aminoType,
+  MsgConnectionOpenTryResponse.typeUrl,
+);
 function createBaseMsgConnectionOpenAck(): MsgConnectionOpenAck {
   return {
     connectionId: "",
@@ -955,6 +1048,38 @@ function createBaseMsgConnectionOpenAck(): MsgConnectionOpenAck {
 }
 export const MsgConnectionOpenAck = {
   typeUrl: "/ibc.core.connection.v1.MsgConnectionOpenAck",
+  aminoType: "cosmos-sdk/MsgConnectionOpenAck",
+  is(o: any): o is MsgConnectionOpenAck {
+    return (
+      o &&
+      (o.$typeUrl === MsgConnectionOpenAck.typeUrl ||
+        (typeof o.connectionId === "string" &&
+          typeof o.counterpartyConnectionId === "string" &&
+          Height.is(o.proofHeight) &&
+          (o.proofTry instanceof Uint8Array || typeof o.proofTry === "string") &&
+          (o.proofClient instanceof Uint8Array || typeof o.proofClient === "string") &&
+          (o.proofConsensus instanceof Uint8Array || typeof o.proofConsensus === "string") &&
+          Height.is(o.consensusHeight) &&
+          typeof o.signer === "string" &&
+          (o.hostConsensusStateProof instanceof Uint8Array || typeof o.hostConsensusStateProof === "string")))
+    );
+  },
+  isAmino(o: any): o is MsgConnectionOpenAckAmino {
+    return (
+      o &&
+      (o.$typeUrl === MsgConnectionOpenAck.typeUrl ||
+        (typeof o.connection_id === "string" &&
+          typeof o.counterparty_connection_id === "string" &&
+          Height.isAmino(o.proof_height) &&
+          (o.proof_try instanceof Uint8Array || typeof o.proof_try === "string") &&
+          (o.proof_client instanceof Uint8Array || typeof o.proof_client === "string") &&
+          (o.proof_consensus instanceof Uint8Array || typeof o.proof_consensus === "string") &&
+          Height.isAmino(o.consensus_height) &&
+          typeof o.signer === "string" &&
+          (o.host_consensus_state_proof instanceof Uint8Array ||
+            typeof o.host_consensus_state_proof === "string")))
+    );
+  },
   encode(message: MsgConnectionOpenAck, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.connectionId !== "") {
       writer.uint32(10).string(message.connectionId);
@@ -1185,11 +1310,20 @@ export const MsgConnectionOpenAck = {
     };
   },
 };
+GlobalDecoderRegistry.register(MsgConnectionOpenAck.typeUrl, MsgConnectionOpenAck);
+GlobalDecoderRegistry.registerAminoProtoMapping(MsgConnectionOpenAck.aminoType, MsgConnectionOpenAck.typeUrl);
 function createBaseMsgConnectionOpenAckResponse(): MsgConnectionOpenAckResponse {
   return {};
 }
 export const MsgConnectionOpenAckResponse = {
   typeUrl: "/ibc.core.connection.v1.MsgConnectionOpenAckResponse",
+  aminoType: "cosmos-sdk/MsgConnectionOpenAckResponse",
+  is(o: any): o is MsgConnectionOpenAckResponse {
+    return o && o.$typeUrl === MsgConnectionOpenAckResponse.typeUrl;
+  },
+  isAmino(o: any): o is MsgConnectionOpenAckResponseAmino {
+    return o && o.$typeUrl === MsgConnectionOpenAckResponse.typeUrl;
+  },
   encode(_: MsgConnectionOpenAckResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
@@ -1249,6 +1383,11 @@ export const MsgConnectionOpenAckResponse = {
     };
   },
 };
+GlobalDecoderRegistry.register(MsgConnectionOpenAckResponse.typeUrl, MsgConnectionOpenAckResponse);
+GlobalDecoderRegistry.registerAminoProtoMapping(
+  MsgConnectionOpenAckResponse.aminoType,
+  MsgConnectionOpenAckResponse.typeUrl,
+);
 function createBaseMsgConnectionOpenConfirm(): MsgConnectionOpenConfirm {
   return {
     connectionId: "",
@@ -1259,6 +1398,27 @@ function createBaseMsgConnectionOpenConfirm(): MsgConnectionOpenConfirm {
 }
 export const MsgConnectionOpenConfirm = {
   typeUrl: "/ibc.core.connection.v1.MsgConnectionOpenConfirm",
+  aminoType: "cosmos-sdk/MsgConnectionOpenConfirm",
+  is(o: any): o is MsgConnectionOpenConfirm {
+    return (
+      o &&
+      (o.$typeUrl === MsgConnectionOpenConfirm.typeUrl ||
+        (typeof o.connectionId === "string" &&
+          (o.proofAck instanceof Uint8Array || typeof o.proofAck === "string") &&
+          Height.is(o.proofHeight) &&
+          typeof o.signer === "string"))
+    );
+  },
+  isAmino(o: any): o is MsgConnectionOpenConfirmAmino {
+    return (
+      o &&
+      (o.$typeUrl === MsgConnectionOpenConfirm.typeUrl ||
+        (typeof o.connection_id === "string" &&
+          (o.proof_ack instanceof Uint8Array || typeof o.proof_ack === "string") &&
+          Height.isAmino(o.proof_height) &&
+          typeof o.signer === "string"))
+    );
+  },
   encode(message: MsgConnectionOpenConfirm, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.connectionId !== "") {
       writer.uint32(10).string(message.connectionId);
@@ -1374,11 +1534,23 @@ export const MsgConnectionOpenConfirm = {
     };
   },
 };
+GlobalDecoderRegistry.register(MsgConnectionOpenConfirm.typeUrl, MsgConnectionOpenConfirm);
+GlobalDecoderRegistry.registerAminoProtoMapping(
+  MsgConnectionOpenConfirm.aminoType,
+  MsgConnectionOpenConfirm.typeUrl,
+);
 function createBaseMsgConnectionOpenConfirmResponse(): MsgConnectionOpenConfirmResponse {
   return {};
 }
 export const MsgConnectionOpenConfirmResponse = {
   typeUrl: "/ibc.core.connection.v1.MsgConnectionOpenConfirmResponse",
+  aminoType: "cosmos-sdk/MsgConnectionOpenConfirmResponse",
+  is(o: any): o is MsgConnectionOpenConfirmResponse {
+    return o && o.$typeUrl === MsgConnectionOpenConfirmResponse.typeUrl;
+  },
+  isAmino(o: any): o is MsgConnectionOpenConfirmResponseAmino {
+    return o && o.$typeUrl === MsgConnectionOpenConfirmResponse.typeUrl;
+  },
   encode(_: MsgConnectionOpenConfirmResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
@@ -1438,6 +1610,11 @@ export const MsgConnectionOpenConfirmResponse = {
     };
   },
 };
+GlobalDecoderRegistry.register(MsgConnectionOpenConfirmResponse.typeUrl, MsgConnectionOpenConfirmResponse);
+GlobalDecoderRegistry.registerAminoProtoMapping(
+  MsgConnectionOpenConfirmResponse.aminoType,
+  MsgConnectionOpenConfirmResponse.typeUrl,
+);
 function createBaseMsgUpdateParams(): MsgUpdateParams {
   return {
     signer: "",
@@ -1446,6 +1623,18 @@ function createBaseMsgUpdateParams(): MsgUpdateParams {
 }
 export const MsgUpdateParams = {
   typeUrl: "/ibc.core.connection.v1.MsgUpdateParams",
+  aminoType: "cosmos-sdk/MsgUpdateParams",
+  is(o: any): o is MsgUpdateParams {
+    return (
+      o && (o.$typeUrl === MsgUpdateParams.typeUrl || (typeof o.signer === "string" && Params.is(o.params)))
+    );
+  },
+  isAmino(o: any): o is MsgUpdateParamsAmino {
+    return (
+      o &&
+      (o.$typeUrl === MsgUpdateParams.typeUrl || (typeof o.signer === "string" && Params.isAmino(o.params)))
+    );
+  },
   encode(message: MsgUpdateParams, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.signer !== "") {
       writer.uint32(10).string(message.signer);
@@ -1533,11 +1722,20 @@ export const MsgUpdateParams = {
     };
   },
 };
+GlobalDecoderRegistry.register(MsgUpdateParams.typeUrl, MsgUpdateParams);
+GlobalDecoderRegistry.registerAminoProtoMapping(MsgUpdateParams.aminoType, MsgUpdateParams.typeUrl);
 function createBaseMsgUpdateParamsResponse(): MsgUpdateParamsResponse {
   return {};
 }
 export const MsgUpdateParamsResponse = {
   typeUrl: "/ibc.core.connection.v1.MsgUpdateParamsResponse",
+  aminoType: "cosmos-sdk/MsgUpdateParamsResponse",
+  is(o: any): o is MsgUpdateParamsResponse {
+    return o && o.$typeUrl === MsgUpdateParamsResponse.typeUrl;
+  },
+  isAmino(o: any): o is MsgUpdateParamsResponseAmino {
+    return o && o.$typeUrl === MsgUpdateParamsResponse.typeUrl;
+  },
   encode(_: MsgUpdateParamsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
@@ -1597,6 +1795,11 @@ export const MsgUpdateParamsResponse = {
     };
   },
 };
+GlobalDecoderRegistry.register(MsgUpdateParamsResponse.typeUrl, MsgUpdateParamsResponse);
+GlobalDecoderRegistry.registerAminoProtoMapping(
+  MsgUpdateParamsResponse.aminoType,
+  MsgUpdateParamsResponse.typeUrl,
+);
 /** Msg defines the ibc/connection Msg service. */
 export interface Msg {
   /** ConnectionOpenInit defines a rpc handler method for MsgConnectionOpenInit. */
